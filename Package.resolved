@@ -1,0 +1,32 @@
+{
+  "pins" : [
+    {
+      "identity" : "spimanifest",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SwiftPackageIndex/SPIManifest.git",
+      "state" : {
+        "revision" : "48dba5341529d50a8433859163e75fbb4357ac13",
+        "version" : "0.17.2"
+      }
+    },
+    {
+      "identity" : "swift-syntax",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-syntax.git",
+      "state" : {
+        "revision" : "cd793adf5680e138bf2bcbaacc292490175d0dcd",
+        "version" : "508.0.0"
+      }
+    },
+    {
+      "identity" : "yams",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jpsim/Yams.git",
+      "state" : {
+        "revision" : "f47ba4838c30dbd59998a4e4c87ab620ff959e8a",
+        "version" : "5.0.5"
+      }
+    }
+  ],
+  "version" : 2
+}

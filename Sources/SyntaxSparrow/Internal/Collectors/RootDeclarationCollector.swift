@@ -114,7 +114,9 @@ class RootDeclarationCollector: SyntaxVisitor {
 
     /// Called when visiting a `FunctionDeclSyntax` node
     override func visit(_ node: FunctionDeclSyntax) -> SyntaxVisitorContinueKind {
-        // Function
+        if let entryNode = entryNode, node.id == entryNode.id { return .visitChildren }
+        let declaration = Function(node: node, context: context)
+        collection.functions.append(declaration)
         return .skipChildren
     }
 

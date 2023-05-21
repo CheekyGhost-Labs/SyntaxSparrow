@@ -16,7 +16,7 @@ public extension Declaration where Self: SyntaxChildCollecting {
     var enumerations: [Enumeration] { collection?.enumerations ?? [] }
 //    var enumerationCases: [Enumeration.Case] { collection?.enumerationCases ?? [] }
     var extensions: [Extension] { collection?.extensions ?? [] }
-//    var functions: [Function] { collection?.functions ?? [] }
+    var functions: [Function] { collection?.functions ?? [] }
     var imports: [Import] { collection?.imports ?? [] }
 //    var initializers: [Initializer] { collection?.initializers ?? [] }
 //    var operators: [Operator] { collection?.operators ?? [] }

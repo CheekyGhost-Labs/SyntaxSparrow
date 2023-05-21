@@ -113,7 +113,7 @@ public class SyntaxTree: SyntaxChildCollecting, SyntaxExplorerContextProviding {
     public var enumerations: [Enumeration] { declarationCollector.collection.enumerations }
 //    public var enumerationCases: [Enumeration.Case] { declarationCollector.collection.enumerationCases }
     public var extensions: [Extension] { declarationCollector.collection.extensions }
-//    public var functions: [Function] { declarationCollector.collection.functions }
+    public var functions: [Function] { declarationCollector.collection.functions }
     public var imports: [Import] { declarationCollector.collection.imports }
 //    public var initializers: [Initializer] { declarationCollector.collection.initializers }
 //    public var operators: [Operator] { declarationCollector.collection.operators }

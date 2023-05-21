@@ -35,6 +35,24 @@ protocol NodeSemanticsResolving: SemanticsResolving {
     init(node: Node)
 }
 
+protocol ParameterNodeSemanticsResolving: NodeSemanticsResolving {
+    var attributes: [Attribute] { get }
+    var name: String? { get }
+    var secondName: String? { get }
+    var type: EntityType { get }
+    var rawType: String? { get }
+    var isVariadic: Bool { get }
+    var isOptional: Bool { get }
+    var defaultArgument: String? { get }
+    var isInOut: Bool { get }
+    var isLabelOmitted: Bool { get }
+}
+
+protocol TupleNodeSemanticsResolving: NodeSemanticsResolving {
+    var elements: [Parameter] { get }
+    var isOptional: Bool { get }
+}
+
 // MARK: - Common Location Properties and Helpers
 
 extension DeclarationSemanticsResolving {

@@ -29,8 +29,8 @@ struct DeclarationCollection {
     /// The collected extension declarations.
     var extensions: [Extension] = []
 
-//    /// The collected function declarations.
-//    var functions: [Function] { get }
+    /// The collected function declarations.
+    var functions: [Function] = []
 
     /// The collected import declarations.
     var imports: [Import] = []

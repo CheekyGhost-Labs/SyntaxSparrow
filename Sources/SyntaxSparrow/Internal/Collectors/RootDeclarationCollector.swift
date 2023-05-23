@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  RootDeclarationCollector.swift
 //  
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
@@ -55,7 +55,7 @@ class RootDeclarationCollector: SyntaxVisitor {
     /// - Parameter node: The node to traverse
     @discardableResult func collect(fromNode node: SyntaxProtocol) -> DeclarationCollection {
         entryNode = node
-        collection.clear()
+        collection = DeclarationCollection()
         if context.sourceLocationConverter.isEmpty {
             context.sourceLocationConverter.updateToRootForNode(node)
         }
@@ -136,7 +136,9 @@ class RootDeclarationCollector: SyntaxVisitor {
 
     /// Called when visiting an `InitializerDeclSyntax` node
     override func visit(_ node: InitializerDeclSyntax) -> SyntaxVisitorContinueKind {
-        // initializer
+        if let entryNode = entryNode, node.id == entryNode.id { return .visitChildren }
+        let declaration = Initializer(node: node, context: context)
+        collection.initializers.append(declaration)
         return .skipChildren
     }
 
@@ -162,7 +164,9 @@ class RootDeclarationCollector: SyntaxVisitor {
 
     /// Called when visiting a `SubscriptDeclSyntax` node
     override  func visit(_ node: SubscriptDeclSyntax) -> SyntaxVisitorContinueKind {
-        // subscript
+        if let entryNode = entryNode, node.id == entryNode.id { return .visitChildren }
+        let declaration = Subscript(node: node, context: context)
+        collection.subscripts.append(declaration)
         return .skipChildren
     }
 
@@ -185,7 +189,16 @@ class RootDeclarationCollector: SyntaxVisitor {
 
     /// Called when visiting a `VariableDeclSyntax` node
     override func visit(_ node: VariableDeclSyntax) -> SyntaxVisitorContinueKind {
-        // variable
+        if let entryNode = entryNode, node.id == entryNode.id { return .visitChildren }
+        let declarations = Variable.variables(from: node, context: context)
+        collection.variables.append(contentsOf: declarations)
         return .skipChildren
+    }
+
+    override func visit(_ node: PatternBindingSyntax) -> SyntaxVisitorContinueKind {
+        if let entryNode = entryNode, node.id == entryNode.id { return .visitChildren }
+        let declaration = Variable(node: node, context: context)
+        collection.variables.append(declaration)
+      return .visitChildren
     }
 }

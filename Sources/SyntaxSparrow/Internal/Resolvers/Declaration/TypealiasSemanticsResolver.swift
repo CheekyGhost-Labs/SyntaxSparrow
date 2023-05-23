@@ -33,7 +33,7 @@ class TypealiasSemanticsResolver: DeclarationSemanticsResolving {
 
     private(set) lazy var name: String = resolveName()
 
-    private(set) lazy var initializedType: String = resolveInitializedType()
+    private(set) lazy var initializedType: EntityType = resolveInitializedType()
 
     private(set) lazy var genericParameters: [GenericParameter] = resolveGenericParameters()
 
@@ -70,8 +70,8 @@ class TypealiasSemanticsResolver: DeclarationSemanticsResolving {
         return modifierList.map { Modifier(node: $0) }
     }
 
-    private func resolveInitializedType() -> String {
-        node.initializer.value.description.trimmed
+    private func resolveInitializedType() -> EntityType {
+        EntityType.parseType(node.initializer.value)
     }
 
     private func resolveGenericParameters() -> [GenericParameter] {

@@ -9,6 +9,10 @@ import Foundation
 
 public struct Result: Hashable, Equatable, CustomStringConvertible {
 
+    var successType: EntityType { .simple("") }
+
+    let errorType: String = ""
+
     public func hash(into hasher: inout Hasher) {
 
     }

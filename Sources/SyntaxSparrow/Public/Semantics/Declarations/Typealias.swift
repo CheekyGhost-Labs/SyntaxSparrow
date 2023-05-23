@@ -42,16 +42,18 @@ public class Typealias: Declaration, SyntaxSourceLocationResolving {
     /// If the structure is unnamed, this will be an empty string.
     public var name: String { resolver.name }
 
-    /// /// The initialized type, if any.
+    /// The initialized type, if any.
     ///
     /// For example, in the following declarations
     /// ```swift
     /// typealias Sample = Int
     /// typealias OtherSample
+    /// typealias CustomThing = (name: String, age: Int)
     /// ```
-    /// - The first declaration has an initialized type of `"Int"`
-    /// - The second declaration has no initialized type and will be an empty string: `""`
-    public var initializedType: String { resolver.initializedType }
+    /// - The first declaration has an initialized type of `.simple("Int")`
+    /// - The second declaration has an initialized type of `.empty` as it is only partially defined
+    /// - The third declaration has no initialized type of `.tuple(Tuple)`
+    public var initializedType: EntityType { resolver.initializedType }
 
     /// Array of generic parameters found in the declaration.
     ///

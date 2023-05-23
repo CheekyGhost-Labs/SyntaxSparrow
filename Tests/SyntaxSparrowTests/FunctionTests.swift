@@ -28,7 +28,7 @@ final class FunctionTests: XCTestCase {
 
     func test_standardDeclarations_willResolveExpectedProperties() throws {
         let source = #"""
-        func sayHello(_ handler: ((String, Int)?)) { }
+        func sayHello(_ handler: @escaping ((String, Int)?)) { }
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
@@ -45,8 +45,15 @@ final class FunctionTests: XCTestCase {
             print(closure.isOptional)
         case .tuple(let tuple):
             print(tuple.isOptional)
-        default:
-            break
+        case .void:
+            print("void")
+        case .result(let result):
+            print("Success: \(result.successType)")
+            print("Success: \(result.errorType)")
+        case .empty:
+            print("Partially defined swift")
+        case .simple(let type):
+            print("Type: \(type)")
         }
     }
 

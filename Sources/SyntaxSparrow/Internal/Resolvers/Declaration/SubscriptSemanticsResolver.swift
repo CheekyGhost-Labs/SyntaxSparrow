@@ -8,12 +8,12 @@
 import Foundation
 import SwiftSyntax
 
-/// `DeclarationSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a `FunctionDeclSyntax` node.
+/// `DeclarationSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a `SubscriptDeclSyntax` node.
 /// It exposes the expected properties of a `Function` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed repeatedly.
-class FunctionSemanticsResolver: DeclarationSemanticsResolving {
+class SubscriptSemanticsResolver: DeclarationSemanticsResolving {
 
     // MARK: - Properties: DeclarationSemanticsResolving
-    typealias Node = FunctionDeclSyntax
+    typealias Node = SubscriptDeclSyntax
 
     let node: Node
 
@@ -31,19 +31,19 @@ class FunctionSemanticsResolver: DeclarationSemanticsResolving {
 
     private(set) lazy var keyword: String = resolveKeyword()
 
-    private(set) lazy var identifier: String = resolveIdentifier()
+    private(set) lazy var indices: [Parameter] = resolveIndices()
 
     private(set) lazy var genericParameters: [GenericParameter] = resolveGenericParameters()
 
     private(set) lazy var genericRequirements: [GenericRequirement] = resolveGenericRequirements()
 
-    private(set) lazy var isOperator: Bool = resolveIsOperator()
+    private(set) lazy var returnType: EntityType = resolveReturnType()
 
-    private(set) lazy var signature: Function.Signature = resolveSignature()
+    private(set) lazy var accessors: [Accessor] = resolveAccessors()
 
     // MARK: - Lifecycle
 
-    required init(node: FunctionDeclSyntax, context: SyntaxExplorerContext) {
+    required init(node: SubscriptDeclSyntax, context: SyntaxExplorerContext) {
         self.node = node
         self.context = context
     }
@@ -54,8 +54,8 @@ class FunctionSemanticsResolver: DeclarationSemanticsResolving {
 
     // MARK: - Resolvers
 
-    private func resolveIdentifier() -> String {
-        node.identifier.text.trimmed
+    private func resolveIndices() -> [Parameter] {
+        node.indices.parameterList.map { Parameter(node: $0) }
     }
 
     private func resolveAttributes() -> [Attribute] {
@@ -63,7 +63,7 @@ class FunctionSemanticsResolver: DeclarationSemanticsResolving {
     }
 
     private func resolveKeyword() -> String {
-        node.funcKeyword.text.trimmed
+        node.subscriptKeyword.text.trimmed
     }
 
     private func resolveModifiers() -> [Modifier] {
@@ -81,18 +81,12 @@ class FunctionSemanticsResolver: DeclarationSemanticsResolving {
         return requirements
     }
 
-    private func resolveIsOperator() -> Bool {
-//        return Operator.Kind(modifiers) != nil || Operator.isValidIdentifier(identifier)
-        false
+    private func resolveReturnType() -> EntityType {
+        EntityType.parseType(node.result.returnType)
     }
 
-    private func resolveSignature() -> Function.Signature {
-        let inputParameters = node.signature.input.parameterList.map(Parameter.init)
-        var outputType: EntityType?
-        if let output = node.signature.output {
-            outputType = .simple(output.returnType.description.trimmed)
-        }
-        let throwsKeyword = node.signature.throwsOrRethrowsKeyword?.description.trimmed
-        return Function.Signature(input: inputParameters, output: outputType, throwsOrRethrowsKeyword: throwsKeyword)
+    private func resolveAccessors() -> [Accessor] {
+        guard let accessor = node.accessor?.as(AccessorBlockSyntax.self) else { return [] }
+        return accessor.accessors.map(Accessor.init)
     }
 }

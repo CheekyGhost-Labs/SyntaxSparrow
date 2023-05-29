@@ -67,13 +67,10 @@ extension Enumeration {
         // MARK: - CustomStringConvertible
 
         public var description: String {
-            resolver.node.description
-        }
-
-        // MARK: - CustomDebugStringConvertible
-
-        public var debugDescription: String {
-            resolver.node.debugDescription
+            guard let parent = resolver.node.context as? EnumCaseDeclSyntax else {
+                return resolver.node.description.trimmed
+            }
+            return parent.description.trimmed
         }
     }
 }

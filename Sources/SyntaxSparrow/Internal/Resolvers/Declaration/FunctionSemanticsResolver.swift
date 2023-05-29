@@ -83,8 +83,7 @@ class FunctionSemanticsResolver: DeclarationSemanticsResolving {
     }
 
     private func resolveIsOperator() -> Bool {
-//        return Operator.Kind(modifiers) != nil || Operator.isValidIdentifier(identifier)
-        false
+        Operator.Kind(modifiers) != nil || Operator.isValidIdentifier(identifier)
     }
 
     private func resolveSignature() -> Function.Signature {

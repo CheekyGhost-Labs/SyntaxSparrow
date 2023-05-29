@@ -93,7 +93,8 @@ public struct Function: Declaration, SyntaxChildCollecting, SyntaxSourceLocation
     /// - A `throwsOrRethrowsKeyword` equal to `"throws"`
     public var signature: Function.Signature { resolver.signature }
 
-    // TODO: add isOperator once Operator support added
+    /// `Bool` whether the subscript is a valid operator type.
+    public var isOperator: Bool { resolver.isOperator }
 
     // MARK: - Properties: SyntaxSourceLocationResolving
 

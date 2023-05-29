@@ -61,8 +61,6 @@ public struct Subscript: Declaration, SyntaxSourceLocationResolving {
     /// The subscript getter and/or setter.
     public var accessors: [Accessor] { resolver.accessors }
 
-    // TODO: add isOperator once Operator support added
-
     // MARK: - Properties: SyntaxSourceLocationResolving
 
     public var sourceLocation: SyntaxSourceLocation { resolver.sourceLocation }

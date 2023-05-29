@@ -9,7 +9,7 @@ import Foundation
 import SwiftSyntax
 
 /// A computed variable or computed property accessor.
-public struct Accessor: Hashable {
+public struct Accessor: Equatable, Hashable, CustomStringConvertible {
 
     /// The kind of accessor (`get` or `set`).
     public enum Kind: String, Hashable, Codable {
@@ -33,6 +33,10 @@ public struct Accessor: Hashable {
 
     public init(_ node: AccessorDeclSyntax) {
 
+    }
+
+    public var description: String {
+        ""
     }
 
 //    public init?(_ node: AccessorDeclSyntax) {

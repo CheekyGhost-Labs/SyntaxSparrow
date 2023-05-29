@@ -64,15 +64,26 @@ final class FunctionTests: XCTestCase {
 
     func test_nestedDeclarations_willCollectChildDeclarations() throws {
         let source = #"""
-        @StringBuilder var mutableTitles: [String] {
-            ""
-            ""
+        #if UNIT_TEST
+        enum A {
+            case unitTesting
         }
+        #elseif UI_TEST
+        enum A {
+            case uiTesting
+        }
+        func theThing() { }
+        #else
+        enum A {
+            case otherThing
+        }
+        #endif
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
         try instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.functions.count, 1)
+        XCTAssertEqual(instanceUnderTest.conditionalCompilationBlocks.count, 1)
+
     }
 }

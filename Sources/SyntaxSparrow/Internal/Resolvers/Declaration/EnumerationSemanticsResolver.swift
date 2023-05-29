@@ -39,6 +39,8 @@ class EnumerationSemanticsResolver: DeclarationSemanticsResolving {
 
     private(set) lazy var genericRequirements: [GenericRequirement] = resolveGenericRequirements()
 
+    private(set) lazy var cases: [Enumeration.Case] = resolveCases()
+
     // MARK: - Lifecycle
 
     required init(node: EnumDeclSyntax, context: SyntaxExplorerContext) {
@@ -84,5 +86,12 @@ class EnumerationSemanticsResolver: DeclarationSemanticsResolving {
     private func resolveGenericRequirements() -> [GenericRequirement] {
         let requirements = GenericRequirement.fromRequirementList(from: node.genericWhereClause?.requirementList)
         return requirements
+    }
+
+    private func resolveCases() -> [Enumeration.Case] {
+        let caseNodes = node.members.members.compactMap { $0.decl.as(EnumCaseDeclSyntax.self) }
+        return caseNodes.flatMap { caseDecl in
+            caseDecl.elements.map { Enumeration.Case(node: $0, context: context) }
+        }
     }
 }

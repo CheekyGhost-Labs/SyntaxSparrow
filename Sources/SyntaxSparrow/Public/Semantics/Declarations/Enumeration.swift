@@ -58,7 +58,16 @@ public class Enumeration: Declaration, SyntaxChildCollecting, SyntaxSourceLocati
     /// ```
     public var genericRequirements: [GenericRequirement] { resolver.genericRequirements }
 
-    // TODO: Cases
+    /// Array of cases declared within the enumeration.
+    ///
+    /// For example, ind the following declaration there are two cases named `optionOne` and `optionTwo`
+    /// ```swift
+    /// enum MyEnum {
+    ///     case optionOne
+    ///     case optionTwo
+    /// }
+    /// ```
+    public var cases: [Enumeration.Case] { resolver.cases }
 
     // MARK: - Properties: SyntaxSourceLocationResolving
 

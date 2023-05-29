@@ -64,26 +64,17 @@ final class FunctionTests: XCTestCase {
 
     func test_nestedDeclarations_willCollectChildDeclarations() throws {
         let source = #"""
-        #if UNIT_TEST
         enum A {
-            case unitTesting
+            case option, thing
+            case other(name: String)
         }
-        #elseif UI_TEST
-        enum A {
-            case uiTesting
-        }
-        func theThing() { }
-        #else
-        enum A {
-            case otherThing
-        }
-        #endif
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
         try instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.conditionalCompilationBlocks.count, 1)
+        XCTAssertEqual(instanceUnderTest.enumerations.count, 1)
+        _ = instanceUnderTest.enumerations[0].cases
 
     }
 }

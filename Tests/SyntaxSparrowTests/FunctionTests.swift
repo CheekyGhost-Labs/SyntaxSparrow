@@ -64,9 +64,9 @@ final class FunctionTests: XCTestCase {
 
     func test_nestedDeclarations_willCollectChildDeclarations() throws {
         let source = #"""
-        @MyBuilder var title: [String] {
-          ""
-          ""
+        @StringBuilder var mutableTitles: [String] {
+            ""
+            ""
         }
         """#
         instanceUnderTest.updateToSource(source)

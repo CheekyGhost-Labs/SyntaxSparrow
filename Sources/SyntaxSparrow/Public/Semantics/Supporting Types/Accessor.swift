@@ -21,35 +21,45 @@ public struct Accessor: Equatable, Hashable, CustomStringConvertible {
     }
 
     /// The accessor attributes.
-    public let attributes: [Attribute] = []
+    public let attributes: [Attribute]
 
     /// The accessor modifiers.
-    public let modifier: Modifier? = nil
+    public let modifier: Modifier?
 
     /// The kind of accessor.
-    public let kind: Kind? = nil
+    public let kind: Kind?
 
     // MARK: - Lifecycle
 
     public init(_ node: AccessorDeclSyntax) {
-
+        // Attributes
+        attributes = Attribute.fromAttributeList(node.attributes)
+        // Modifier
+        if let modifierNode = node.modifier {
+            modifier = Modifier(node: modifierNode)
+        } else {
+            modifier = nil
+        }
+        // Kind
+        let rawKind = node.accessorKind.text.trimmed
+        kind = Kind(rawValue: rawKind)
+        // Description
+        description = node.description.trimmed
     }
 
-    public var description: String {
-        ""
+    // MARK: - Equatable
+
+    public static func == (lhs: Accessor, rhs: Accessor) -> Bool {
+        return lhs.description == rhs.description
     }
 
-//    public init?(_ node: AccessorDeclSyntax) {
-//        let rawValue = node.accessorKind.text.trimmed
-//        if rawValue.isEmpty {
-//            self.kind = nil
-//        } else if let kind = Kind(rawValue: rawValue) {
-//            self.kind = kind
-//        } else {
-//            return nil
-//        }
-//
-//        attributes = node.attributes?.compactMap{ $0.as(AttributeSyntax.self) }.map { Attribute($0) } ?? []
-//        modifier = node.modifier.map { Modifier($0) }
-//    }
+    // MARK: - CustomStringConvertible
+
+    public let description: String
+
+    // MARK: - Hashable
+
+    public func hash(into hasher: inout Hasher) {
+        return hasher.combine(description.hashValue)
+    }
 }

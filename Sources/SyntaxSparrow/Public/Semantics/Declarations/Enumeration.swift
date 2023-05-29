@@ -8,6 +8,7 @@
 import Foundation
 import SwiftSyntax
 
+
 public class Enumeration: Declaration, SyntaxChildCollecting, SyntaxSourceLocationResolving {
 
     // MARK: - Properties: Computed

@@ -28,6 +28,11 @@ final class FunctionTests: XCTestCase {
 
     func test_standardDeclarations_willResolveExpectedProperties() throws {
         let source = #"""
+        #if THING
+        enum A {}
+        #else
+        enum B {}
+        #endif
         func sayHello(_ handler: @escaping ((String, Int)?)) { }
         """#
         instanceUnderTest.updateToSource(source)
@@ -57,5 +62,17 @@ final class FunctionTests: XCTestCase {
         }
     }
 
-    func sayHello(_ handler: ((((String)) -> String))) { }
+    func test_nestedDeclarations_willCollectChildDeclarations() throws {
+        let source = #"""
+        @MyBuilder var title: [String] {
+          ""
+          ""
+        }
+        """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        try instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        XCTAssertEqual(instanceUnderTest.functions.count, 1)
+    }
 }

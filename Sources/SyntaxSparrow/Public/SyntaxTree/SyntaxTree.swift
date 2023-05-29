@@ -106,23 +106,23 @@ public class SyntaxTree: SyntaxChildCollecting, SyntaxExplorerContextProviding {
 
     // MARK: - Conformance: SyntaxChildCollecting
 
-//    public var associatedTypes: [AssociatedType] { declarationCollector.collection.associatedTypes }
     public var classes: [Class] { declarationCollector.collection.classes }
-//    public var conditionalCompilationBlocks: [ConditionalCompilationBlock] { declarationCollector.collection.conditionalCompilationBlocks }
     public var deinitializers: [Deinitializer] { declarationCollector.collection.deinitializers }
     public var enumerations: [Enumeration] { declarationCollector.collection.enumerations }
-//    public var enumerationCases: [Enumeration.Case] { declarationCollector.collection.enumerationCases }
     public var extensions: [Extension] { declarationCollector.collection.extensions }
     public var functions: [Function] { declarationCollector.collection.functions }
     public var imports: [Import] { declarationCollector.collection.imports }
-//    public var initializers: [Initializer] { declarationCollector.collection.initializers }
-//    public var operators: [Operator] { declarationCollector.collection.operators }
-//    public var precedenceGroups: [PrecedenceGroup] { declarationCollector.collection.precedenceGroups }
+    public var initializers: [Initializer] { declarationCollector.collection.initializers }
+    public var operators: [Operator] { declarationCollector.collection.operators }
+    public var precedenceGroups: [PrecedenceGroup] { declarationCollector.collection.precedenceGroups }
     public var protocols: [`Protocol`] { declarationCollector.collection.protocols }
     public var structures: [Structure] { declarationCollector.collection.structures }
-//    public var subscripts: [Subscript] { declarationCollector.collection.subscripts }
+    public var subscripts: [Subscript] { declarationCollector.collection.subscripts }
     public var typealiases: [Typealias] { declarationCollector.collection.typealiases }
-//    public var variables: [Variable] { declarationCollector.collection.variables }
+    public var variables: [Variable] { declarationCollector.collection.variables }
+    public var conditionalCompilationBlocks: [ConditionalCompilationBlock] {
+        declarationCollector.collection.conditionalCompilationBlocks
+    }
 
     // MARK: - Conformance: SyntaxExplorerContextProviding
 

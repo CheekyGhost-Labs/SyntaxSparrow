@@ -117,12 +117,15 @@ class RootDeclarationCollector: SyntaxVisitor {
         if let entryNode = entryNode, node.id == entryNode.id { return .visitChildren }
         let declaration = Function(node: node, context: context)
         collection.functions.append(declaration)
+        declaration.collectChildren()
         return .skipChildren
     }
 
     /// Called when visiting an `IfConfigDeclSyntax` node
     override func visit(_ node: IfConfigDeclSyntax) -> SyntaxVisitorContinueKind {
-        // if configuration
+        if let entryNode = entryNode, node.id == entryNode.id { return .visitChildren }
+        let declaration = ConditionalCompilationBlock(node: node, context: context)
+        collection.conditionalCompilationBlocks.append(declaration)
         return .skipChildren
     }
 

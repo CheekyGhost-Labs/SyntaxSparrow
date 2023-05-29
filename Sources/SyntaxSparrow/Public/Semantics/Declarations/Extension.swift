@@ -8,7 +8,7 @@
 import Foundation
 import SwiftSyntax
 
-/// `Extension` is a struct representing a Swift structure declaration. This class is part of the SyntaxSparrow library, which provides an interface for
+/// `Extension` is a struct representing a Swift structure declaration. This struct is part of the SyntaxSparrow library, which provides an interface for
 /// traversing and extracting information from Swift source code.
 ///
 /// This class provides a detailed breakdown of a structure declaration, including its name, attributes, modifiers, inheritance, and generic parameters and requirements.

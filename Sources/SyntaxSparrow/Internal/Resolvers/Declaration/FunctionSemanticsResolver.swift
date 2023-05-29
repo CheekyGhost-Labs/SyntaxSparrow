@@ -49,7 +49,8 @@ class FunctionSemanticsResolver: DeclarationSemanticsResolving {
     }
 
     func collectChildren() {
-        // no-op
+        let nodeCollector = context.createRootDeclarationCollector()
+        declarationCollection = nodeCollector.collect(fromNode: node)
     }
 
     // MARK: - Resolvers

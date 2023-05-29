@@ -8,7 +8,7 @@
 import Foundation
 import SwiftSyntax
 
-/// `Function` is a struct representing a Swift structure declaration. This class is part of the SyntaxSparrow library, which provides an interface for
+/// `Function` is a struct representing a Swift structure declaration. This struct is part of the SyntaxSparrow library, which provides an interface for
 /// traversing and extracting information from Swift source code.
 ///
 /// This class provides a detailed breakdown of a structure declaration, including its name, attributes, modifiers, inheritance, and generic parameters and requirements.
@@ -18,7 +18,7 @@ import SwiftSyntax
 /// for easy comparison, hashing, and debugging.
 ///
 /// The location of the structure in the source code is captured in `startLocation` and `endLocation` properties.
-public struct Function: Declaration, SyntaxSourceLocationResolving {
+public struct Function: Declaration, SyntaxChildCollecting, SyntaxSourceLocationResolving {
 
     // MARK: - Supplementary
 
@@ -103,6 +103,8 @@ public struct Function: Declaration, SyntaxSourceLocationResolving {
 
     private(set) var resolver: FunctionSemanticsResolver
 
+    var declarationCollection: DeclarationCollection { resolver.declarationCollection }
+
     // MARK: - Lifecycle
 
     public init(node: FunctionDeclSyntax, context: SyntaxExplorerContext) {
@@ -112,7 +114,7 @@ public struct Function: Declaration, SyntaxSourceLocationResolving {
     // MARK: - Properties: Child Collection
 
     func collectChildren() {
-        // no-op
+        resolver.collectChildren()
     }
 
     // MARK: - Equatable
@@ -133,3 +135,5 @@ public struct Function: Declaration, SyntaxSourceLocationResolving {
         resolver.node.description.trimmed
     }
 }
+
+extension Function: DeclarationCollecting {}

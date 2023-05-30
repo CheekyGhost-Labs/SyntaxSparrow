@@ -26,6 +26,14 @@ public extension Declaration where Self: SyntaxSourceLocationResolving {
         return Range<String.Index>(uncheckedBounds: (startIndex, endIndex))
     }
 
+    /// Will return a range for extracting a substring by using the `utf8Offset`
+    /// - Parameter source: The source string to calculate the range within.
+    /// - Returns: `NSRange` or `nil` if the range is invalid within the given string.
+    func stringRange(in source: String) -> NSRange? {
+        guard let subRange = substringRange(in: source) else { return nil }
+        return NSRange(subRange, in: source)
+    }
+
     /// Will utilise the `substringRange(in:)` method to extract the declaration from the given source.
     /// - Parameter source: The source string to extrace from.
     /// - Returns: `String` or `nil` if the bounds are invalid

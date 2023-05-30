@@ -10,8 +10,16 @@ import SwiftSyntax
 
 extension Enumeration {
 
-    /// An enumeration case.
-    public class Case: Declaration, SyntaxSourceLocationResolving {
+    /// Represents a case in a Swift enumeration declaration.
+    ///
+    /// Cases are distinct values that an enumeration can represent.
+    /// Each case can have associated values or a raw value.
+    ///
+    /// Each instance of ``SyntaxSparrow/Enumeration/Case`` corresponds to an `EnumCaseElementSyntax` node in the Swift syntax tree.
+    ///
+    /// This structure conforms to `Declaration` and `SyntaxSourceLocationResolving`,
+    /// which provide access to the declaration attributes, modifiers, and source location information.
+    public struct Case: Declaration, SyntaxSourceLocationResolving {
         /// Array of attributes found in the declaration.
         ///
         /// - See: ``SyntaxSparrow/Attribute``

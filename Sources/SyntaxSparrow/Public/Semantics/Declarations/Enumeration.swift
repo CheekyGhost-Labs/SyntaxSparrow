@@ -8,8 +8,15 @@
 import Foundation
 import SwiftSyntax
 
-
-public class Enumeration: Declaration, SyntaxChildCollecting, SyntaxSourceLocationResolving {
+/// Represents a Swift enumeration declaration.
+///
+/// An enumeration is a common type of data structure that consists of a set of named cases, which are known as its members.
+/// In Swift, enumerations are first-class types, and they adopt many features traditionally supported only by classes.
+///
+/// Each instance of ``SyntaxSparrow/Enumeration`` corresponds to an `EnumDeclSyntax` node in the Swift syntax tree.
+///
+/// This struct provides access to the enumeration attributes, modifiers, name, adopted protocols, generic parameters and requirements, cases, and source location.
+public struct Enumeration: Declaration, SyntaxChildCollecting, SyntaxSourceLocationResolving {
 
     // MARK: - Properties: Computed
 

@@ -8,9 +8,21 @@
 import Foundation
 import SwiftSyntax
 
-/// An import declaration.
+/// Represents a Swift import declaration.
+///
+/// In Swift, the `import` keyword is used to import a module, which makes the module's
+/// public types, protocols, and functions available in your code.
+///
+/// For example, in the declaration `import SyntaxSparrow.Protocol`, the module `SyntaxSparrow.Protocol` is imported.
+///
+/// Each instance of ``SyntaxSparrow/Import`` corresponds to an `ImportDeclSyntax` node in the Swift syntax tree.
+///
+/// This structure conforms to `Declaration` and `SyntaxSourceLocationResolving`, which provide
+/// access to the declaration attributes, modifiers, and source location information.
 public struct Import: Declaration, SyntaxSourceLocationResolving {
 
+    // MARK: - Properties
+    
     /// Array of attributes found in the declaration.
     ///
     /// - See: ``SyntaxSparrow/Attribute``
@@ -22,17 +34,19 @@ public struct Import: Declaration, SyntaxSourceLocationResolving {
 
     /// The declaration keyword.
     ///
-    /// i.e: `"import"`
+    /// i.e: `"import"` for import declarations
     public var keyword: String { resolver.keyword }
 
     /// Optional kind of the import.
     ///
-    /// For example, `import struct SyntaxSparrow.Protocol` would be `"struct`
+    /// Specifies the type of symbol being imported from the module.
+    /// For example, `import struct SyntaxSparrow.Protocol` would have a kind of `"struct`.
     public var kind: String? { resolver.kind }
 
     /// The import access path components.
     ///
-    /// For example, `import SyntaxSparrow.Protocol` would be `["SyntaxSparrow", "Protocol"]`
+    /// Represents the hierarchical names used to specify the module to import.
+    /// For example, `import SyntaxSparrow.Protocol` would have path components of `["SyntaxSparrow", "Protocol"]`.
     public var pathComponents: [String] { resolver.pathComponents }
 
     // MARK: - Properties: SyntaxSourceLocationResolving
@@ -45,6 +59,7 @@ public struct Import: Declaration, SyntaxSourceLocationResolving {
 
     // MARK: - Lifecycle
 
+    /// Creates a new `Import` instance from an `ImportDeclSyntax` node.
     public init(node: ImportDeclSyntax, context: SyntaxExplorerContext) {
         self.resolver = ImportSemanticsResolver(node: node, context: context)
     }

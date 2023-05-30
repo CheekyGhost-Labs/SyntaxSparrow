@@ -8,17 +8,14 @@
 import Foundation
 import SwiftSyntax
 
-/// `Extension` is a struct representing a Swift structure declaration. This struct is part of the SyntaxSparrow library, which provides an interface for
-/// traversing and extracting information from Swift source code.
+/// Represents a Swift extension declaration.
 ///
-/// This class provides a detailed breakdown of a structure declaration, including its name, attributes, modifiers, inheritance, and generic parameters and requirements.
-/// Each instance of `Extension` corresponds to a `ExtensionDeclSyntax` node in the Swift syntax tree.
+/// Extensions add new functionality to an existing class, structure, enumeration, or protocol type.
 ///
-/// `Structure` supports conformance to protocols such as `Equatable`, `Hashable`, `CustomStringConvertible`, and `CustomDebugStringConvertible`
-/// for easy comparison, hashing, and debugging. It also supports the `DeclarationCollecting` protocol to facilitate the collection of child declarations.
+/// Each instance of ``SyntaxSparrow/Extension`` corresponds to an `ExtensionDeclSyntax` node in the Swift syntax tree.
 ///
-/// The location of the structure in the source code is captured in `startLocation` and `endLocation` properties, and further child declarations are collected into
-/// named arrays in conformance with the `DeclarationCollecting` protocol.
+/// This structure conforms to `Declaration`, `SyntaxChildCollecting`, and `SyntaxSourceLocationResolving`,
+/// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
 public struct Extension: Declaration, SyntaxChildCollecting, SyntaxSourceLocationResolving {
 
     // MARK: - Properties: StructureDeclaration

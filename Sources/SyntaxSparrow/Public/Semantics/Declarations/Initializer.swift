@@ -8,21 +8,27 @@
 import Foundation
 import SwiftSyntax
 
-/// `Initializer` is a struct representing a Swift structure declaration. This struct is part of the SyntaxSparrow library, which provides an interface for
-/// traversing and extracting information from Swift source code.
+/// Represents a Swift initializer declaration.
 ///
-/// This class provides a detailed breakdown of a structure declaration, including its name, attributes, modifiers, inheritance, and generic parameters and requirements.
-/// Each instance of `Initializer` corresponds to a `InitializerDeclSyntax` node in the Swift syntax tree.
+/// Initializers are special methods that provide new instances of a particular type.
+/// In its simplest form, an initializer is like an instance method with no parameters,
+/// written using the `init` keyword.
 ///
-/// `Structure` supports conformance to protocols such as `Equatable`, `Hashable`, `CustomStringConvertible`, and `CustomDebugStringConvertible`
-/// for easy comparison, hashing, and debugging.
+/// For example, in the declaration `init()` or `init?()`, an initializer is declared for a type.
+/// The `init?()` denotes an optional initializer that can return `nil`.
 ///
-/// The location of the structure in the source code is captured in `startLocation` and `endLocation` properties.
+/// Each instance of ``SyntaxSparrow/Initializer`` corresponds to an `InitializerDeclSyntax` node in the Swift syntax tree.
+///
+/// This structure conforms to `Declaration` and `SyntaxSourceLocationResolving`, which provide
+/// access to the declaration attributes, modifiers, and source location information.
 public struct Initializer: Declaration, SyntaxSourceLocationResolving {
 
     // MARK: - Properties
 
-    /// Whether the initializer is optional.
+    /// Flag indicating whether the initializer is optional (can return `nil`).
+    ///
+    /// If `true`, the initializer is declared with a `?` (e.g., `init?()`), which means it can return `nil`.
+    /// If `false`, the initializer is a regular initializer (e.g., `init()`).
     public let optional: Bool = false
 
     /// Array of attributes found in the declaration.
@@ -36,14 +42,14 @@ public struct Initializer: Declaration, SyntaxSourceLocationResolving {
 
     /// The declaration keyword.
     ///
-    /// i.e: `"func"`
+    /// i.e: `"init"` for initializers
     public var keyword: String { resolver.keyword }
 
     /// Array of generic parameters found in the declaration.
     ///
     /// For example, in the following declaration, there is a single parameter whose `name` is `"T"` and `type` of `"Equatable"`
     /// ```swift
-    /// func performOperation<T: Equatable>(input: T) {}
+    /// init<T: Equatable>(input: T) {}
     /// ```
     public var genericParameters: [GenericParameter] { resolver.genericParameters }
 
@@ -51,7 +57,7 @@ public struct Initializer: Declaration, SyntaxSourceLocationResolving {
     ///
     /// For example, in the following declaration, there is a single parameter `"T"` whose requirement is that it conforms to `"Hashable"`
     /// ```swift
-    /// func performOperation<T>(input: T) where T: Hashable {}
+    /// init<T>(input: T) where T: Hashable {}
     /// ```
     public var genericRequirements: [GenericRequirement] { resolver.genericRequirements }
 
@@ -71,6 +77,7 @@ public struct Initializer: Declaration, SyntaxSourceLocationResolving {
 
     // MARK: - Lifecycle
 
+    /// Creates a new `Initializer` instance from an `InitializerDeclSyntax` node.
     public init(node: InitializerDeclSyntax, context: SyntaxExplorerContext) {
         self.resolver = InitializerSemanticsResolver(node: node, context: context)
     }

@@ -8,35 +8,37 @@
 import Foundation
 import SwiftSyntax
 
-/// `Function` is a struct representing a Swift structure declaration. This struct is part of the SyntaxSparrow library, which provides an interface for
-/// traversing and extracting information from Swift source code.
+/// Represents a Swift function declaration.
 ///
-/// This class provides a detailed breakdown of a structure declaration, including its name, attributes, modifiers, inheritance, and generic parameters and requirements.
-/// Each instance of `Function` corresponds to a `FunctionDeclSyntax` node in the Swift syntax tree.
+/// Functions are self-contained chunks of code that perform a specific task. In Swift,
+/// functions are declared with the `func` keyword.
 ///
-/// `Structure` supports conformance to protocols such as `Equatable`, `Hashable`, `CustomStringConvertible`, and `CustomDebugStringConvertible`
-/// for easy comparison, hashing, and debugging.
+/// Each instance of ``SyntaxSparrow/Function`` corresponds to an `FunctionDeclSyntax` node in the Swift syntax tree.
 ///
-/// The location of the structure in the source code is captured in `startLocation` and `endLocation` properties.
+/// This structure conforms to `Declaration`, `SyntaxChildCollecting`, and `SyntaxSourceLocationResolving`,
+/// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
 public struct Function: Declaration, SyntaxChildCollecting, SyntaxSourceLocationResolving {
 
     // MARK: - Supplementary
 
     /// Struct representing a function signature.
     ///
-    /// A signature is parsed from an underlying `FunctionSignatureSyntax` token. This struct
-    /// is used to more accurately represent the `FunctionDeclSyntax` structure.
+    /// The signature describes the function's parameter types and return type.
+    /// This information is parsed from an underlying `FunctionSignatureSyntax` token.
     public struct Signature: Hashable {
 
         // MARK: - Properties
 
-        /// Array of input parameters for the function
+        /// Array of input parameters for the function.
+        /// Each parameter is represented by a `Parameter` struct.
         public let input: [Parameter]
 
-        /// The function output type (if any)
+        /// The function output type, if any.
+        /// This is the return type of the function.
         public let output: EntityType?
 
         /// The `throws` or `rethrows` keyword, if any.
+        /// Indicates whether the function can throw an error.
         public let throwsOrRethrowsKeyword: String?
     }
 
@@ -53,8 +55,9 @@ public struct Function: Declaration, SyntaxChildCollecting, SyntaxSourceLocation
 
     /// The declaration keyword.
     ///
-    /// i.e: `"func"`
+    /// i.e: `"func"` for function declarations.
     public var keyword: String { resolver.keyword }
+
 
     /// The function identifier (similar to name).
     ///

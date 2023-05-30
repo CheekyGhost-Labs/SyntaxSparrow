@@ -8,17 +8,17 @@
 import Foundation
 import SwiftSyntax
 
-/// `Deinitializer` is a class representing a class `deinit` declaration. This class is part of the `SyntaxSparrow` library, which provides an interface for
-/// traversing and extracting information from Swift source code.
+/// Represents a Swift deinitializer declaration.
 ///
-/// This class provides a detailed breakdown of a protocol declaration, including its name, attributes, modifiers, inheritance, and generic parameters and requirements.
-/// Each instance of `Deinitializer` corresponds to a `DeinitializerDeclSyntax` node in the Swift syntax tree.
+/// Deinitializers are called automatically, just before an instance of a class is deallocated.
+/// These are used to free up any resources that the class might have assigned.
+/// In Swift, every class has at most one deinitializer per class.
+/// The deinitializer does not carry a name and is written using the `deinit` keyword.
 ///
-/// `Protocol` supports conformance to protocols such as `Equatable`, `Hashable`, `CustomStringConvertible`, and `CustomDebugStringConvertible`
-/// for easy comparison, hashing, and debugging.
+/// Each instance of ``SyntaxSparrow/Deinitializer`` corresponds to a `DeinitializerDeclSyntax` node in the Swift syntax tree.
 ///
-/// The location of the protocol in the source code is captured in `sourceLocation` via the `SyntaxSourceLocationResolving` protocol.
-public class Deinitializer: Declaration, SyntaxSourceLocationResolving {
+/// This struct provides access to the deinitializer attributes, modifiers, keyword, and source location.
+public struct Deinitializer: Declaration, SyntaxSourceLocationResolving {
 
     // MARK: - Properties: Computed
 

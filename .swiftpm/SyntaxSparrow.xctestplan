@@ -1,0 +1,32 @@
+{
+  "configurations" : [
+    {
+      "id" : "FDC14052-B4F5-4EFE-A33B-8B0FD42FC77F",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+        {
+          "containerPath" : "container:",
+          "identifier" : "SyntaxSparrow",
+          "name" : "SyntaxSparrow"
+        }
+      ]
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SyntaxSparrowTests",
+        "name" : "SyntaxSparrowTests"
+      }
+    }
+  ],
+  "version" : 1
+}

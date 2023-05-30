@@ -39,11 +39,11 @@ public struct SyntaxSourceLocation: Equatable, Codable, Hashable {
     // MARK: - Properties
 
     /// The line and column position the declaration starts at.
-    /// - See: ``SyntaxSparrow/SyntaxLocation/Position``
+    /// - See: ``SyntaxSparrow/SyntaxSourceLocation/Position``
     public let start: Position
 
     /// The line and column position the declaration ends at.
-    /// - See: ``SyntaxSparrow/SyntaxLocation/Position``
+    /// - See: ``SyntaxSparrow/SyntaxSourceLocation/Position``
     public let end: Position
 
     // MARK: - Internal

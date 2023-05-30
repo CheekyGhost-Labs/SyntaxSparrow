@@ -8,6 +8,19 @@
 import Foundation
 import SwiftSyntax
 
+/// Represents a syntax tree in Swift.
+///
+/// `SyntaxTree` provides a mechanism to analyze and interact with Swift source code as a syntax tree. It collects semantic structures from the
+/// source code and allows you to access them conveniently.
+///
+/// `SyntaxTree` can be initialized with a file path or directly with a source code string, both of which are represented as syntax trees. Once initialized,
+/// you can use various properties to access the collected semantic structures, such as classes, deinitializers, enumerations, extensions, functions, imports,
+/// initializers, operators, precedenceGroups, protocols, structures, subscripts, typealiases, variables, and conditionalCompilationBlocks.
+///
+/// `SyntaxTree` also allows updating the source code, triggering a re-analysis of the syntax tree and updating the collected semantic structures accordingly.
+///
+/// Note that `SyntaxTree` uses a `SyntaxExplorerContext` to store information about the syntax tree, and it shares this context with any child elements
+/// that require lazy evaluation or collection as needed.
 public class SyntaxTree: SyntaxChildCollecting, SyntaxExplorerContextProviding {
 
     // MARK: - Properties: SyntaxExplorerContextProviding
@@ -93,7 +106,6 @@ public class SyntaxTree: SyntaxChildCollecting, SyntaxExplorerContextProviding {
     /// - `MyEnum.functions` will contain: `[performOperation]`
     ///
     /// Thus, `walk` facilitates a hierarchical exploration of the syntax tree.
-    /// - Throws: ``SyntaxSparrowError``
     public func collectChildren() throws {
         do {
             try declarationCollector.collect(fromSource: context.sourceBuffer)

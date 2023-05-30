@@ -9,7 +9,7 @@ import Foundation
 
 /// An ``EntityType`` represents a type being referenced by a property or parameter. It is encapsulated in the ``EntityType``
 /// enumeration to provide a more simple entry point when working with sets of parameter inputs and properties.
-/// By default a ``EntityType/simple`` type will be used with a string representation of the declared type.
+/// By default a ``SyntaxSparrow/EntityType/simple(_:)`` type will be used with a string representation of the declared type.
 /// Initial support for some complex types, such as closures, tuples, and results is provided.
 /// As support for more complex types are added they will be added as a dedicated enumeration case to the `EntityType`
 public enum EntityType: Equatable, Hashable, CustomStringConvertible {

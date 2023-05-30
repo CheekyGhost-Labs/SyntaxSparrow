@@ -122,11 +122,11 @@ public struct PrecedenceGroup: Declaration, SyntaxSourceLocationResolving {
     public var assignment: Bool? { resolver.assignment }
 
     /// The associativity of operators in the precedence group.
-    /// - See: ``SyntaxSparrow/PrecedenceGroup/Associativity``
+    /// - See: ``SyntaxSparrow/PrecedenceGroup/Associativity-swift.enum``
     public var associativity: Associativity? { resolver.associativity }
 
     /// The relation of operators to operators in other precedence groups.
-    /// - See: ``SyntaxSparrow/PrecedenceGroup/Associativity``
+    /// - See: ``SyntaxSparrow/PrecedenceGroup/Associativity-swift.enum``
     public var relations: [Relation] { resolver.relations }
 
     // MARK: - Properties: SyntaxSourceLocationResolving

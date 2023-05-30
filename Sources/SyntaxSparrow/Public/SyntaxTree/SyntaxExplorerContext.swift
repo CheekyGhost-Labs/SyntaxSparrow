@@ -35,18 +35,18 @@ public protocol SyntaxExplorerContextProviding {
 
     /// The `SourceLocationConverter` instance used for resolving the start and end bounds of declarations.
     ///
-    /// **Note:** This property is configured for use when the ``SyntaxSparrow/SyntaxExplorer/collectChildren()`` method is invoked. If an empty or invalid
+    /// **Note:** This property is configured for use when the ``SyntaxSparrow/SyntaxTree/collectChildren()`` method is invoked. If an empty or invalid
     /// locator is detected, it will be re-created when needed based on the current parsing context.
     var sourceLocationConverter: SparrowSourceLocationConverter { get }
 
     /// Bool flag indicating if the latest `sourceBuffer` has not been collected yet.
     ///
-    /// If this flag is `true` you should run the ``SyntaxSparrow/SyntaxExplorer/collectChildren()`` or equivilant collection method to ensure the collected
+    /// If this flag is `true` you should run the ``SyntaxSparrow/SyntaxTree/collectChildren()`` or equivilant collection method to ensure the collected
     /// declarations are up to date.
     var isStale: Bool { get }
 }
 
-/// Struct holding contextual instances and details created on a``SyntaxSparrow/SyntaxExplorer`` instance.
+/// Struct holding contextual instances and details created on a ``SyntaxSparrow/SyntaxTree`` instance.
 /// These support structured concurrency as elements such as the ``SyntaxSparrow/SparrowSourceLocationConverter`` are
 /// alo used by child evaluations and collectors at different times.
 public struct SyntaxExplorerContext: SyntaxExplorerContextProviding {

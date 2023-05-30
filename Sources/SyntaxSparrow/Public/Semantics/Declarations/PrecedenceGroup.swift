@@ -141,6 +141,7 @@ public struct PrecedenceGroup: Declaration, SyntaxSourceLocationResolving {
 
     // MARK: - Lifecycle
 
+    /// Creates a new ``SyntaxSparrow/PrecedenceGroup`` instance from an `PrecedenceGroupDeclSyntax` node.
     public init(node: PrecedenceGroupDeclSyntax, context: SyntaxExplorerContext) {
         self.resolver = PrecedenceGroupSemanticsResolver(node: node, context: context)
     }

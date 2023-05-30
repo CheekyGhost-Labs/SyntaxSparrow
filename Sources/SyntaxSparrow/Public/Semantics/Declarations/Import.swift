@@ -59,7 +59,7 @@ public struct Import: Declaration, SyntaxSourceLocationResolving {
 
     // MARK: - Lifecycle
 
-    /// Creates a new `Import` instance from an `ImportDeclSyntax` node.
+    /// Creates a new ``SyntaxSparrow/Import`` instance from an `ImportDeclSyntax` node.
     public init(node: ImportDeclSyntax, context: SyntaxExplorerContext) {
         self.resolver = ImportSemanticsResolver(node: node, context: context)
     }

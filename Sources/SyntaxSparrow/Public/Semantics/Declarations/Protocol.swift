@@ -95,6 +95,7 @@ public class `Protocol`: Declaration, SyntaxSourceLocationResolving {
 
     // MARK: - Lifecycle
 
+    /// Creates a new ``SyntaxSparrow/Protocol`` instance from an `ProtocolDeclSyntax` node.
     public init(node: ProtocolDeclSyntax, context: SyntaxExplorerContext) {
         self.resolver = ProtocolSemanticsResolver(node: node, context: context)
     }

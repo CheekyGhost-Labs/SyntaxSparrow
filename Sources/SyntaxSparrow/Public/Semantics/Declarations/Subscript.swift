@@ -71,6 +71,7 @@ public struct Subscript: Declaration, SyntaxSourceLocationResolving {
 
     // MARK: - Lifecycle
 
+    /// Creates a new ``SyntaxSparrow/Subscript`` instance from an `SubscriptDeclSyntax` node.
     public init(node: SubscriptDeclSyntax, context: SyntaxExplorerContext) {
         self.resolver = SubscriptSemanticsResolver(node: node, context: context)
     }

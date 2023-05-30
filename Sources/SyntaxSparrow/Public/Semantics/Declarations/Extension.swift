@@ -70,6 +70,7 @@ public struct Extension: Declaration, SyntaxChildCollecting, SyntaxSourceLocatio
 
     // MARK: - Lifecycle
 
+    /// Creates a new ``SyntaxSparrow/Extension`` instance from an `ExtensionDeclSyntax` node.
     public init(node: ExtensionDeclSyntax, context: SyntaxExplorerContext) {
         self.resolver = ExtensionSemanticsResolver(node: node, context: context)
     }

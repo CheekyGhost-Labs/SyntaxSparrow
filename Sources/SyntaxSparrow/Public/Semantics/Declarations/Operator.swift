@@ -81,7 +81,7 @@ public struct Operator: Declaration, SyntaxSourceLocationResolving {
 
     // MARK: - Lifecycle
 
-    /// Creates a new `Operator` instance from an `OperatorDeclSyntax` node.
+    /// Creates a new ``SyntaxSparrow/Operator`` instance from an `OperatorDeclSyntax` node.
     public init(_ node: OperatorDeclSyntax, context: SyntaxExplorerContext) {
         self.resolver = OperatorSemanticsResolver(node: node, context: context)
     }

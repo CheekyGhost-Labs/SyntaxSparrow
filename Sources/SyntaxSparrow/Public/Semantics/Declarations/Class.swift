@@ -8,17 +8,18 @@
 import Foundation
 import SwiftSyntax
 
-/// `Class` is a struct representing a Swift class declaration. This class is part of the `SyntaxSparrow` library, which provides an interface for
-/// traversing and extracting information from Swift source code.
+/// Represents a class declaration in Swift source code.
 ///
-/// This class provides a detailed breakdown of a class declaration, including its name, attributes, modifiers, inheritance, and generic parameters and requirements.
-/// Each instance of `Class` corresponds to a `ClassDeclSyntax` node in the Swift syntax tree.
+/// A `Class` struct provides access to various aspects of the class declaration it represents, such as:
+/// - Attributes: Any attributes associated with the class declaration, e.g. `@available`.
+/// - Modifiers: Modifiers applied to the class, e.g. `public`, `final`.
+/// - Name: The name of the class.
+/// - Inheritance: Types that the class inherits from (if any), including both classes and protocols.
+/// - Generic parameters and requirements: Information about any generic parameters or requirements that the class has.
 ///
-/// `Class` supports conformance to protocols such as `Equatable`, `Hashable`, `CustomStringConvertible`, and `CustomDebugStringConvertible`
-/// for easy comparison, hashing, and debugging. It also supports the `DeclarationCollecting` protocol to facilitate the collection of child declarations.
+/// Each instance of ``SyntaxSparrow/Class`` corresponds to a `ClassDeclSyntax` node in the Swift syntax tree.
 ///
-/// The location of the class in the source code is captured in `startLocation` and `endLocation` properties, and further child declarations are collected into
-/// named arrays in conformance with the `DeclarationCollecting` protocol.
+/// The `Class` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the class declaration is located.
 public struct Class: Declaration, SyntaxChildCollecting, SyntaxSourceLocationResolving {
 
     // MARK: - Properties: Computed
@@ -81,6 +82,7 @@ public struct Class: Declaration, SyntaxChildCollecting, SyntaxSourceLocationRes
 
     // MARK: - Lifecycle
 
+    /// Creates a new ``SyntaxSparrow/Class`` instance from an `ClassDeclSyntax` node.
     public init(node: ClassDeclSyntax, context: SyntaxExplorerContext) {
         self.resolver = ClassSemanticsResolver(node: node, context: context)
     }

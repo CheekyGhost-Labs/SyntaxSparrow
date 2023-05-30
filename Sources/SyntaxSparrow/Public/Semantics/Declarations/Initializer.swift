@@ -77,7 +77,7 @@ public struct Initializer: Declaration, SyntaxSourceLocationResolving {
 
     // MARK: - Lifecycle
 
-    /// Creates a new `Initializer` instance from an `InitializerDeclSyntax` node.
+    /// Creates a new ``SyntaxSparrow/Initializer`` instance from an `InitializerDeclSyntax` node.
     public init(node: InitializerDeclSyntax, context: SyntaxExplorerContext) {
         self.resolver = InitializerSemanticsResolver(node: node, context: context)
     }

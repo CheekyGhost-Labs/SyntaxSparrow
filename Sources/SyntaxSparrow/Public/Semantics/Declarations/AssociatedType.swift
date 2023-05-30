@@ -71,6 +71,7 @@ public class AssociatedType: Declaration, SyntaxSourceLocationResolving {
 
     // MARK: - Lifecycle
 
+    /// Creates a new ``SyntaxSparrow/AssociatedType`` instance from an `AssociatedtypeDeclSyntax` node.
     public init(node: AssociatedtypeDeclSyntax, context: SyntaxExplorerContext) {
         self.resolver = AssociatedTypeSemanticsResolver(node: node, context: context)
     }

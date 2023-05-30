@@ -111,6 +111,7 @@ public struct Function: Declaration, SyntaxChildCollecting, SyntaxSourceLocation
 
     // MARK: - Lifecycle
 
+    /// Creates a new ``SyntaxSparrow/Function`` instance from an `FunctionDeclSyntax` node.
     public init(node: FunctionDeclSyntax, context: SyntaxExplorerContext) {
         self.resolver = FunctionSemanticsResolver(node: node, context: context)
     }

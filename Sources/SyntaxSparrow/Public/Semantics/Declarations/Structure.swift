@@ -81,6 +81,7 @@ public struct Structure: Declaration, SyntaxChildCollecting, SyntaxSourceLocatio
 
     // MARK: - Lifecycle
 
+    /// Creates a new ``SyntaxSparrow/Structure`` instance from an `StructDeclSyntax` node.
     public init(node: StructDeclSyntax, context: SyntaxExplorerContext) {
         self.resolver = StructureSemanticsResolver(node: node, context: context)
     }

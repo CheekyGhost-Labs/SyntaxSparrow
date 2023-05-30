@@ -46,6 +46,7 @@ public struct Deinitializer: Declaration, SyntaxSourceLocationResolving {
 
     // MARK: - Lifecycle
 
+    /// Creates a new ``SyntaxSparrow/Deinitializer`` instance from an `DeinitializerDeclSyntax` node.
     public init(node: DeinitializerDeclSyntax, context: SyntaxExplorerContext) {
         self.resolver = DeinitializerSemanticsResolver(node: node, context: context)
     }

@@ -10,7 +10,11 @@ import SwiftSyntax
 
 public extension ConditionalCompilationBlock {
 
-    /// Struct representing a `ConditionalCompilationBlock` branch.
+    /// Represents a branch within a ``SyntaxSparrow/ConditionalCompilationBlock/Branch``.
+    ///
+    /// Each branch within a conditional compilation block starts with a keyword: `#if`, `#elseif`, or `#else`.
+    /// A branch might also have a condition associated with the keyword, which determines whether
+    /// the compiler will include the code within the branch during the compilation process.
     ///
     /// For example, in  the following declaration the block has two branches
     /// ```swift
@@ -22,7 +26,11 @@ public extension ConditionalCompilationBlock {
     /// ```
     /// - The first branch has the keyword `#if` and the condition `true`
     /// - The second branch has the keyword `#else` and no condition
-    struct Branch: Declaration, SyntaxChildCollecting, SyntaxSourceLocationResolving, Equatable, Hashable, CustomStringConvertible {
+    ///
+    /// Each instance of ``SyntaxSparrow/ConditionalCompilationBlock/Branch`` corresponds to a `IfConfigClauseSyntax` node in the Swift syntax tree.
+    ///
+    /// The `Branch` struct provides access to the keyword, the optional condition, and the source location of the branch.
+    struct Branch: Declaration, SyntaxChildCollecting, SyntaxSourceLocationResolving {
 
         // MARK: - Supplementary
 
@@ -67,12 +75,12 @@ public extension ConditionalCompilationBlock {
             switch rawKeyword {
             case Constants.ifKeyword:
                 return .if
-            case Constants.elseIfKeyword:
-                return .elseif
-            case Constants.elseKeyword:
-                return .else
-            default:
-                return .unsupported(keyword: rawKeyword)
+                    case Constants.elseIfKeyword:
+                            return .elseif
+                        case Constants.elseKeyword:
+                            return .else
+                        default:
+                            return .unsupported(keyword: rawKeyword)
             }
         }
 
@@ -93,6 +101,7 @@ public extension ConditionalCompilationBlock {
 
         // MARK: - Lifecycle
 
+        /// Creates a new ``SyntaxSparrow/ConditionalCompilationBlock/Branch`` instance from an `IfConfigClauseSyntax` node.
         public init(node: IfConfigClauseSyntax, context: SyntaxExplorerContext) {
             self.resolver = ConditionalCompilationBlockBranchSemanticsResolver(node: node, context: context)
             collectChildren()

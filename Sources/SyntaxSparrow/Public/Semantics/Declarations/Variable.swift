@@ -89,6 +89,7 @@ public struct Variable: Declaration, SyntaxSourceLocationResolving {
         node.bindings.compactMap { Variable(node: $0, context: context) }
     }
 
+    /// Creates a new ``SyntaxSparrow/Variable`` instance from an `PatternBindingSyntax` node.
     public init(node: PatternBindingSyntax, context: SyntaxExplorerContext) {
         self.resolver = VariableSemanticsResolver(node: node, context: context)
     }

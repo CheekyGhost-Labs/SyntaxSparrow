@@ -88,6 +88,7 @@ public struct Enumeration: Declaration, SyntaxChildCollecting, SyntaxSourceLocat
 
     // MARK: - Lifecycle
 
+    /// Creates a new ``SyntaxSparrow/Enumeration`` instance from an `EnumDeclSyntax` node.
     public init(node: EnumDeclSyntax, context: SyntaxExplorerContext) {
         self.resolver = EnumerationSemanticsResolver(node: node, context: context)
     }

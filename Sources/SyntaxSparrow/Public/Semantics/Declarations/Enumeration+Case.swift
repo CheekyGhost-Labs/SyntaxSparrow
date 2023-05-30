@@ -56,6 +56,7 @@ extension Enumeration {
 
         // MARK: - Lifecycle
 
+        /// Creates a new ``SyntaxSparrow/Enumeration/Case`` instance from an `EnumCaseElementSyntax` node.
         public init(node: EnumCaseElementSyntax, context: SyntaxExplorerContext) {
             self.resolver = EnumerationCaseSemanticsResolver(node: node, context: context)
         }

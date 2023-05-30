@@ -8,16 +8,16 @@
 import Foundation
 import SwiftSyntax
 
-/// `ConditionalCompilationBlock` is a struct representing a Swift conditional compilation block declaration. This struct is part of the SyntaxSparrow library, which provides an
-/// interface for traversing and extracting information from Swift source code.
+/// Represents a Swift conditional compilation block declaration.
 ///
-/// This class provides a detailed breakdown of a structure declaration, including its name, attributes, modifiers, inheritance, and generic parameters and requirements.
-/// Each instance of `Function` corresponds to a `FunctionDeclSyntax` node in the Swift syntax tree.
+/// Conditional compilation blocks are used to conditionally compile parts of the program
+/// based on the evaluation of one or more conditions.
+/// Swift uses the keywords `#if`, `#elseif`, `#else`, and `#endif` to define these blocks.
 ///
-/// `Structure` supports conformance to protocols such as `Equatable`, `Hashable`, `CustomStringConvertible`, and `CustomDebugStringConvertible`
-/// for easy comparison, hashing, and debugging.
+/// Each instance of ``SyntaxSparrow/ConditionalCompilationBlock`` corresponds to a `ConditionalCompilationBlock` node in the Swift syntax tree.
 ///
-/// The location of the structure in the source code is captured in `startLocation` and `endLocation` properties.
+/// This struct provides access to the branches within the conditional compilation block
+/// and the source location of the block.
 public struct ConditionalCompilationBlock: Declaration, SyntaxSourceLocationResolving {
 
     // MARK: - Properties
@@ -49,6 +49,7 @@ public struct ConditionalCompilationBlock: Declaration, SyntaxSourceLocationReso
 
     // MARK: - Lifecycle
 
+    /// Creates a new ``SyntaxSparrow/ConditionalCompilationBlock`` instance from an `IfConfigDeclSyntax` node.
     public init(node: IfConfigDeclSyntax, context: SyntaxExplorerContext) {
         self.resolver = ConditionalCompilationBlockSemanticsResolver(node: node, context: context)
         // Resolving branches now to collect any declarations within (collection happens on init of branch)

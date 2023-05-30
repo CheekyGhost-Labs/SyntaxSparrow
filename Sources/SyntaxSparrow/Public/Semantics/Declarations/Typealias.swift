@@ -81,6 +81,7 @@ public class Typealias: Declaration, SyntaxSourceLocationResolving {
 
     // MARK: - Lifecycle
 
+    /// Creates a new ``SyntaxSparrow/Typealias`` instance from an `TypealiasDeclSyntax` node.
     public init(node: TypealiasDeclSyntax, context: SyntaxExplorerContext) {
         self.resolver = TypealiasSemanticsResolver(node: node, context: context)
     }

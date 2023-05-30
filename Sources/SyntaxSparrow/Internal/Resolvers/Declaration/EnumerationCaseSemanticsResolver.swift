@@ -74,7 +74,7 @@ class EnumerationCaseSemanticsResolver: DeclarationSemanticsResolving {
 
     private func resolveModifiers() -> [Modifier] {
         withParent {
-            $0.modifiers?.map { Modifier(node: $0) } ?? []
+            $0.modifiers?.map { Modifier($0) } ?? []
         } ?? []
     }
 
@@ -84,6 +84,6 @@ class EnumerationCaseSemanticsResolver: DeclarationSemanticsResolving {
 
     private func resolveAssociatedValues() -> [Parameter]? {
         guard let associatedValue = node.associatedValue else { return nil }
-        return associatedValue.parameterList.map { Parameter(node: $0) }
+        return associatedValue.parameterList.map { Parameter($0) }
     }
 }

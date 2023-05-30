@@ -8,17 +8,21 @@
 import Foundation
 import SwiftSyntax
 
-/// `Typealias` is a class representing a Swift protocol declaration. This class is part of the `SyntaxSparrow` library, which provides an interface for
-/// traversing and extracting information from Swift source code.
+/// Represents a Swift typealias declaration.
 ///
-/// This class provides a detailed breakdown of a protocol declaration, including its name, attributes, modifiers, inheritance, and generic parameters and requirements.
-/// Each instance of `Typealias` corresponds to a `TypealiasDeclSyntax` node in the Swift syntax tree.
+/// An instance of the `Typealias` struct provides access to various components of the typealias declaration it represents, including:
+/// - Attributes: Any attributes associated with the declaration, e.g., `@available`.
+/// - Modifiers: Modifiers applied to the typealias, e.g., `public`.
+/// - Keyword: The keyword used for the declaration, i.e., "typealias".
+/// - Name: The name of the typealias.
+/// - InitializedType: The type the typealias is set to represent.
+/// - GenericParameters: Any generic parameters used in the typealias definition, along with their constraints.
+/// - GenericRequirements: Information about any generic requirements applied to the typealias.
 ///
-/// `Protocol` supports conformance to protocols such as `Equatable`, `Hashable`, `CustomStringConvertible`, and `CustomDebugStringConvertible`
-/// for easy comparison, hashing, and debugging. It does not support the `DeclarationCollecting` as Swift iteslf does not support declaring types within a protocol.
+/// Each instance of ``SyntaxSparrow/Typealias`` corresponds to a `TypealiasDeclSyntax` node in the Swift syntax tree.
 ///
-/// The location of the protocol in the source code is captured in `startLocation` and `endLocation` properties.
-public class Typealias: Declaration, SyntaxSourceLocationResolving {
+/// The `Typealias` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the typealias declaration is located.
+public struct Typealias: Declaration, SyntaxSourceLocationResolving {
 
     // MARK: - Properties: Computed
 

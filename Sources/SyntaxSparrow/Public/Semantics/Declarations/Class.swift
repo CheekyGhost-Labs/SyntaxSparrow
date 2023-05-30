@@ -19,7 +19,8 @@ import SwiftSyntax
 ///
 /// Each instance of ``SyntaxSparrow/Class`` corresponds to a `ClassDeclSyntax` node in the Swift syntax tree.
 ///
-/// The `Class` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the class declaration is located.
+/// This structure conforms to `Declaration`, `SyntaxChildCollecting`, and `SyntaxSourceLocationResolving`,
+/// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
 public struct Class: Declaration, SyntaxChildCollecting, SyntaxSourceLocationResolving {
 
     // MARK: - Properties: Computed

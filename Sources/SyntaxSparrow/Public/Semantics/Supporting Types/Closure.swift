@@ -8,6 +8,18 @@
 import Foundation
 import SwiftSyntax
 
+/// Represents a Swift closure expression.
+///
+/// A closure is a self-contained block of functionality that can be passed around and used in your code. In Swift, closures are similar to blocks in C and Objective-C and
+/// to lambdas in other programming languages.
+///
+/// An instance of the `Closure` struct provides access to:
+/// - The input and output types of the closure.
+/// - Whether the closure's input or output type is void.
+/// - Whether the closure is optional.
+/// - Whether the closure has the `@escaping` attribute or is auto-escaping.
+///
+/// This struct also includes functionality to create a closure instance from a `FunctionTypeSyntax` node.
 public struct Closure: Hashable, Equatable, CustomStringConvertible {
 
     /// Will return the closure input element from the input `typeAnnotation` for the closure.
@@ -48,6 +60,7 @@ public struct Closure: Hashable, Equatable, CustomStringConvertible {
 
     // MARK: - Lifecycle
 
+    /// Creates a new ``SyntaxSparrow/Closure`` instance from an `FunctionTypeSyntax` node.
     public init(node: FunctionTypeSyntax) {
         self.resolver = ClosureSemanticsResolver(node: node)
     }

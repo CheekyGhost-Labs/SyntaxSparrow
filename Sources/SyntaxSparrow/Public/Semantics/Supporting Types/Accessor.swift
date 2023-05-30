@@ -8,7 +8,16 @@
 import Foundation
 import SwiftSyntax
 
-/// A computed variable or computed property accessor.
+/// Represents a Swift accessor declaration.
+///
+/// An accessor is a special kind of method that gets, sets, or computes the value of a variable. In Swift, they are typically found within property and subscript declarations.
+///
+/// An instance of the `Accessor` struct provides access to:
+/// - The kind of accessor, which can be `get` or `set`.
+/// - Attributes associated with the accessor declaration, e.g., `@available`.
+/// - Modifier applied to the accessor, e.g., `private`.
+///
+/// The `Accessor` struct also includes functionality to create an accessor instance from an `AccessorDeclSyntax` node.
 public struct Accessor: Equatable, Hashable, CustomStringConvertible {
 
     /// The kind of accessor (`get` or `set`).
@@ -31,12 +40,13 @@ public struct Accessor: Equatable, Hashable, CustomStringConvertible {
 
     // MARK: - Lifecycle
 
+    /// Creates a new ``SyntaxSparrow/Accessor`` instance from an `AccessorDeclSyntax` node.
     public init(_ node: AccessorDeclSyntax) {
         // Attributes
         attributes = Attribute.fromAttributeList(node.attributes)
         // Modifier
         if let modifierNode = node.modifier {
-            modifier = Modifier(node: modifierNode)
+            modifier = Modifier(modifierNode)
         } else {
             modifier = nil
         }

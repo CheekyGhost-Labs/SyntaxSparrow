@@ -8,10 +8,21 @@
 import Foundation
 import SwiftSyntax
 
-/// Struct representing a parameter found within an `Initializer`,`Function`, `Subscript`, etc
-/// A parameter has common properties, and then a ``SyntaxSparrow/Parameter/Type`` property which further describes the input by including associated properties
-/// as needed.
-/// For example, a parameter with the type`.closure` will have a `Closure` provided, where as a parameter with the `.tuple` type will have a `Tuple` associated properties.
+/// Represents a Swift function or method parameter.
+///
+/// A parameter is a variable in a method or function definition that accepts input from the caller of the method or function. In Swift, function parameters can have a
+/// variety of attributes, including labels, types, default values, and special attributes like `inout`.
+///
+/// An instance of the `Parameter` struct provides access to:
+/// - The parameter's attributes, name(s), type, and raw type.
+/// - Whether the parameter accepts a variadic argument or is optional.
+/// - Whether the parameter is marked with `inout` or its label is omitted.
+/// - The default argument of the parameter, if any.
+///
+/// A parameter has common properties, and then a ``SyntaxSparrow/EntityType`` property which further describes the input by including associated properties as needed.
+/// For example, a parameter with the type`.closure` will have a `Closure` provided, where as a parameter with the `.tuple` type will have a ``SyntaxSparrow/Tuple`` associated properties.
+///
+/// This struct also includes functionality to create a `Parameter` instance from either a `FunctionParameterSyntax` node or a `TupleTypeElementSyntax` node.
 public struct Parameter: Hashable, Equatable, CustomStringConvertible {
 
     // MARK: - Properties
@@ -107,11 +118,13 @@ public struct Parameter: Hashable, Equatable, CustomStringConvertible {
 
     // MARK: - Lifecycle
 
-    public init(node: FunctionParameterSyntax) {
+    /// Creates a new ``SyntaxSparrow/Parameter`` instance from an `FunctionParameterSyntax` node.
+    public init(_ node: FunctionParameterSyntax) {
         self.resolver = FunctionParameterSemanticsResolver(node: node)
     }
 
-    public init(node: TupleTypeElementSyntax) {
+    /// Creates a new ``SyntaxSparrow/Parameter`` instance from an `TupleTypeElementSyntax` node.
+    public init(_ node: TupleTypeElementSyntax) {
         self.resolver = TupleParameterSemanticsResolver(node: node)
     }
 

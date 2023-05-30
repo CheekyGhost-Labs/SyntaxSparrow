@@ -43,7 +43,8 @@ public struct Modifier: Equatable, Hashable, CustomStringConvertible, CustomDebu
 
     // MARK: - Lifecycle
 
-    public init(node: DeclModifierSyntax) {
+    /// Creates a new ``SyntaxSparrow/Modifier`` instance from an `DeclModifierSyntax` node.
+    public init(_ node: DeclModifierSyntax) {
         self.node = node
     }
 

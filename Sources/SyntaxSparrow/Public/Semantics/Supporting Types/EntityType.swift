@@ -17,13 +17,13 @@ public enum EntityType: Equatable, Hashable, CustomStringConvertible {
     /// **Note:** This is also used for any unsupported syntax types. i.e `CVarArg` is not currently supported so it will use the `.simple("CVarArg...")`
     case simple(_ type: String)
 
-    /// A `tuple` type is used when a parameter's type is a valid `Tuple` type.
+    /// A `tuple` type is used when a parameter's type is a valid ``SyntaxSparrow/Tuple`` type.
     ///
     /// For example,
     /// ```swift
     /// func example(withPerson person: (name: String, age: Int)) { ... }
     /// ```
-    /// would have a type of `.tuple(Tuple)` where the `Tuple` has `Parameter`arguments with types `.simple("String"), .simple("Int")`
+    /// would have a type of `.tuple(Tuple)` where the ``SyntaxSparrow/Tuple`` has `Parameter`arguments with types `.simple("String"), .simple("Int")`
     case tuple(_ tuple: Tuple)
 
     /// A `closure` type is used when a parameter's type resolves to a valid `Closure`.
@@ -68,17 +68,17 @@ public enum EntityType: Equatable, Hashable, CustomStringConvertible {
     public var description: String {
         switch self {
         case .simple(let type):
-            return "simple: \(type.description)"
+            return type.description
         case .tuple(let tuple):
-            return "tuple: \(tuple.description)"
+            return tuple.description
         case .closure(let closure):
-            return "closure: \(closure.description)"
+            return closure.description
         case .result(let result):
-            return "result: \(result.description)"
+            return result.description
         case .void:
             return "Void"
         case .empty:
-            return "empty"
+            return ""
         }
     }
 }

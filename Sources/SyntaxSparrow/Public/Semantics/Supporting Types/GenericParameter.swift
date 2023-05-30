@@ -37,10 +37,12 @@ public class GenericParameter: Equatable, Hashable, CustomStringConvertible, Cus
 
     // MARK: - Lifecycle
 
+    /// Creates a new ``SyntaxSparrow/GenericParameter`` instance from an `GenericParameterSyntax` node.
     public init(node: GenericParameterSyntax) {
         self.resolver = GenericParameterSemanticsResolver(node: node)
     }
 
+    /// Creates an array of ``SyntaxSparrow/GenericParameter`` instances from a `GenericParameterListSyntax` node.
     public static func fromParameterList(from node: GenericParameterListSyntax?) -> [GenericParameter] {
         guard let node = node else { return [] }
         return node.compactMap { GenericParameter(node: $0) }

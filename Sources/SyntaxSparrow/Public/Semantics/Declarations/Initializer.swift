@@ -19,9 +19,9 @@ import SwiftSyntax
 ///
 /// Each instance of ``SyntaxSparrow/Initializer`` corresponds to an `InitializerDeclSyntax` node in the Swift syntax tree.
 ///
-/// This structure conforms to `Declaration` and `SyntaxSourceLocationResolving`, which provide
-/// access to the declaration attributes, modifiers, and source location information.
-public struct Initializer: Declaration, SyntaxSourceLocationResolving {
+/// This structure conforms to `Declaration`, `SyntaxChildCollecting`, and `SyntaxSourceLocationResolving`,
+/// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
+public struct Initializer: Declaration, SyntaxChildCollecting, SyntaxSourceLocationResolving {
 
     // MARK: - Properties
 
@@ -75,6 +75,8 @@ public struct Initializer: Declaration, SyntaxSourceLocationResolving {
 
     private(set) var resolver: InitializerSemanticsResolver
 
+    var declarationCollection: DeclarationCollection { resolver.declarationCollection }
+
     // MARK: - Lifecycle
 
     /// Creates a new ``SyntaxSparrow/Initializer`` instance from an `InitializerDeclSyntax` node.
@@ -85,7 +87,7 @@ public struct Initializer: Declaration, SyntaxSourceLocationResolving {
     // MARK: - Properties: Child Collection
 
     func collectChildren() {
-        // no-op
+        resolver.collectChildren()
     }
 
     // MARK: - Equatable
@@ -106,3 +108,5 @@ public struct Initializer: Declaration, SyntaxSourceLocationResolving {
         resolver.node.description.trimmed
     }
 }
+
+extension Initializer: DeclarationCollecting {}

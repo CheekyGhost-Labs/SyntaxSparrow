@@ -66,7 +66,7 @@ class PrecedenceGroupSemanticsResolver: DeclarationSemanticsResolving {
 
     private func resolveModifiers() -> [Modifier] {
         guard let modifiers = node.modifiers else { return [] }
-        let mapped = modifiers.map { Modifier(node: $0) }
+        let mapped = modifiers.map { Modifier($0) }
         return mapped
     }
 

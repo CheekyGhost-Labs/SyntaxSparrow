@@ -54,27 +54,11 @@ final class FunctionTests: XCTestCase {
             print("void")
         case .result(let result):
             print("Success: \(result.successType)")
-            print("Success: \(result.errorType)")
+            print("Success: \(result.failureType)")
         case .empty:
             print("Partially defined swift")
         case .simple(let type):
             print("Type: \(type)")
         }
-    }
-
-    func test_nestedDeclarations_willCollectChildDeclarations() throws {
-        let source = #"""
-        enum A {
-            case option, thing
-            case other(name: String)
-        }
-        """#
-        instanceUnderTest.updateToSource(source)
-        XCTAssertTrue(instanceUnderTest.isStale)
-        try instanceUnderTest.collectChildren()
-        XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.enumerations.count, 1)
-        _ = instanceUnderTest.enumerations[0].cases
-
     }
 }

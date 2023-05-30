@@ -79,7 +79,7 @@ class VariableSemanticsResolver: DeclarationSemanticsResolving {
     private func resolveModifiers() -> [Modifier] {
         guard let parent = node.parent?.as(VariableDeclSyntax.self) else { return [] }
         guard let modifierList = parent.modifiers else { return [] }
-        return modifierList.map { Modifier(node: $0) }
+        return modifierList.map { Modifier($0) }
     }
 
     private func resolveInitializedValue() -> String? {

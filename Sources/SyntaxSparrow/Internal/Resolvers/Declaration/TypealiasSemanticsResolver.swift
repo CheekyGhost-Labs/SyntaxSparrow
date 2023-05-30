@@ -67,7 +67,7 @@ class TypealiasSemanticsResolver: DeclarationSemanticsResolving {
 
     private func resolveModifiers() -> [Modifier] {
         guard let modifierList = node.modifiers else { return [] }
-        return modifierList.map { Modifier(node: $0) }
+        return modifierList.map { Modifier($0) }
     }
 
     private func resolveInitializedType() -> EntityType {

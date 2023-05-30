@@ -16,8 +16,8 @@ extension EntityType {
 
             // Result
             if simpleType.firstToken?.tokenKind == .identifier("Result") {
-                let result = Result()
-                return .result(result)
+                let result = Result(simpleType)
+                return .result(result!)
             }
 
             // Void
@@ -39,7 +39,7 @@ extension EntityType {
             } else if tupleTypeSyntax.elements.isEmpty {
                 return .void
             }
-            let tuple = Tuple(node: tupleTypeSyntax)
+            let tuple = Tuple(tupleTypeSyntax)
             return .tuple(tuple)
         }
 

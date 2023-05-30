@@ -15,7 +15,8 @@ import SwiftSyntax
 ///
 /// Each instance of ``SyntaxSparrow/Enumeration`` corresponds to an `EnumDeclSyntax` node in the Swift syntax tree.
 ///
-/// This struct provides access to the enumeration attributes, modifiers, name, adopted protocols, generic parameters and requirements, cases, and source location.
+/// This structure conforms to `Declaration`, `SyntaxChildCollecting`, and `SyntaxSourceLocationResolving`,
+/// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
 public struct Enumeration: Declaration, SyntaxChildCollecting, SyntaxSourceLocationResolving {
 
     // MARK: - Properties: Computed

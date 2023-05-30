@@ -7,10 +7,17 @@
 
 import SwiftSyntax
 
-/// A declaration attribute.
-/// Attributes provide additional information about a declaration, such as availability.
+/// Represents a Swift attribute declaration. An attribute provides metadata about a declaration or type. In Swift, they appear before a declaration, preceded by the @ symbol.
+///
 /// For example: `@available(*, unavailable, message: "this is not available")`, `@discardableResult` etc
-public class Attribute: Equatable, Hashable, CustomStringConvertible {
+///
+/// An instance of the `Attribute` struct provides access to:
+/// - The name of the attribute, which is the identifier that follows the @ symbol.
+/// - Any arguments that the attribute takes. Some attributes can take one or more arguments with a value and optional name.Arguments are represented by the nested `Argument` struct.
+///
+/// The `Attribute` struct also includes functionality to create an attribute instance from an `AttributeSyntax` node and
+/// create an array of attribute instances from an `AttributeListSyntax` node.
+public struct Attribute: Equatable, Hashable, CustomStringConvertible {
 
     // MARK: - Supplementary
 
@@ -63,7 +70,8 @@ public class Attribute: Equatable, Hashable, CustomStringConvertible {
 
     // MARK: - Lifecycle
 
-    public init(node: AttributeSyntax) {
+    /// Creates a new ``SyntaxSparrow/Attribute`` instance from an `AttributeSyntax` node.
+    public init(_ node: AttributeSyntax) {
         self.resolver = AttributeSemanticsResolver(node: node)
     }
 
@@ -71,7 +79,7 @@ public class Attribute: Equatable, Hashable, CustomStringConvertible {
         guard let listNode = node else { return [] }
         let results = listNode.compactMap {
             if let node = $0.as(AttributeSyntax.self) {
-                return Attribute(node: node)
+                return Attribute(node)
             }
             return nil
         }

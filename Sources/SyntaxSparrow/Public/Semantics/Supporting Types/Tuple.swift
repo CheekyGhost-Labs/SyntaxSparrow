@@ -8,6 +8,17 @@
 import Foundation
 import SwiftSyntax
 
+/// Represents a Swift tuple.
+///
+/// A tuple in Swift is a compound value that groups multiple values together. The ``SyntaxSparrow/Tuple`` struct provides a representation of a tuple within a Swift source file.
+/// Each element in the tuple is represented as a `Parameter` instance.
+///
+/// This struct provides access to:
+/// - The elements of the tuple
+/// - Whether the tuple is optional
+///
+/// The ``SyntaxSparrow/Tuple`` struct provides functionality to create a ``SyntaxSparrow/Tuple`` instance from either
+/// a `TupleTypeSyntax` node or a `TupleTypeElementListSyntax` node.
 public struct Tuple: Hashable, Equatable, CustomStringConvertible {
 
     // MARK: - Properties: TupleType
@@ -20,10 +31,12 @@ public struct Tuple: Hashable, Equatable, CustomStringConvertible {
 
     // MARK: - Lifecycle
 
-    public init(node: TupleTypeSyntax) {
+    /// Creates a new ``SyntaxSparrow/Tuple`` instance from an `TupleTypeSyntax` node.
+    public init(_ node: TupleTypeSyntax) {
         self.resolver = TupleSemanticsResolver(node: node)
     }
 
+    /// Creates a new ``SyntaxSparrow/Tuple`` instance from an `TupleTypeElementListSyntax` node.
     public init(node: TupleTypeElementListSyntax) {
         self.resolver = TupleElementListSemanticsResolver(node: node)
     }

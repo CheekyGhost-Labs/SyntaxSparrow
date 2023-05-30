@@ -8,17 +8,21 @@
 import Foundation
 import SwiftSyntax
 
-/// `Structure` is a struct representing a Swift structure declaration. This struct is part of the SyntaxSparrow library, which provides an interface for
-/// traversing and extracting information from Swift source code.
+/// Represents a Swift struct declaration.
 ///
-/// This class provides a detailed breakdown of a structure declaration, including its name, attributes, modifiers, inheritance, and generic parameters and requirements.
-/// Each instance of `Structure` corresponds to a `StructDeclSyntax` node in the Swift syntax tree.
+/// An instance of the `Structure` struct provides access to various components of the struct declaration it represents, including:
+/// - Attributes: Any attributes associated with the declaration, e.g., `@available`.
+/// - Modifiers: Modifiers applied to the struct, e.g., `public`.
+/// - Keyword: The keyword used for the declaration, i.e., "struct".
+/// - Name: The name of the struct.
+/// - Inheritance: Any protocols that the struct conforms to.
+/// - GenericParameters: Any generic parameters used in the struct definition, along with their constraints.
+/// - GenericRequirements: Information about any generic requirements applied to the struct.
 ///
-/// `Structure` supports conformance to protocols such as `Equatable`, `Hashable`, `CustomStringConvertible`, and `CustomDebugStringConvertible`
-/// for easy comparison, hashing, and debugging. It also supports the `DeclarationCollecting` protocol to facilitate the collection of child declarations.
+/// Each instance of ``SyntaxSparrow/Structure`` corresponds to a `StructDeclSyntax` node in the Swift syntax tree.
 ///
-/// The location of the structure in the source code is captured in `startLocation` and `endLocation` properties, and further child declarations are collected into
-/// named arrays in conformance with the `DeclarationCollecting` protocol.
+/// This structure conforms to `Declaration`, `SyntaxChildCollecting`, and `SyntaxSourceLocationResolving`,
+/// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
 public struct Structure: Declaration, SyntaxChildCollecting, SyntaxSourceLocationResolving {
 
     // MARK: - Properties: StructureDeclaration

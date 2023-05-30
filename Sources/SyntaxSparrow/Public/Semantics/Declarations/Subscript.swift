@@ -8,16 +8,21 @@
 import Foundation
 import SwiftSyntax
 
-/// `Subscript` is a struct representing a Swift structure declaration. This struct is part of the SyntaxSparrow library, which provides an interface for
-/// traversing and extracting information from Swift source code.
+/// Represents a Swift subscript declaration.
 ///
-/// This class provides a detailed breakdown of a structure declaration, including its name, attributes, modifiers, inheritance, and generic parameters and requirements.
-/// Each instance of `Subscript` corresponds to a `SubscriptDeclSyntax` node in the Swift syntax tree.
+/// An instance of the `Subscript` struct provides access to various components of the subscript declaration it represents, including:
+/// - Attributes: Any attributes associated with the declaration, e.g., `@available`.
+/// - Modifiers: Modifiers applied to the subscript, e.g., `public`.
+/// - Keyword: The keyword used for the declaration, i.e., "subscript".
+/// - Indices: The parameters used as indices in the subscript.
+/// - GenericParameters: Any generic parameters used in the subscript definition, along with their constraints.
+/// - GenericRequirements: Information about any generic requirements applied to the subscript.
+/// - ReturnType: The return type of the subscript.
+/// - Accessors: The subscript's getter and/or setter.
 ///
-/// `Structure` supports conformance to protocols such as `Equatable`, `Hashable`, `CustomStringConvertible`, and `CustomDebugStringConvertible`
-/// for easy comparison, hashing, and debugging.
+/// Each instance of ``SyntaxSparrow/Structure`` corresponds to a `StructDeclSyntax` node in the Swift syntax tree.
 ///
-/// The location of the structure in the source code is captured in `startLocation` and `endLocation` properties.
+/// The `Subscript` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the subscript declaration is located.
 public struct Subscript: Declaration, SyntaxSourceLocationResolving {
 
     // MARK: - Properties

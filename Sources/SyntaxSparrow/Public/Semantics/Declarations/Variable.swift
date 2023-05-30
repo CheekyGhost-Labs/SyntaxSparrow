@@ -8,16 +8,20 @@
 import Foundation
 import SwiftSyntax
 
-/// `Variable` is a struct representing a Swift structure declaration. This struct is part of the SyntaxSparrow library, which provides an interface for
-/// traversing and extracting information from Swift source code.
+/// Represents a Swift variable declaration.
 ///
-/// This class provides a detailed breakdown of a structure declaration, including its name, attributes, modifiers, inheritance, and generic parameters and requirements.
-/// Each instance of `Variable` corresponds to a `VariableDeclSyntax` node in the Swift syntax tree.
+/// An instance of the `Variable` struct provides access to various components of the variable declaration it represents, including:
+/// - Attributes: Any attributes associated with the declaration, e.g., `@available`.
+/// - Modifiers: Modifiers applied to the variable, e.g., `public`.
+/// - Keyword: The keyword used for the declaration, i.e., "var" or "let".
+/// - Name: The name of the variable.
+/// - Type: The type of the variable.
+/// - InitializedType: The initial value assigned to the variable at declaration, if any.
+/// - Accessors: Any getter and/or setter associated with the variable.
 ///
-/// `Structure` supports conformance to protocols such as `Equatable`, `Hashable`, `CustomStringConvertible`, and `CustomDebugStringConvertible`
-/// for easy comparison, hashing, and debugging.
+/// Each instance of ``SyntaxSparrow/Variable`` corresponds to a `PatternBindingSyntax` node in the Swift syntax tree.
 ///
-/// The location of the structure in the source code is captured in `startLocation` and `endLocation` properties.
+/// The `Variable` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the variable declaration is located.
 public struct Variable: Declaration, SyntaxSourceLocationResolving {
 
     // MARK: - Properties

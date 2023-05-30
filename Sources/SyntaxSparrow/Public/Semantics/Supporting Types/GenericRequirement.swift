@@ -80,6 +80,7 @@ public class GenericRequirement: Equatable, Hashable, CustomStringConvertible, C
 
     // MARK: - Lifecycle
 
+    /// Creates a new ``SyntaxSparrow/GenericRequirement`` instance from an `GenericRequirementSyntax` node.
     public init(_ node: GenericRequirementSyntax) {
         self.resolver = GenericRequirementSemanticsResolver(node: node)
     }

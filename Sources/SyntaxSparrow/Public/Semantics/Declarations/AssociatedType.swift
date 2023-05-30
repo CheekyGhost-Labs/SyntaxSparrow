@@ -8,18 +8,19 @@
 import Foundation
 import SwiftSyntax
 
-/// `AssociatedType` is a class representing a Swift `associatedType` declaration. This class is part of the `SyntaxSparrow` library, which provides an interface for
-/// traversing and extracting information from Swift source code.
+/// Represents an associated type declaration within a Swift protocol declaration.
 ///
-/// This class provides a detailed breakdown of an associated type declaration, including its name, attributes, modifiers, inheritance, and generic requirements.
-/// Each instance of `AssociatedType` corresponds to an `AssociatedTypeDeclSyntax` node in the Swift syntax tree. However, it is worth noting that
-/// in some edge cases the associated type is represented by other declaration syntaxes. These are handled internally during parsing.
+/// An `AssociatedType` provides access to various aspects of the associated type declaration it represents, such as:
+/// - Attributes: Any attributes associated with the declaration, e.g., `@available`.
+/// - Modifiers: Modifiers applied to the associated type, e.g., `public`.
+/// - Name: The name of the associated type.
+/// - Inheritance: Any types the associated type is constrained to, including both classes and protocols.
+/// - Generic requirements: Information about any generic requirements applied to the associated type.
 ///
-/// `AssociatedType` supports conformance to protocols such as `Equatable`, `Hashable`, `CustomStringConvertible`, and `CustomDebugStringConvertible`
-/// for easy comparison, hashing, and debugging.
+/// Each instance of ``SyntaxSparrow/AssociatedType`` corresponds to a `AssociatedtypeDeclSyntax` node in the Swift syntax tree.
 ///
-/// The location of the protocol in the source code is captured in `startLocation` and `endLocation` properties.
-public class AssociatedType: Declaration, SyntaxSourceLocationResolving {
+/// The `AssociatedType` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the associated type declaration is located.
+public struct AssociatedType: Declaration, SyntaxSourceLocationResolving {
 
     // MARK: - Properties: Computed
 

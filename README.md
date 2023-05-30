@@ -1,20 +1,59 @@
 # SyntaxSparrow
 
-
-# SyntaxSparrow
-
 SyntaxSparrow is a Swift library designed to facilitate the analysis and interaction with Swift source code. It leverages SwiftSyntax to parse Swift code and produce a syntax tree which collects and traverses constituent declaration types for Swift code.
+
+- [About the Project](#about-the-project)
+- [Features](#features)
+- [Usage](#usage)
+  - [General](#general)
+  - [Updating To a New Source](#updating-to-a-new-source)
+  - [Using Constituent Declarations](#using-constituent-declarations)
+  - [Source Locations/Bounds](#source-locations-and-bounds)
+  - [Entity Types](#entity-types)
+- [Installation](#installation)
+- [Requirements](#requirements)
+- [License](#license)
+- [Contributing](#contributing)
+
+## About the Project
+SyntaxSparrow was built on heavy inspiration from the now archived [SwiftSemantics](https://github.com/SwiftDocOrg/SwiftSemantics) project. `SwiftSemantics` was awesome, but being archived the only option is to fork and add features yourself, or hope someone has added your feature to their fork. `SyntaxSparrow` aims to pick up where this left off and add more support for conveniences, features, and harden parsing where needed.
+
+The primary goal of producing semantic types to abstract the underlying `Syntax` expressions produced by `SwiftSyntax` remains the same, however there are a few other goals that `SyntaxSparrow` tries to achieve:
+
+- **Lazy evaluation**: As some source can be quite verbose and complex, SyntaxSparrow aims to only process and iterate through nodes as you request them. This improves performance and lets the collectors focus on high-level traversal.
+
+- **Source Locations**: `SyntaxSparrow` enables asking for where a declaration is within the provided source.
+
+- **Heirachy Based**: Rather than flatten nested declarations into a single array, Declarations in `SyntaxSparrow` are able to collect child declarations as they are supported in swift. For example, nesting structs within an enum or extensions etc
+
+- **Performance**: In the future, we aim to improve performance through more efficient parsing algorithms and data structures. This will be coupled with an expanded test suite, to ensure accuracy across a wider range of Swift code patterns and idioms. We're also looking at ways to allow users to tailor the library's behavior to their specific needs, such as customizable traversal strategies and fine-grained control over the amount of information collected.
+
 
 ## Features
 
 - **Swift Code Analysis**: Parse Swift code and create a syntax tree for in-depth analysis.
+
 - **Semantic Extraction**: Extracts various semantic structures like classes, functions, enumerations, structures, protocols, etc. from the syntax tree into constituent types.
+
 - **Source Code Updates**: Ability to update the source code on a tree instance, allowing subsequent collections as code changes.
+
 - **Different View Modes**: Control the parsing and traversal strategy when processing the source code.
+
 - **Lazy Evaluation**: Shared context with child elements for lazy evaluation or collection as needed.
+
 - **Heirachy Based**: Semantic types support child declarations (where relevant) to allow for a more heirachy-based traversal.
 
+## Use Cases:
+
+`SyntaxSparrow` is designed to enable source exploration, and to compliment tooling to achieve some common tasks. For example:
+
+- **Code Generation**: Iterate through a readable semantic type to generate code to add to source via an IDE plugin, CLI, Swift Package Plugin etc
+
+- **Static Code Analysis**: Explore parsed source code with more accuracy to compliment code analysis tasks. i.e Resolving function names to look up index symbols and check if they are tested or unused.
+
 ## Usage
+
+### General
 
 Initialize `SyntaxTree` with the path of a Swift source file or directly with a Swift source code string. Then, use the various properties of `SyntaxTree` to access the collected semantic structures. 
 
@@ -134,7 +173,7 @@ syntaxTree.functions[0].typealiases[0].name // SampleAlias
 syntaxTree.functions[0].typealiases[0].initializedType.type // .simple("String")
 ```
 
-### Source Locations/Bounds:
+### Source Locations and Bounds:
 Core declarations will support the `SyntaxSourceLocationResolving` protocol (structure, class, typealias, etc) and provides the means to access the start/end position of the declaration:
 
 ```swift

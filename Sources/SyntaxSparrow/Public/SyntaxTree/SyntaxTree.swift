@@ -49,6 +49,16 @@ public class SyntaxTree: SyntaxChildCollecting, SyntaxExplorerContextProviding {
             throw error
         }
     }
+    
+    /// Will take the description of the conforming `DeclSyntaxProtocol` as the source contents (expected behavior of `DeclSyntaxProtocol`) and create a new tree
+    /// that will traverse the source description.
+    ///
+    /// - Parameters:
+    ///   - viewMode: The parsing and traversal strategy to apply when procssing source code.
+    ///   - declarationSyntax: The `DeclSyntaxProtocol` conforming instance to retrieve.
+    public convenience init(viewMode: SyntaxTreeViewMode, declarationSyntax: DeclSyntaxProtocol) {
+        self.init(viewMode: viewMode, sourceBuffer: declarationSyntax.description)
+    }
 
     /// Initializes a new instance for analyzing the provided source code.
     ///

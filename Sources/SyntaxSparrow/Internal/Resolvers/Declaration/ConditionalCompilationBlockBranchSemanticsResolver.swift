@@ -1,6 +1,6 @@
 //
 //  StructureSemanticsResolver.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -12,15 +12,15 @@ import SwiftSyntax
 /// and child branches of a `IfConfigDeclSyntax` node.
 /// It exposes the expected properties of a `ConditionalCompilationBlock` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed repeatedly.
 class ConditionalCompilationBlockBranchSemanticsResolver: DeclarationSemanticsResolving {
-
     // MARK: - Properties: DeclarationSemanticsResolving
+
     typealias Node = IfConfigClauseSyntax
 
     let node: Node
 
     let context: SyntaxExplorerContext
 
-    private(set) var declarationCollection: DeclarationCollection = DeclarationCollection()
+    private(set) var declarationCollection: DeclarationCollection = .init()
 
     private(set) lazy var sourceLocation: SyntaxSourceLocation = resolveSourceLocation()
 

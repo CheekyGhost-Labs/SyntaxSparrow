@@ -1,6 +1,6 @@
 //
 //  AttributesCollector.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -9,7 +9,6 @@ import Foundation
 import SwiftSyntax
 
 class AttributesCollector: SkipByDefaultVisitor {
-
     // MARK: - Convenience
 
     static func collect(_ node: SyntaxProtocol) -> [Attribute] {
@@ -24,35 +23,35 @@ class AttributesCollector: SkipByDefaultVisitor {
 
     // MARK: - Overrides
 
-    override func visit(_ node: InitializerDeclSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: InitializerDeclSyntax) -> SyntaxVisitorContinueKind {
         return attributes != nil ? .skipChildren : .visitChildren
     }
 
-    override func visit(_ node: EnumCasePatternSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: EnumCaseDeclSyntax) -> SyntaxVisitorContinueKind {
         return attributes != nil ? .skipChildren : .visitChildren
     }
 
-    override func visit(_ node: SubscriptDeclSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: SubscriptDeclSyntax) -> SyntaxVisitorContinueKind {
         return attributes != nil ? .skipChildren : .visitChildren
     }
 
-    override func visit(_ node: FunctionDeclSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: FunctionDeclSyntax) -> SyntaxVisitorContinueKind {
         return attributes != nil ? .skipChildren : .visitChildren
     }
 
-    override func visit(_ node: FunctionParameterSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: FunctionParameterSyntax) -> SyntaxVisitorContinueKind {
         return attributes != nil ? .skipChildren : .visitChildren
     }
 
-    override func visit(_ node: TupleTypeElementSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: TupleTypeElementSyntax) -> SyntaxVisitorContinueKind {
         return attributes != nil ? .skipChildren : .visitChildren
     }
 
-    override func visit(_ node: AttributedTypeSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: AttributedTypeSyntax) -> SyntaxVisitorContinueKind {
         return attributes != nil ? .skipChildren : .visitChildren
     }
 
-    override func visit(_ node: VariableDeclSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: VariableDeclSyntax) -> SyntaxVisitorContinueKind {
         return attributes != nil ? .skipChildren : .visitChildren
     }
 

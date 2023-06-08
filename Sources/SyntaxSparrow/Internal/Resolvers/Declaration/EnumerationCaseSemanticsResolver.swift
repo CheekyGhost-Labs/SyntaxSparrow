@@ -1,6 +1,6 @@
 //
 //  EnumerationCaseSemanticsResolver.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -11,15 +11,15 @@ import SwiftSyntax
 /// `DeclarationSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a `EnumCaseElementSyntax` node.
 /// It exposes the expected properties of a `Enumeration.Case` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed repeatedly.
 class EnumerationCaseSemanticsResolver: DeclarationSemanticsResolving {
-
     // MARK: - Properties: DeclarationSemanticsResolving
+
     typealias Node = EnumCaseElementSyntax
 
     let node: Node
 
     let context: SyntaxExplorerContext
 
-    private(set) var declarationCollection: DeclarationCollection = DeclarationCollection()
+    private(set) var declarationCollection: DeclarationCollection = .init()
 
     private(set) lazy var sourceLocation: SyntaxSourceLocation = resolveSourceLocation()
 
@@ -84,6 +84,8 @@ class EnumerationCaseSemanticsResolver: DeclarationSemanticsResolving {
 
     private func resolveAssociatedValues() -> [Parameter]? {
         guard let associatedValue = node.associatedValue else { return nil }
-        return associatedValue.parameterList.map { Parameter($0) }
+        return associatedValue.parameterList.map {
+            Parameter($0)
+        }
     }
 }

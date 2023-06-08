@@ -1,6 +1,6 @@
 //
 //  PrecedenceGroup.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -34,7 +34,6 @@ import SwiftSyntax
 ///
 /// This type conforms to the `Declaration` protocol, `SyntaxSourceLocationResolving` protocol, `Equatable`, `Hashable`, and `CustomStringConvertible`.
 public struct PrecedenceGroup: Declaration, SyntaxSourceLocationResolving {
-
     // MARK: - Supplementary
 
     /// Enumeration of associativity types for an operator.
@@ -143,7 +142,7 @@ public struct PrecedenceGroup: Declaration, SyntaxSourceLocationResolving {
 
     /// Creates a new ``SyntaxSparrow/PrecedenceGroup`` instance from an `PrecedenceGroupDeclSyntax` node.
     public init(node: PrecedenceGroupDeclSyntax, context: SyntaxExplorerContext) {
-        self.resolver = PrecedenceGroupSemanticsResolver(node: node, context: context)
+        resolver = PrecedenceGroupSemanticsResolver(node: node, context: context)
     }
 
     // MARK: - Equatable

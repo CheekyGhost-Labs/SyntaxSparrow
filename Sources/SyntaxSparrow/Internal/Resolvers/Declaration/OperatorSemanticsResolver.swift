@@ -1,6 +1,6 @@
 //
 //  FunctionSemanticsResolver.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -11,15 +11,15 @@ import SwiftSyntax
 /// `DeclarationSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a `OperatorDeclSyntax` node.
 /// It exposes the expected properties of a `Operator` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed repeatedly.
 class OperatorSemanticsResolver: DeclarationSemanticsResolving {
-
     // MARK: - Properties: DeclarationSemanticsResolving
+
     typealias Node = OperatorDeclSyntax
 
     let node: Node
 
     let context: SyntaxExplorerContext
 
-    private(set) var declarationCollection: DeclarationCollection = DeclarationCollection()
+    private(set) var declarationCollection: DeclarationCollection = .init()
 
     private(set) lazy var sourceLocation: SyntaxSourceLocation = resolveSourceLocation()
 

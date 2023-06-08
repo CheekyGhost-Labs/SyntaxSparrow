@@ -1,6 +1,6 @@
 //
 //  Attribute.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -18,7 +18,6 @@ import SwiftSyntax
 /// The `Attribute` struct also includes functionality to create an attribute instance from an `AttributeSyntax` node and
 /// create an array of attribute instances from an `AttributeListSyntax` node.
 public struct Attribute: Equatable, Hashable, CustomStringConvertible {
-
     // MARK: - Supplementary
 
     /// Struct representing an attribute declaration argument.
@@ -31,7 +30,6 @@ public struct Attribute: Equatable, Hashable, CustomStringConvertible {
     /// - The second argument has no `name` and the `value` `"unavailable"`
     /// - The third argument has the `name` `"message"` and the `value` `"my message"`
     public struct Argument: Hashable, Equatable {
-
         // MARK: - Properties
 
         /// The argument name, if any.
@@ -72,7 +70,7 @@ public struct Attribute: Equatable, Hashable, CustomStringConvertible {
 
     /// Creates a new ``SyntaxSparrow/Attribute`` instance from an `AttributeSyntax` node.
     public init(_ node: AttributeSyntax) {
-        self.resolver = AttributeSemanticsResolver(node: node)
+        resolver = AttributeSemanticsResolver(node: node)
     }
 
     public static func fromAttributeList(_ node: AttributeListSyntax?) -> [Attribute] {

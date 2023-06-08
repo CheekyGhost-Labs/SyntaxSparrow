@@ -1,6 +1,6 @@
 //
 //  SyntaxExplorerContext.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -9,7 +9,6 @@ import Foundation
 import SwiftSyntax
 
 public protocol SyntaxExplorerContextProviding {
-
     /// The source code being analyzed by this instance.
     ///
     /// This property holds the current source code being analyzed. The source code should be a valid Swift source code string. If you need
@@ -50,16 +49,15 @@ public protocol SyntaxExplorerContextProviding {
 /// These support structured concurrency as elements such as the ``SyntaxSparrow/SparrowSourceLocationConverter`` are
 /// alo used by child evaluations and collectors at different times.
 public struct SyntaxExplorerContext: SyntaxExplorerContextProviding {
-
     // MARK: - Properties: SyntaxExplorerContextProviding
 
-    private(set) public var sourceBuffer: String
+    public private(set) var sourceBuffer: String
 
-    private(set) public var viewMode: SyntaxTreeViewMode
+    public private(set) var viewMode: SyntaxTreeViewMode
 
-    private(set) public var sourceLocationConverter: SparrowSourceLocationConverter
+    public private(set) var sourceLocationConverter: SparrowSourceLocationConverter
 
-    private(set) public var isStale: Bool = true
+    public private(set) var isStale: Bool = true
 
     // MARK: - Lifecycle
 

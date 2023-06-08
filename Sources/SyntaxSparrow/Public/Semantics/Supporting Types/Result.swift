@@ -1,6 +1,6 @@
 //
 //  Result.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -19,7 +19,6 @@ import SwiftSyntax
 /// This struct provides functionality to create a `Result` instance from a `SimpleTypeIdentifierSyntax` node. If the `node.firstToken.tokenKind` is
 /// not `"Result"`, the initializer will return `nil`.
 public struct Result: Hashable, Equatable, CustomStringConvertible {
-
     // MARK: - Properties
 
     /// The success type from the `Result`.
@@ -42,7 +41,7 @@ public struct Result: Hashable, Equatable, CustomStringConvertible {
     ///
     /// **Note:** Will return `nil` if the `node.firstToken.tokenKind` is not `Result`
     public init?(_ node: SimpleTypeIdentifierSyntax) {
-        guard node.firstToken?.tokenKind == .identifier("Result") else { return nil }
+        guard node.firstToken(viewMode: .fixedUp)?.tokenKind == .identifier("Result") else { return nil }
         resolver = ResultSemanticsResolver(node: node)
     }
 

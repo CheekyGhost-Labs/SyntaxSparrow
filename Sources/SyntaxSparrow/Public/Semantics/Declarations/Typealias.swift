@@ -1,6 +1,6 @@
 //
 //  Typealias.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -23,7 +23,6 @@ import SwiftSyntax
 ///
 /// The `Typealias` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the typealias declaration is located.
 public struct Typealias: Declaration, SyntaxSourceLocationResolving {
-
     // MARK: - Properties: Computed
 
     /// Array of attributes found in the declaration.
@@ -87,7 +86,7 @@ public struct Typealias: Declaration, SyntaxSourceLocationResolving {
 
     /// Creates a new ``SyntaxSparrow/Typealias`` instance from an `TypealiasDeclSyntax` node.
     public init(node: TypealiasDeclSyntax, context: SyntaxExplorerContext) {
-        self.resolver = TypealiasSemanticsResolver(node: node, context: context)
+        resolver = TypealiasSemanticsResolver(node: node, context: context)
     }
 
     // MARK: - Equatable

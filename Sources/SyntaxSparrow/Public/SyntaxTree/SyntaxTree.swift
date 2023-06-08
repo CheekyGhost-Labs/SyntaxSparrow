@@ -1,6 +1,6 @@
 //
 //  SyntaxTree.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -22,12 +22,11 @@ import SwiftSyntax
 /// Note that `SyntaxTree` uses a `SyntaxExplorerContext` to store information about the syntax tree, and it shares this context with any child elements
 /// that require lazy evaluation or collection as needed.
 public class SyntaxTree: SyntaxChildCollecting, SyntaxExplorerContextProviding {
-
     // MARK: - Properties: SyntaxExplorerContextProviding
 
     /// `SyntaxExplorerContext` instance holding root collection details and instances. This context will be shared with any child elements
     /// that require lazy evaluation or collection as needed.
-    private(set) public var context: SyntaxExplorerContext
+    public private(set) var context: SyntaxExplorerContext
 
     // MARK: - Properties: DeclarationCollecting
 
@@ -43,7 +42,7 @@ public class SyntaxTree: SyntaxChildCollecting, SyntaxExplorerContextProviding {
     ///   - path: The file path to the source to load.
     public convenience init(viewMode: SyntaxTreeViewMode, sourceAtPath path: String) throws {
         do {
-            let fileUrl = URL(filePath: path)
+            let fileUrl = URL(fileURLWithPath: path)
             let contents = try String(contentsOf: fileUrl)
             self.init(viewMode: viewMode, sourceBuffer: contents)
         } catch {
@@ -57,7 +56,7 @@ public class SyntaxTree: SyntaxChildCollecting, SyntaxExplorerContextProviding {
     ///   - viewMode: The parsing and traversal strategy to apply when procssing source code.
     ///   - sourceBuffer: The raw source being assessed.
     public required init(viewMode: SyntaxTreeViewMode, sourceBuffer: String) {
-        self.context = SyntaxExplorerContext(viewMode: viewMode, sourceBuffer: sourceBuffer)
+        context = SyntaxExplorerContext(viewMode: viewMode, sourceBuffer: sourceBuffer)
     }
 
     // MARK: - Conformance: SyntaxExploring
@@ -106,14 +105,9 @@ public class SyntaxTree: SyntaxChildCollecting, SyntaxExplorerContextProviding {
     /// - `MyEnum.functions` will contain: `[performOperation]`
     ///
     /// Thus, `walk` facilitates a hierarchical exploration of the syntax tree.
-    public func collectChildren() throws {
-        do {
-            try declarationCollector.collect(fromSource: context.sourceBuffer)
-            context.resetIsStale()
-        } catch {
-            // log error
-            print(error)
-        }
+    public func collectChildren() {
+        declarationCollector.collect(fromSource: context.sourceBuffer)
+        context.resetIsStale()
     }
 
     // MARK: - Conformance: SyntaxChildCollecting
@@ -127,7 +121,7 @@ public class SyntaxTree: SyntaxChildCollecting, SyntaxExplorerContextProviding {
     public var initializers: [Initializer] { declarationCollector.collection.initializers }
     public var operators: [Operator] { declarationCollector.collection.operators }
     public var precedenceGroups: [PrecedenceGroup] { declarationCollector.collection.precedenceGroups }
-    public var protocols: [`Protocol`] { declarationCollector.collection.protocols }
+    public var protocols: [ProtocolDecl] { declarationCollector.collection.protocols }
     public var structures: [Structure] { declarationCollector.collection.structures }
     public var subscripts: [Subscript] { declarationCollector.collection.subscripts }
     public var typealiases: [Typealias] { declarationCollector.collection.typealiases }

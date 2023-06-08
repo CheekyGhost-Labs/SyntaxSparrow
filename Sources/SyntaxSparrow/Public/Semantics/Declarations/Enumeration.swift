@@ -1,6 +1,6 @@
 //
 //  Enumeration.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -18,7 +18,6 @@ import SwiftSyntax
 /// This structure conforms to `Declaration`, `SyntaxChildCollecting`, and `SyntaxSourceLocationResolving`,
 /// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
 public struct Enumeration: Declaration, SyntaxChildCollecting, SyntaxSourceLocationResolving {
-
     // MARK: - Properties: Computed
 
     /// Array of attributes found in the declaration.
@@ -91,7 +90,7 @@ public struct Enumeration: Declaration, SyntaxChildCollecting, SyntaxSourceLocat
 
     /// Creates a new ``SyntaxSparrow/Enumeration`` instance from an `EnumDeclSyntax` node.
     public init(node: EnumDeclSyntax, context: SyntaxExplorerContext) {
-        self.resolver = EnumerationSemanticsResolver(node: node, context: context)
+        resolver = EnumerationSemanticsResolver(node: node, context: context)
     }
 
     // MARK: - Properties: Child Collection

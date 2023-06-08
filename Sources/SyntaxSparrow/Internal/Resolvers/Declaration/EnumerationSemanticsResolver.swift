@@ -1,6 +1,6 @@
 //
 //  EnumerationSemanticsResolver.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -11,15 +11,15 @@ import SwiftSyntax
 /// `DeclarationSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a `EnumDeclSyntax` node.
 /// It exposes the expected properties of a `Enumeration` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed repeatedly.
 class EnumerationSemanticsResolver: DeclarationSemanticsResolving {
-
     // MARK: - Properties: DeclarationSemanticsResolving
+
     typealias Node = EnumDeclSyntax
 
     let node: Node
 
     let context: SyntaxExplorerContext
 
-    private(set) var declarationCollection: DeclarationCollection = DeclarationCollection()
+    private(set) var declarationCollection: DeclarationCollection = .init()
 
     private(set) lazy var sourceLocation: SyntaxSourceLocation = resolveSourceLocation()
 
@@ -89,7 +89,7 @@ class EnumerationSemanticsResolver: DeclarationSemanticsResolving {
     }
 
     private func resolveCases() -> [Enumeration.Case] {
-        let caseNodes = node.members.members.compactMap { $0.decl.as(EnumCaseDeclSyntax.self) }
+        let caseNodes = node.memberBlock.members.compactMap { $0.decl.as(EnumCaseDeclSyntax.self) }
         return caseNodes.flatMap { caseDecl in
             caseDecl.elements.map { Enumeration.Case(node: $0, context: context) }
         }

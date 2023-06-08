@@ -1,6 +1,6 @@
 //
 //  InitializerSemanticsResolver.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -11,15 +11,15 @@ import SwiftSyntax
 /// `DeclarationSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a `InitializerDeclSyntax` node.
 /// It exposes the expected properties of a `Function` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed repeatedly.
 class InitializerSemanticsResolver: DeclarationSemanticsResolving {
-
     // MARK: - Properties: DeclarationSemanticsResolving
+
     typealias Node = InitializerDeclSyntax
 
     let node: Node
 
     let context: SyntaxExplorerContext
 
-    private(set) var declarationCollection: DeclarationCollection = DeclarationCollection()
+    private(set) var declarationCollection: DeclarationCollection = .init()
 
     private(set) lazy var sourceLocation: SyntaxSourceLocation = resolveSourceLocation()
 
@@ -81,6 +81,6 @@ class InitializerSemanticsResolver: DeclarationSemanticsResolving {
     }
 
     private func resolveThrowsOrRethrowsKeyword() -> String? {
-        node.signature.throwsOrRethrowsKeyword?.description.trimmed
+        node.signature.effectSpecifiers?.throwsSpecifier?.text.trimmed
     }
 }

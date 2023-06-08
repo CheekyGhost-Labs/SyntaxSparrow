@@ -1,6 +1,6 @@
 //
 //  ClosureSemanticsResolver.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -11,7 +11,6 @@ import SwiftSyntax
 /// `NodeSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a `TupleTypeSyntax` node.
 /// It exposes the expected properties of a `Function` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed repeatedly.
 class ClosureSemanticsResolver: NodeSemanticsResolving {
-
     // MARK: - Properties: NodeSemanticsResolving
 
     typealias Node = FunctionTypeSyntax
@@ -48,7 +47,7 @@ class ClosureSemanticsResolver: NodeSemanticsResolving {
     }
 
     private func resolveOutput() -> EntityType {
-        EntityType.parseType(node.returnType)
+        EntityType.parseType(node.output.returnType)
     }
 
     private func resolveRawInput() -> String {
@@ -56,7 +55,7 @@ class ClosureSemanticsResolver: NodeSemanticsResolving {
     }
 
     private func resolveRawOutput() -> String {
-        node.returnType.description.trimmed
+        node.output.returnType.description.trimmed
     }
 
     private func resolveIsOptional() -> Bool {
@@ -66,7 +65,7 @@ class ClosureSemanticsResolver: NodeSemanticsResolving {
                 return true
             }
             if nextParent?.syntaxNodeType == FunctionTypeSyntax.self {
-               break
+                break
             }
             nextParent = nextParent?.parent
         }
@@ -84,7 +83,7 @@ class ClosureSemanticsResolver: NodeSemanticsResolving {
                 return attributes.contains(where: { $0.name == "escaping" })
             }
             if nextParent?.syntaxNodeType == FunctionTypeSyntax.self {
-               break
+                break
             }
             nextParent = nextParent?.parent
         }

@@ -1,6 +1,6 @@
 //
 //  Structure.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -17,7 +17,6 @@ import SwiftSyntax
 /// This structure conforms to `Declaration`, `SyntaxChildCollecting`, and `SyntaxSourceLocationResolving`,
 /// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
 public struct Extension: Declaration, SyntaxChildCollecting, SyntaxSourceLocationResolving {
-
     // MARK: - Properties: StructureDeclaration
 
     /// Array of attributes found in the declaration.
@@ -72,7 +71,7 @@ public struct Extension: Declaration, SyntaxChildCollecting, SyntaxSourceLocatio
 
     /// Creates a new ``SyntaxSparrow/Extension`` instance from an `ExtensionDeclSyntax` node.
     public init(node: ExtensionDeclSyntax, context: SyntaxExplorerContext) {
-        self.resolver = ExtensionSemanticsResolver(node: node, context: context)
+        resolver = ExtensionSemanticsResolver(node: node, context: context)
     }
 
     // MARK: - Properties: Child Collection

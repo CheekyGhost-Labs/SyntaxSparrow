@@ -1,6 +1,6 @@
 //
 //  SyntaxSourceLocation.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -8,7 +8,6 @@
 import Foundation
 
 public struct SyntaxSourceLocation: Equatable, Codable, Hashable {
-
     public struct Position: Equatable, Codable, Hashable {
         /// The line number the declaration was made on.
         ///
@@ -27,11 +26,11 @@ public struct SyntaxSourceLocation: Equatable, Codable, Hashable {
 
         // MARK: - Lifecycle
 
-        public static let empty: Position = Position(line: nil, offset: nil, utf8Offset: nil)
+        public static let empty: Position = .init(line: nil, offset: nil, utf8Offset: nil)
 
         public init(line: Int?, offset: Int?, utf8Offset: Int?) {
             self.line = line
-            self.column = offset
+            column = offset
             self.utf8Offset = utf8Offset
         }
     }
@@ -48,5 +47,5 @@ public struct SyntaxSourceLocation: Equatable, Codable, Hashable {
 
     // MARK: - Internal
 
-    public static let empty: SyntaxSourceLocation = SyntaxSourceLocation(start: .empty, end: .empty)
+    public static let empty: SyntaxSourceLocation = .init(start: .empty, end: .empty)
 }

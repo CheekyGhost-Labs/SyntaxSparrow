@@ -1,6 +1,6 @@
 //
 //  Declaration+SyntaxChildCollecting.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -19,7 +19,7 @@ public extension Declaration where Self: SyntaxChildCollecting {
     var initializers: [Initializer] { collection?.initializers ?? [] }
     var operators: [Operator] { collection?.operators ?? [] }
     var precedenceGroups: [PrecedenceGroup] { collection?.precedenceGroups ?? [] }
-    var protocols: [`Protocol`] { collection?.protocols ?? [] }
+    var protocols: [ProtocolDecl] { collection?.protocols ?? [] }
     var structures: [Structure] { collection?.structures ?? [] }
     var subscripts: [Subscript] { collection?.subscripts ?? [] }
     var typealiases: [Typealias] { collection?.typealiases ?? [] }

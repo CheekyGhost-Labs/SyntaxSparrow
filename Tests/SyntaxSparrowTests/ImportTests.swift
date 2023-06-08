@@ -1,15 +1,14 @@
 //
 //  ImportTests.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
 
-import XCTest
 import SyntaxSparrow
+import XCTest
 
 final class ImportTests: XCTestCase {
-
     // MARK: - Properties
 
     var instanceUnderTest: SyntaxTree!
@@ -33,7 +32,7 @@ final class ImportTests: XCTestCase {
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
-        try instanceUnderTest.collectChildren()
+        instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.imports.count, 2)
 
@@ -66,7 +65,7 @@ final class ImportTests: XCTestCase {
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
-        try instanceUnderTest.collectChildren()
+        instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.imports.count, 1)
 
@@ -89,7 +88,7 @@ final class ImportTests: XCTestCase {
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
-        try instanceUnderTest.collectChildren()
+        instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.imports.count, 1)
 
@@ -123,21 +122,21 @@ final class ImportTests: XCTestCase {
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
-        try instanceUnderTest.collectChildren()
+        instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.imports.count, 1)
 
         let sampleOne = instanceUnderTest.imports[0]
 
         instanceUnderTest.updateToSource(sourceTwo)
-        try instanceUnderTest.collectChildren()
+        instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.imports.count, 1)
 
         let sampleTwo = instanceUnderTest.imports[0]
 
         instanceUnderTest.updateToSource(sourceThree)
-        try instanceUnderTest.collectChildren()
+        instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.imports.count, 3)
 
@@ -148,7 +147,7 @@ final class ImportTests: XCTestCase {
         let equalCases: [(Import, Import)] = [
             (sampleOne, sampleTwo),
             (sampleOne, sampleThree),
-            (sampleTwo, sampleThree)
+            (sampleTwo, sampleThree),
         ]
         let notEqualCases: [(Import, Import)] = [
             (sampleOne, sampleFour),
@@ -156,7 +155,7 @@ final class ImportTests: XCTestCase {
             (sampleTwo, sampleFour),
             (sampleTwo, otherSample),
             (sampleThree, sampleFour),
-            (sampleThree, otherSample)
+            (sampleThree, otherSample),
         ]
         equalCases.forEach {
             XCTAssertEqual($0.0, $0.1)

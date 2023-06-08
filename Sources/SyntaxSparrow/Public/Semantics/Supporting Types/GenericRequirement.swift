@@ -1,6 +1,6 @@
 //
 //  GenericRequirement.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -30,7 +30,6 @@ import SwiftSyntax
 /// **Note:** All `layout` relation requirements will have a `leftTypeIdentifier` of `Self`. While not explicitly defined in the requirement itself, it is a
 /// pre-requisite for the declaration.
 public class GenericRequirement: Equatable, Hashable, CustomStringConvertible, CustomDebugStringConvertible {
-
     /**
      A relation between the two types identified
      in the generic requirement.
@@ -49,9 +48,9 @@ public class GenericRequirement: Equatable, Hashable, CustomStringConvertible, C
         case sameType
 
         /**
-         The type identified on the left-hand side conforms to
-         the type identified on the right-hand side of the generic requirement.
-        */
+          The type identified on the left-hand side conforms to
+          the type identified on the right-hand side of the generic requirement.
+         */
         case conformance
 
         /// A layout requirement specifies a constraint on the memory layout of an associated type.
@@ -82,7 +81,7 @@ public class GenericRequirement: Equatable, Hashable, CustomStringConvertible, C
 
     /// Creates a new ``SyntaxSparrow/GenericRequirement`` instance from an `GenericRequirementSyntax` node.
     public init(_ node: GenericRequirementSyntax) {
-        self.resolver = GenericRequirementSemanticsResolver(node: node)
+        resolver = GenericRequirementSemanticsResolver(node: node)
     }
 
     /**

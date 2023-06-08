@@ -1,6 +1,6 @@
 //
 //  Variable.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -23,7 +23,6 @@ import SwiftSyntax
 ///
 /// The `Variable` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the variable declaration is located.
 public struct Variable: Declaration, SyntaxSourceLocationResolving {
-
     // MARK: - Properties
 
     /// Array of attributes found in the declaration.
@@ -95,7 +94,7 @@ public struct Variable: Declaration, SyntaxSourceLocationResolving {
 
     /// Creates a new ``SyntaxSparrow/Variable`` instance from an `PatternBindingSyntax` node.
     public init(node: PatternBindingSyntax, context: SyntaxExplorerContext) {
-        self.resolver = VariableSemanticsResolver(node: node, context: context)
+        resolver = VariableSemanticsResolver(node: node, context: context)
     }
 
     // MARK: - Properties: Child Collection

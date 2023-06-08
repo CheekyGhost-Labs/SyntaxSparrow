@@ -1,6 +1,6 @@
 //
 //  ProtocolAssociatedTypeCollector.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -17,7 +17,6 @@ import SwiftSyntax
 /// This collector allows visiting down this expected path and captures any resolved `associatedType` by token identifier kinds.
 /// Results are collected into an array for post-processing.
 class ProtocolAssociatedTypeCollector: SkipByDefaultVisitor {
-
     // MARK: - Properties
 
     /// Private array for holding any results. This is emptied when invoking the `collect(from:)` method.
@@ -50,19 +49,19 @@ class ProtocolAssociatedTypeCollector: SkipByDefaultVisitor {
 
     // MARK: - Overrides
 
-    override func visit(_ node: ProtocolDeclSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: ProtocolDeclSyntax) -> SyntaxVisitorContinueKind {
         return .visitChildren
     }
 
-    override func visit(_ node: MemberDeclBlockSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: MemberDeclBlockSyntax) -> SyntaxVisitorContinueKind {
         return .visitChildren
     }
 
-    override func visit(_ node: MemberDeclListSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: MemberDeclListSyntax) -> SyntaxVisitorContinueKind {
         return .visitChildren
     }
 
-    override func visit(_ node: MemberDeclListItemSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: MemberDeclListItemSyntax) -> SyntaxVisitorContinueKind {
         return .visitChildren
     }
 

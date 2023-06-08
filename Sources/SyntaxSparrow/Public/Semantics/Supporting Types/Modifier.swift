@@ -1,6 +1,6 @@
 //
 //  Modifier.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -23,7 +23,6 @@ import SwiftSyntax
 /// - The first modifier has a `name` equal to `"public"` and `nil` for `detail`
 /// - The second modifier has a `name` equal to `"private"` and a `detail` equal to `"set"`
 public struct Modifier: Equatable, Hashable, CustomStringConvertible, CustomDebugStringConvertible {
-
     // MARK: - Properties: Internal
 
     /// The node being assessed

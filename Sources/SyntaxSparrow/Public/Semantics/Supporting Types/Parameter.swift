@@ -1,6 +1,6 @@
 //
 //  Parameter.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -24,7 +24,6 @@ import SwiftSyntax
 ///
 /// This struct also includes functionality to create a `Parameter` instance from either a `FunctionParameterSyntax` node or a `TupleTypeElementSyntax` node.
 public struct Parameter: Hashable, Equatable, CustomStringConvertible {
-
     // MARK: - Properties
 
     /// Array of attributes found in the declaration.
@@ -99,7 +98,7 @@ public struct Parameter: Hashable, Equatable, CustomStringConvertible {
 
     /// Bool whether the parameter name is marked as no label `_`.
     ///
-    ///For example, in the following declaration:
+    /// For example, in the following declaration:
     /// ```swift
     /// func processResult(_ result: Result<String, Error>)
     /// ```
@@ -120,12 +119,17 @@ public struct Parameter: Hashable, Equatable, CustomStringConvertible {
 
     /// Creates a new ``SyntaxSparrow/Parameter`` instance from an `FunctionParameterSyntax` node.
     public init(_ node: FunctionParameterSyntax) {
-        self.resolver = FunctionParameterSemanticsResolver(node: node)
+        resolver = FunctionParameterSemanticsResolver(node: node)
     }
 
     /// Creates a new ``SyntaxSparrow/Parameter`` instance from an `TupleTypeElementSyntax` node.
     public init(_ node: TupleTypeElementSyntax) {
-        self.resolver = TupleParameterSemanticsResolver(node: node)
+        resolver = TupleParameterSemanticsResolver(node: node)
+    }
+
+    /// Creates a new ``SyntaxSparrow/Parameter`` instance from an `TupleTypeElementSyntax` node.
+    public init(_ node: EnumCaseParameterSyntax) {
+        resolver = EnumCaseParameterSemanticsResolver(node: node)
     }
 
     // MARK: - Equatable

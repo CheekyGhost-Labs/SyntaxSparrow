@@ -1,6 +1,6 @@
 //
 //  AssociatedType.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -21,7 +21,6 @@ import SwiftSyntax
 ///
 /// The `AssociatedType` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the associated type declaration is located.
 public struct AssociatedType: Declaration, SyntaxSourceLocationResolving {
-
     // MARK: - Properties: Computed
 
     /// Array of attributes found in the declaration.
@@ -74,7 +73,7 @@ public struct AssociatedType: Declaration, SyntaxSourceLocationResolving {
 
     /// Creates a new ``SyntaxSparrow/AssociatedType`` instance from an `AssociatedtypeDeclSyntax` node.
     public init(node: AssociatedtypeDeclSyntax, context: SyntaxExplorerContext) {
-        self.resolver = AssociatedTypeSemanticsResolver(node: node, context: context)
+        resolver = AssociatedTypeSemanticsResolver(node: node, context: context)
     }
 
     // MARK: - Equatable

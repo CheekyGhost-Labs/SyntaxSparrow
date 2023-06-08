@@ -1,6 +1,6 @@
 //
 //  DeclarationCollection.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -8,7 +8,6 @@
 import Foundation
 
 struct DeclarationCollection {
-
     /// The collected class declarations.
     var classes: [Class] = []
 
@@ -40,7 +39,7 @@ struct DeclarationCollection {
     var precedenceGroups: [PrecedenceGroup] = []
 
     /// The collected protocol declarations.
-    var protocols: [`Protocol`] = []
+    var protocols: [ProtocolDecl] = []
 
     /// The collected structure declarations.
     var structures: [Structure] = []

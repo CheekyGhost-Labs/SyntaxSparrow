@@ -1,6 +1,6 @@
 //
 //  Class.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -22,7 +22,6 @@ import SwiftSyntax
 /// This structure conforms to `Declaration`, `SyntaxChildCollecting`, and `SyntaxSourceLocationResolving`,
 /// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
 public struct Class: Declaration, SyntaxChildCollecting, SyntaxSourceLocationResolving {
-
     // MARK: - Properties: Computed
 
     /// Array of attributes found in the declaration.
@@ -85,7 +84,7 @@ public struct Class: Declaration, SyntaxChildCollecting, SyntaxSourceLocationRes
 
     /// Creates a new ``SyntaxSparrow/Class`` instance from an `ClassDeclSyntax` node.
     public init(node: ClassDeclSyntax, context: SyntaxExplorerContext) {
-        self.resolver = ClassSemanticsResolver(node: node, context: context)
+        resolver = ClassSemanticsResolver(node: node, context: context)
     }
 
     // MARK: - Properties: Child Collection

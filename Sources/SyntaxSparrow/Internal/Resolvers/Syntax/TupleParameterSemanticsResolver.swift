@@ -1,6 +1,6 @@
 //
 //  FunctionParameterSemanticsResolver.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -12,8 +12,8 @@ import SwiftSyntax
 /// children of a `TupleTypeElementSyntax` node.
 /// It exposes the expected properties of a `Tuple` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed repeatedly.
 class TupleParameterSemanticsResolver: ParameterNodeSemanticsResolving {
-
     // MARK: - Properties: DeclarationSemanticsResolving
+
     typealias Node = TupleTypeElementSyntax
 
     let node: Node

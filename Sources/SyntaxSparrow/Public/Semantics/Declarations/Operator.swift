@@ -41,18 +41,23 @@ public struct Operator: Declaration, SyntaxSourceLocationResolving {
             }
             self = mapped
         }
+
+        /// Initializer that accepts a fixety token and returns the first valid operator kind found, if any.
+        public init?(_ token: TokenSyntax) {
+            switch token.tokenKind {
+            case .keyword(.prefix):
+                self = .prefix
+            case .keyword(.infix):
+                self = .infix
+            case .keyword(.postfix):
+                self = .postfix
+            default:
+                return nil
+            }
+        }
     }
 
     // MARK: - Properties
-
-    /// Array of attributes found in the declaration.
-    ///
-    /// - See: ``SyntaxSparrow/Attribute``
-    public var attributes: [Attribute] { resolver.attributes }
-
-    /// Array of modifiers found in the declaration.
-    /// - See: ``SyntaxSparrow/Modifier``
-    public var modifiers: [Modifier] { resolver.modifiers }
 
     /// The declaration keyword.
     ///
@@ -81,7 +86,7 @@ public struct Operator: Declaration, SyntaxSourceLocationResolving {
     // MARK: - Lifecycle
 
     /// Creates a new ``SyntaxSparrow/Operator`` instance from an `OperatorDeclSyntax` node.
-    public init(_ node: OperatorDeclSyntax, context: SyntaxExplorerContext) {
+    public init(node: OperatorDeclSyntax, context: SyntaxExplorerContext) {
         resolver = OperatorSemanticsResolver(node: node, context: context)
     }
 

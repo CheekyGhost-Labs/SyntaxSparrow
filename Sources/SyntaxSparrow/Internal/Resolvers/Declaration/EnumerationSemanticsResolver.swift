@@ -79,7 +79,7 @@ class EnumerationSemanticsResolver: DeclarationSemanticsResolving {
     }
 
     private func resolveGenericParameters() -> [GenericParameter] {
-        let parameters = GenericParameter.fromParameterList(from: node.genericParameters?.genericParameterList)
+        let parameters = GenericParameter.fromParameterList(from: node.genericParameterClause?.genericParameterList)
         return parameters
     }
 

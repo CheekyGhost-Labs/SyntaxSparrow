@@ -5,6 +5,7 @@
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
 
+import SwiftSyntax
 @testable import SyntaxSparrow
 import XCTest
 
@@ -27,6 +28,13 @@ final class FunctionTests: XCTestCase {
 
     func test_standardDeclarations_willResolveExpectedProperties() throws {
         let source = #"""
+        prefix operator +++
+        infix operator +++
+        postfix operator +++
+        struct Sample {
+            prefix operator +++
+        }
+        var myName: String = "name"
         #if THING
         enum A {
             case sample(String...)
@@ -40,5 +48,12 @@ final class FunctionTests: XCTestCase {
         XCTAssertTrue(instanceUnderTest.isStale)
         instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
+
+        let variable = instanceUnderTest.variables[0]
+        let variableNode = variable.resolver.node.context!.as(VariableDeclSyntax.self)!
+        let newTree = SyntaxTree(viewMode: .fixedUp, declarationSyntax: variableNode)
+        newTree.collectChildren()
+        print(newTree.variables)
+        
     }
 }

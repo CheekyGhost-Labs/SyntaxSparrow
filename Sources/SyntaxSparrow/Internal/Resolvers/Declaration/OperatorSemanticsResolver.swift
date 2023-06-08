@@ -25,10 +25,6 @@ class OperatorSemanticsResolver: DeclarationSemanticsResolving {
 
     // MARK: - Properties: StructureDeclaration
 
-    private(set) lazy var attributes: [Attribute] = resolveAttributes()
-
-    private(set) lazy var modifiers: [Modifier] = resolveModifiers()
-
     private(set) lazy var keyword: String = resolveKeyword()
 
     private(set) lazy var name: String = resolveName()
@@ -52,20 +48,11 @@ class OperatorSemanticsResolver: DeclarationSemanticsResolving {
         node.identifier.text.trimmed
     }
 
-    private func resolveAttributes() -> [Attribute] {
-        Attribute.fromAttributeList(node.attributes)
-    }
-
     private func resolveKeyword() -> String {
         node.operatorKeyword.text.trimmed
     }
 
-    private func resolveModifiers() -> [Modifier] {
-        guard let modifierList = node.modifiers else { return [] }
-        return modifierList.map { Modifier($0) }
-    }
-
     private func resolveKind() -> Operator.Kind? {
-        Operator.Kind(modifiers)
+        Operator.Kind(node.fixity)
     }
 }

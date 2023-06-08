@@ -145,14 +145,18 @@ class RootDeclarationCollector: SyntaxVisitor {
     }
 
     /// Called when visiting an `OperatorDeclSyntax` node
-    override func visit(_: OperatorDeclSyntax) -> SyntaxVisitorContinueKind {
-        // operator
+    override func visit(_ node: OperatorDeclSyntax) -> SyntaxVisitorContinueKind {
+        if let entryNode = entryNode, node.id == entryNode.id { return .visitChildren }
+        let declaration = Operator(node: node, context: context)
+        collection.operators.append(declaration)
         return .skipChildren
     }
 
     /// Called when visiting a `PrecedenceGroupDeclSyntax` node
-    override func visit(_: PrecedenceGroupDeclSyntax) -> SyntaxVisitorContinueKind {
-        // Precedence group
+    override func visit(_ node: PrecedenceGroupDeclSyntax) -> SyntaxVisitorContinueKind {
+        if let entryNode = entryNode, node.id == entryNode.id { return .visitChildren }
+        let declaration = PrecedenceGroup(node: node, context: context)
+        collection.precedenceGroups.append(declaration)
         return .skipChildren
     }
 

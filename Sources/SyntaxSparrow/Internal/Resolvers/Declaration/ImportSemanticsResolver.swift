@@ -54,7 +54,7 @@ class ImportSemanticsResolver: DeclarationSemanticsResolving {
     }
 
     private func resolveKeyword() -> String {
-        node.importTok.text.trimmed
+        node.importKeyword.text.trimmed
     }
 
     private func resolveModifiers() -> [Modifier] {

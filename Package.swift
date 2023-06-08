@@ -1,11 +1,11 @@
-// swift-tools-version: 5.8
+// swift-tools-version: 5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
 
 let package = Package(
     name: "SyntaxSparrow",
-    platforms: [.macOS(.v13)],
+    platforms: [.macOS(.v10_15)],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
@@ -14,14 +14,14 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-syntax.git", from: Version("508.0.0")),
+        .package(url: "https://github.com/apple/swift-syntax.git", from: Version("509.0.0-swift-DEVELOPMENT-SNAPSHOT-2023-06-05-a")),
     ],
     targets: [
         .target(
             name: "SyntaxSparrow",
             dependencies: [
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
-                .product(name: "SwiftSyntaxParser", package: "swift-syntax")
+                .product(name: "SwiftParser", package: "swift-syntax"),
             ]
         ),
         .testTarget(

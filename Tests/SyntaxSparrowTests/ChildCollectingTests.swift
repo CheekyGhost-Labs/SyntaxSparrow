@@ -1,15 +1,14 @@
 //
 //  ChildCollectingTests.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
 
-import XCTest
 @testable import SyntaxSparrow
+import XCTest
 
 final class ChildCollectingTests: XCTestCase {
-
     // MARK: - Properties
 
     var instanceUnderTest: SyntaxTree!
@@ -37,7 +36,7 @@ final class ChildCollectingTests: XCTestCase {
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
-        try instanceUnderTest.collectChildren()
+        instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.structures.count, 1)
         // A
@@ -60,7 +59,7 @@ final class ChildCollectingTests: XCTestCase {
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
-        try instanceUnderTest.collectChildren()
+        instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.extensions.count, 1)
         // A

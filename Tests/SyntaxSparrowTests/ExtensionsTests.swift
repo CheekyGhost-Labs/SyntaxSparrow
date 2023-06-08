@@ -1,15 +1,14 @@
 //
 //  ClassTests.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
 
-import XCTest
 @testable import SyntaxSparrow
+import XCTest
 
 final class ExtensionTests: XCTestCase {
-
     // MARK: - Properties
 
     var instanceUnderTest: SyntaxTree!
@@ -37,7 +36,7 @@ final class ExtensionTests: XCTestCase {
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
-        try instanceUnderTest.collectChildren()
+        instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.extensions.count, 1)
         // A
@@ -58,7 +57,7 @@ final class ExtensionTests: XCTestCase {
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
-        try instanceUnderTest.collectChildren()
+        instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.extensions.count, 1)
 
@@ -67,7 +66,7 @@ final class ExtensionTests: XCTestCase {
         XCTAssertEqual(extensionUnderTest.attributes[0].name, "available")
         XCTAssertAttributesArgumentsEqual(extensionUnderTest.attributes[0], [
             (nil, "iOS 15"),
-            (nil, "*")
+            (nil, "*"),
         ])
         XCTAssertEqual(extensionUnderTest.attributes[0].description, "@available(iOS 15, *)")
         XCTAssertSourceStartPositionEquals(extensionUnderTest.sourceLocation, (line: 0, column: 0, utf8Offset: 0))
@@ -80,7 +79,7 @@ final class ExtensionTests: XCTestCase {
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
-        try instanceUnderTest.collectChildren()
+        instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.extensions.count, 1)
 
@@ -99,7 +98,7 @@ final class ExtensionTests: XCTestCase {
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
-        try instanceUnderTest.collectChildren()
+        instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.extensions.count, 1)
 
@@ -115,7 +114,7 @@ final class ExtensionTests: XCTestCase {
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
-        try instanceUnderTest.collectChildren()
+        instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.extensions.count, 1)
 
@@ -143,21 +142,21 @@ final class ExtensionTests: XCTestCase {
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
-        try instanceUnderTest.collectChildren()
+        instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.extensions.count, 1)
 
         let sampleOne = instanceUnderTest.extensions[0]
 
         instanceUnderTest.updateToSource(sourceTwo)
-        try instanceUnderTest.collectChildren()
+        instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.extensions.count, 1)
 
         let sampleTwo = instanceUnderTest.extensions[0]
 
         instanceUnderTest.updateToSource(sourceThree)
-        try instanceUnderTest.collectChildren()
+        instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.extensions.count, 3)
 
@@ -168,7 +167,7 @@ final class ExtensionTests: XCTestCase {
         let equalCases: [(Extension, Extension)] = [
             (sampleOne, sampleTwo),
             (sampleOne, sampleThree),
-            (sampleTwo, sampleThree)
+            (sampleTwo, sampleThree),
         ]
         let notEqualCases: [(Extension, Extension)] = [
             (sampleOne, sampleFour),
@@ -176,7 +175,7 @@ final class ExtensionTests: XCTestCase {
             (sampleTwo, sampleFour),
             (sampleTwo, otherSample),
             (sampleThree, sampleFour),
-            (sampleThree, otherSample)
+            (sampleThree, otherSample),
         ]
         equalCases.forEach {
             XCTAssertEqual($0.0, $0.1)

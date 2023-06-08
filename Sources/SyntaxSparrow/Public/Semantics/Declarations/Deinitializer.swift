@@ -1,6 +1,6 @@
 //
 //  Deinitializer.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -19,7 +19,6 @@ import SwiftSyntax
 ///
 /// This struct provides access to the deinitializer attributes, modifiers, keyword, and source location.
 public struct Deinitializer: Declaration, SyntaxSourceLocationResolving {
-
     // MARK: - Properties: Computed
 
     /// Array of attributes found in the declaration.
@@ -48,7 +47,7 @@ public struct Deinitializer: Declaration, SyntaxSourceLocationResolving {
 
     /// Creates a new ``SyntaxSparrow/Deinitializer`` instance from an `DeinitializerDeclSyntax` node.
     public init(node: DeinitializerDeclSyntax, context: SyntaxExplorerContext) {
-        self.resolver = DeinitializerSemanticsResolver(node: node, context: context)
+        resolver = DeinitializerSemanticsResolver(node: node, context: context)
     }
 
     // MARK: - Equatable

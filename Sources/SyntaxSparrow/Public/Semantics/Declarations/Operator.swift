@@ -1,6 +1,6 @@
 //
 //  Operator.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -22,7 +22,6 @@ import SwiftSyntax
 /// This structure conforms to `Declaration` and `SyntaxSourceLocationResolving`, which provides
 /// access to the declaration attributes, modifiers, and source location information.
 public struct Operator: Declaration, SyntaxSourceLocationResolving {
-
     /// Enumeration of possible operator kinds.
     public enum Kind: String, Hashable, Codable {
         /// A unary operator that comes before its operand.
@@ -83,7 +82,7 @@ public struct Operator: Declaration, SyntaxSourceLocationResolving {
 
     /// Creates a new ``SyntaxSparrow/Operator`` instance from an `OperatorDeclSyntax` node.
     public init(_ node: OperatorDeclSyntax, context: SyntaxExplorerContext) {
-        self.resolver = OperatorSemanticsResolver(node: node, context: context)
+        resolver = OperatorSemanticsResolver(node: node, context: context)
     }
 
     // MARK: - Equatable

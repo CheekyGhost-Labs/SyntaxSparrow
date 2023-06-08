@@ -1,6 +1,6 @@
 //
 //  Protocol.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -10,7 +10,7 @@ import SwiftSyntax
 
 /// Represents a Swift protocol declaration.
 ///
-/// An instance of the `Protocol` class provides access to various components of the protocol declaration it represents, including:
+/// An instance of the `ProtocolDecl` struct provides access to various components of the protocol declaration it represents, including:
 /// - Attributes: Any attributes associated with the declaration, e.g., `@available`.
 /// - Modifiers: Modifiers applied to the protocol, e.g., `public`.
 /// - Name: The name of the protocol.
@@ -23,8 +23,7 @@ import SwiftSyntax
 ///
 /// This structure conforms to `Declaration`, `SyntaxChildCollecting`, and `SyntaxSourceLocationResolving`,
 /// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
-public struct `Protocol`: Declaration, SyntaxSourceLocationResolving {
-
+public struct ProtocolDecl: Declaration, SyntaxSourceLocationResolving {
     // MARK: - Properties: Computed
 
     /// Array of attributes found in the declaration.
@@ -102,12 +101,12 @@ public struct `Protocol`: Declaration, SyntaxSourceLocationResolving {
 
     /// Creates a new ``SyntaxSparrow/Protocol`` instance from an `ProtocolDeclSyntax` node.
     public init(node: ProtocolDeclSyntax, context: SyntaxExplorerContext) {
-        self.resolver = ProtocolSemanticsResolver(node: node, context: context)
+        resolver = ProtocolSemanticsResolver(node: node, context: context)
     }
 
     // MARK: - Equatable
 
-    public static func == (lhs: `Protocol`, rhs: `Protocol`) -> Bool {
+    public static func == (lhs: ProtocolDecl, rhs: ProtocolDecl) -> Bool {
         return lhs.description == rhs.description
     }
 

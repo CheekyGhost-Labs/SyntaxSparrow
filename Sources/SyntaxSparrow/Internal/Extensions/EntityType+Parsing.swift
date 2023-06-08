@@ -1,6 +1,6 @@
 //
 //  EntityType+Parsing.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -9,21 +9,19 @@ import Foundation
 import SwiftSyntax
 
 extension EntityType {
-
     static func parseType(_ typeSyntax: TypeSyntaxProtocol) -> EntityType {
         // Simple
         if let simpleType = typeSyntax.as(SimpleTypeIdentifierSyntax.self) {
-
             // Result
-            if simpleType.firstToken?.tokenKind == .identifier("Result") {
+            if simpleType.firstToken(viewMode: .fixedUp)?.tokenKind == .identifier("Result") {
                 let result = Result(simpleType)
                 return .result(result!)
             }
 
             // Void
             if
-                simpleType.firstToken?.tokenKind == .identifier("Void") ||
-                simpleType.firstToken?.tokenKind == .identifier("()")
+                simpleType.firstToken(viewMode: .fixedUp)?.tokenKind == .identifier("Void") ||
+                simpleType.firstToken(viewMode: .fixedUp)?.tokenKind == .identifier("()")
             {
                 return .void
             }
@@ -63,7 +61,7 @@ extension EntityType {
 
     static func parseElementList(_ syntax: TupleTypeElementListSyntax) -> EntityType {
         let tuple = Tuple(node: syntax)
-        if getEmptyTuple(tuple) != nil{
+        if getEmptyTuple(tuple) != nil {
             return .void
         }
         // This is probably not needed?

@@ -1,6 +1,6 @@
 //
 //  SparrowSourceLocationConverter.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -9,12 +9,11 @@ import Foundation
 import SwiftSyntax
 
 public class SparrowSourceLocationConverter {
-
     // MARK: - Properties
 
     var converter: SourceLocationConverter
 
-    let queue: DispatchQueue = DispatchQueue(label: "com.cheekyghost.SyntaxSparrow.SourceLocationConverter", qos: .userInitiated)
+    let queue: DispatchQueue = .init(label: "com.cheekyghost.SyntaxSparrow.SourceLocationConverter", qos: .userInitiated)
 
     public var isEmpty: Bool {
         queue.sync {
@@ -29,15 +28,15 @@ public class SparrowSourceLocationConverter {
     }
 
     public init(file: String, tree: SyntaxProtocol) {
-        self.converter = SourceLocationConverter(file: file, tree: tree)
+        converter = SourceLocationConverter(file: file, tree: tree)
     }
 
     public init(file: String, source: String) {
-        self.converter = SourceLocationConverter(file: file, source: source)
+        converter = SourceLocationConverter(file: file, source: source)
     }
 
     public init(rootParentOf node: SyntaxProtocol, file: String = "") {
-        self.converter = SourceLocationConverter(file: file, tree: node.root)
+        converter = SourceLocationConverter(file: file, tree: node.root)
     }
 
     // MARK: - Helpers
@@ -61,7 +60,7 @@ public class SparrowSourceLocationConverter {
     }
 
     public func startLocationForNode(_ node: SyntaxProtocol) -> SyntaxSourceLocation.Position {
-        guard let token = node.firstToken else { return .empty }
+        guard let token = node.firstToken(viewMode: .fixedUp) else { return .empty }
         return queue.sync {
             let location = token.startLocation(converter: converter)
             return normalisedLocation(location)
@@ -69,7 +68,7 @@ public class SparrowSourceLocationConverter {
     }
 
     public func endLocationForNode(_ node: SyntaxProtocol) -> SyntaxSourceLocation.Position {
-        guard let token = node.lastToken else { return .empty }
+        guard let token = node.lastToken(viewMode: .fixedUp) else { return .empty }
         return queue.sync {
             let location = token.endLocation(converter: converter)
             return normalisedLocation(location)

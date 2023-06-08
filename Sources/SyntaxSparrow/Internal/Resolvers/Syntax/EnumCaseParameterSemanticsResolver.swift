@@ -10,10 +10,10 @@ import SwiftSyntax
 
 /// `NodeSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a `FunctionParameterSyntax` node.
 /// It exposes the expected properties of a `FunctionParameter` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed repeatedly.
-class FunctionParameterSemanticsResolver: ParameterNodeSemanticsResolving {
+class EnumCaseParameterSemanticsResolver: ParameterNodeSemanticsResolving {
     // MARK: - Properties: DeclarationSemanticsResolving
 
-    typealias Node = FunctionParameterSyntax
+    typealias Node = EnumCaseParameterSyntax
 
     let node: Node
 
@@ -41,7 +41,7 @@ class FunctionParameterSemanticsResolver: ParameterNodeSemanticsResolving {
 
     // MARK: - Lifecycle
 
-    required init(node: FunctionParameterSyntax) {
+    required init(node: EnumCaseParameterSyntax) {
         self.node = node
     }
 
@@ -51,8 +51,8 @@ class FunctionParameterSemanticsResolver: ParameterNodeSemanticsResolving {
         AttributesCollector.collect(node)
     }
 
-    private func resolveName() -> String {
-        node.firstName.text.trimmed
+    private func resolveName() -> String? {
+        node.firstName?.text.trimmed
     }
 
     private func resolveSecondName() -> String? {
@@ -68,7 +68,14 @@ class FunctionParameterSemanticsResolver: ParameterNodeSemanticsResolving {
     }
 
     private func resolveIsVariadic() -> Bool {
-        node.ellipsis != nil
+        guard
+            let parent = node.parent?.parent?.as(EnumCaseParameterClauseSyntax.self),
+            let unexpectedToken = parent.unexpectedBetweenParameterListAndRightParen,
+            let tokenChild = unexpectedToken.children(viewMode: .fixedUp).first?.as(TokenSyntax.self)
+        else {
+            return false
+        }
+        return tokenChild.tokenKind == .postfixOperator("...")
     }
 
     private func resolveIsOptional() -> Bool {

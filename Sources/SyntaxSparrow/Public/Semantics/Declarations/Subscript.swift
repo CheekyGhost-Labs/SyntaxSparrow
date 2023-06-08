@@ -1,6 +1,6 @@
 //
 //  Subscript.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -24,7 +24,6 @@ import SwiftSyntax
 ///
 /// The `Subscript` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the subscript declaration is located.
 public struct Subscript: Declaration, SyntaxSourceLocationResolving {
-
     // MARK: - Properties
 
     /// Array of attributes found in the declaration.
@@ -78,7 +77,7 @@ public struct Subscript: Declaration, SyntaxSourceLocationResolving {
 
     /// Creates a new ``SyntaxSparrow/Subscript`` instance from an `SubscriptDeclSyntax` node.
     public init(node: SubscriptDeclSyntax, context: SyntaxExplorerContext) {
-        self.resolver = SubscriptSemanticsResolver(node: node, context: context)
+        resolver = SubscriptSemanticsResolver(node: node, context: context)
     }
 
     // MARK: - Properties: Child Collection

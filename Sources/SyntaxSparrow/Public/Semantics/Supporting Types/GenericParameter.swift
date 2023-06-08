@@ -1,6 +1,6 @@
 //
 //  GenericParameter.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -19,7 +19,6 @@ import SwiftSyntax
 /// - The first parameter is named `"T"` with a `nil` type.
 /// - The second parameter is named `"U"` with a type constraint of `"Equatable"`
 public class GenericParameter: Equatable, Hashable, CustomStringConvertible, CustomDebugStringConvertible {
-
     // MARK: - Properties - Public
 
     /// The generic parameter attributes.
@@ -39,7 +38,7 @@ public class GenericParameter: Equatable, Hashable, CustomStringConvertible, Cus
 
     /// Creates a new ``SyntaxSparrow/GenericParameter`` instance from an `GenericParameterSyntax` node.
     public init(node: GenericParameterSyntax) {
-        self.resolver = GenericParameterSemanticsResolver(node: node)
+        resolver = GenericParameterSemanticsResolver(node: node)
     }
 
     /// Creates an array of ``SyntaxSparrow/GenericParameter`` instances from a `GenericParameterListSyntax` node.

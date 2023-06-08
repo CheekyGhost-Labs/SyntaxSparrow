@@ -1,6 +1,6 @@
 //
 //  SyntaxProtocol+IsOptional.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -9,7 +9,6 @@ import Foundation
 import SwiftSyntax
 
 extension SyntaxProtocol {
-
     func resolveIsOptional(viewMode: SyntaxTreeViewMode = .fixedUp) -> Bool {
         guard parent?.as(OptionalTypeSyntax.self) == nil else { return true }
         var nextParent = parent
@@ -18,7 +17,7 @@ extension SyntaxProtocol {
                 return true
             }
             if nextParent?.syntaxNodeType == FunctionTypeSyntax.self {
-               break
+                break
             }
             nextParent = nextParent?.parent
         }

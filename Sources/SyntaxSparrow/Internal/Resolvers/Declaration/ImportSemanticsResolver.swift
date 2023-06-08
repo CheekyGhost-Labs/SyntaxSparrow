@@ -1,6 +1,6 @@
 //
 //  ExtensionSemanticsResolver.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -11,15 +11,15 @@ import SwiftSyntax
 /// `DeclarationSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a `ImportDeclSyntax` node.
 /// It exposes the expected properties of a `Import` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed repeatedly.
 class ImportSemanticsResolver: DeclarationSemanticsResolving {
-
     // MARK: - Properties: DeclarationSemanticsResolving
+
     typealias Node = ImportDeclSyntax
 
     let node: Node
 
     let context: SyntaxExplorerContext
 
-    private(set) var declarationCollection: DeclarationCollection = DeclarationCollection()
+    private(set) var declarationCollection: DeclarationCollection = .init()
 
     private(set) lazy var sourceLocation: SyntaxSourceLocation = resolveSourceLocation()
 
@@ -67,7 +67,7 @@ class ImportSemanticsResolver: DeclarationSemanticsResolving {
     }
 
     private func resolvePathComponents() -> [String] {
-        let components = node.path.tokens(viewMode: .fixedUp).filter { $0.tokenKind != .period}
+        let components = node.path.tokens(viewMode: .fixedUp).filter { $0.tokenKind != .period }
         return components.map(\.text.trimmed)
     }
 }

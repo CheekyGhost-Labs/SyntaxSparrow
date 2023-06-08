@@ -1,6 +1,6 @@
 //
 //  Import.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -20,9 +20,8 @@ import SwiftSyntax
 /// This structure conforms to `Declaration` and `SyntaxSourceLocationResolving`, which provide
 /// access to the declaration attributes, modifiers, and source location information.
 public struct Import: Declaration, SyntaxSourceLocationResolving {
-
     // MARK: - Properties
-    
+
     /// Array of attributes found in the declaration.
     ///
     /// - See: ``SyntaxSparrow/Attribute``
@@ -61,7 +60,7 @@ public struct Import: Declaration, SyntaxSourceLocationResolving {
 
     /// Creates a new ``SyntaxSparrow/Import`` instance from an `ImportDeclSyntax` node.
     public init(node: ImportDeclSyntax, context: SyntaxExplorerContext) {
-        self.resolver = ImportSemanticsResolver(node: node, context: context)
+        resolver = ImportSemanticsResolver(node: node, context: context)
     }
 
     // MARK: - Equatable

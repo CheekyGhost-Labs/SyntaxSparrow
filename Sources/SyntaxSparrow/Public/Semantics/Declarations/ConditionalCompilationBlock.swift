@@ -1,6 +1,6 @@
 //
 //  ConditionalCompilationBlock.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -19,7 +19,6 @@ import SwiftSyntax
 /// This struct provides access to the branches within the conditional compilation block
 /// and the source location of the block.
 public struct ConditionalCompilationBlock: Declaration, SyntaxSourceLocationResolving {
-
     // MARK: - Properties
 
     /// Array of conditional compilation block branches.
@@ -51,7 +50,7 @@ public struct ConditionalCompilationBlock: Declaration, SyntaxSourceLocationReso
 
     /// Creates a new ``SyntaxSparrow/ConditionalCompilationBlock`` instance from an `IfConfigDeclSyntax` node.
     public init(node: IfConfigDeclSyntax, context: SyntaxExplorerContext) {
-        self.resolver = ConditionalCompilationBlockSemanticsResolver(node: node, context: context)
+        resolver = ConditionalCompilationBlockSemanticsResolver(node: node, context: context)
         // Resolving branches now to collect any declarations within (collection happens on init of branch)
         _ = branches
     }

@@ -1,6 +1,6 @@
 //
 //  Tuple.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -20,7 +20,6 @@ import SwiftSyntax
 /// The ``SyntaxSparrow/Tuple`` struct provides functionality to create a ``SyntaxSparrow/Tuple`` instance from either
 /// a `TupleTypeSyntax` node or a `TupleTypeElementListSyntax` node.
 public struct Tuple: Hashable, Equatable, CustomStringConvertible {
-
     // MARK: - Properties: TupleType
 
     public var elements: [Parameter] { resolver.elements }
@@ -33,12 +32,12 @@ public struct Tuple: Hashable, Equatable, CustomStringConvertible {
 
     /// Creates a new ``SyntaxSparrow/Tuple`` instance from an `TupleTypeSyntax` node.
     public init(_ node: TupleTypeSyntax) {
-        self.resolver = TupleSemanticsResolver(node: node)
+        resolver = TupleSemanticsResolver(node: node)
     }
 
     /// Creates a new ``SyntaxSparrow/Tuple`` instance from an `TupleTypeElementListSyntax` node.
     public init(node: TupleTypeElementListSyntax) {
-        self.resolver = TupleElementListSemanticsResolver(node: node)
+        resolver = TupleElementListSemanticsResolver(node: node)
     }
 
     // MARK: - Equatable

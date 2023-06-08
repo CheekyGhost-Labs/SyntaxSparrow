@@ -1,6 +1,6 @@
 //
 //  Accessor.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -19,7 +19,6 @@ import SwiftSyntax
 ///
 /// The `Accessor` struct also includes functionality to create an accessor instance from an `AccessorDeclSyntax` node.
 public struct Accessor: Equatable, Hashable, CustomStringConvertible {
-
     /// The kind of accessor (`get` or `set`).
     public enum Kind: String, Hashable, Codable {
         /// A getter that returns a value.

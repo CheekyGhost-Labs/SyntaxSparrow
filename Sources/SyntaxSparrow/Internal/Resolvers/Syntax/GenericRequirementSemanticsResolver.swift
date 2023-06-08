@@ -1,6 +1,6 @@
 //
 //  GenericRequirementSemanticsResolver.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -11,8 +11,8 @@ import SwiftSyntax
 /// `DeclarationSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a `GenericRequirementSyntax` node.
 /// It exposes the expected properties of a `GenericRequirement` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed repeatedly.
 class GenericRequirementSemanticsResolver: NodeSemanticsResolving {
-
     // MARK: - Properties: DeclarationSemanticsResolving
+
     typealias Node = GenericRequirementSyntax
 
     let node: Node
@@ -35,9 +35,9 @@ class GenericRequirementSemanticsResolver: NodeSemanticsResolving {
 
     private func resolveLeftType() -> String {
         switch node.body {
-        case .sameTypeRequirement(let syntax):
+        case let .sameTypeRequirement(syntax):
             return syntax.leftTypeIdentifier.description.trimmed
-        case .conformanceRequirement(let syntax):
+        case let .conformanceRequirement(syntax):
             return syntax.leftTypeIdentifier.description.trimmed
         case .layoutRequirement:
             return "Self"
@@ -46,11 +46,11 @@ class GenericRequirementSemanticsResolver: NodeSemanticsResolving {
 
     private func resolveRightType() -> String {
         switch node.body {
-        case .sameTypeRequirement(let syntax):
+        case let .sameTypeRequirement(syntax):
             return syntax.rightTypeIdentifier.description.trimmed
-        case .conformanceRequirement(let syntax):
+        case let .conformanceRequirement(syntax):
             return syntax.rightTypeIdentifier.description.trimmed
-        case .layoutRequirement(let syntax):
+        case let .layoutRequirement(syntax):
             return syntax.typeIdentifier.description.trimmed
         }
     }

@@ -1,5 +1,5 @@
-import XCTest
 @testable import SyntaxSparrow
+import XCTest
 
 final class SyntaxSparrowTests: XCTestCase {
     func testExample() throws {

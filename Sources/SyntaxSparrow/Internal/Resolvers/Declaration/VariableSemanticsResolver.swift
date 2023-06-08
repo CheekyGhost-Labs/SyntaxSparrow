@@ -1,6 +1,6 @@
 //
 //  FunctionSemanticsResolver.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -11,15 +11,15 @@ import SwiftSyntax
 /// `DeclarationSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a `PatternBindingSyntax` node.
 /// It exposes the expected properties of a `Function` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed repeatedly.
 class VariableSemanticsResolver: DeclarationSemanticsResolving {
-
     // MARK: - Properties: DeclarationSemanticsResolving
+
     typealias Node = PatternBindingSyntax
 
     let node: Node
 
     let context: SyntaxExplorerContext
 
-    private(set) var declarationCollection: DeclarationCollection = DeclarationCollection()
+    private(set) var declarationCollection: DeclarationCollection = .init()
 
     private(set) lazy var sourceLocation: SyntaxSourceLocation = resolveSourceLocation()
 
@@ -73,7 +73,7 @@ class VariableSemanticsResolver: DeclarationSemanticsResolving {
 
     private func resolveKeyword() -> String {
         guard let parent = node.parent?.as(VariableDeclSyntax.self) else { return "" }
-        return parent.letOrVarKeyword.text.trimmed
+        return parent.bindingKeyword.text.trimmed
     }
 
     private func resolveModifiers() -> [Modifier] {

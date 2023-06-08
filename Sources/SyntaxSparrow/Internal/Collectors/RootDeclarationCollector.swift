@@ -1,23 +1,22 @@
 //
 //  RootDeclarationCollector.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
 
 import Foundation
+import SwiftParser
 import SwiftSyntax
-import SwiftSyntaxParser
 
 /// A class responsible for collecting declarations, such as `Structure`, `Class`, `Enumeration`, `Function`, etc., from a node.
 /// The collector will impose a (configurable) limit on how deep to traverse from the provided node since the declaration types will support the `SyntaxExploring` protocol
 /// and utilize another `RootDeclarationCollector` instance to collect their child declarations.
 class RootDeclarationCollector: SyntaxVisitor {
-
     // MARK: - Properties
 
     /// `DeclarationCollection` instance to collect results into.
-    private(set) var collection: DeclarationCollection = DeclarationCollection()
+    private(set) var collection: DeclarationCollection = .init()
 
     /// `SyntaxExplorerContext` instance holding root collection details and instances. This context will be shared with any child elements that require lazy evaluation or collection
     /// as needed. It is `Actor` based to ensure thread safety.
@@ -39,9 +38,9 @@ class RootDeclarationCollector: SyntaxVisitor {
     ///
     /// **Note:** If the standard `walk(_:)` method is used **all lines will be 0**
     /// - Parameter source: The source code being analyzed by this instance.
-    @discardableResult func collect(fromSource source: String) throws -> DeclarationCollection {
+    @discardableResult func collect(fromSource source: String) -> DeclarationCollection {
         collection = DeclarationCollection()
-        let tree = try SyntaxParser.parse(source: source)
+        let tree = Parser.parse(source: source)
         if context.sourceLocationConverter.isEmpty {
             context.sourceLocationConverter.updateForTree(tree)
         }
@@ -66,7 +65,7 @@ class RootDeclarationCollector: SyntaxVisitor {
     // MARK: - Overrides: SyntaxVisitor
 
     /// Called when visiting an `AssociatedtypeDeclSyntax` node
-    override func visit(_ node: AssociatedtypeDeclSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: AssociatedtypeDeclSyntax) -> SyntaxVisitorContinueKind {
         // AssociatedType
         // Track token ref
         return .skipChildren
@@ -99,7 +98,7 @@ class RootDeclarationCollector: SyntaxVisitor {
     }
 
     /// Called when visiting an `EnumCaseDeclSyntax` node
-    override func visit(_ node: EnumCaseDeclSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: EnumCaseDeclSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -146,13 +145,13 @@ class RootDeclarationCollector: SyntaxVisitor {
     }
 
     /// Called when visiting an `OperatorDeclSyntax` node
-    override func visit(_ node: OperatorDeclSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: OperatorDeclSyntax) -> SyntaxVisitorContinueKind {
         // operator
         return .skipChildren
     }
 
     /// Called when visiting a `PrecedenceGroupDeclSyntax` node
-    override func visit(_ node: PrecedenceGroupDeclSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: PrecedenceGroupDeclSyntax) -> SyntaxVisitorContinueKind {
         // Precedence group
         return .skipChildren
     }
@@ -160,13 +159,13 @@ class RootDeclarationCollector: SyntaxVisitor {
     /// Called when visiting a `ProtocolDeclSyntax` node
     override func visit(_ node: ProtocolDeclSyntax) -> SyntaxVisitorContinueKind {
         if let entryNode = entryNode, node.id == entryNode.id { return .visitChildren }
-        let declaration = Protocol(node: node, context: context)
+        let declaration = ProtocolDecl(node: node, context: context)
         collection.protocols.append(declaration)
         return .skipChildren
     }
 
     /// Called when visiting a `SubscriptDeclSyntax` node
-    override  func visit(_ node: SubscriptDeclSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_ node: SubscriptDeclSyntax) -> SyntaxVisitorContinueKind {
         if let entryNode = entryNode, node.id == entryNode.id { return .visitChildren }
         let declaration = Subscript(node: node, context: context)
         collection.subscripts.append(declaration)
@@ -202,6 +201,6 @@ class RootDeclarationCollector: SyntaxVisitor {
         if let entryNode = entryNode, node.id == entryNode.id { return .visitChildren }
         let declaration = Variable(node: node, context: context)
         collection.variables.append(declaration)
-      return .visitChildren
+        return .visitChildren
     }
 }

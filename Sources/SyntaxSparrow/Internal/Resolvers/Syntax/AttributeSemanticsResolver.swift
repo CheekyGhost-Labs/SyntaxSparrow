@@ -1,6 +1,6 @@
 //
 //  AttributeSemanticsResolver.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -11,8 +11,8 @@ import SwiftSyntax
 /// `DeclarationSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a `AttributeSyntax` node.
 /// It exposes the expected properties of a `Attribute` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed repeatedly.
 class AttributeSemanticsResolver: NodeSemanticsResolving {
-
     // MARK: - Properties: DeclarationSemanticsResolving
+
     typealias Node = AttributeSyntax
 
     let node: Node
@@ -32,7 +32,7 @@ class AttributeSemanticsResolver: NodeSemanticsResolving {
     // MARK: - Resolvers
 
     private func resolveName() -> String {
-        node.attributeName.text.trimmed
+        node.attributeName.description.trimmed
     }
 
     private func resolveArguments() -> [Attribute.Argument] {

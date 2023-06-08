@@ -1,6 +1,6 @@
 //
 //  DeclarationCollecting.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -9,7 +9,6 @@ import Foundation
 import SwiftSyntax
 
 public protocol SyntaxChildCollecting {
-
     /// The collected class declarations.
     var classes: [Class] { get }
 
@@ -41,7 +40,7 @@ public protocol SyntaxChildCollecting {
     var precedenceGroups: [PrecedenceGroup] { get }
 
     /// The collected protocol declarations.
-    var protocols: [Protocol] { get }
+    var protocols: [ProtocolDecl] { get }
 
     /// The collected structure declarations.
     var structures: [Structure] { get }

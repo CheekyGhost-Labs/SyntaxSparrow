@@ -1,6 +1,6 @@
 //
 //  Function.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -18,7 +18,6 @@ import SwiftSyntax
 /// This structure conforms to `Declaration`, `SyntaxChildCollecting`, and `SyntaxSourceLocationResolving`,
 /// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
 public struct Function: Declaration, SyntaxChildCollecting, SyntaxSourceLocationResolving {
-
     // MARK: - Supplementary
 
     /// Struct representing a function signature.
@@ -26,7 +25,6 @@ public struct Function: Declaration, SyntaxChildCollecting, SyntaxSourceLocation
     /// The signature describes the function's parameter types and return type.
     /// This information is parsed from an underlying `FunctionSignatureSyntax` token.
     public struct Signature: Hashable {
-
         // MARK: - Properties
 
         /// Array of input parameters for the function.
@@ -57,7 +55,6 @@ public struct Function: Declaration, SyntaxChildCollecting, SyntaxSourceLocation
     ///
     /// i.e: `"func"` for function declarations.
     public var keyword: String { resolver.keyword }
-
 
     /// The function identifier (similar to name).
     ///
@@ -113,7 +110,7 @@ public struct Function: Declaration, SyntaxChildCollecting, SyntaxSourceLocation
 
     /// Creates a new ``SyntaxSparrow/Function`` instance from an `FunctionDeclSyntax` node.
     public init(node: FunctionDeclSyntax, context: SyntaxExplorerContext) {
-        self.resolver = FunctionSemanticsResolver(node: node, context: context)
+        resolver = FunctionSemanticsResolver(node: node, context: context)
     }
 
     // MARK: - Properties: Child Collection

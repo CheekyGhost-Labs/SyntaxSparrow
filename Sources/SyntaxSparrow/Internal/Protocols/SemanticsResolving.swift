@@ -1,6 +1,6 @@
 //
 //  DeclarationSemanticsResolving.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -16,7 +16,6 @@ protocol SemanticsResolving {
 }
 
 protocol DeclarationSemanticsResolving: SemanticsResolving, SyntaxSourceLocationResolving, DeclarationCollecting {
-
     /// `SyntaxExplorerContext` instance holding root collection details and instances.
     /// This context will be shared with any child elements that require lazy evaluation or collection as needed.
     var context: SyntaxExplorerContext { get }
@@ -29,7 +28,6 @@ protocol DeclarationSemanticsResolving: SemanticsResolving, SyntaxSourceLocation
 }
 
 protocol NodeSemanticsResolving: SemanticsResolving {
-
     /// Will initialize a new declaration instance that will process the given node for properties and child collections.
     /// - Parameter node: The node to process.
     init(node: Node)
@@ -56,7 +54,6 @@ protocol TupleNodeSemanticsResolving: NodeSemanticsResolving {
 // MARK: - Common Location Properties and Helpers
 
 extension DeclarationSemanticsResolving {
-
     func resolveSourceLocation() -> SyntaxSourceLocation {
         if context.sourceLocationConverter.isEmpty {
             context.sourceLocationConverter.updateToRootForNode(node)

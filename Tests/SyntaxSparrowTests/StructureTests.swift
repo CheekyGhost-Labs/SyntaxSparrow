@@ -1,15 +1,14 @@
 //
 //  StructureTests.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
 
-import XCTest
 @testable import SyntaxSparrow
+import XCTest
 
 final class StructureTests: XCTestCase {
-
     // MARK: - Properties
 
     var instanceUnderTest: SyntaxTree!
@@ -36,7 +35,7 @@ final class StructureTests: XCTestCase {
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
-        try instanceUnderTest.collectChildren()
+        instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.structures.count, 1)
         // A
@@ -79,7 +78,7 @@ final class StructureTests: XCTestCase {
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
-        try instanceUnderTest.collectChildren()
+        instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.structures.count, 1)
         // A
@@ -130,7 +129,7 @@ final class StructureTests: XCTestCase {
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
-        try instanceUnderTest.collectChildren()
+        instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.structures.count, 1)
         // A
@@ -170,7 +169,7 @@ final class StructureTests: XCTestCase {
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
-        try instanceUnderTest.collectChildren()
+        instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.structures.count, 3)
         // A
@@ -187,9 +186,7 @@ final class StructureTests: XCTestCase {
         XCTAssertEqual(testClass.inheritance, ["Equatable", "MyThing"])
     }
 
-    func test_generics_willResolveExpectedValues() throws {
-        
-    }
+    func test_generics_willResolveExpectedValues() throws {}
 
     func test_equatable_hashable() throws {
         let source = #"""
@@ -198,7 +195,7 @@ final class StructureTests: XCTestCase {
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
-        try instanceUnderTest.collectChildren()
+        instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.structures.count, 2)
         let structA = instanceUnderTest.structures[0]
@@ -221,7 +218,7 @@ final class StructureTests: XCTestCase {
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
 
-        try instanceUnderTest.collectChildren()
+        instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
 
         XCTAssertEqual(instanceUnderTest.structures.count, 1)
@@ -235,10 +232,10 @@ final class StructureTests: XCTestCase {
         XCTAssertEqual(myStruct.genericParameters.count, 2)
         let firstGenericParam = myStruct.genericParameters[0]
         XCTAssertEqual(firstGenericParam.name, "T")
-        XCTAssertEqual(firstGenericParam.type, "Equatable & Comparable")  // Explicit type in this context
+        XCTAssertEqual(firstGenericParam.type, "Equatable & Comparable") // Explicit type in this context
         let secondGenericParam = myStruct.genericParameters[1]
         XCTAssertEqual(secondGenericParam.name, "U")
-        XCTAssertNil(secondGenericParam.type)  // No explicit type in this context
+        XCTAssertNil(secondGenericParam.type) // No explicit type in this context
 
         // Check generic requirements
         XCTAssertEqual(myStruct.genericRequirements.count, 1)
@@ -257,7 +254,7 @@ final class StructureTests: XCTestCase {
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
 
-        try instanceUnderTest.collectChildren()
+        instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
 
         XCTAssertEqual(instanceUnderTest.structures.count, 1)
@@ -272,9 +269,9 @@ final class StructureTests: XCTestCase {
         let firstGenericParam = myStruct.genericParameters[0]
         let secondGenericParam = myStruct.genericParameters[1]
         XCTAssertEqual(firstGenericParam.name, "T")
-        XCTAssertNil(firstGenericParam.type)  // No explicit type in this context
+        XCTAssertNil(firstGenericParam.type) // No explicit type in this context
         XCTAssertEqual(secondGenericParam.name, "U")
-        XCTAssertNil(secondGenericParam.type)  // No explicit type in this context
+        XCTAssertNil(secondGenericParam.type) // No explicit type in this context
 
         // Check generic requirements
         XCTAssertEqual(myStruct.genericRequirements.count, 1)
@@ -299,21 +296,21 @@ final class StructureTests: XCTestCase {
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
-        try instanceUnderTest.collectChildren()
+        instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.structures.count, 1)
 
         let sampleOne = instanceUnderTest.structures[0]
 
         instanceUnderTest.updateToSource(sourceTwo)
-        try instanceUnderTest.collectChildren()
+        instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.structures.count, 1)
 
         let sampleTwo = instanceUnderTest.structures[0]
 
         instanceUnderTest.updateToSource(sourceThree)
-        try instanceUnderTest.collectChildren()
+        instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.structures.count, 3)
 
@@ -324,7 +321,7 @@ final class StructureTests: XCTestCase {
         let equalCases: [(Structure, Structure)] = [
             (sampleOne, sampleTwo),
             (sampleOne, sampleThree),
-            (sampleTwo, sampleThree)
+            (sampleTwo, sampleThree),
         ]
         let notEqualCases: [(Structure, Structure)] = [
             (sampleOne, sampleFour),
@@ -332,7 +329,7 @@ final class StructureTests: XCTestCase {
             (sampleTwo, sampleFour),
             (sampleTwo, otherSample),
             (sampleThree, sampleFour),
-            (sampleThree, otherSample)
+            (sampleThree, otherSample),
         ]
         equalCases.forEach {
             XCTAssertEqual($0.0, $0.1)

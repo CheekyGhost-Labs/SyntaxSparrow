@@ -1,6 +1,6 @@
 //
 //  SyntaxExploringDeclaration.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -9,7 +9,6 @@ import Foundation
 import SwiftSyntax
 
 protocol DeclarationCollecting {
-
     /// `DeclarationCollection` instance for collecting any children.
     var declarationCollection: DeclarationCollection { get }
 

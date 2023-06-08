@@ -1,6 +1,6 @@
 //
 //  Closure.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -21,7 +21,6 @@ import SwiftSyntax
 ///
 /// This struct also includes functionality to create a closure instance from a `FunctionTypeSyntax` node.
 public struct Closure: Hashable, Equatable, CustomStringConvertible {
-
     /// Will return the closure input element from the input `typeAnnotation` for the closure.
     var input: EntityType { resolver.input }
 
@@ -29,7 +28,7 @@ public struct Closure: Hashable, Equatable, CustomStringConvertible {
     var rawInput: String { resolver.rawInput }
 
     /// Will return the closure output elements from the input `typeAnnotation` for the closure.
-    var output: EntityType {resolver.output }
+    var output: EntityType { resolver.output }
 
     /// Will return the return type string for the closure. Returns an empty string if no result is found.
     var rawOutput: String { resolver.rawOutput }
@@ -62,7 +61,7 @@ public struct Closure: Hashable, Equatable, CustomStringConvertible {
 
     /// Creates a new ``SyntaxSparrow/Closure`` instance from an `FunctionTypeSyntax` node.
     public init(node: FunctionTypeSyntax) {
-        self.resolver = ClosureSemanticsResolver(node: node)
+        resolver = ClosureSemanticsResolver(node: node)
     }
 
     // MARK: - Equatable

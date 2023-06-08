@@ -1,15 +1,14 @@
 //
 //  XCTest+Convenience.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
 
-import XCTest
 import SyntaxSparrow
+import XCTest
 
 extension XCTest {
-
     func XCTAssertSourceStartPositionEquals(
         _ lhs: SyntaxSourceLocation,
         _ rhs: (line: Int, column: Int, utf8Offset: Int),
@@ -21,9 +20,8 @@ extension XCTest {
             return String(value)
         }
         XCTAssertEqual(lhs.start.line, rhs.line,
-            "line `\(makeStr(lhs.start.line))` does not equal `\(String(rhs.line))`",
-            file: file, line: line
-        )
+                       "line `\(makeStr(lhs.start.line))` does not equal `\(String(rhs.line))`",
+                       file: file, line: line)
         XCTAssertEqual(
             lhs.start.column, rhs.column,
             "column `\(makeStr(lhs.start.column))` does not equal `\(String(rhs.column))`",

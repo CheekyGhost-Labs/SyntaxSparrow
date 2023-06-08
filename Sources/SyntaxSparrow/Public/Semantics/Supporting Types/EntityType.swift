@@ -1,6 +1,6 @@
 //
 //  EntityType.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -67,13 +67,13 @@ public enum EntityType: Equatable, Hashable, CustomStringConvertible {
 
     public var description: String {
         switch self {
-        case .simple(let type):
+        case let .simple(type):
             return type.description
-        case .tuple(let tuple):
+        case let .tuple(tuple):
             return tuple.description
-        case .closure(let closure):
+        case let .closure(closure):
             return closure.description
-        case .result(let result):
+        case let .result(result):
             return result.description
         case .void:
             return "Void"

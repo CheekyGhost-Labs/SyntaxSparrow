@@ -67,17 +67,17 @@ class VariableSemanticsResolver: DeclarationSemanticsResolving {
     }
 
     private func resolveAttributes() -> [Attribute] {
-        guard let parent = node.parent?.as(VariableDeclSyntax.self) else { return [] }
+        guard let parent = node.context?.as(VariableDeclSyntax.self) else { return [] }
         return Attribute.fromAttributeList(parent.attributes)
     }
 
     private func resolveKeyword() -> String {
-        guard let parent = node.parent?.as(VariableDeclSyntax.self) else { return "" }
+        guard let parent = node.context?.as(VariableDeclSyntax.self) else { return "" }
         return parent.bindingKeyword.text.trimmed
     }
 
     private func resolveModifiers() -> [Modifier] {
-        guard let parent = node.parent?.as(VariableDeclSyntax.self) else { return [] }
+        guard let parent = node.context?.as(VariableDeclSyntax.self) else { return [] }
         guard let modifierList = parent.modifiers else { return [] }
         return modifierList.map { Modifier($0) }
     }

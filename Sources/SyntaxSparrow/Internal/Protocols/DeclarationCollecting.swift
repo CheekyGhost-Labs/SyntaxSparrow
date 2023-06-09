@@ -17,5 +17,5 @@ protocol DeclarationCollecting {
     /// Collection will be limited to immediate child declarations since the collected declaration types also support collecting child elements.
     /// **Note:** A valid `SparrowSourceLocationConverter` instance is required for accurate location resolving, this is taken from the `context` on the instance.
     /// - See:``SyntaxSparrow/DeclarationSemanticsResolving/context``
-    func collectChildren() throws
+    func collectChildren()
 }

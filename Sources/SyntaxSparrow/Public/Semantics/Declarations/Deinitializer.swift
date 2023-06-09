@@ -18,7 +18,7 @@ import SwiftSyntax
 /// Each instance of ``SyntaxSparrow/Deinitializer`` corresponds to a `DeinitializerDeclSyntax` node in the Swift syntax tree.
 ///
 /// This struct provides access to the deinitializer attributes, modifiers, keyword, and source location.
-public struct Deinitializer: Declaration, SyntaxSourceLocationResolving {
+public struct Deinitializer: Declaration, SyntaxChildCollecting, SyntaxSourceLocationResolving {
     // MARK: - Properties: Computed
 
     /// Array of attributes found in the declaration.
@@ -43,11 +43,17 @@ public struct Deinitializer: Declaration, SyntaxSourceLocationResolving {
 
     private(set) var resolver: DeinitializerSemanticsResolver
 
+    var declarationCollection: DeclarationCollection { resolver.declarationCollection }
+
     // MARK: - Lifecycle
 
     /// Creates a new ``SyntaxSparrow/Deinitializer`` instance from an `DeinitializerDeclSyntax` node.
     public init(node: DeinitializerDeclSyntax, context: SyntaxExplorerContext) {
         resolver = DeinitializerSemanticsResolver(node: node, context: context)
+    }
+
+    func collectChildren() {
+        resolver.collectChildren()
     }
 
     // MARK: - Equatable
@@ -68,3 +74,5 @@ public struct Deinitializer: Declaration, SyntaxSourceLocationResolving {
         resolver.node.description.trimmed
     }
 }
+
+extension Deinitializer: DeclarationCollecting {}

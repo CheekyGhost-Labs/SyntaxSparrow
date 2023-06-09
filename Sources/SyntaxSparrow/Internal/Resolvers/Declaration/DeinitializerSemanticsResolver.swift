@@ -39,7 +39,8 @@ class DeinitializerSemanticsResolver: DeclarationSemanticsResolving {
     }
 
     func collectChildren() {
-        // no-op - log?
+        let nodeCollector = context.createRootDeclarationCollector()
+        declarationCollection = nodeCollector.collect(fromNode: node)
     }
 
     // MARK: - Resolvers

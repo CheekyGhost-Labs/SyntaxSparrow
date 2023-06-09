@@ -84,6 +84,7 @@ class RootDeclarationCollector: SyntaxVisitor {
         if let entryNode = entryNode, node.id == entryNode.id { return .visitChildren }
         let declaration = Deinitializer(node: node, context: context)
         collection.deinitializers.append(declaration)
+        declaration.collectChildren()
         return .skipChildren
     }
 

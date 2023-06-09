@@ -9,29 +9,31 @@ import SyntaxSparrow
 import XCTest
 
 extension XCTest {
+
+    private func buildPositionFailureMessage(
+        _ lhs: (line: Int?, column: Int?, utf8Offset: Int?),
+        _ rhs: (line: Int, column: Int, utf8Offset: Int)
+    ) -> String {
+        let makeStr: (Int?) -> String = { value in
+            guard let value = value else { return "nil" }
+            return String(value)
+        }
+        let expected = "(\(makeStr(lhs.line)), \(makeStr(lhs.column)), \(makeStr(lhs.utf8Offset)))"
+        let incoming = "(\(rhs.line), \(rhs.column), \(rhs.utf8Offset))"
+        return "`\(incoming)` is not equal to expected: \(expected)"
+    }
+
     func XCTAssertSourceStartPositionEquals(
         _ lhs: SyntaxSourceLocation,
         _ rhs: (line: Int, column: Int, utf8Offset: Int),
         file: StaticString = #filePath,
         line: UInt = #line
     ) {
-        let makeStr: (Int?) -> String = { value in
-            guard let value = value else { return "nil" }
-            return String(value)
+        let incoming = (lhs.start.line, lhs.start.column, lhs.start.utf8Offset)
+        guard incoming.0 == rhs.line, incoming.1 == rhs.column, incoming.2 == rhs.utf8Offset else {
+            XCTFail(buildPositionFailureMessage(incoming, rhs), file: file, line: line)
+            return
         }
-        XCTAssertEqual(lhs.start.line, rhs.line,
-                       "line `\(makeStr(lhs.start.line))` does not equal `\(String(rhs.line))`",
-                       file: file, line: line)
-        XCTAssertEqual(
-            lhs.start.column, rhs.column,
-            "column `\(makeStr(lhs.start.column))` does not equal `\(String(rhs.column))`",
-            file: file, line: line
-        )
-        XCTAssertEqual(
-            lhs.start.utf8Offset, rhs.utf8Offset,
-            "utf8Offset `\(makeStr(lhs.start.utf8Offset))` does not equal `\(String(rhs.utf8Offset))`",
-            file: file, line: line
-        )
     }
 
     func XCTAssertSourceEndPositionEquals(
@@ -40,25 +42,11 @@ extension XCTest {
         file: StaticString = #filePath,
         line: UInt = #line
     ) {
-        let makeStr: (Int?) -> String = { value in
-            guard let value = value else { return "nil" }
-            return String(value)
+        let incoming = (lhs.end.line, lhs.end.column, lhs.end.utf8Offset)
+        guard incoming.0 == rhs.line, incoming.1 == rhs.column, incoming.2 == rhs.utf8Offset else {
+            XCTFail(buildPositionFailureMessage(incoming, rhs), file: file, line: line)
+            return
         }
-        XCTAssertEqual(
-            lhs.end.line, rhs.line,
-            "line `\(makeStr(lhs.end.line))` does not equal `\(String(rhs.line))`",
-            file: file, line: line
-        )
-        XCTAssertEqual(
-            lhs.end.column, rhs.column,
-            "column `\(makeStr(lhs.end.column))` does not equal `\(String(rhs.column))`",
-            file: file, line: line
-        )
-        XCTAssertEqual(
-            lhs.end.utf8Offset, rhs.utf8Offset,
-            "utf8Offset `\(makeStr(lhs.end.utf8Offset))` does not equal `\(String(rhs.utf8Offset))`",
-            file: file, line: line
-        )
     }
 
     func XCTAssertAttributesArgumentsEqual(

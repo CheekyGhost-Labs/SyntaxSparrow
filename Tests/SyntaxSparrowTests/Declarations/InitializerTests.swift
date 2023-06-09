@@ -25,151 +25,215 @@ final class InitializerTests: XCTestCase {
 
     // MARK: - Tests
 
-    func test_basic_willResolveExpectedProperties() throws {
+    func test_initializer_withAttributesAndModifiers() throws {
         let source = #"""
-        extension String {
-          struct Nested {}
-          class Nested {}
-          enum Nested {}
-          typealias Nested = String
+        class SomeClass {
+            @available(iOS 15, *)
+            public required init?(withAge age: Int) throws {}
         }
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
         instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.extensions.count, 1)
-        // A
-        let extensionUnderTest = instanceUnderTest.extensions[0]
-        XCTAssertEqual(extensionUnderTest.extendedType, "String")
-        XCTAssertEqual(extensionUnderTest.keyword, "extension")
-        XCTAssertEqual(extensionUnderTest.modifiers.count, 0)
-        XCTAssertEqual(extensionUnderTest.attributes.count, 0)
-        XCTAssertSourceStartPositionEquals(extensionUnderTest.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(extensionUnderTest.sourceLocation, (5, 1, 102))
-        XCTAssertEqual(extensionUnderTest.extractFromSource(source), source)
+        XCTAssertEqual(instanceUnderTest.classes.count, 1)
+
+        let classUnderTest = instanceUnderTest.classes[0]
+        XCTAssertEqual(classUnderTest.initializers.count, 1)
+
+        let initializerUnderTest = classUnderTest.initializers[0]
+
+        XCTAssertEqual(initializerUnderTest.keyword, "init")
+        XCTAssertTrue(initializerUnderTest.isOptional)
+        XCTAssertEqual(initializerUnderTest.throwsOrRethrowsKeyword, "throws")
+        XCTAssertSourceStartPositionEquals(initializerUnderTest.sourceLocation, (1, 4, 22))
+        XCTAssertSourceEndPositionEquals(initializerUnderTest.sourceLocation, (2, 53, 97))
+        XCTAssertEqual(
+            initializerUnderTest.extractFromSource(source),
+            "@available(iOS 15, *)\n    public required init?(withAge age: Int) throws {}"
+        )
+
+        // Test parameters
+        XCTAssertEqual(initializerUnderTest.parameters.count, 1)
+        XCTAssertEqual(initializerUnderTest.parameters[0].type, .simple("Int"))
+        XCTAssertEqual(initializerUnderTest.parameters[0].name, "withAge")
+        XCTAssertEqual(initializerUnderTest.parameters[0].secondName, "age")
+        // Parameters have more extensive tests for initializer parameters
+
+        // Test attributes
+        XCTAssertEqual(initializerUnderTest.attributes.count, 1)
+        let attributeUnderTest = initializerUnderTest.attributes[0]
+        XCTAssertEqual(attributeUnderTest.name, "available")
+
+        // Test modifiers
+        XCTAssertEqual(initializerUnderTest.modifiers.count, 2)
+        XCTAssertEqual(initializerUnderTest.modifiers[0].name, "public")
+        XCTAssertEqual(initializerUnderTest.modifiers[1].name, "required")
     }
 
-    func test_extensionWithAttributes() throws {
+    func test_basic_willResolveExpectedProperties() throws {
         let source = #"""
-        @available(iOS 15, *)
-        extension String {}
+        public init() {
+            struct NestedStruct {}
+            class NestedClass {}
+            enum NestedEnum { case nested }
+            typealias NestedTypeAlias = String
+            func nestedFunction() {}
+            var nestedVariable: Int = 0
+            protocol NestedProtocol {}
+            subscript(nestedSubscript idx: Int) -> Int { return idx }
+            deinit { print("Nested deinit") }
+            infix operator +-: NestedOperator
+        }
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
         instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.extensions.count, 1)
-
-        let extensionUnderTest = instanceUnderTest.extensions[0]
-        XCTAssertEqual(extensionUnderTest.attributes.count, 1)
-        XCTAssertEqual(extensionUnderTest.attributes[0].name, "available")
-        XCTAssertAttributesArgumentsEqual(extensionUnderTest.attributes[0], [
-            (nil, "iOS 15"),
-            (nil, "*")
-        ])
-        XCTAssertEqual(extensionUnderTest.attributes[0].description, "@available(iOS 15, *)")
-        XCTAssertSourceStartPositionEquals(extensionUnderTest.sourceLocation, (line: 0, column: 0, utf8Offset: 0))
-        XCTAssertSourceEndPositionEquals(extensionUnderTest.sourceLocation, (line: 1, column: 19, utf8Offset: 41))
+        XCTAssertEqual(instanceUnderTest.initializers.count, 1)
+        // Test instance
+        let instanceUnderTest = instanceUnderTest.initializers[0]
+        // Children
+        XCTAssertEqual(instanceUnderTest.structures.count, 1)
+        XCTAssertEqual(instanceUnderTest.structures[0].name, "NestedStruct")
+        XCTAssertEqual(instanceUnderTest.classes.count, 1)
+        XCTAssertEqual(instanceUnderTest.classes[0].name, "NestedClass")
+        XCTAssertEqual(instanceUnderTest.enumerations.count, 1)
+        XCTAssertEqual(instanceUnderTest.enumerations[0].name, "NestedEnum")
+        XCTAssertEqual(instanceUnderTest.typealiases.count, 1)
+        XCTAssertEqual(instanceUnderTest.typealiases[0].name, "NestedTypeAlias")
+        XCTAssertEqual(instanceUnderTest.functions.count, 1)
+        XCTAssertEqual(instanceUnderTest.functions[0].identifier, "nestedFunction")
+        XCTAssertEqual(instanceUnderTest.variables.count, 1)
+        XCTAssertEqual(instanceUnderTest.variables[0].name, "nestedVariable")
+        XCTAssertEqual(instanceUnderTest.protocols.count, 1)
+        XCTAssertEqual(instanceUnderTest.protocols[0].name, "NestedProtocol")
+        XCTAssertEqual(instanceUnderTest.subscripts.count, 1)
+        XCTAssertEqual(instanceUnderTest.subscripts[0].keyword, "subscript")
+        XCTAssertEqual(instanceUnderTest.deinitializers.count, 1)
+        XCTAssertEqual(instanceUnderTest.deinitializers[0].keyword, "deinit")
+        XCTAssertEqual(instanceUnderTest.operators.count, 1)
+        XCTAssertEqual(instanceUnderTest.operators[0].name, "+-")
     }
 
-    func test_extensionWithModifiers() throws {
+    func test_initializer_withConvenience() throws {
         let source = #"""
-        public extension String {}
+        class SomeClass {
+            @available(iOS 15, *)
+            public convenience init(withAge age: Int) throws {}
+        }
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
         instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.extensions.count, 1)
+        XCTAssertEqual(instanceUnderTest.classes.count, 1)
 
-        let extensionUnderTest = instanceUnderTest.extensions[0]
-        XCTAssertEqual(extensionUnderTest.modifiers.count, 1)
-        XCTAssertEqual(extensionUnderTest.modifiers[0].name, "public")
-        XCTAssertSourceStartPositionEquals(extensionUnderTest.sourceLocation, (line: 0, column: 0, utf8Offset: 0))
-        XCTAssertSourceEndPositionEquals(extensionUnderTest.sourceLocation, (line: 0, column: 26, utf8Offset: 26))
+        let classUnderTest = instanceUnderTest.classes[0]
+        XCTAssertEqual(classUnderTest.initializers.count, 1)
+
+        let initializerUnderTest = classUnderTest.initializers[0]
+
+        XCTAssertEqual(initializerUnderTest.keyword, "init")
+        XCTAssertFalse(initializerUnderTest.isOptional)
+        XCTAssertEqual(initializerUnderTest.throwsOrRethrowsKeyword, "throws")
+
+        // Test parameters
+        XCTAssertEqual(initializerUnderTest.parameters.count, 1)
+        XCTAssertEqual(initializerUnderTest.parameters[0].type, .simple("Int"))
+        XCTAssertEqual(initializerUnderTest.parameters[0].name, "withAge")
+        XCTAssertEqual(initializerUnderTest.parameters[0].secondName, "age")
+        // Parameters have more extensive tests for initializer parameters
+
+        // Test attributes
+        XCTAssertEqual(initializerUnderTest.attributes.count, 1)
+        let attributeUnderTest = initializerUnderTest.attributes[0]
+        XCTAssertEqual(attributeUnderTest.name, "available")
+
+        // Test modifiers
+        XCTAssertEqual(initializerUnderTest.modifiers.count, 2)
+        XCTAssertEqual(initializerUnderTest.modifiers[0].name, "public")
+        XCTAssertEqual(initializerUnderTest.modifiers[1].name, "convenience")
     }
 
-    func test_extensionWithInheritance() throws {
+    func test_initializer_withGenericParametersAndRequirements() throws {
         let source = #"""
-        protocol A {}
-        protocol B {}
-        extension String: A, B {}
+        struct SomeStruct {
+            init<T: Equatable>(value: T) where T: Hashable {}
+        }
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
         instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.extensions.count, 1)
+        XCTAssertEqual(instanceUnderTest.structures.count, 1)
 
-        let extensionUnderTest = instanceUnderTest.extensions[0]
-        XCTAssertEqual(extensionUnderTest.inheritance.count, 2)
-        XCTAssertEqual(extensionUnderTest.inheritance[0], "A")
-        XCTAssertEqual(extensionUnderTest.inheritance[1], "B")
-    }
+        let structUnderTest = instanceUnderTest.structures[0]
+        XCTAssertEqual(structUnderTest.initializers.count, 1)
 
-    func test_extensionWithGenericRequirements() throws {
-        let source = #"""
-        extension Array where Element: Comparable {}
-        """#
-        instanceUnderTest.updateToSource(source)
-        XCTAssertTrue(instanceUnderTest.isStale)
-        instanceUnderTest.collectChildren()
-        XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.extensions.count, 1)
+        let initializerUnderTest = structUnderTest.initializers[0]
 
-        let extensionUnderTest = instanceUnderTest.extensions[0]
-        XCTAssertEqual(extensionUnderTest.genericRequirements.count, 1)
-        XCTAssertEqual(extensionUnderTest.genericRequirements[0].relation, .conformance)
-        XCTAssertEqual(extensionUnderTest.genericRequirements[0].leftTypeIdentifier, "Element")
-        XCTAssertEqual(extensionUnderTest.genericRequirements[0].rightTypeIdentifier, "Comparable")
-        XCTAssertEqual(extensionUnderTest.genericRequirements[0].description, "Element: Comparable")
-        XCTAssertSourceStartPositionEquals(extensionUnderTest.sourceLocation, (line: 0, column: 0, utf8Offset: 0))
-        XCTAssertSourceEndPositionEquals(extensionUnderTest.sourceLocation, (line: 0, column: 44, utf8Offset: 44))
+        // Test parameters
+        XCTAssertEqual(initializerUnderTest.parameters.count, 1)
+        XCTAssertEqual(initializerUnderTest.parameters[0].type, .simple("T"))
+        XCTAssertEqual(initializerUnderTest.parameters[0].name, "value")
+        XCTAssertNil(initializerUnderTest.parameters[0].secondName, "value")
+        // Parameters have more extensive tests for initializer parameters
+
+        // Test generic parameters
+        XCTAssertEqual(initializerUnderTest.genericParameters.count, 1)
+        XCTAssertEqual(initializerUnderTest.genericParameters[0].name, "T")
+        XCTAssertEqual(initializerUnderTest.genericParameters[0].type, "Equatable")
+
+        // Test generic requirements
+        XCTAssertEqual(initializerUnderTest.genericRequirements.count, 1)
+        XCTAssertEqual(initializerUnderTest.genericRequirements[0].relation, .conformance)
+        XCTAssertEqual(initializerUnderTest.genericRequirements[0].leftTypeIdentifier, "T")
+        XCTAssertEqual(initializerUnderTest.genericRequirements[0].rightTypeIdentifier, "Hashable")
     }
 
     func test_hashable_equatable_willReturnExpectedResults() throws {
         let source = #"""
-        extension String {}
+        public required init?(withAge age: Int) throws {}
         """#
         let sourceTwo = #"""
-        extension String {}
+        public required init?(withAge age: Int) throws {}
         """#
         let sourceThree = #"""
-        extension String {}
-        public extension String {}
-        extension CustomType {}
+        public required init?(withAge age: Int) throws {}
+        public required init?(withAge age: Int) {}
+        public required init(withAge age: Int) throws {}
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
         instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.extensions.count, 1)
+        XCTAssertEqual(instanceUnderTest.initializers.count, 1)
 
-        let sampleOne = instanceUnderTest.extensions[0]
+        let sampleOne = instanceUnderTest.initializers[0]
 
         instanceUnderTest.updateToSource(sourceTwo)
         instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.extensions.count, 1)
+        XCTAssertEqual(instanceUnderTest.initializers.count, 1)
 
-        let sampleTwo = instanceUnderTest.extensions[0]
+        let sampleTwo = instanceUnderTest.initializers[0]
 
         instanceUnderTest.updateToSource(sourceThree)
         instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.extensions.count, 3)
+        XCTAssertEqual(instanceUnderTest.initializers.count, 3)
 
-        let sampleThree = instanceUnderTest.extensions[0]
-        let sampleFour = instanceUnderTest.extensions[1]
-        let otherSample = instanceUnderTest.extensions[2]
+        let sampleThree = instanceUnderTest.initializers[0]
+        let sampleFour = instanceUnderTest.initializers[1]
+        let otherSample = instanceUnderTest.initializers[2]
 
-        let equalCases: [(Extension, Extension)] = [
+        let equalCases: [(Initializer, Initializer)] = [
             (sampleOne, sampleTwo),
             (sampleOne, sampleThree),
             (sampleTwo, sampleThree)
         ]
-        let notEqualCases: [(Extension, Extension)] = [
+        let notEqualCases: [(Initializer, Initializer)] = [
             (sampleOne, sampleFour),
             (sampleOne, otherSample),
             (sampleTwo, sampleFour),

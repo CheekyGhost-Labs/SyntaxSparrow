@@ -55,12 +55,6 @@ public struct ConditionalCompilationBlock: Declaration, SyntaxSourceLocationReso
         _ = branches
     }
 
-    // MARK: - Properties: Child Collection
-
-    func collectChildren() {
-        // no-op
-    }
-
     // MARK: - Equatable
 
     public static func == (lhs: ConditionalCompilationBlock, rhs: ConditionalCompilationBlock) -> Bool {

@@ -143,6 +143,7 @@ class RootDeclarationCollector: SyntaxVisitor {
         if let entryNode = entryNode, node.id == entryNode.id { return .visitChildren }
         let declaration = Initializer(node: node, context: context)
         collection.initializers.append(declaration)
+        declaration.collectChildren()
         return .skipChildren
     }
 

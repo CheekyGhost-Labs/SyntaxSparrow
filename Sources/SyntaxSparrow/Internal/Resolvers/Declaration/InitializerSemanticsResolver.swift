@@ -33,6 +33,8 @@ class InitializerSemanticsResolver: DeclarationSemanticsResolving {
 
     private(set) lazy var keyword: String = resolveKeyword()
 
+    private(set) lazy var isOptional: Bool = resolveIsOptional()
+
     private(set) lazy var genericParameters: [GenericParameter] = resolveGenericParameters()
 
     private(set) lazy var genericRequirements: [GenericRequirement] = resolveGenericRequirements()
@@ -59,13 +61,17 @@ class InitializerSemanticsResolver: DeclarationSemanticsResolving {
         Attribute.fromAttributeList(node.attributes)
     }
 
+    private func resolveModifiers() -> [Modifier] {
+        guard let modifierList = node.modifiers else { return [] }
+        return modifierList.map { Modifier(node: $0) }
+    }
+
     private func resolveKeyword() -> String {
         node.initKeyword.text.trimmed
     }
 
-    private func resolveModifiers() -> [Modifier] {
-        guard let modifierList = node.modifiers else { return [] }
-        return modifierList.map { Modifier(node: $0) }
+    private func resolveIsOptional() -> Bool {
+        node.optionalMark != nil
     }
 
     private func resolveGenericParameters() -> [GenericParameter] {

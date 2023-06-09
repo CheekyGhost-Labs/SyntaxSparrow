@@ -28,10 +28,17 @@ final class ExtensionTests: XCTestCase {
     func test_basic_willResolveExpectedProperties() throws {
         let source = #"""
         extension String {
-          struct Nested {}
-          class Nested {}
-          enum Nested {}
-          typealias Nested = String
+            struct NestedStruct {}
+            class NestedClass {}
+            enum NestedEnum { case nested }
+            typealias NestedTypeAlias = String
+            func nestedFunction() {}
+            var nestedVariable: Int = 0
+            protocol NestedProtocol {}
+            subscript(nestedSubscript idx: Int) -> Int { return idx }
+            init(nestedInitializer: Int) {}
+            deinit { print("Nested deinit") }
+            infix operator +-: NestedOperator
         }
         """#
         instanceUnderTest.updateToSource(source)
@@ -46,9 +53,33 @@ final class ExtensionTests: XCTestCase {
         XCTAssertEqual(extensionUnderTest.modifiers.count, 0)
         XCTAssertEqual(extensionUnderTest.attributes.count, 0)
         XCTAssertSourceStartPositionEquals(extensionUnderTest.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(extensionUnderTest.sourceLocation, (5, 1, 102))
+        XCTAssertSourceEndPositionEquals(extensionUnderTest.sourceLocation, (12, 1, 413))
         XCTAssertEqual(extensionUnderTest.extractFromSource(source), source)
+        // Children
+        XCTAssertEqual(extensionUnderTest.structures.count, 1)
+        XCTAssertEqual(extensionUnderTest.structures[0].name, "NestedStruct")
+        XCTAssertEqual(extensionUnderTest.classes.count, 1)
+        XCTAssertEqual(extensionUnderTest.classes[0].name, "NestedClass")
+        XCTAssertEqual(extensionUnderTest.enumerations.count, 1)
+        XCTAssertEqual(extensionUnderTest.enumerations[0].name, "NestedEnum")
+        XCTAssertEqual(extensionUnderTest.typealiases.count, 1)
+        XCTAssertEqual(extensionUnderTest.typealiases[0].name, "NestedTypeAlias")
+        XCTAssertEqual(extensionUnderTest.functions.count, 1)
+        XCTAssertEqual(extensionUnderTest.functions[0].identifier, "nestedFunction")
+        XCTAssertEqual(extensionUnderTest.variables.count, 1)
+        XCTAssertEqual(extensionUnderTest.variables[0].name, "nestedVariable")
+        XCTAssertEqual(extensionUnderTest.protocols.count, 1)
+        XCTAssertEqual(extensionUnderTest.protocols[0].name, "NestedProtocol")
+        XCTAssertEqual(extensionUnderTest.subscripts.count, 1)
+        XCTAssertEqual(extensionUnderTest.subscripts[0].keyword, "subscript")
+        XCTAssertEqual(extensionUnderTest.initializers.count, 1)
+        XCTAssertEqual(extensionUnderTest.initializers[0].keyword, "init")
+        XCTAssertEqual(extensionUnderTest.deinitializers.count, 1)
+        XCTAssertEqual(extensionUnderTest.deinitializers[0].keyword, "deinit")
+        XCTAssertEqual(extensionUnderTest.operators.count, 1)
+        XCTAssertEqual(extensionUnderTest.operators[0].name, "+-")
     }
+
 
     func test_extensionWithAttributes() throws {
         let source = #"""

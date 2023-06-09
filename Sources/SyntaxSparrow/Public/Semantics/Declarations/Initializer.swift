@@ -28,7 +28,7 @@ public struct Initializer: Declaration, SyntaxChildCollecting, SyntaxSourceLocat
     ///
     /// If `true`, the initializer is declared with a `?` (e.g., `init?()`), which means it can return `nil`.
     /// If `false`, the initializer is a regular initializer (e.g., `init()`).
-    public let optional: Bool = false
+    public var isOptional: Bool { resolver.isOptional }
 
     /// Array of attributes found in the declaration.
     ///

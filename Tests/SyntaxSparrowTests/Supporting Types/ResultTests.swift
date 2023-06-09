@@ -24,5 +24,4 @@ final class ResultTests: XCTestCase {
     }
 
     // MARK: - Tests
-
 }

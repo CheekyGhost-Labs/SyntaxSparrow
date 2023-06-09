@@ -10,7 +10,8 @@ import SwiftSyntax
 
 /// Represents a Swift function or method parameter.
 ///
-/// A parameter is a variable in a method or function definition that accepts input from the caller of the method or function. In Swift, function parameters can have a
+/// A parameter is a variable in a method or function definition that accepts input from the caller of the method or function. In Swift, function
+/// parameters can have a
 /// variety of attributes, including labels, types, default values, and special attributes like `inout`.
 ///
 /// An instance of the `Parameter` struct provides access to:
@@ -19,10 +20,13 @@ import SwiftSyntax
 /// - Whether the parameter is marked with `inout` or its label is omitted.
 /// - The default argument of the parameter, if any.
 ///
-/// A parameter has common properties, and then a ``SyntaxSparrow/EntityType`` property which further describes the input by including associated properties as needed.
-/// For example, a parameter with the type`.closure` will have a `Closure` provided, where as a parameter with the `.tuple` type will have a ``SyntaxSparrow/Tuple`` associated properties.
+/// A parameter has common properties, and then a ``SyntaxSparrow/EntityType`` property which further describes the input by including associated
+/// properties as needed.
+/// For example, a parameter with the type`.closure` will have a `Closure` provided, where as a parameter with the `.tuple` type will have a
+/// ``SyntaxSparrow/Tuple`` associated properties.
 ///
-/// This struct also includes functionality to create a `Parameter` instance from either a `FunctionParameterSyntax` node or a `TupleTypeElementSyntax` node.
+/// This struct also includes functionality to create a `Parameter` instance from either a `FunctionParameterSyntax` node or a
+/// `TupleTypeElementSyntax` node.
 public struct Parameter: Hashable, Equatable, CustomStringConvertible {
     // MARK: - Properties
 
@@ -59,7 +63,8 @@ public struct Parameter: Hashable, Equatable, CustomStringConvertible {
     /// ```
     /// - The first parameter type will be `.simple("Person")`
     /// - The second parameter type will be `.simple("String")`
-    /// - The third parameter type will be `.dimensions(Tuple)` where the associated tuple has parameters with types `.simple("Double")` and `.simple("Double")`
+    /// - The third parameter type will be `.dimensions(Tuple)` where the associated tuple has parameters with types `.simple("Double")` and
+    /// `.simple("Double")`
     /// - See: ``SyntaxSparrow/EntityType``
     var type: EntityType { resolver.type }
 

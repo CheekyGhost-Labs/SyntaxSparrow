@@ -10,7 +10,8 @@ import SwiftSyntax
 
 /// `ParameterNodeSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting
 /// children of a `TupleTypeElementSyntax` node.
-/// It exposes the expected properties of a `Tuple` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed repeatedly.
+/// It exposes the expected properties of a `Tuple` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed
+/// repeatedly.
 class TupleParameterSemanticsResolver: ParameterNodeSemanticsResolving {
     // MARK: - Properties: DeclarationSemanticsResolving
 

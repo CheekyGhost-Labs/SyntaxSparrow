@@ -24,5 +24,4 @@ final class ClosureTests: XCTestCase {
     }
 
     // MARK: - Tests
-
 }

@@ -25,6 +25,6 @@ final class DeinitializerTests: XCTestCase {
     }
 
     // TODO: Enable declaration collection
-    // MARK: - Tests
 
+    // MARK: - Tests
 }

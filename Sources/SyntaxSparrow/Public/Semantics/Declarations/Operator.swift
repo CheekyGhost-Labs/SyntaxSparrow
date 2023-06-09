@@ -69,8 +69,8 @@ public struct Operator: Declaration, SyntaxSourceLocationResolving {
     )
     @available(
         *,
-         deprecated,
-         message: "SyntaxSparrow is removing support for operator attributes in version 2.0 to align with Swift 5.9 and latest SwiftSyntax."
+        deprecated,
+        message: "SyntaxSparrow is removing support for operator attributes in version 2.0 to align with Swift 5.9 and latest SwiftSyntax."
     )
     public var attributes: [Attribute] { resolver.attributes }
 
@@ -83,8 +83,8 @@ public struct Operator: Declaration, SyntaxSourceLocationResolving {
     )
     @available(
         *,
-         deprecated,
-         message: "SyntaxSparrow is removing support for operator modifiers in version 2.0 to align with Swift 5.9 and latest SwiftSyntax."
+        deprecated,
+        message: "SyntaxSparrow is removing support for operator modifiers in version 2.0 to align with Swift 5.9 and latest SwiftSyntax."
     )
     public var modifiers: [Modifier] { resolver.modifiers }
 

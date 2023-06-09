@@ -10,7 +10,8 @@ import SwiftSyntax
 
 /// Represents a Swift closure expression.
 ///
-/// A closure is a self-contained block of functionality that can be passed around and used in your code. In Swift, closures are similar to blocks in C and Objective-C and
+/// A closure is a self-contained block of functionality that can be passed around and used in your code. In Swift, closures are similar to blocks in
+/// C and Objective-C and
 /// to lambdas in other programming languages.
 ///
 /// An instance of the `Closure` struct provides access to:

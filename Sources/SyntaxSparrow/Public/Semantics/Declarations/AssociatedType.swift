@@ -19,7 +19,8 @@ import SwiftSyntax
 ///
 /// Each instance of ``SyntaxSparrow/AssociatedType`` corresponds to a `AssociatedtypeDeclSyntax` node in the Swift syntax tree.
 ///
-/// The `AssociatedType` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the associated type declaration is located.
+/// The `AssociatedType` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the associated
+/// type declaration is located.
 public struct AssociatedType: Declaration, SyntaxSourceLocationResolving {
     // MARK: - Properties: Computed
 

@@ -10,7 +10,8 @@ import SwiftSyntax
 
 /// Represents a Swift accessor declaration.
 ///
-/// An accessor is a special kind of method that gets, sets, or computes the value of a variable. In Swift, they are typically found within property and subscript declarations.
+/// An accessor is a special kind of method that gets, sets, or computes the value of a variable. In Swift, they are typically found within property
+/// and subscript declarations.
 ///
 /// An instance of the `Accessor` struct provides access to:
 /// - The kind of accessor, which can be `get` or `set`.

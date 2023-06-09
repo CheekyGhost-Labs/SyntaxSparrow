@@ -24,5 +24,4 @@ final class GenericRequirementTests: XCTestCase {
     }
 
     // MARK: - Tests
-
 }

@@ -21,7 +21,8 @@ import SwiftSyntax
 ///
 /// Each instance of ``SyntaxSparrow/Typealias`` corresponds to a `TypealiasDeclSyntax` node in the Swift syntax tree.
 ///
-/// The `Typealias` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the typealias declaration is located.
+/// The `Typealias` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the typealias
+/// declaration is located.
 public struct Typealias: Declaration, SyntaxSourceLocationResolving {
     // MARK: - Properties: Computed
 

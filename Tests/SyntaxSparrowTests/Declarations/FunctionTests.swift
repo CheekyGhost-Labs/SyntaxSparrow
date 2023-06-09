@@ -286,7 +286,7 @@ final class FunctionTests: XCTestCase {
         let equalCases: [(ConditionalCompilationBlock, ConditionalCompilationBlock)] = [
             (sampleOne, sampleTwo),
             (sampleOne, sampleThree),
-            (sampleTwo, sampleThree),
+            (sampleTwo, sampleThree)
         ]
         let notEqualCases: [(ConditionalCompilationBlock, ConditionalCompilationBlock)] = [
             (sampleOne, sampleFour),
@@ -294,7 +294,7 @@ final class FunctionTests: XCTestCase {
             (sampleTwo, sampleFour),
             (sampleTwo, otherSample),
             (sampleThree, sampleFour),
-            (sampleThree, otherSample),
+            (sampleThree, otherSample)
         ]
         equalCases.forEach {
             XCTAssertEqual($0.0, $0.1)
@@ -325,7 +325,7 @@ final class FunctionTests: XCTestCase {
             (sampleThree.branches[0], sampleFour.branches[0]),
             (sampleThree.branches[1], sampleFour.branches[1]),
             (sampleThree.branches[0], otherSample.branches[0]),
-            (sampleThree.branches[1], otherSample.branches[1]),
+            (sampleThree.branches[1], otherSample.branches[1])
         ]
         equalBranchCases.forEach {
             XCTAssertEqual($0.0, $0.1)

@@ -58,7 +58,8 @@ public struct ProtocolDecl: Declaration, SyntaxSourceLocationResolving {
     /// ```
     /// - The first type is `"Parameter"` with no inheritand or requirements
     /// - The second type is `"Object"` which needs to inherit `["Equatable"]`
-    /// - The third  type is `"Node"` which needs to be a class type (`["AnyObject"]`) and the inferred `"Node"` type is required to conform to `Hashable`
+    /// - The third  type is `"Node"` which needs to be a class type (`["AnyObject"]`) and the inferred `"Node"` type is required to conform to
+    /// `Hashable`
     public var associatedTypes: [AssociatedType] { resolver.associatedTypes }
 
     /// The primary associated types for the declaration.

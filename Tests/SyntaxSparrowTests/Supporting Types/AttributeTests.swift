@@ -24,5 +24,4 @@ final class AttributeTests: XCTestCase {
     }
 
     // MARK: - Tests
-
 }

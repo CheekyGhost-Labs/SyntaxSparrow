@@ -22,11 +22,15 @@ public protocol SyntaxExplorerContextProviding {
     /// the appropriate view mode considering the state of the source code being analyzed.
     ///
     /// - `strict`: In this mode, the explorer expects well-formed and valid Swift syntax. If it encounters unexpected or invalid tokens,
-    /// it throws an error and halts the traversal. This mode should be used when the source code is known to be error-free, such as after successful compilation.
+    /// it throws an error and halts the traversal. This mode should be used when the source code is known to be error-free, such as after successful
+    /// compilation.
     /// - `tolerant`: In this mode, the explorer is more lenient and tries to recover from unexpected or invalid tokens, continuing the
-    /// traversal as best as it can. This mode should be used when the source code might contain errors, such as during editing or in the case of partial code snippets.
-    /// - `fixedUp`: This mode aims to strike a balance between `strict` and `tolerant`. It attempts to fix up minor errors in the source code while parsing, allowing
-    /// for smoother traversal. However, for major errors, it behaves like the `strict` mode and throws an error. This mode can be useful when working with code that may
+    /// traversal as best as it can. This mode should be used when the source code might contain errors, such as during editing or in the case of
+    /// partial code snippets.
+    /// - `fixedUp`: This mode aims to strike a balance between `strict` and `tolerant`. It attempts to fix up minor errors in the source code while
+    /// parsing, allowing
+    /// for smoother traversal. However, for major errors, it behaves like the `strict` mode and throws an error. This mode can be useful when working
+    /// with code that may
     /// contain minor errors, but is largely well-formed.
     ///
     /// The `viewMode` property of the `SyntaxExplorer` holds the chosen `SyntaxTreeViewMode` value for the instance and its child nodes.
@@ -34,13 +38,15 @@ public protocol SyntaxExplorerContextProviding {
 
     /// The `SourceLocationConverter` instance used for resolving the start and end bounds of declarations.
     ///
-    /// **Note:** This property is configured for use when the ``SyntaxSparrow/SyntaxTree/collectChildren()`` method is invoked. If an empty or invalid
+    /// **Note:** This property is configured for use when the ``SyntaxSparrow/SyntaxTree/collectChildren()`` method is invoked. If an empty or
+    /// invalid
     /// locator is detected, it will be re-created when needed based on the current parsing context.
     var sourceLocationConverter: SparrowSourceLocationConverter { get }
 
     /// Bool flag indicating if the latest `sourceBuffer` has not been collected yet.
     ///
-    /// If this flag is `true` you should run the ``SyntaxSparrow/SyntaxTree/collectChildren()`` or equivilant collection method to ensure the collected
+    /// If this flag is `true` you should run the ``SyntaxSparrow/SyntaxTree/collectChildren()`` or equivilant collection method to ensure the
+    /// collected
     /// declarations are up to date.
     var isStale: Bool { get }
 }

@@ -24,5 +24,4 @@ final class AccessorTests: XCTestCase {
     }
 
     // MARK: - Tests
-
 }

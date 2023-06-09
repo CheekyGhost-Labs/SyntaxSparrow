@@ -321,7 +321,7 @@ final class StructureTests: XCTestCase {
         let equalCases: [(Structure, Structure)] = [
             (sampleOne, sampleTwo),
             (sampleOne, sampleThree),
-            (sampleTwo, sampleThree),
+            (sampleTwo, sampleThree)
         ]
         let notEqualCases: [(Structure, Structure)] = [
             (sampleOne, sampleFour),
@@ -329,7 +329,7 @@ final class StructureTests: XCTestCase {
             (sampleTwo, sampleFour),
             (sampleTwo, otherSample),
             (sampleThree, sampleFour),
-            (sampleThree, otherSample),
+            (sampleThree, otherSample)
         ]
         equalCases.forEach {
             XCTAssertEqual($0.0, $0.1)

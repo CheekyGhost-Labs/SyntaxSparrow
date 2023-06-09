@@ -10,7 +10,8 @@ import SwiftParser
 import SwiftSyntax
 
 /// A class responsible for collecting declarations, such as `Structure`, `Class`, `Enumeration`, `Function`, etc., from a node.
-/// The collector will impose a (configurable) limit on how deep to traverse from the provided node since the declaration types will support the `SyntaxExploring` protocol
+/// The collector will impose a (configurable) limit on how deep to traverse from the provided node since the declaration types will support the
+/// `SyntaxExploring` protocol
 /// and utilize another `RootDeclarationCollector` instance to collect their child declarations.
 class RootDeclarationCollector: SyntaxVisitor {
     // MARK: - Properties
@@ -18,7 +19,8 @@ class RootDeclarationCollector: SyntaxVisitor {
     /// `DeclarationCollection` instance to collect results into.
     private(set) var collection: DeclarationCollection = .init()
 
-    /// `SyntaxExplorerContext` instance holding root collection details and instances. This context will be shared with any child elements that require lazy evaluation or collection
+    /// `SyntaxExplorerContext` instance holding root collection details and instances. This context will be shared with any child elements that
+    /// require lazy evaluation or collection
     /// as needed. It is `Actor` based to ensure thread safety.
     public let context: SyntaxExplorerContext
 

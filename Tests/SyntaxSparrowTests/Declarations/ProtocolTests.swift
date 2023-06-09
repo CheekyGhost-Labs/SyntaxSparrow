@@ -66,7 +66,7 @@ final class ProtocolTests: XCTestCase {
         XCTAssertEqual(protocolUnderTest.attributes[0].name, "available")
         XCTAssertAttributesArgumentsEqual(protocolUnderTest.attributes[0], [
             (nil, "iOS 15"),
-            (nil, "*"),
+            (nil, "*")
         ])
         XCTAssertEqual(protocolUnderTest.modifiers.count, 0)
         XCTAssertEqual(protocolUnderTest.keyword, "protocol")
@@ -221,7 +221,7 @@ final class ProtocolTests: XCTestCase {
         let equalCases: [(ProtocolDecl, ProtocolDecl)] = [
             (sampleOne, sampleTwo),
             (sampleOne, sampleThree),
-            (sampleTwo, sampleThree),
+            (sampleTwo, sampleThree)
         ]
         let notEqualCases: [(ProtocolDecl, ProtocolDecl)] = [
             (sampleOne, sampleFour),
@@ -229,7 +229,7 @@ final class ProtocolTests: XCTestCase {
             (sampleTwo, sampleFour),
             (sampleTwo, otherSample),
             (sampleThree, sampleFour),
-            (sampleThree, otherSample),
+            (sampleThree, otherSample)
         ]
         equalCases.forEach {
             XCTAssertEqual($0.0, $0.1)

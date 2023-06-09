@@ -8,8 +8,10 @@
 import Foundation
 import SwiftSyntax
 
-/// `NodeSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a `TupleTypeSyntax` node.
-/// It exposes the expected properties of a `Tuple` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed repeatedly.
+/// `NodeSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a `TupleTypeSyntax`
+/// node.
+/// It exposes the expected properties of a `Tuple` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed
+/// repeatedly.
 class TupleElementListSemanticsResolver: TupleNodeSemanticsResolving {
     // MARK: - Properties: NodeSemanticsResolving
 

@@ -14,7 +14,8 @@ import Foundation
 /// As support for more complex types are added they will be added as a dedicated enumeration case to the `EntityType`
 public enum EntityType: Equatable, Hashable, CustomStringConvertible {
     /// A `simple` type refers to a standard swift type can't does not have any nested or related syntax.
-    /// **Note:** This is also used for any unsupported syntax types. i.e `CVarArg` is not currently supported so it will use the `.simple("CVarArg...")`
+    /// **Note:** This is also used for any unsupported syntax types. i.e `CVarArg` is not currently supported so it will use the
+    /// `.simple("CVarArg...")`
     case simple(_ type: String)
 
     /// A `tuple` type is used when a parameter's type is a valid ``SyntaxSparrow/Tuple`` type.

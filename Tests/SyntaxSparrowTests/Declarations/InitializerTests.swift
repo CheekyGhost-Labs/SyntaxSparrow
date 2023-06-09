@@ -66,7 +66,7 @@ final class InitializerTests: XCTestCase {
         XCTAssertEqual(extensionUnderTest.attributes[0].name, "available")
         XCTAssertAttributesArgumentsEqual(extensionUnderTest.attributes[0], [
             (nil, "iOS 15"),
-            (nil, "*"),
+            (nil, "*")
         ])
         XCTAssertEqual(extensionUnderTest.attributes[0].description, "@available(iOS 15, *)")
         XCTAssertSourceStartPositionEquals(extensionUnderTest.sourceLocation, (line: 0, column: 0, utf8Offset: 0))
@@ -167,7 +167,7 @@ final class InitializerTests: XCTestCase {
         let equalCases: [(Extension, Extension)] = [
             (sampleOne, sampleTwo),
             (sampleOne, sampleThree),
-            (sampleTwo, sampleThree),
+            (sampleTwo, sampleThree)
         ]
         let notEqualCases: [(Extension, Extension)] = [
             (sampleOne, sampleFour),
@@ -175,7 +175,7 @@ final class InitializerTests: XCTestCase {
             (sampleTwo, sampleFour),
             (sampleTwo, otherSample),
             (sampleThree, sampleFour),
-            (sampleThree, otherSample),
+            (sampleThree, otherSample)
         ]
         equalCases.forEach {
             XCTAssertEqual($0.0, $0.1)

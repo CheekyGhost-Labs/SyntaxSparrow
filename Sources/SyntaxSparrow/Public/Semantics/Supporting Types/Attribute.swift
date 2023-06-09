@@ -7,13 +7,15 @@
 
 import SwiftSyntax
 
-/// Represents a Swift attribute declaration. An attribute provides metadata about a declaration or type. In Swift, they appear before a declaration, preceded by the @ symbol.
+/// Represents a Swift attribute declaration. An attribute provides metadata about a declaration or type. In Swift, they appear before a declaration,
+/// preceded by the @ symbol.
 ///
 /// For example: `@available(*, unavailable, message: "this is not available")`, `@discardableResult` etc
 ///
 /// An instance of the `Attribute` struct provides access to:
 /// - The name of the attribute, which is the identifier that follows the @ symbol.
-/// - Any arguments that the attribute takes. Some attributes can take one or more arguments with a value and optional name.Arguments are represented by the nested `Argument` struct.
+/// - Any arguments that the attribute takes. Some attributes can take one or more arguments with a value and optional name.Arguments are represented
+/// by the nested `Argument` struct.
 ///
 /// The `Attribute` struct also includes functionality to create an attribute instance from an `AttributeSyntax` node and
 /// create an array of attribute instances from an `AttributeListSyntax` node.

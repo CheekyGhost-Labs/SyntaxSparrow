@@ -24,5 +24,4 @@ final class TupleTests: XCTestCase {
     }
 
     // MARK: - Tests
-
 }

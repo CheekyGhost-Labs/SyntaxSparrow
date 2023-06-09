@@ -22,14 +22,14 @@ class SkipByDefaultVisitor: SyntaxVisitor {
     // Pending update - Leaving in for future reference
 
     /*
-    override func visit(_: ImportPathComponentSyntax) -> SyntaxVisitorContinueKind {
-        return .skipChildren
-    }
+     override func visit(_: ImportPathComponentSyntax) -> SyntaxVisitorContinueKind {
+         return .skipChildren
+     }
 
-    override func visit(_: ImportPathSyntax) -> SyntaxVisitorContinueKind {
-        return .skipChildren
-    }
-     */
+     override func visit(_: ImportPathSyntax) -> SyntaxVisitorContinueKind {
+         return .skipChildren
+     }
+      */
 
     override func visit(_: AccessorBlockSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren

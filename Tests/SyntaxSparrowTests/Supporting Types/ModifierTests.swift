@@ -24,5 +24,4 @@ final class ModifierTests: XCTestCase {
     }
 
     // MARK: - Tests
-
 }

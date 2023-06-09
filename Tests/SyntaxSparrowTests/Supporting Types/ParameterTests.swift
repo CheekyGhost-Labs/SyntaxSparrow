@@ -24,5 +24,4 @@ final class ParameterTests: XCTestCase {
     }
 
     // MARK: - Tests
-
 }

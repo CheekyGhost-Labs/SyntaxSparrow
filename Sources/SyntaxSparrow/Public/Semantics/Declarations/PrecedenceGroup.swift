@@ -13,7 +13,8 @@ import SwiftSyntax
 /// In Swift, operators belong to a certain precedence group. This precedence group determines how an operator interacts with
 /// other operators and how expressions involving this operator are evaluated.
 ///
-/// Precedence groups have several properties that affect this interaction, including the group's associativity, assignment and the relation to other groups.
+/// Precedence groups have several properties that affect this interaction, including the group's associativity, assignment and the relation to other
+/// groups.
 ///
 /// A precedence group is defined using the `precedencegroup` keyword followed by the group's name and body. The body contains the group's properties.
 ///
@@ -32,7 +33,8 @@ import SwiftSyntax
 ///
 /// Each instance of ``SyntaxSparrow/PrecedenceGroup`` corresponds to an `PrecedenceGroupDeclSyntax` node in the Swift syntax tree.
 ///
-/// This type conforms to the `Declaration` protocol, `SyntaxSourceLocationResolving` protocol, `Equatable`, `Hashable`, and `CustomStringConvertible`.
+/// This type conforms to the `Declaration` protocol, `SyntaxSourceLocationResolving` protocol, `Equatable`, `Hashable`, and
+/// `CustomStringConvertible`.
 public struct PrecedenceGroup: Declaration, SyntaxSourceLocationResolving {
     // MARK: - Supplementary
 

@@ -24,5 +24,4 @@ final class EntityTypeTests: XCTestCase {
     }
 
     // MARK: - Tests
-
 }

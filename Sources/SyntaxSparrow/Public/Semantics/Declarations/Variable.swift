@@ -21,7 +21,8 @@ import SwiftSyntax
 ///
 /// Each instance of ``SyntaxSparrow/Variable`` corresponds to a `PatternBindingSyntax` node in the Swift syntax tree.
 ///
-/// The `Variable` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the variable declaration is located.
+/// The `Variable` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the variable
+/// declaration is located.
 public struct Variable: Declaration, SyntaxSourceLocationResolving {
     // MARK: - Properties
 

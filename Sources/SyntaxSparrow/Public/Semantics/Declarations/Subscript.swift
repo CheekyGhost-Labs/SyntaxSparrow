@@ -22,7 +22,8 @@ import SwiftSyntax
 ///
 /// Each instance of ``SyntaxSparrow/Structure`` corresponds to a `StructDeclSyntax` node in the Swift syntax tree.
 ///
-/// The `Subscript` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the subscript declaration is located.
+/// The `Subscript` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the subscript
+/// declaration is located.
 public struct Subscript: Declaration, SyntaxSourceLocationResolving {
     // MARK: - Properties
 

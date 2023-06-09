@@ -8,8 +8,10 @@
 import Foundation
 import SwiftSyntax
 
-/// `NodeSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a `GenericArgumentListSyntax` node.
-/// It exposes the expected properties of a `Result` type as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed repeatedly.
+/// `NodeSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a
+/// `GenericArgumentListSyntax` node.
+/// It exposes the expected properties of a `Result` type as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when
+/// accessed repeatedly.
 /// The `GenericArgumentListSyntax` is resolved from a `SimpleTypeIdentifierSyntax`.
 class ResultSemanticsResolver: NodeSemanticsResolving {
     // MARK: - Properties: NodeSemanticsResolving

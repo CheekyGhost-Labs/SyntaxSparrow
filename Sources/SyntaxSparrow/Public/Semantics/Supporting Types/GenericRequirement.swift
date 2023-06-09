@@ -10,7 +10,8 @@ import SwiftSyntax
 
 /// Class representing a generic requirement on a declaration.
 ///
-/// A generic type ofr function can specify one or more requirements as part of a `generic where clause` before the opening curly brace `{` of it's body.
+/// A generic type ofr function can specify one or more requirements as part of a `generic where clause` before the opening curly brace `{` of it's
+/// body.
 /// Each generic requirement establishes a relation between two type identifiers.
 ///
 /// For example, in the following declaration, two generic requirements are defined:
@@ -27,7 +28,8 @@ import SwiftSyntax
 /// protocol P where Self: AnyObject {...}
 /// ```
 /// - The layout relation defines an `AnyObject` constraint: Specifying that an associated type must be a class type.
-/// **Note:** All `layout` relation requirements will have a `leftTypeIdentifier` of `Self`. While not explicitly defined in the requirement itself, it is a
+/// **Note:** All `layout` relation requirements will have a `leftTypeIdentifier` of `Self`. While not explicitly defined in the requirement itself,
+/// it is a
 /// pre-requisite for the declaration.
 public class GenericRequirement: Equatable, Hashable, CustomStringConvertible, CustomDebugStringConvertible {
     /**
@@ -54,7 +56,8 @@ public class GenericRequirement: Equatable, Hashable, CustomStringConvertible, C
         case conformance
 
         /// A layout requirement specifies a constraint on the memory layout of an associated type.
-        /// i.e It could specify that the associated type must be a class (reference type), or that it must be a type that doesn't have a known size at compile time (e.g., an existential type).
+        /// i.e It could specify that the associated type must be a class (reference type), or that it must be a type that doesn't have a known size
+        /// at compile time (e.g., an existential type).
         /// For example:
         /// ```swift
         /// protocol P where Self: AnyObject {...}
@@ -67,7 +70,8 @@ public class GenericRequirement: Equatable, Hashable, CustomStringConvertible, C
     public var relation: Relation { resolver.relation }
 
     /// The identifier for the left-hand side type.
-    /// **Note:** When the relation is `.layout` the value will always be `Self`. While this is accurate, it is worth noting that it is not directly declared in he requirement
+    /// **Note:** When the relation is `.layout` the value will always be `Self`. While this is accurate, it is worth noting that it is not directly
+    /// declared in he requirement
     public var leftTypeIdentifier: String { resolver.leftTypeIdentifier }
 
     /// The identifier for the right-hand side type.

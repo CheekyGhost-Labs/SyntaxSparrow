@@ -54,12 +54,14 @@ class ImportSemanticsResolver: DeclarationSemanticsResolving {
     }
 
     private func resolveKeyword() -> String {
-        node.importKeyword.text.trimmed
+        node.importTok.text.trimmed
+        // Pending update - leaving here for easier reference
+        // node.importKeyword.text.trimmed
     }
 
     private func resolveModifiers() -> [Modifier] {
         guard let modifierList = node.modifiers else { return [] }
-        return modifierList.map { Modifier($0) }
+        return modifierList.map { Modifier(node: $0) }
     }
 
     private func resolveKind() -> String? {

@@ -118,17 +118,17 @@ public struct Parameter: Hashable, Equatable, CustomStringConvertible {
     // MARK: - Lifecycle
 
     /// Creates a new ``SyntaxSparrow/Parameter`` instance from an `FunctionParameterSyntax` node.
-    public init(_ node: FunctionParameterSyntax) {
+    public init(node: FunctionParameterSyntax) {
         resolver = FunctionParameterSemanticsResolver(node: node)
     }
 
     /// Creates a new ``SyntaxSparrow/Parameter`` instance from an `TupleTypeElementSyntax` node.
-    public init(_ node: TupleTypeElementSyntax) {
+    public init(node: TupleTypeElementSyntax) {
         resolver = TupleParameterSemanticsResolver(node: node)
     }
 
     /// Creates a new ``SyntaxSparrow/Parameter`` instance from an `TupleTypeElementSyntax` node.
-    public init(_ node: EnumCaseParameterSyntax) {
+    public init(node: EnumCaseParameterSyntax) {
         resolver = EnumCaseParameterSemanticsResolver(node: node)
     }
 

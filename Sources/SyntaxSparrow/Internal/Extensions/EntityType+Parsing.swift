@@ -37,7 +37,7 @@ extension EntityType {
             } else if tupleTypeSyntax.elements.isEmpty {
                 return .void
             }
-            let tuple = Tuple(tupleTypeSyntax)
+            let tuple = Tuple(node: tupleTypeSyntax)
             return .tuple(tuple)
         }
 

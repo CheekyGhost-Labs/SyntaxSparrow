@@ -80,7 +80,7 @@ public class GenericRequirement: Equatable, Hashable, CustomStringConvertible, C
     // MARK: - Lifecycle
 
     /// Creates a new ``SyntaxSparrow/GenericRequirement`` instance from an `GenericRequirementSyntax` node.
-    public init(_ node: GenericRequirementSyntax) {
+    public init(node: GenericRequirementSyntax) {
         resolver = GenericRequirementSemanticsResolver(node: node)
     }
 
@@ -93,7 +93,7 @@ public class GenericRequirement: Equatable, Hashable, CustomStringConvertible, C
      */
     public static func fromRequirementList(from node: GenericRequirementListSyntax?) -> [GenericRequirement] {
         guard let node = node else { return [] }
-        return node.compactMap { GenericRequirement($0) }
+        return node.compactMap { GenericRequirement(node: $0) }
     }
 
     // MARK: - Equatable

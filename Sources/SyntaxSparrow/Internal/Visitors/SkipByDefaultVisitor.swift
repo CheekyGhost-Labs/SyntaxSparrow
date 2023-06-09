@@ -10,6 +10,18 @@ import SwiftSyntax
 
 /// `SyntaxVisitor` subclass that returns `.skipChildren` for any visitaions.
 class SkipByDefaultVisitor: SyntaxVisitor {
+
+    override func visit(_: AccessPathComponentSyntax) -> SyntaxVisitorContinueKind {
+        return .skipChildren
+    }
+
+    override func visit(_: AccessPathSyntax) -> SyntaxVisitorContinueKind {
+        return .skipChildren
+    }
+
+    // Pending update - Leaving in for future reference
+
+    /*
     override func visit(_: ImportPathComponentSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
@@ -17,6 +29,7 @@ class SkipByDefaultVisitor: SyntaxVisitor {
     override func visit(_: ImportPathSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
+     */
 
     override func visit(_: AccessorBlockSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren

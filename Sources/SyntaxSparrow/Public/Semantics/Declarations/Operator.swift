@@ -59,6 +59,35 @@ public struct Operator: Declaration, SyntaxSourceLocationResolving {
 
     // MARK: - Properties
 
+    /// Array of attributes found in the declaration.
+    ///
+    /// - See: ``SyntaxSparrow/Attribute``
+    @available(
+        swift,
+        deprecated: 5.9, obsoleted: 5.9,
+        message: "Swift is dropping support for operator attributes in 5.9."
+    )
+    @available(
+        *,
+         deprecated,
+         message: "SyntaxSparrow is removing support for operator attributes in version 2.0 to align with Swift 5.9 and latest SwiftSyntax."
+    )
+    public var attributes: [Attribute] { resolver.attributes }
+
+    /// Array of modifiers found in the declaration.
+    /// - See: ``SyntaxSparrow/Modifier``
+    @available(
+        swift,
+        deprecated: 5.9, obsoleted: 5.9,
+        message: "Swift is dropping support for operator modifiers in 5.9."
+    )
+    @available(
+        *,
+         deprecated,
+         message: "SyntaxSparrow is removing support for operator modifiers in version 2.0 to align with Swift 5.9 and latest SwiftSyntax."
+    )
+    public var modifiers: [Modifier] { resolver.modifiers }
+
     /// The declaration keyword.
     ///
     /// i.e: `"operator"`

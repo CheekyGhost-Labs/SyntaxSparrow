@@ -16,9 +16,9 @@ on:
       - main
       - develop
       - 'release/**'
-	push:
+    push:
       tags:
-	    - '*' # Push events to every tag
+        - '*' # Push events to every tag
 
 jobs:
   build:

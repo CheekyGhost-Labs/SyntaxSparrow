@@ -160,6 +160,58 @@ final class StructureTests: XCTestCase {
         )
     }
 
+    func test_standard_withAttributes_willResolveExpectedProperties() throws {
+        let attributeExpectations: [(String?, String)] = [
+            (nil, "*"),
+            (nil, "unavailable"),
+            ("message", "\"my message\"")
+        ]
+        let source = #"""
+        @available(*, unavailable, message: "my message")
+        struct A {
+          struct B {
+            @available(*, unavailable, message: "my message")
+            struct C { }
+          }
+        }
+        """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        XCTAssertEqual(instanceUnderTest.structures.count, 1)
+        // A
+        var structUnderTest = instanceUnderTest.structures[0]
+        XCTAssertEqual(structUnderTest.name, "A")
+        var attributes = structUnderTest.attributes[0]
+        XCTAssertEqual(attributes.name, "available")
+        XCTAssertEqual(attributes.arguments.count, 3)
+        let classAMap = attributes.arguments.map { ($0.name, $0.value) }
+        for (index, arg) in classAMap.enumerated() {
+            let expected = attributeExpectations[index]
+            XCTAssertEqual(arg.0, expected.0)
+            XCTAssertEqual(arg.1, expected.1)
+        }
+        // B
+        structUnderTest = structUnderTest.structures[0]
+        XCTAssertEqual(structUnderTest.name, "B")
+        XCTAssertEqual(structUnderTest.attributes.count, 0)
+        // C
+        structUnderTest = structUnderTest.structures[0]
+        XCTAssertEqual(structUnderTest.name, "C")
+        XCTAssertEqual(structUnderTest.attributes.count, 1)
+        // Attributes
+        attributes = structUnderTest.attributes[0]
+        XCTAssertEqual(attributes.name, "available")
+        XCTAssertEqual(attributes.arguments.count, 3)
+        let classCMap = attributes.arguments.map { ($0.name, $0.value) }
+        for (index, arg) in classCMap.enumerated() {
+            let expected = attributeExpectations[index]
+            XCTAssertEqual(arg.0, expected.0)
+            XCTAssertEqual(arg.1, expected.1)
+        }
+    }
+
     func test_inheritance_willResolveExpectedValues() throws {
         let source = #"""
         protocol MyThing {}

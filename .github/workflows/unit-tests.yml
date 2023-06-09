@@ -10,7 +10,7 @@
 
 name: Swift Unit Tests
 
-on: workflow_dispatch
+on: [push]
 
 jobs:
   build:

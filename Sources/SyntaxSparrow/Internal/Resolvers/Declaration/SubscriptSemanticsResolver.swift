@@ -55,7 +55,7 @@ class SubscriptSemanticsResolver: DeclarationSemanticsResolving {
     // MARK: - Resolvers
 
     private func resolveIndices() -> [Parameter] {
-        node.indices.parameterList.map { Parameter($0) }
+        node.indices.parameterList.map { Parameter(node: $0) }
     }
 
     private func resolveAttributes() -> [Attribute] {
@@ -68,7 +68,7 @@ class SubscriptSemanticsResolver: DeclarationSemanticsResolving {
 
     private func resolveModifiers() -> [Modifier] {
         guard let modifierList = node.modifiers else { return [] }
-        return modifierList.map { Modifier($0) }
+        return modifierList.map { Modifier(node: $0) }
     }
 
     private func resolveGenericParameters() -> [GenericParameter] {

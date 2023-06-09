@@ -42,8 +42,10 @@ class ClosureSemanticsResolver: NodeSemanticsResolving {
     // MARK: - Resolvers
 
     private func resolveInput() -> EntityType {
-        guard !node.parameters.isEmpty else { return .void }
-        return EntityType.parseElementList(node.parameters)
+        guard !node.arguments.isEmpty else { return .void }
+        return EntityType.parseElementList(node.arguments)
+        // Pending update - leaving here for easier reference
+        // return EntityType.parseElementList(node.parameters)
     }
 
     private func resolveOutput() -> EntityType {
@@ -51,7 +53,9 @@ class ClosureSemanticsResolver: NodeSemanticsResolving {
     }
 
     private func resolveRawInput() -> String {
-        node.parameters.description.trimmed
+        node.arguments.description.trimmed
+        // Pending update - leaving here for easier reference
+        // node.parameters.description.trimmed
     }
 
     private func resolveRawOutput() -> String {

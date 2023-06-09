@@ -69,7 +69,7 @@ public struct Attribute: Equatable, Hashable, CustomStringConvertible {
     // MARK: - Lifecycle
 
     /// Creates a new ``SyntaxSparrow/Attribute`` instance from an `AttributeSyntax` node.
-    public init(_ node: AttributeSyntax) {
+    public init(node: AttributeSyntax) {
         resolver = AttributeSemanticsResolver(node: node)
     }
 
@@ -77,7 +77,7 @@ public struct Attribute: Equatable, Hashable, CustomStringConvertible {
         guard let listNode = node else { return [] }
         let results = listNode.compactMap {
             if let node = $0.as(AttributeSyntax.self) {
-                return Attribute(node)
+                return Attribute(node: node)
             }
             return nil
         }

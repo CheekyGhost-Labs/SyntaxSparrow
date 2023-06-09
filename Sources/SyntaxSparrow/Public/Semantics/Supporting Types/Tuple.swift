@@ -31,7 +31,7 @@ public struct Tuple: Hashable, Equatable, CustomStringConvertible {
     // MARK: - Lifecycle
 
     /// Creates a new ``SyntaxSparrow/Tuple`` instance from an `TupleTypeSyntax` node.
-    public init(_ node: TupleTypeSyntax) {
+    public init(node: TupleTypeSyntax) {
         resolver = TupleSemanticsResolver(node: node)
     }
 

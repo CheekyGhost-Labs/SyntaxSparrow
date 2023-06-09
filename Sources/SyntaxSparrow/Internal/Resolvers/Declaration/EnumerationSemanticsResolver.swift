@@ -69,7 +69,7 @@ class EnumerationSemanticsResolver: DeclarationSemanticsResolving {
 
     private func resolveModifiers() -> [Modifier] {
         guard let modifierList = node.modifiers else { return [] }
-        return modifierList.map { Modifier($0) }
+        return modifierList.map { Modifier(node: $0) }
     }
 
     private func resolveInheritance() -> [String] {
@@ -79,8 +79,9 @@ class EnumerationSemanticsResolver: DeclarationSemanticsResolving {
     }
 
     private func resolveGenericParameters() -> [GenericParameter] {
-        let parameters = GenericParameter.fromParameterList(from: node.genericParameterClause?.genericParameterList)
-        return parameters
+        GenericParameter.fromParameterList(from: node.genericParameters?.genericParameterList)
+        // Pending update - leaving here for easier reference
+        // GenericParameter.fromParameterList(from: node.genericParameterClause?.genericParameterList)
     }
 
     private func resolveGenericRequirements() -> [GenericRequirement] {

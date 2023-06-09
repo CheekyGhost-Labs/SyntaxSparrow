@@ -40,12 +40,12 @@ public struct Accessor: Equatable, Hashable, CustomStringConvertible {
     // MARK: - Lifecycle
 
     /// Creates a new ``SyntaxSparrow/Accessor`` instance from an `AccessorDeclSyntax` node.
-    public init(_ node: AccessorDeclSyntax) {
+    public init(node: AccessorDeclSyntax) {
         // Attributes
         attributes = Attribute.fromAttributeList(node.attributes)
         // Modifier
         if let modifierNode = node.modifier {
-            modifier = Modifier(modifierNode)
+            modifier = Modifier(node: modifierNode)
         } else {
             modifier = nil
         }

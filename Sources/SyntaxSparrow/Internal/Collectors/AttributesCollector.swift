@@ -57,12 +57,12 @@ class AttributesCollector: SkipByDefaultVisitor {
 
     override func visit(_ node: AttributeListSyntax) -> SyntaxVisitorContinueKind {
         let attribtueSyntaxes = node.children(viewMode: .fixedUp).compactMap { $0.as(AttributeSyntax.self) }
-        attributes = attribtueSyntaxes.map { Attribute($0) }
+        attributes = attribtueSyntaxes.map { Attribute(node: $0) }
         return .skipChildren
     }
 
     override func visit(_ node: AttributeSyntax) -> SyntaxVisitorContinueKind {
-        attributes = [Attribute(node)]
+        attributes = [Attribute(node: node)]
         return .skipChildren
     }
 }

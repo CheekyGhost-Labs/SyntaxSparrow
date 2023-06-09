@@ -66,8 +66,7 @@ class RootDeclarationCollector: SyntaxVisitor {
 
     /// Called when visiting an `AssociatedtypeDeclSyntax` node
     override func visit(_: AssociatedtypeDeclSyntax) -> SyntaxVisitorContinueKind {
-        // AssociatedType
-        // Track token ref
+        // Associated types are only valid within protocols - the protocol type collects these as needed
         return .skipChildren
     }
 

@@ -31,6 +31,12 @@ class OperatorSemanticsResolver: DeclarationSemanticsResolving {
 
     private(set) lazy var kind: Operator.Kind? = resolveKind()
 
+    // MARK: - Pending Obsoletion
+
+    private(set) lazy var attributes: [Attribute] = resolveAttributes()
+
+    private(set) lazy var modifiers: [Modifier] = resolveModifiers()
+
     // MARK: - Lifecycle
 
     required init(node: OperatorDeclSyntax, context: SyntaxExplorerContext) {
@@ -40,6 +46,17 @@ class OperatorSemanticsResolver: DeclarationSemanticsResolving {
 
     func collectChildren() {
         // no-op
+    }
+
+    // MARK: - Pending Obsoletion
+
+    private func resolveAttributes() -> [Attribute] {
+        Attribute.fromAttributeList(node.attributes)
+    }
+
+    private func resolveModifiers() -> [Modifier] {
+        guard let modifierList = node.modifiers else { return [] }
+        return modifierList.map { Modifier(node: $0) }
     }
 
     // MARK: - Resolvers
@@ -53,6 +70,8 @@ class OperatorSemanticsResolver: DeclarationSemanticsResolving {
     }
 
     private func resolveKind() -> Operator.Kind? {
-        Operator.Kind(node.fixity)
+        Operator.Kind(modifiers)
+        // Pending update - leaving here for easier reference
+        // Operator.Kind(node.fixity)
     }
 }

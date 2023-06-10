@@ -19,6 +19,13 @@ public extension Enumeration {
     /// This structure conforms to `Declaration` and `SyntaxSourceLocationResolving`,
     /// which provide access to the declaration attributes, modifiers, and source location information.
     struct Case: Declaration, SyntaxSourceLocationResolving {
+
+        // MARK: - Properties: Declaration
+
+        public var node: EnumCaseElementSyntax { resolver.node }
+
+        // MARK: - Properties
+
         /// Array of attributes found in the declaration.
         ///
         /// - See: ``SyntaxSparrow/Attribute``
@@ -60,19 +67,8 @@ public extension Enumeration {
             resolver = EnumerationCaseSemanticsResolver(node: node, context: context)
         }
 
-        // MARK: - Equatable
-
-        public static func == (lhs: Case, rhs: Case) -> Bool {
-            return lhs.description == rhs.description
-        }
-
-        // MARK: - Hashable
-
-        public func hash(into hasher: inout Hasher) {
-            return hasher.combine(description.hashValue)
-        }
-
         // MARK: - CustomStringConvertible
+        // Override the protocol default
 
         public var description: String {
             guard let parent = resolver.node.context as? EnumCaseDeclSyntax else {

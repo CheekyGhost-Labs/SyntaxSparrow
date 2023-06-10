@@ -21,7 +21,14 @@ import SwiftSyntax
 /// - Whether the closure has the `@escaping` attribute or is auto-escaping.
 ///
 /// This struct also includes functionality to create a closure instance from a `FunctionTypeSyntax` node.
-public struct Closure: Hashable, Equatable, CustomStringConvertible {
+public struct Closure: DeclarationComponent {
+
+    // MARK: - Properties: DeclarationComponent
+
+    public var node: FunctionTypeSyntax { resolver.node }
+
+    // MARK: - Properties
+
     /// Will return the closure input element from the input `typeAnnotation` for the closure.
     public var input: EntityType { resolver.input }
 
@@ -63,23 +70,5 @@ public struct Closure: Hashable, Equatable, CustomStringConvertible {
     /// Creates a new ``SyntaxSparrow/Closure`` instance from an `FunctionTypeSyntax` node.
     public init(node: FunctionTypeSyntax) {
         resolver = ClosureSemanticsResolver(node: node)
-    }
-
-    // MARK: - Equatable
-
-    public static func == (lhs: Closure, rhs: Closure) -> Bool {
-        return lhs.description == rhs.description
-    }
-
-    // MARK: - Hashable
-
-    public func hash(into hasher: inout Hasher) {
-        return hasher.combine(description.hashValue)
-    }
-
-    // MARK: - CustomStringConvertible
-
-    public var description: String {
-        resolver.node.description.trimmed
     }
 }

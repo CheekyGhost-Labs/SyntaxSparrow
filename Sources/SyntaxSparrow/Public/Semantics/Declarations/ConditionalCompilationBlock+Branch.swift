@@ -65,6 +65,10 @@ public extension ConditionalCompilationBlock {
             }
         }
 
+        // MARK: - Properties: Declaration
+
+        public var node: IfConfigClauseSyntax { resolver.node }
+
         // MARK: - Properties
 
         /// The branch keyword, either `"#if"`, `"#elseif"`, or `"#else"`.
@@ -109,24 +113,6 @@ public extension ConditionalCompilationBlock {
 
         func collectChildren() {
             resolver.collectChildren()
-        }
-
-        // MARK: - Equatable
-
-        public static func == (lhs: Branch, rhs: Branch) -> Bool {
-            return lhs.description == rhs.description
-        }
-
-        // MARK: - Hashable
-
-        public func hash(into hasher: inout Hasher) {
-            return hasher.combine(description.hashValue)
-        }
-
-        // MARK: - CustomStringConvertible
-
-        public var description: String {
-            resolver.node.description.trimmed
         }
     }
 }

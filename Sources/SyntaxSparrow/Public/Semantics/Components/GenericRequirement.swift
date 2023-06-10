@@ -31,7 +31,10 @@ import SwiftSyntax
 /// **Note:** All `layout` relation requirements will have a `leftTypeIdentifier` of `Self`. While not explicitly defined in the requirement itself,
 /// it is a
 /// pre-requisite for the declaration.
-public class GenericRequirement: Equatable, Hashable, CustomStringConvertible, CustomDebugStringConvertible {
+public struct GenericRequirement: DeclarationComponent {
+
+    // MARK: - Supplementary
+
     /**
      A relation between the two types identified
      in the generic requirement.
@@ -66,6 +69,12 @@ public class GenericRequirement: Equatable, Hashable, CustomStringConvertible, C
         case layout
     }
 
+    // MARK: - Properties: DeclarationComponent
+
+    public var node: GenericRequirementSyntax { resolver.node }
+
+    // MARK: - Properties
+
     /// The relation between the two identified types.
     public var relation: Relation { resolver.relation }
 
@@ -98,29 +107,5 @@ public class GenericRequirement: Equatable, Hashable, CustomStringConvertible, C
     public static func fromRequirementList(from node: GenericRequirementListSyntax?) -> [GenericRequirement] {
         guard let node = node else { return [] }
         return node.compactMap { GenericRequirement(node: $0) }
-    }
-
-    // MARK: - Equatable
-
-    public static func == (lhs: GenericRequirement, rhs: GenericRequirement) -> Bool {
-        return lhs.description == rhs.description
-    }
-
-    // MARK: - Hashable
-
-    public func hash(into hasher: inout Hasher) {
-        return hasher.combine(description.hashValue)
-    }
-
-    // MARK: - CustomStringConvertible
-
-    public var description: String {
-        resolver.node.description.trimmed
-    }
-
-    // MARK: - CustomDebugStringConvertible
-
-    public var debugDescription: String {
-        resolver.node.debugDescription.trimmed
     }
 }

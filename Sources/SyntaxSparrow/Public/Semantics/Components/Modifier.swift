@@ -22,11 +22,11 @@ import SwiftSyntax
 /// ```
 /// - The first modifier has a `name` equal to `"public"` and `nil` for `detail`
 /// - The second modifier has a `name` equal to `"private"` and a `detail` equal to `"set"`
-public struct Modifier: Equatable, Hashable, CustomStringConvertible, CustomDebugStringConvertible {
-    // MARK: - Properties: Internal
+public struct Modifier: DeclarationComponent {
 
-    /// The node being assessed
-    var node: DeclModifierSyntax
+    // MARK: - Properties: DeclarationComponent
+
+    public let node: DeclModifierSyntax
 
     // MARK: - Properties
 
@@ -45,29 +45,5 @@ public struct Modifier: Equatable, Hashable, CustomStringConvertible, CustomDebu
     /// Creates a new ``SyntaxSparrow/Modifier`` instance from an `DeclModifierSyntax` node.
     public init(node: DeclModifierSyntax) {
         self.node = node
-    }
-
-    // MARK: - Equatable
-
-    public static func == (lhs: Modifier, rhs: Modifier) -> Bool {
-        return lhs.node == rhs.node
-    }
-
-    // MARK: - Hashable
-
-    public func hash(into hasher: inout Hasher) {
-        return hasher.combine(node.hashValue)
-    }
-
-    // MARK: - CustomStringConvertible
-
-    public var description: String {
-        node.description
-    }
-
-    // MARK: - CustomDebugStringConvertible
-
-    public var debugDescription: String {
-        node.debugDescription
     }
 }

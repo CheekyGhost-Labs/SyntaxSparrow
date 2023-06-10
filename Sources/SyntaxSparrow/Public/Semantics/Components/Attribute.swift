@@ -19,7 +19,7 @@ import SwiftSyntax
 ///
 /// The `Attribute` struct also includes functionality to create an attribute instance from an `AttributeSyntax` node and
 /// create an array of attribute instances from an `AttributeListSyntax` node.
-public struct Attribute: Equatable, Hashable, CustomStringConvertible {
+public struct Attribute: DeclarationComponent {
     // MARK: - Supplementary
 
     /// Struct representing an attribute declaration argument.
@@ -50,6 +50,10 @@ public struct Attribute: Equatable, Hashable, CustomStringConvertible {
             self.value = value.trimmed
         }
     }
+
+    // MARK: - Properties: DeclarationComponent
+
+    public var node: AttributeSyntax { resolver.node }
 
     // MARK: - Properties
 
@@ -84,23 +88,5 @@ public struct Attribute: Equatable, Hashable, CustomStringConvertible {
             return nil
         }
         return results
-    }
-
-    // MARK: - Equatable
-
-    public static func == (lhs: Attribute, rhs: Attribute) -> Bool {
-        return lhs.description == rhs.description
-    }
-
-    // MARK: - Hashable
-
-    public func hash(into hasher: inout Hasher) {
-        return hasher.combine(description.hashValue)
-    }
-
-    // MARK: - CustomStringConvertible
-
-    public var description: String {
-        resolver.node.description.trimmed
     }
 }

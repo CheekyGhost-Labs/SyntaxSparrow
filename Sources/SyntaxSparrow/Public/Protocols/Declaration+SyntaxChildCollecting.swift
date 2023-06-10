@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftSyntax
 
 public extension Declaration where Self: SyntaxChildCollecting {
     var classes: [Class] { collection?.classes ?? [] }

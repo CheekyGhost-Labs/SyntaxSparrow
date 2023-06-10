@@ -27,7 +27,22 @@ import SwiftSyntax
 ///
 /// This struct also includes functionality to create a `Parameter` instance from either a `FunctionParameterSyntax` node or a
 /// `TupleTypeElementSyntax` node.
-public struct Parameter: Hashable, Equatable, CustomStringConvertible {
+public struct Parameter: Equatable, Hashable, CustomStringConvertible {
+    // MARK: - Properties: DeclarationComponent
+    
+    /// The node being represented by the ``Parameter`` instance.
+    /// **Note:** The node type will be one of the types supported by the `Paramater.init` methods.
+    /// You can use the `as(SyntaxProtocol.Protocol)` cast method to resolve the expected one.
+    /// For example:
+    /// ```swift
+    /// let node = parameter.node // The parameter node
+    /// node.as(FunctionParameterSyntax.self) // Casts to function parameter syntax node or returns `nil`
+    /// node.as(TupleTypeElementSyntax.self) // Casts to tuple element parameter syntax node or returns `nil`
+    /// node.as(EnumCaseParameterSyntax.self) // Casts to an enum associated value parameter syntax node or returns `nil`
+    /// ```
+    public var node: Syntax { resolver.node._syntaxNode }
+
+    
     // MARK: - Properties
 
     /// Array of attributes found in the declaration.

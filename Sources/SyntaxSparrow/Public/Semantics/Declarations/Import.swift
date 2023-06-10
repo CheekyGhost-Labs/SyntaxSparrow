@@ -20,6 +20,11 @@ import SwiftSyntax
 /// This structure conforms to `Declaration` and `SyntaxSourceLocationResolving`, which provide
 /// access to the declaration attributes, modifiers, and source location information.
 public struct Import: Declaration, SyntaxSourceLocationResolving {
+
+    // MARK: - Properties: Declaration
+
+    public var node: ImportDeclSyntax { resolver.node }
+
     // MARK: - Properties
 
     /// Array of attributes found in the declaration.
@@ -61,23 +66,5 @@ public struct Import: Declaration, SyntaxSourceLocationResolving {
     /// Creates a new ``SyntaxSparrow/Import`` instance from an `ImportDeclSyntax` node.
     public init(node: ImportDeclSyntax, context: SyntaxExplorerContext) {
         resolver = ImportSemanticsResolver(node: node, context: context)
-    }
-
-    // MARK: - Equatable
-
-    public static func == (lhs: Import, rhs: Import) -> Bool {
-        return lhs.description == rhs.description
-    }
-
-    // MARK: - Hashable
-
-    public func hash(into hasher: inout Hasher) {
-        return hasher.combine(description.hashValue)
-    }
-
-    // MARK: - CustomStringConvertible
-
-    public var description: String {
-        resolver.node.description.trimmed
     }
 }

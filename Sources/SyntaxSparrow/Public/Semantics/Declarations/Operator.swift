@@ -22,6 +22,7 @@ import SwiftSyntax
 /// This structure conforms to `Declaration` and `SyntaxSourceLocationResolving`, which provides
 /// access to the declaration attributes, modifiers, and source location information.
 public struct Operator: Declaration, SyntaxSourceLocationResolving {
+
     /// Enumeration of possible operator kinds.
     public enum Kind: String, Hashable, Codable {
         /// A unary operator that comes before its operand.
@@ -56,6 +57,10 @@ public struct Operator: Declaration, SyntaxSourceLocationResolving {
             }
         }
     }
+
+    // MARK: - Properties: Declaration
+
+    public var node: OperatorDeclSyntax { resolver.node }
 
     // MARK: - Properties
 
@@ -117,23 +122,5 @@ public struct Operator: Declaration, SyntaxSourceLocationResolving {
     /// Creates a new ``SyntaxSparrow/Operator`` instance from an `OperatorDeclSyntax` node.
     public init(node: OperatorDeclSyntax, context: SyntaxExplorerContext) {
         resolver = OperatorSemanticsResolver(node: node, context: context)
-    }
-
-    // MARK: - Equatable
-
-    public static func == (lhs: Operator, rhs: Operator) -> Bool {
-        return lhs.description == rhs.description
-    }
-
-    // MARK: - Hashable
-
-    public func hash(into hasher: inout Hasher) {
-        return hasher.combine(description.hashValue)
-    }
-
-    // MARK: - CustomStringConvertible
-
-    public var description: String {
-        resolver.node.description.trimmed
     }
 }

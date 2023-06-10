@@ -76,8 +76,12 @@ public enum EntityType: Equatable, Hashable, CustomStringConvertible {
 
     public var description: String {
         switch self {
-        case let .simple(type, _):
-            return type.description
+        case let .simple(type, optional):
+            var result = type.description
+            if optional, !result.hasSuffix("?") {
+                result = "\(result)?"
+            }
+            return result
         case let .tuple(tuple):
             return tuple.description
         case let .closure(closure):

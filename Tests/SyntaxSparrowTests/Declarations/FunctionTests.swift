@@ -281,6 +281,7 @@ final class FunctionTests: XCTestCase {
         func noParameters() throws {}
         func labelOmitted(_ name: String) {}
         func singleName(name: String) {}
+        func singleNameOptional(name: String?) {}
         func twoNames(withName name: String) {}
         func optionalSimple(_ name: String?) {}
         func variadic(names: String...) {}
@@ -296,7 +297,7 @@ final class FunctionTests: XCTestCase {
         XCTAssertTrue(instanceUnderTest.isStale)
         instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.functions.count, 13)
+        XCTAssertEqual(instanceUnderTest.functions.count, 14)
 
         // No Parameters
         var function = instanceUnderTest.functions[0]
@@ -331,6 +332,19 @@ final class FunctionTests: XCTestCase {
         XCTAssertFalse(function.signature.input[0].isLabelOmitted)
         XCTAssertEqual(function.signature.input[0].type, .simple("String", false))
         XCTAssertEqual(function.signature.input[0].isOptional, false)
+
+        // Single Name Optional
+        function = instanceUnderTest.functions[3]
+        XCTAssertEqual(function.keyword, "func")
+        XCTAssertEqual(function.identifier, "singleNameOptional")
+        XCTAssertNil(function.signature.throwsOrRethrowsKeyword)
+        XCTAssertNil(function.signature.output)
+        XCTAssertEqual(function.signature.input.count, 1)
+        XCTAssertEqual(function.signature.input[0].name, "name")
+        XCTAssertNil(function.signature.input[0].secondName)
+        XCTAssertFalse(function.signature.input[0].isLabelOmitted)
+        XCTAssertEqual(function.signature.input[0].type, .simple("String", true))
+        XCTAssertEqual(function.signature.input[0].isOptional, true)
     }
 
     func test_function_hashable_equatable_willReturnExpectedResults() throws {

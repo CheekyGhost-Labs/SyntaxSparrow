@@ -97,6 +97,10 @@ public struct PrecedenceGroup: Declaration, SyntaxSourceLocationResolving {
         case lowerThan([String])
     }
 
+    // MARK: - Properties: Declaration
+
+    public var node: PrecedenceGroupDeclSyntax { resolver.node }
+
     // MARK: - Properties
 
     /// Array of attributes found in the declaration.
@@ -145,23 +149,5 @@ public struct PrecedenceGroup: Declaration, SyntaxSourceLocationResolving {
     /// Creates a new ``SyntaxSparrow/PrecedenceGroup`` instance from an `PrecedenceGroupDeclSyntax` node.
     public init(node: PrecedenceGroupDeclSyntax, context: SyntaxExplorerContext) {
         resolver = PrecedenceGroupSemanticsResolver(node: node, context: context)
-    }
-
-    // MARK: - Equatable
-
-    public static func == (lhs: PrecedenceGroup, rhs: PrecedenceGroup) -> Bool {
-        return lhs.description == rhs.description
-    }
-
-    // MARK: - Hashable
-
-    public func hash(into hasher: inout Hasher) {
-        return hasher.combine(description.hashValue)
-    }
-
-    // MARK: - CustomStringConvertible
-
-    public var description: String {
-        resolver.node.description.trimmed
     }
 }

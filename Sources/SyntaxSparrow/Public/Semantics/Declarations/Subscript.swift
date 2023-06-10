@@ -25,6 +25,11 @@ import SwiftSyntax
 /// The `Subscript` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the subscript
 /// declaration is located.
 public struct Subscript: Declaration, SyntaxSourceLocationResolving {
+
+    // MARK: - Properties: Declaration
+
+    public var node: SubscriptDeclSyntax { resolver.node }
+
     // MARK: - Properties
 
     /// Array of attributes found in the declaration.
@@ -85,23 +90,5 @@ public struct Subscript: Declaration, SyntaxSourceLocationResolving {
 
     func collectChildren() {
         // no-op
-    }
-
-    // MARK: - Equatable
-
-    public static func == (lhs: Subscript, rhs: Subscript) -> Bool {
-        return lhs.description == rhs.description
-    }
-
-    // MARK: - Hashable
-
-    public func hash(into hasher: inout Hasher) {
-        return hasher.combine(description.hashValue)
-    }
-
-    // MARK: - CustomStringConvertible
-
-    public var description: String {
-        resolver.node.description.trimmed
     }
 }

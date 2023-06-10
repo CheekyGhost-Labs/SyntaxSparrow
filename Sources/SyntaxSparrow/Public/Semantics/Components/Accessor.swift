@@ -19,7 +19,10 @@ import SwiftSyntax
 /// - Modifier applied to the accessor, e.g., `private`.
 ///
 /// The `Accessor` struct also includes functionality to create an accessor instance from an `AccessorDeclSyntax` node.
-public struct Accessor: Equatable, Hashable, CustomStringConvertible {
+public struct Accessor: DeclarationComponent {
+
+    // MARK: - Supplementary
+
     /// The kind of accessor (`get` or `set`).
     public enum Kind: String, Hashable, Codable {
         /// A getter that returns a value.
@@ -28,6 +31,12 @@ public struct Accessor: Equatable, Hashable, CustomStringConvertible {
         /// A setter that sets a value.
         case set
     }
+
+    // MARK: - Properties: DeclarationComponent
+
+    public let node: AccessorDeclSyntax
+
+    // MARK: - Properties
 
     /// The accessor attributes.
     public let attributes: [Attribute]
@@ -42,6 +51,7 @@ public struct Accessor: Equatable, Hashable, CustomStringConvertible {
 
     /// Creates a new ``SyntaxSparrow/Accessor`` instance from an `AccessorDeclSyntax` node.
     public init(node: AccessorDeclSyntax) {
+        self.node = node
         // Attributes
         attributes = Attribute.fromAttributeList(node.attributes)
         // Modifier
@@ -53,23 +63,5 @@ public struct Accessor: Equatable, Hashable, CustomStringConvertible {
         // Kind
         let rawKind = node.accessorKind.text.trimmed
         kind = Kind(rawValue: rawKind)
-        // Description
-        description = node.description.trimmed
-    }
-
-    // MARK: - Equatable
-
-    public static func == (lhs: Accessor, rhs: Accessor) -> Bool {
-        return lhs.description == rhs.description
-    }
-
-    // MARK: - CustomStringConvertible
-
-    public let description: String
-
-    // MARK: - Hashable
-
-    public func hash(into hasher: inout Hasher) {
-        return hasher.combine(description.hashValue)
     }
 }

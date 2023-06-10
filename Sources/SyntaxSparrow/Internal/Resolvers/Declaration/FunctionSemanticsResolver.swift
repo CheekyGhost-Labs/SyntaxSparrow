@@ -41,6 +41,8 @@ class FunctionSemanticsResolver: DeclarationSemanticsResolving {
 
     private(set) lazy var isOperator: Bool = resolveIsOperator()
 
+    private(set) lazy var operatorKind: Operator.Kind? = resolveOperatorKind()
+
     private(set) lazy var signature: Function.Signature = resolveSignature()
 
     // MARK: - Lifecycle
@@ -92,9 +94,14 @@ class FunctionSemanticsResolver: DeclarationSemanticsResolving {
         let inputParameters = node.signature.input.parameterList.map(Parameter.init)
         var outputType: EntityType?
         if let output = node.signature.output {
-            outputType = .simple(output.returnType.description.trimmed)
+            outputType = EntityType.parseType(output.returnType)
         }
         let throwsKeyword = node.signature.effectSpecifiers?.throwsSpecifier?.text.trimmed
         return Function.Signature(input: inputParameters, output: outputType, throwsOrRethrowsKeyword: throwsKeyword)
+    }
+
+    private func resolveOperatorKind() -> Operator.Kind? {
+        guard isOperator else { return nil }
+        return Operator.Kind(modifiers) ?? .infix
     }
 }

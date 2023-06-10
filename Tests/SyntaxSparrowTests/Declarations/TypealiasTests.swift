@@ -40,7 +40,7 @@ final class TypealiasTests: XCTestCase {
         XCTAssertEqual(typealiasDecl.modifiers.count, 0)
         XCTAssertEqual(typealiasDecl.keyword, "typealias")
         XCTAssertEqual(typealiasDecl.name, "MyString")
-        XCTAssertEqual(typealiasDecl.initializedType, .simple("String"))
+        XCTAssertEqual(typealiasDecl.initializedType, .simple("String", false))
         XCTAssertEqual(typealiasDecl.genericParameters.count, 0)
         XCTAssertEqual(typealiasDecl.genericRequirements.count, 0)
         XCTAssertSourceStartPositionEquals(typealiasDecl.sourceLocation, (0, 0, 0))
@@ -64,7 +64,7 @@ final class TypealiasTests: XCTestCase {
         XCTAssertEqual(typealiasDecl.modifiers.count, 0)
         XCTAssertEqual(typealiasDecl.keyword, "typealias")
         XCTAssertEqual(typealiasDecl.name, "EquatableArray")
-        XCTAssertEqual(typealiasDecl.initializedType, .simple("Array<T>"))
+        XCTAssertEqual(typealiasDecl.initializedType, .simple("Array<T>", false))
         XCTAssertEqual(typealiasDecl.genericParameters.count, 1)
         XCTAssertEqual(typealiasDecl.genericParameters[0].name, "T")
         XCTAssertEqual(typealiasDecl.genericParameters[0].type, "Equatable")
@@ -116,7 +116,7 @@ final class TypealiasTests: XCTestCase {
         XCTAssertEqual(typealiasDecl.modifiers.count, 0)
         XCTAssertEqual(typealiasDecl.keyword, "typealias")
         XCTAssertEqual(typealiasDecl.name, "MyCustomType")
-        XCTAssertEqual(typealiasDecl.initializedType, .simple("Int"))
+        XCTAssertEqual(typealiasDecl.initializedType, .simple("Int", false))
         XCTAssertEqual(typealiasDecl.genericParameters.count, 0)
         XCTAssertEqual(typealiasDecl.genericRequirements.count, 0)
         XCTAssertSourceStartPositionEquals(typealiasDecl.sourceLocation, (0, 0, 0))
@@ -127,7 +127,7 @@ final class TypealiasTests: XCTestCase {
 
     func test_typealiasWithModifier_willResolveExpectedDetails() throws {
         let source = #"""
-        public typealias MyCustomType = Int
+        public typealias MyCustomType = Int?
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
@@ -141,7 +141,7 @@ final class TypealiasTests: XCTestCase {
         XCTAssertEqual(typealiasDecl.modifiers[0].name, "public")
         XCTAssertEqual(typealiasDecl.keyword, "typealias")
         XCTAssertEqual(typealiasDecl.name, "MyCustomType")
-        XCTAssertEqual(typealiasDecl.initializedType, .simple("Int"))
+        XCTAssertEqual(typealiasDecl.initializedType, .simple("Int", true))
         XCTAssertEqual(typealiasDecl.genericParameters.count, 0)
         XCTAssertEqual(typealiasDecl.genericRequirements.count, 0)
         XCTAssertSourceStartPositionEquals(typealiasDecl.sourceLocation, (0, 0, 0))

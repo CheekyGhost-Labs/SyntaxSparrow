@@ -32,6 +32,11 @@ public struct Result: Hashable, Equatable, CustomStringConvertible {
     /// For example, in the type `Result<String, Error>` the type will be `.simple("Error")`
     public var failureType: EntityType { resolver.failureType }
 
+    /// `Bool` whether the result type is optional.
+    ///
+    /// For example, `Result<String, Error>?` has `isOptional` as `true`.
+    public var isOptional: Bool { resolver.isOptional }
+
     // MARK: - Properties: Convenience
 
     var resolver: ResultSemanticsResolver

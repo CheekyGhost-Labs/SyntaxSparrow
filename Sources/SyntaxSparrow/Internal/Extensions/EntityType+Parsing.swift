@@ -9,6 +9,16 @@ import Foundation
 import SwiftSyntax
 
 extension EntityType {
+
+    var isVoid: Bool {
+        switch self {
+        case .void:
+            return true
+        default:
+            return false
+        }
+    }
+
     static func parseType(_ typeSyntax: TypeSyntaxProtocol) -> EntityType {
         // Simple
         if let simpleType = typeSyntax.as(SimpleTypeIdentifierSyntax.self) {
@@ -17,17 +27,17 @@ extension EntityType {
                 let result = Result(simpleType)
                 return .result(result!)
             }
-
+            let isOptional = simpleType.resolveIsOptional()
             // Void
             if
                 simpleType.firstToken(viewMode: .fixedUp)?.tokenKind == .identifier("Void") ||
                 simpleType.firstToken(viewMode: .fixedUp)?.tokenKind == .identifier("()")
             {
-                return .void
+                return .void(isOptional)
             }
 
             // Standard
-            return .simple(simpleType.description.trimmed)
+            return .simple(simpleType.description.trimmed, isOptional)
         }
 
         // Tuple
@@ -35,7 +45,8 @@ extension EntityType {
             if tupleTypeSyntax.elements.count == 1, let innerElement = tupleTypeSyntax.elements.first {
                 return parseType(innerElement.type)
             } else if tupleTypeSyntax.elements.isEmpty {
-                return .void
+                let isOptional = tupleTypeSyntax.resolveIsOptional()
+                return .void(isOptional)
             }
             let tuple = Tuple(node: tupleTypeSyntax)
             return .tuple(tuple)
@@ -62,7 +73,8 @@ extension EntityType {
     static func parseElementList(_ syntax: TupleTypeElementListSyntax) -> EntityType {
         let tuple = Tuple(node: syntax)
         if getEmptyTuple(tuple) != nil {
-            return .void
+            let isOptional = syntax.resolveIsOptional()
+            return .void(isOptional)
         }
         // This is probably not needed?
         if let resolvedSingleElement = getSingleTupleElement(tuple) {

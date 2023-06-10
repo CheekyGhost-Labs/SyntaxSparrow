@@ -24,6 +24,8 @@ class ResultSemanticsResolver: NodeSemanticsResolving {
 
     private(set) lazy var failureType: EntityType = resolveFailureType()
 
+    private(set) lazy var isOptional: Bool = resolveIsOptional()
+
     // MARK: - Lifecycle
 
     required init(node: SimpleTypeIdentifierSyntax) {
@@ -31,6 +33,10 @@ class ResultSemanticsResolver: NodeSemanticsResolving {
     }
 
     // MARK: - Resolvers
+
+    private func resolveIsOptional() -> Bool {
+        node.resolveIsOptional(viewMode: .fixedUp)
+    }
 
     private func resolveSuccessType() -> EntityType {
         guard

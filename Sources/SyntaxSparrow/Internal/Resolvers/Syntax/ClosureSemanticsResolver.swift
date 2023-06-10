@@ -44,7 +44,7 @@ class ClosureSemanticsResolver: NodeSemanticsResolving {
     // MARK: - Resolvers
 
     private func resolveInput() -> EntityType {
-        guard !node.arguments.isEmpty else { return .void }
+        guard !node.arguments.isEmpty else { return .void(false) }
         return EntityType.parseElementList(node.arguments)
         // Pending update - leaving here for easier reference
         // return EntityType.parseElementList(node.parameters)
@@ -65,20 +65,7 @@ class ClosureSemanticsResolver: NodeSemanticsResolving {
     }
 
     private func resolveIsOptional() -> Bool {
-        var nextParent = node.parent
-        while nextParent != nil {
-            if nextParent?.as(OptionalTypeSyntax.self) != nil {
-                return true
-            }
-            if nextParent?.syntaxNodeType == FunctionTypeSyntax.self {
-                break
-            }
-            nextParent = nextParent?.parent
-        }
-        if node.children(viewMode: .fixedUp).contains(where: { $0.syntaxNodeType == OptionalTypeSyntax.self }) {
-            return true
-        }
-        return false
+        node.resolveIsOptional(viewMode: .fixedUp)
     }
 
     private func resolveIsEscaping() -> Bool {

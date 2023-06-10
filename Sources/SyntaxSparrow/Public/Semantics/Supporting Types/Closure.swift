@@ -35,10 +35,10 @@ public struct Closure: Hashable, Equatable, CustomStringConvertible {
     var rawOutput: String { resolver.rawOutput }
 
     /// Will return`true` if the `input` is equal to `.void`.
-    var isVoidInput: Bool { input == .void }
+    var isVoidInput: Bool { input.isVoid }
 
     /// Will return`true` if the `typeAnnotation` is a closure and the input is a void block. i.e `() -> (Void)/() -> (())`.
-    var isVoidOutput: Bool { output == .void }
+    var isVoidOutput: Bool { output.isVoid }
 
     /// Will return`true` if the `output` is equal to `.void`.
     var isOptional: Bool { resolver.isOptional }

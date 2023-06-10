@@ -25,7 +25,7 @@ final class ExtensionTests: XCTestCase {
 
     // MARK: - Tests
 
-    func test_basic_willResolveExpectedProperties() throws {
+    func test_extension_children_willResolveExpectedChildDeclarations() throws {
         let source = #"""
         extension String {
             struct NestedStruct {}
@@ -81,7 +81,7 @@ final class ExtensionTests: XCTestCase {
     }
 
 
-    func test_extensionWithAttributes() throws {
+    func test_extension_withAttributes_willResolveExpectedValues() throws {
         let source = #"""
         @available(iOS 15, *)
         extension String {}
@@ -104,7 +104,7 @@ final class ExtensionTests: XCTestCase {
         XCTAssertSourceEndPositionEquals(extensionUnderTest.sourceLocation, (line: 1, column: 19, utf8Offset: 41))
     }
 
-    func test_extensionWithModifiers() throws {
+    func test_extension_withModifiers_willResolveExpectedValues() throws {
         let source = #"""
         public extension String {}
         """#
@@ -121,7 +121,7 @@ final class ExtensionTests: XCTestCase {
         XCTAssertSourceEndPositionEquals(extensionUnderTest.sourceLocation, (line: 0, column: 26, utf8Offset: 26))
     }
 
-    func test_extensionWithInheritance() throws {
+    func test_extension_withInheritance_willResolveExpectedValues() throws {
         let source = #"""
         protocol A {}
         protocol B {}
@@ -139,7 +139,7 @@ final class ExtensionTests: XCTestCase {
         XCTAssertEqual(extensionUnderTest.inheritance[1], "B")
     }
 
-    func test_extensionWithGenericRequirements() throws {
+    func test_extension_withGenericRequirements_willResolveExpectedValues() throws {
         let source = #"""
         extension Array where Element: Comparable {}
         """#

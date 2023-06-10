@@ -20,7 +20,7 @@ extension XCTest {
         }
         let expected = "(\(makeStr(lhs.line)), \(makeStr(lhs.column)), \(makeStr(lhs.utf8Offset)))"
         let incoming = "(\(rhs.line), \(rhs.column), \(rhs.utf8Offset))"
-        return "`\(incoming)` is not equal to expected: \(expected)"
+        return "`\(expected)` is not equal to expected: \(incoming)"
     }
 
     func XCTAssertSourceStartPositionEquals(

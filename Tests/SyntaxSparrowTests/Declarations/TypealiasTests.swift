@@ -145,9 +145,9 @@ final class TypealiasTests: XCTestCase {
         XCTAssertEqual(typealiasDecl.genericParameters.count, 0)
         XCTAssertEqual(typealiasDecl.genericRequirements.count, 0)
         XCTAssertSourceStartPositionEquals(typealiasDecl.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(typealiasDecl.sourceLocation, (0, 35, 35))
-        XCTAssertEqual(typealiasDecl.extractFromSource(source), "public typealias MyCustomType = Int")
-        XCTAssertEqual(typealiasDecl.description, "public typealias MyCustomType = Int")
+        XCTAssertSourceEndPositionEquals(typealiasDecl.sourceLocation, (0, 36, 36))
+        XCTAssertEqual(typealiasDecl.extractFromSource(source), "public typealias MyCustomType = Int?")
+        XCTAssertEqual(typealiasDecl.description, "public typealias MyCustomType = Int?")
     }
 
     func test_hashable_equatable_willReturnExpectedResults() throws {

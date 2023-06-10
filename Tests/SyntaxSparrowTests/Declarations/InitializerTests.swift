@@ -177,7 +177,7 @@ final class InitializerTests: XCTestCase {
         XCTAssertEqual(initializerUnderTest.parameters.count, 1)
         XCTAssertEqual(initializerUnderTest.parameters[0].type, .simple("T", false))
         XCTAssertEqual(initializerUnderTest.parameters[0].name, "value")
-        XCTAssertNil(initializerUnderTest.parameters[0].secondName, "value")
+        XCTAssertNil(initializerUnderTest.parameters[0].secondName)
         // Parameters have more extensive tests for initializer parameters
 
         // Test generic parameters

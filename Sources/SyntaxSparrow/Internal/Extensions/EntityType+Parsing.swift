@@ -66,6 +66,12 @@ extension EntityType {
             return parseType(attributedType.baseType)
         }
 
+        let trimmedType = typeSyntax.description.trimmed
+        if !trimmedType.isEmpty {
+            let isOptional = typeSyntax.resolveIsOptional()
+            return .simple(trimmedType, isOptional)
+        }
+
         // Result
         return .empty
     }

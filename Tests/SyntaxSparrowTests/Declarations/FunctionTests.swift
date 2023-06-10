@@ -283,6 +283,7 @@ final class FunctionTests: XCTestCase {
         func singleName(name: String) {}
         func twoNames(withName name: String) {}
         func optionalSimple(_ name: String?) {}
+        func variadic(names: String...) {}
         func multipleParameters(name: String, age: Int?) {}
         func throwing(name: String, age: Int?) throws {}
         func tuple(person: (name: String, age: Int)) {}
@@ -291,6 +292,45 @@ final class FunctionTests: XCTestCase {
         func complexClosure(_ handler: ((name: String, age: Int) -> String?)?) {}
         func result(processResult: Result<String, Error>) {}
         """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        XCTAssertEqual(instanceUnderTest.functions.count, 13)
+
+        // No Parameters
+        var function = instanceUnderTest.functions[0]
+        XCTAssertEqual(function.keyword, "func")
+        XCTAssertEqual(function.identifier, "noParameters")
+        XCTAssertEqual(function.signature.throwsOrRethrowsKeyword, "throws")
+        XCTAssertNil(function.signature.output)
+        XCTAssertEqual(function.signature.input.count, 0)
+
+        // Label Omitted
+        function = instanceUnderTest.functions[1]
+        XCTAssertEqual(function.keyword, "func")
+        XCTAssertEqual(function.identifier, "labelOmitted")
+        XCTAssertNil(function.signature.throwsOrRethrowsKeyword)
+        XCTAssertNil(function.signature.output)
+        XCTAssertEqual(function.signature.input.count, 1)
+        XCTAssertEqual(function.signature.input[0].name, "_")
+        XCTAssertEqual(function.signature.input[0].secondName, "name")
+        XCTAssertTrue(function.signature.input[0].isLabelOmitted)
+        XCTAssertEqual(function.signature.input[0].type, .simple("String", false))
+        XCTAssertEqual(function.signature.input[0].isOptional, false)
+
+        // Single Name
+        function = instanceUnderTest.functions[2]
+        XCTAssertEqual(function.keyword, "func")
+        XCTAssertEqual(function.identifier, "singleName")
+        XCTAssertNil(function.signature.throwsOrRethrowsKeyword)
+        XCTAssertNil(function.signature.output)
+        XCTAssertEqual(function.signature.input.count, 1)
+        XCTAssertEqual(function.signature.input[0].name, "name")
+        XCTAssertNil(function.signature.input[0].secondName)
+        XCTAssertFalse(function.signature.input[0].isLabelOmitted)
+        XCTAssertEqual(function.signature.input[0].type, .simple("String", false))
+        XCTAssertEqual(function.signature.input[0].isOptional, false)
     }
 
     func test_function_hashable_equatable_willReturnExpectedResults() throws {

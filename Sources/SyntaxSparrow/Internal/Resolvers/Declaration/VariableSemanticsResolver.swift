@@ -41,6 +41,8 @@ class VariableSemanticsResolver: DeclarationSemanticsResolving {
 
     private(set) lazy var accessors: [Accessor] = resolveAccessors()
 
+    private(set) lazy var isOptional: Bool = resolveIsOptional()
+
     // MARK: - Lifecycle
 
     required init(node: PatternBindingSyntax, context: SyntaxExplorerContext) {
@@ -86,5 +88,9 @@ class VariableSemanticsResolver: DeclarationSemanticsResolving {
 
     private func resolveInitializedValue() -> String? {
         node.initializer?.value.description.trimmed
+    }
+
+    private func resolveIsOptional() -> Bool {
+        node.resolveIsOptional()
     }
 }

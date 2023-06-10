@@ -74,7 +74,7 @@ class FunctionParameterSemanticsResolver: ParameterNodeSemanticsResolving {
     }
 
     private func resolveIsOptional() -> Bool {
-        false
+        node.resolveIsOptional()
     }
 
     private func resolveDefaultArgument() -> String? {

@@ -72,6 +72,9 @@ public struct Variable: Declaration, SyntaxSourceLocationResolving {
     /// The variable or property accessors.
     public var accessors: [Accessor] { resolver.accessors }
 
+    /// Will return a `Bool` flag indicating if the variable type is marked as optional. `?`
+    var isOptional: Bool { resolver.isOptional }
+
     // MARK: - Properties: SyntaxSourceLocationResolving
 
     public var sourceLocation: SyntaxSourceLocation { resolver.sourceLocation }

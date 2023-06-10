@@ -33,7 +33,7 @@ public struct Parameter: Hashable, Equatable, CustomStringConvertible {
     /// Array of attributes found in the declaration.
     ///
     /// - See: ``SyntaxSparrow/Attribute``
-    var attributes: [Attribute] { resolver.attributes }
+    public var attributes: [Attribute] { resolver.attributes }
 
     /// The first, external name of the parameter.
     ///
@@ -43,7 +43,7 @@ public struct Parameter: Hashable, Equatable, CustomStringConvertible {
     /// ```
     /// - The first parameter has a `name` equal to `"_"`
     /// - The second parameter has a `name` equal to `"by"`
-    var name: String? { resolver.name }
+    public var name: String? { resolver.name }
 
     /// The second internal name of the parameter.
     ///
@@ -53,7 +53,7 @@ public struct Parameter: Hashable, Equatable, CustomStringConvertible {
     /// ```
     /// - The first parameter has a `secondName` equal to `"number"`
     /// - The second parameter has a `secondName` equal to `"amount"`
-    var secondName: String? { resolver.secondName }
+    public var secondName: String? { resolver.secondName }
 
     /// The `EntityType` resolve from the parameter
     ///
@@ -66,10 +66,10 @@ public struct Parameter: Hashable, Equatable, CustomStringConvertible {
     /// - The third parameter type will be `.dimensions(Tuple)` where the associated tuple has parameters with types `.simple("Double")` and
     /// `.simple("Double")`
     /// - See: ``SyntaxSparrow/EntityType``
-    var type: EntityType { resolver.type }
+    public var type: EntityType { resolver.type }
 
     /// The raw type string.
-    var rawType: String? { resolver.rawType }
+    public var rawType: String? { resolver.rawType }
 
     /// Bool whether the parameter accepts a variadic argument.
     ///
@@ -78,10 +78,10 @@ public struct Parameter: Hashable, Equatable, CustomStringConvertible {
     /// func greet(_ person: Person, with phrases: String...)
     /// ```
     /// - The second parameter is variadic
-    var isVariadic: Bool { resolver.isVariadic }
+    public var isVariadic: Bool { resolver.isVariadic }
 
     /// Will return a `Bool` flag indicating if the closure declaration is marked as optional. `?`
-    var isOptional: Bool { resolver.isOptional }
+    public var isOptional: Bool { resolver.isOptional }
 
     /// The default argument of the parameter (if any).
     ///
@@ -90,7 +90,7 @@ public struct Parameter: Hashable, Equatable, CustomStringConvertible {
     /// func processCount(_ number: Int, by amount: Int = 1)
     /// ```
     /// - The second parameter has a default argument equal to `"1"`.
-    var defaultArgument: String? { resolver.defaultArgument }
+    public var defaultArgument: String? { resolver.defaultArgument }
 
     /// Bool whether the parameter is marked with `inout`
     ///
@@ -99,7 +99,7 @@ public struct Parameter: Hashable, Equatable, CustomStringConvertible {
     /// func processForm(_ form: inout Form)
     /// ```
     /// - The parameter is inout
-    var isInOut: Bool { resolver.isInOut }
+    public var isInOut: Bool { resolver.isInOut }
 
     /// Bool whether the parameter name is marked as no label `_`.
     ///
@@ -114,7 +114,7 @@ public struct Parameter: Hashable, Equatable, CustomStringConvertible {
     /// typealias Person = (String, Int)
     /// ```
     /// - Both parameter arguments in the tuple will have `isLabelOmitted` as `false`
-    var isLabelOmitted: Bool { name == "_" }
+    public var isLabelOmitted: Bool { name == "_" }
 
     // MARK: - Properties: Resolving
 

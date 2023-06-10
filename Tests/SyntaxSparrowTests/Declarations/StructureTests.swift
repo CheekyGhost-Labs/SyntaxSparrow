@@ -334,6 +334,8 @@ final class StructureTests: XCTestCase {
         XCTAssertEqual(genericRequirement.rightTypeIdentifier, "U")
     }
 
+    // TODO: children
+
     func test_hashable_equatable_willReturnExpectedResults() throws {
         let source = #"""
         struct SampleStruct { enum Nested: String {} }

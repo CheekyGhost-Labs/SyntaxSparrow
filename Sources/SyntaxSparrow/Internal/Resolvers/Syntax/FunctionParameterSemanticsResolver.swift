@@ -23,6 +23,8 @@ class FunctionParameterSemanticsResolver: ParameterNodeSemanticsResolving {
 
     private(set) lazy var attributes: [Attribute] = resolveAttributes()
 
+    private(set) lazy var modifiers: [Modifier] = resolveModifiers()
+
     private(set) lazy var name: String? = resolveName()
 
     private(set) lazy var secondName: String? = resolveSecondName()
@@ -53,6 +55,11 @@ class FunctionParameterSemanticsResolver: ParameterNodeSemanticsResolving {
         AttributesCollector.collect(node)
     }
 
+    private func resolveModifiers() -> [Modifier] {
+        guard let modifierList = node.modifiers else { return [] }
+        return modifierList.map { Modifier(node: $0) }
+    }
+
     private func resolveName() -> String {
         node.firstName.text.trimmed
     }
@@ -62,7 +69,11 @@ class FunctionParameterSemanticsResolver: ParameterNodeSemanticsResolving {
     }
 
     private func resolveRawType() -> String {
-        node.type.description.trimmed
+        var result = node.type.description.trimmed
+        if let ellipsis = node.ellipsis {
+            result += ellipsis.text.trimmed
+        }
+        return result
     }
 
     private func resolveEntityType() -> EntityType {

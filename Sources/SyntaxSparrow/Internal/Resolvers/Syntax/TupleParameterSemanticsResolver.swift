@@ -21,7 +21,9 @@ class TupleParameterSemanticsResolver: ParameterNodeSemanticsResolving {
 
     // MARK: - Properties: ParameterNodeSemanticsResolving
 
-    let attributes: [Attribute] = []
+    private(set) lazy var attributes: [Attribute] = resolveAttributes()
+
+    private(set) lazy var modifiers: [Modifier] = resolveModifiers()
 
     private(set) lazy var name: String? = resolveName()
 
@@ -49,6 +51,14 @@ class TupleParameterSemanticsResolver: ParameterNodeSemanticsResolving {
 
     // MARK: - Resolvers
 
+    private func resolveAttributes() -> [Attribute] {
+        []
+    }
+
+    private func resolveModifiers() -> [Modifier] {
+        []
+    }
+
     private func resolveName() -> String? {
         node.name?.text.trimmed
     }
@@ -58,7 +68,11 @@ class TupleParameterSemanticsResolver: ParameterNodeSemanticsResolving {
     }
 
     private func resolveRawType() -> String? {
-        node.type.description.trimmed
+        var result = node.type.description.trimmed
+        if let ellipsis = node.ellipsis {
+            result += ellipsis.text.trimmed
+        }
+        return result
     }
 
     private func resolveEntityType() -> EntityType {

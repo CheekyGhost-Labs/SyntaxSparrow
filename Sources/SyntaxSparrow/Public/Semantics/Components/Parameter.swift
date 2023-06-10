@@ -50,6 +50,10 @@ public struct Parameter: Equatable, Hashable, CustomStringConvertible {
     /// - See: ``SyntaxSparrow/Attribute``
     public var attributes: [Attribute] { resolver.attributes }
 
+    /// Array of modifiers found in the declaration.
+    /// - See: ``SyntaxSparrow/Modifier``
+    public var modifiers: [Modifier] { resolver.modifiers }
+
     /// The first, external name of the parameter.
     ///
     /// For example, in the following declaration:
@@ -167,6 +171,10 @@ public struct Parameter: Equatable, Hashable, CustomStringConvertible {
     // MARK: - CustomStringConvertible
 
     public var description: String {
-        resolver.node.description.trimmed
+        let result = resolver.node.description.trimmed
+        if result.hasSuffix(",") {
+            return String(result.dropLast(1))
+        }
+        return result
     }
 }

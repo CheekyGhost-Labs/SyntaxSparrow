@@ -52,7 +52,7 @@ public struct Closure: DeclarationComponent {
 
     /// Bool whether the closure has the `@escaping` attribute.
     /// **Note:** This separate from the `isAutoEscaping` proeprty as you may want to know whether something has the attribute or not.
-    public var isEscaping: Bool { resolver.isEscaping }
+    public var isEscaping: Bool { resolver.isEscaping || isAutoEscaping }
 
     /// Bool whether the closure is auto escaping.
     /// This would be `true` when the closure itself is optional as swift expects them to be auto-escaping.

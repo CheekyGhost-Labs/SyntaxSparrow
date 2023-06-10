@@ -13,12 +13,10 @@ import Foundation
 /// Initial support for some complex types, such as closures, tuples, and results is provided.
 /// As support for more complex types are added they will be added as a dedicated enumeration case to the `EntityType`
 public enum EntityType: Equatable, Hashable, CustomStringConvertible {
-    /// A `simple` type refers to a standard swift type can't does not have any nested or related syntax. Also provides if the type is optional.
-    /// `.simple("String?", true)`
-    /// `.simple("String", false)`
+    /// A `simple` type refers to a standard swift type can't does not have any nested or related syntax.
     /// **Note:** This is also used for any unsupported syntax types. i.e `CVarArg` is not currently supported so it will use the
-    /// `.simple("CVarArg...", false)`
-    case simple(_ type: String, _ isOptional: Bool)
+    /// `.simple("CVarArg...")`
+    case simple(_ type: String)
 
     /// A `tuple` type is used when a parameter's type is a valid ``SyntaxSparrow/Tuple`` type.
     ///
@@ -76,12 +74,8 @@ public enum EntityType: Equatable, Hashable, CustomStringConvertible {
 
     public var description: String {
         switch self {
-        case let .simple(type, optional):
-            var result = type.description
-            if optional, !result.hasSuffix("?") {
-                result = "\(result)?"
-            }
-            return result
+        case let .simple(type):
+            return type
         case let .tuple(tuple):
             return tuple.description
         case let .closure(closure):

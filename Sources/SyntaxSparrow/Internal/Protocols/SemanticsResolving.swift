@@ -35,6 +35,7 @@ protocol NodeSemanticsResolving: SemanticsResolving {
 
 protocol ParameterNodeSemanticsResolving: NodeSemanticsResolving {
     var attributes: [Attribute] { get }
+    var modifiers: [Modifier] { get }
     var name: String? { get }
     var secondName: String? { get }
     var type: EntityType { get }

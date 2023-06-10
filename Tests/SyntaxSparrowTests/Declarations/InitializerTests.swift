@@ -55,7 +55,7 @@ final class InitializerTests: XCTestCase {
 
         // Test parameters
         XCTAssertEqual(initializerUnderTest.parameters.count, 1)
-        XCTAssertEqual(initializerUnderTest.parameters[0].type, .simple("Int", false))
+        XCTAssertEqual(initializerUnderTest.parameters[0].type, .simple("Int"))
         XCTAssertEqual(initializerUnderTest.parameters[0].name, "withAge")
         XCTAssertEqual(initializerUnderTest.parameters[0].secondName, "age")
         // Parameters have more extensive tests for initializer parameters
@@ -140,7 +140,7 @@ final class InitializerTests: XCTestCase {
 
         // Test parameters
         XCTAssertEqual(initializerUnderTest.parameters.count, 1)
-        XCTAssertEqual(initializerUnderTest.parameters[0].type, .simple("Int", false))
+        XCTAssertEqual(initializerUnderTest.parameters[0].type, .simple("Int"))
         XCTAssertEqual(initializerUnderTest.parameters[0].name, "withAge")
         XCTAssertEqual(initializerUnderTest.parameters[0].secondName, "age")
         // Parameters have more extensive tests for initializer parameters
@@ -175,7 +175,7 @@ final class InitializerTests: XCTestCase {
 
         // Test parameters
         XCTAssertEqual(initializerUnderTest.parameters.count, 1)
-        XCTAssertEqual(initializerUnderTest.parameters[0].type, .simple("T", false))
+        XCTAssertEqual(initializerUnderTest.parameters[0].type, .simple("T"))
         XCTAssertEqual(initializerUnderTest.parameters[0].name, "value")
         XCTAssertNil(initializerUnderTest.parameters[0].secondName)
         // Parameters have more extensive tests for initializer parameters

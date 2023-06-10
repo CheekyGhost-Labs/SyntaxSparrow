@@ -95,7 +95,7 @@ final class DeinitializerTests: XCTestCase {
         XCTAssertEqual(caseOneUnderTest.name, "one")
         XCTAssertEqual(caseOneUnderTest.associatedValues?.count, 1)
         XCTAssertEqual(caseOneUnderTest.associatedValues?[0].name, "value")
-        XCTAssertEqual(caseOneUnderTest.associatedValues?[0].type, .simple("Int", false))
+        XCTAssertEqual(caseOneUnderTest.associatedValues?[0].type, .simple("Int"))
         XCTAssertNil(caseOneUnderTest.rawValue)
 
         // Test case with raw value

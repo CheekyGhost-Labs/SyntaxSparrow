@@ -27,17 +27,17 @@ extension EntityType {
                 let result = Result(simpleType)
                 return .result(result!)
             }
-            let isOptional = simpleType.resolveIsOptional()
             // Void
             if
                 simpleType.firstToken(viewMode: .fixedUp)?.tokenKind == .identifier("Void") ||
                 simpleType.firstToken(viewMode: .fixedUp)?.tokenKind == .identifier("()")
             {
+                let isOptional = resolveIsOptional(from: simpleType)
                 return .void(isOptional)
             }
 
-            // Standard
-            return .simple(simpleType.description.trimmed, isOptional)
+            let typeString = resolveSimpleTypeString(from: simpleType)
+            return .simple(typeString)
         }
 
         // Tuple
@@ -45,7 +45,7 @@ extension EntityType {
             if tupleTypeSyntax.elements.count == 1, let innerElement = tupleTypeSyntax.elements.first {
                 return parseType(innerElement.type)
             } else if tupleTypeSyntax.elements.isEmpty {
-                let isOptional = tupleTypeSyntax.resolveIsOptional()
+                let isOptional = resolveIsOptional(from: tupleTypeSyntax)
                 return .void(isOptional)
             }
             let tuple = Tuple(node: tupleTypeSyntax)
@@ -66,10 +66,10 @@ extension EntityType {
             return parseType(attributedType.baseType)
         }
 
-        let trimmedType = typeSyntax.description.trimmed
-        if !trimmedType.isEmpty {
-            let isOptional = typeSyntax.resolveIsOptional()
-            return .simple(trimmedType, isOptional)
+        // Fallback
+        if !typeSyntax.description.trimmed.isEmpty {
+            let typeString = resolveSimpleTypeString(from: typeSyntax)
+            return .simple(typeString)
         }
 
         // Result
@@ -105,8 +105,8 @@ extension EntityType {
             return getEmptyTuple(nestedTuple)
         }
 
-        // If the first (and only) element is not a tuple, return the tuple itself
-        return tuple
+        // If the first (and only) element is not a tuple, return nil
+        return nil
     }
 
     // This is probably not needed
@@ -116,5 +116,60 @@ extension EntityType {
             return result
         }
         return nil
+    }
+
+    static func resolveSimpleTypeString(from typeSyntax: TypeSyntaxProtocol) -> String {
+        // Standard
+        let isOptional = resolveIsOptional(from: typeSyntax)
+        var simpleType = typeSyntax.description.trimmed
+        // Need to check if parent parameter context (if any) is an optional. This has no parent parameter context so the type atm
+        // has no context. i.e if we had `"String?..." as the parameter type, the `simpleType` at the moment is "String".
+        // This developers looking at an `EntityType` outside of a parameter or variable context obtain the optional state both from the
+        // enum case, and receive an accurate text description.
+        if isOptional {
+            simpleType += "?"
+        }
+        // Need to check if ellipsis is present after type to declare variadic. This has no parent parameter context so the type atm
+        // has no context. i.e if we had `"String?..." as the parameter type, the `simpleType` at the moment is "String?"
+        // This developers looking at an `EntityType` outside of a parameter or variable context obtain the accurate variadic type in
+        // the text description
+        var ellipsisToken: TokenSyntax?
+        var nextToken = typeSyntax.nextToken(viewMode: .fixedUp)
+        while nextToken != nil {
+            if let candidate = nextToken, candidate.tokenKind == .ellipsis, candidate.context?.id == typeSyntax.context?.id {
+                ellipsisToken = candidate
+                break
+            }
+            nextToken = nextToken?.nextToken(viewMode: .fixedUp)
+        }
+        if let ellipsis = ellipsisToken {
+            simpleType += ellipsis.text.trimmed
+        }
+        return simpleType.trimmed
+    }
+
+    // MARK: - Helpers: Optional and Variadic
+
+    static func resolveIsOptional(from typeSyntax: TypeSyntaxProtocol) -> Bool {
+        let softCheck = typeSyntax.parent?.description.trimmed.hasSuffix("?") ?? false
+        guard !softCheck else { return true }
+        // Token assessment approach
+        var result: Bool = false
+        var nextToken = typeSyntax.nextToken(viewMode: .fixedUp)
+        var potentialOptional: Bool = nextToken?.text == "?"
+        while nextToken != nil {
+            if nextToken?.text == ")" {
+                potentialOptional = true
+            }
+            if potentialOptional, nextToken?.text == ")" {
+                break
+            }
+            if potentialOptional, nextToken?.text == "?" {
+                result = true
+                break
+            }
+            nextToken = nextToken?.nextToken(viewMode: .fixedUp)
+        }
+        return result
     }
 }

@@ -52,7 +52,7 @@ public enum EntityType: Equatable, Hashable, CustomStringConvertible {
     /// (the success case) or an `Error` (the failure case).
     case result(_ result: Result)
 
-    /// A `void` type is used when a parameter's type resolves to `Void`. Also includes if the type is optional.
+    /// A `void` type is used when a parameter's type resolves to `Void`. It includes the raw declaration (`"Void"` or `"()"`) includes if the type is optional.
     ///
     /// For example,
     /// ```swift
@@ -63,7 +63,7 @@ public enum EntityType: Equatable, Hashable, CustomStringConvertible {
     /// - The first function would have a parameter with the type `.void`
     /// - The second function would have a parameter with the type `.void`
     /// - The third function would have a parameter with the type `.closure(Closure)` where the closure input and output are both `.void`
-    case void(_ isOptional: Bool)
+    case void(_ raw: String, _ isOptional: Bool)
 
     /// An `empty` type refers to a when a parameter or property is partially declared and does not have a type defined.
     ///
@@ -82,7 +82,7 @@ public enum EntityType: Equatable, Hashable, CustomStringConvertible {
             return closure.description
         case let .result(result):
             return result.description
-        case .void(let isOpional):
+        case .void(let rawType, let isOpional):
             return "Void\(isOpional ? "?" : "")"
         case .empty:
             return ""

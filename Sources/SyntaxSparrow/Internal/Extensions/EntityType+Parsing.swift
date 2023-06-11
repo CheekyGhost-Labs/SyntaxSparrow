@@ -27,13 +27,13 @@ extension EntityType {
                 let result = Result(simpleType)
                 return .result(result!)
             }
-            // Void
+            let isOptional = resolveIsOptional(from: simpleType)
+            // Void check
             if
-                simpleType.firstToken(viewMode: .fixedUp)?.tokenKind == .identifier("Void") ||
-                simpleType.firstToken(viewMode: .fixedUp)?.tokenKind == .identifier("()")
+                let firstKind = simpleType.firstToken(viewMode: .fixedUp)?.tokenKind,
+                let resolved = resolveVoidType(from: firstKind, isOptional: isOptional)
             {
-                let isOptional = resolveIsOptional(from: simpleType)
-                return .void(isOptional)
+                return resolved
             }
 
             let typeString = resolveSimpleTypeString(from: simpleType)
@@ -46,7 +46,7 @@ extension EntityType {
                 return parseType(innerElement.type)
             } else if tupleTypeSyntax.elements.isEmpty {
                 let isOptional = resolveIsOptional(from: tupleTypeSyntax)
-                return .void(isOptional)
+                return voidType(withRawValue: "()", isOptional: isOptional)
             }
             let tuple = Tuple(node: tupleTypeSyntax)
             return .tuple(tuple)
@@ -80,7 +80,7 @@ extension EntityType {
         let tuple = Tuple(node: syntax)
         if getEmptyTuple(tuple) != nil {
             let isOptional = syntax.resolveIsOptional()
-            return .void(isOptional)
+            return voidType(withRawValue: "()", isOptional: isOptional)
         }
         // This is probably not needed?
         if let resolvedSingleElement = getSingleTupleElement(tuple) {
@@ -146,6 +146,25 @@ extension EntityType {
             simpleType += ellipsis.text.trimmed
         }
         return simpleType.trimmed
+    }
+
+    static func resolveVoidType(from tokenKind: TokenKind, isOptional: Bool) -> EntityType? {
+        switch tokenKind {
+        case .identifier("Void"):
+            return voidType(withRawValue: "Void", isOptional: isOptional)
+        case .identifier("()"):
+            return voidType(withRawValue: "()", isOptional: isOptional)
+        default:
+            return nil
+        }
+    }
+
+    static func voidType(withRawValue value: String, isOptional: Bool) -> EntityType {
+        var rawType: String = value
+        if isOptional {
+            rawType += "?"
+        }
+        return .void(rawType, isOptional)
     }
 
     // MARK: - Helpers: Optional and Variadic

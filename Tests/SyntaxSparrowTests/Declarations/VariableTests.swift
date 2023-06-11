@@ -258,7 +258,7 @@ final class VariableTests: XCTestCase {
         var variable = instanceUnderTest.variables[0]
         XCTAssertEqual(variable.keyword, "var")
         XCTAssertEqual(variable.name, "handler")
-        XCTAssertEqual(variable.type, .void(false))
+        XCTAssertEqual(variable.type, .void("()", false))
         XCTAssertFalse(variable.isOptional)
         XCTAssertEqual(variable.initializedValue, "{}")
         XCTAssertTrue(variable.hasSetter)
@@ -266,7 +266,7 @@ final class VariableTests: XCTestCase {
         variable = instanceUnderTest.variables[1]
         XCTAssertEqual(variable.keyword, "var")
         XCTAssertEqual(variable.name, "handler")
-        XCTAssertEqual(variable.type, .void(true))
+        XCTAssertEqual(variable.type, .void("()?", true))
         XCTAssertTrue(variable.isOptional)
         XCTAssertEqual(variable.initializedValue, "{}")
         XCTAssertTrue(variable.hasSetter)
@@ -274,7 +274,7 @@ final class VariableTests: XCTestCase {
         variable = instanceUnderTest.variables[2]
         XCTAssertEqual(variable.keyword, "var")
         XCTAssertEqual(variable.name, "handler")
-        XCTAssertEqual(variable.type, .void(false))
+        XCTAssertEqual(variable.type, .void("Void", false))
         XCTAssertFalse(variable.isOptional)
         XCTAssertEqual(variable.initializedValue, "{}")
         XCTAssertTrue(variable.hasSetter)
@@ -282,7 +282,7 @@ final class VariableTests: XCTestCase {
         variable = instanceUnderTest.variables[3]
         XCTAssertEqual(variable.keyword, "var")
         XCTAssertEqual(variable.name, "handler")
-        XCTAssertEqual(variable.type, .void(true))
+        XCTAssertEqual(variable.type, .void("Void?", true))
         XCTAssertTrue(variable.isOptional)
         XCTAssertEqual(variable.initializedValue, "{}")
         XCTAssertTrue(variable.hasSetter)

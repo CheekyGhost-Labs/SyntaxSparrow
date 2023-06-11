@@ -585,7 +585,7 @@ final class FunctionTests: XCTestCase {
         if case let EntityType.closure(closure) = function.signature.input[0].type {
             XCTAssertEqual(closure.input, .simple("Int"))
             XCTAssertFalse(closure.isVoidInput)
-            XCTAssertEqual(closure.output, .void(false))
+            XCTAssertEqual(closure.output, .void("Void", false))
             XCTAssertTrue(closure.isVoidOutput)
             XCTAssertFalse(closure.isOptional)
             XCTAssertTrue(closure.isEscaping)
@@ -617,7 +617,7 @@ final class FunctionTests: XCTestCase {
         if case let EntityType.closure(closure) = function.signature.input[0].type {
             XCTAssertEqual(closure.input, .simple("Int"))
             XCTAssertFalse(closure.isVoidInput)
-            XCTAssertEqual(closure.output, .void(false))
+            XCTAssertEqual(closure.output, .void("Void", false))
             XCTAssertTrue(closure.isVoidOutput)
             XCTAssertTrue(closure.isOptional)
             XCTAssertTrue(closure.isEscaping)

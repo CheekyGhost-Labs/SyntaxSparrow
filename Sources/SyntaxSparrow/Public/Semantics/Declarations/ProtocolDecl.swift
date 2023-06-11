@@ -19,7 +19,7 @@ import SwiftSyntax
 /// - Inheritance: Any types that the protocol inherits from, including other protocols.
 /// - GenericRequirements: Information about any generic requirements applied to the protocol.
 ///
-/// Each instance of ``SyntaxSparrow/Protocol`` corresponds to a `ProtocolDeclSyntax` node in the Swift syntax tree.
+/// Each instance of ``SyntaxSparrow/ProtocolDecl`` corresponds to a `ProtocolDeclSyntax` node in the Swift syntax tree.
 ///
 /// This structure conforms to `Declaration`, `SyntaxChildCollecting`, and `SyntaxSourceLocationResolving`,
 /// which provide access to the declaration attributes, modifiers, child nodes, and source location information.

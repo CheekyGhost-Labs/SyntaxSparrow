@@ -43,15 +43,13 @@ class VariableSemanticsResolver: DeclarationSemanticsResolving {
 
     private(set) lazy var isOptional: Bool = resolveIsOptional()
 
+    private(set) lazy var hasSetter: Bool = resolveHasSetter()
+
     // MARK: - Lifecycle
 
     required init(node: PatternBindingSyntax, context: SyntaxExplorerContext) {
         self.node = node
         self.context = context
-    }
-
-    func collectChildren() {
-        // no-op
     }
 
     // MARK: - Resolvers
@@ -62,7 +60,15 @@ class VariableSemanticsResolver: DeclarationSemanticsResolving {
     }
 
     private func resolveEntityType() -> EntityType {
-        guard let typeAnnotation = node.typeAnnotation?.type else { return .empty }
+        guard let typeAnnotation = node.typeAnnotation?.type else {
+            guard
+                let parent = node.parent?.as(PatternBindingListSyntax.self),
+                let matchingType = parent.first(where: { $0.typeAnnotation != nil })?.typeAnnotation
+            else {
+                return .empty
+            }
+            return EntityType.parseType(matchingType.type)
+        }
         return EntityType.parseType(typeAnnotation)
     }
 
@@ -91,6 +97,30 @@ class VariableSemanticsResolver: DeclarationSemanticsResolving {
     }
 
     private func resolveIsOptional() -> Bool {
-        node.resolveIsOptional()
+        guard let typeNode = node.typeAnnotation else { return false }
+        return typeNode.type.resolveIsOptional()
+    }
+
+    private func resolveHasSetter() -> Bool {
+        // If setter exists in accessors can return true
+        if accessors.contains(where: { $0.kind == .set }) {
+            return true
+        }
+        // Otherwise if the keyword is not `let` (immutable)
+        guard keyword != "let" else { return false }
+        // Check if modifiers contain a private set
+        guard !modifiers.contains(where: { $0.name == "private" && $0.detail == "set" }) else { return false }
+        // Finally if the root context is not a protocol, and the keyword is var, it can have a setter
+        return node.context?.as(ProtocolDeclSyntax.self) == nil && keyword == "var"
+    }
+
+    func resolveSourceLocation() -> SyntaxSourceLocation {
+        if context.sourceLocationConverter.isEmpty {
+            context.sourceLocationConverter.updateToRootForNode(node)
+        }
+        let targetNode: SyntaxProtocol = node.context ?? node
+        let start = context.sourceLocationConverter.startLocationForNode(targetNode)
+        let end = context.sourceLocationConverter.endLocationForNode(targetNode)
+        return SyntaxSourceLocation(start: start, end: end)
     }
 }

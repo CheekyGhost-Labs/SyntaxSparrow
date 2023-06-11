@@ -85,7 +85,7 @@ class FunctionParameterSemanticsResolver: ParameterNodeSemanticsResolving {
     }
 
     private func resolveIsOptional() -> Bool {
-        node.resolveIsOptional()
+        node.type.resolveIsOptional()
     }
 
     private func resolveDefaultArgument() -> String? {

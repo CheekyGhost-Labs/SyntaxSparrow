@@ -23,7 +23,7 @@ import SwiftSyntax
 ///
 /// This structure conforms to `Declaration`, `SyntaxChildCollecting`, and `SyntaxSourceLocationResolving`,
 /// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
-public struct ProtocolDecl: Declaration, SyntaxSourceLocationResolving {
+public struct ProtocolDecl: Declaration, SyntaxChildCollecting, SyntaxSourceLocationResolving {
 
     // MARK: - Properties: Declaration
 
@@ -103,10 +103,20 @@ public struct ProtocolDecl: Declaration, SyntaxSourceLocationResolving {
 
     private(set) var resolver: ProtocolSemanticsResolver
 
+    var declarationCollection: DeclarationCollection { resolver.declarationCollection }
+
     // MARK: - Lifecycle
 
     /// Creates a new ``SyntaxSparrow/Protocol`` instance from an `ProtocolDeclSyntax` node.
     public init(node: ProtocolDeclSyntax, context: SyntaxExplorerContext) {
         resolver = ProtocolSemanticsResolver(node: node, context: context)
     }
+
+    // MARK: - Properties: Child Collection
+
+    func collectChildren() {
+        resolver.collectChildren()
+    }
 }
+
+extension ProtocolDecl: DeclarationCollecting {}

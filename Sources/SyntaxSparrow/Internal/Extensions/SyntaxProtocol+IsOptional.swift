@@ -10,20 +10,29 @@ import SwiftSyntax
 
 extension SyntaxProtocol {
     func resolveIsOptional(viewMode: SyntaxTreeViewMode = .fixedUp) -> Bool {
+        guard self.as(OptionalTypeSyntax.self) == nil else { return true }
         guard parent?.as(OptionalTypeSyntax.self) == nil else { return true }
-        var nextParent = parent
-        while nextParent != nil {
-            if nextParent?.as(OptionalTypeSyntax.self) != nil {
-                return true
+        // Token assessment approach
+        var result: Bool = false
+        var nextToken = nextToken(viewMode: .fixedUp)
+        var potentialOptional: Bool = nextToken?.text == "?"
+        while nextToken != nil {
+            if nextToken?.text == ")" {
+                potentialOptional = true
             }
-            if nextParent?.syntaxNodeType == FunctionTypeSyntax.self {
+            if potentialOptional, nextToken?.text == ")" {
                 break
             }
-            nextParent = nextParent?.parent
+            if potentialOptional, nextToken?.text == "?" {
+                result = true
+                break
+            }
+            nextToken = nextToken?.nextToken(viewMode: .fixedUp)
         }
-        if children(viewMode: viewMode).contains(where: { $0.syntaxNodeType == OptionalTypeSyntax.self }) {
+        // Fallback child approach
+        if !result, children(viewMode: viewMode).contains(where: { $0.syntaxNodeType == OptionalTypeSyntax.self }) {
             return true
         }
-        return false
+        return result
     }
 }

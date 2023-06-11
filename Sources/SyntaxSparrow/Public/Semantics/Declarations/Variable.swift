@@ -72,13 +72,16 @@ public struct Variable: Declaration, SyntaxSourceLocationResolving {
     /// ```
     /// - The first declaration has an initialized type of `nil`
     /// - The second declaration has an initialized type of `"name"`
-    public var initializedType: String? { resolver.initializedValue }
+    public var initializedValue: String? { resolver.initializedValue }
 
     /// The variable or property accessors.
     public var accessors: [Accessor] { resolver.accessors }
 
     /// Will return a `Bool` flag indicating if the variable type is marked as optional. `?`
     var isOptional: Bool { resolver.isOptional }
+    
+    /// Bool whether the `accessors` contains the `set` kind, or the `keyword` is `"var"` and the variable is not within a protocol declaration.
+    public var hasSetter: Bool { resolver.hasSetter }
 
     // MARK: - Properties: SyntaxSourceLocationResolving
 
@@ -106,9 +109,10 @@ public struct Variable: Declaration, SyntaxSourceLocationResolving {
         resolver = VariableSemanticsResolver(node: node, context: context)
     }
 
-    // MARK: - Properties: Child Collection
+    // MARK: - CustomStringConvertible
 
-    func collectChildren() {
-        // no-op
+    public var description: String {
+        let targetNode = node.context?._syntaxNode ?? node._syntaxNode
+        return targetNode.description.trimmed
     }
 }

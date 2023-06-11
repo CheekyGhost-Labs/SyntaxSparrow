@@ -65,7 +65,28 @@ class ClosureSemanticsResolver: NodeSemanticsResolving {
     }
 
     private func resolveIsOptional() -> Bool {
-        node.resolveIsOptional(viewMode: .fixedUp)
+        // Resolve parent type syntax
+        var parentParameter: SyntaxProtocol?
+        for case let node? in sequence(first: node.parent, next: { $0?.parent }) {
+            if let declaration = node.as(FunctionParameterSyntax.self) {
+                parentParameter = declaration
+                break
+            }
+            else if let declaration = node.as(PatternBindingSyntax.self) {
+                parentParameter = declaration
+                break
+            }
+            else if let declaration = node.as(VariableDeclSyntax.self) {
+                parentParameter = declaration
+                break
+            }
+            else if let declaration = node.as(TupleTypeSyntax.self) {
+                parentParameter = declaration
+                break
+            }
+        }
+        guard let parentNode = parentParameter else { return false }
+        return parentNode.resolveIsOptional(viewMode: .fixedUp)
     }
 
     private func resolveIsEscaping() -> Bool {

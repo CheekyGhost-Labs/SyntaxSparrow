@@ -63,7 +63,7 @@ public struct Closure: DeclarationComponent {
 
     // MARK: - Properties: Convenience
 
-    var resolver: ClosureSemanticsResolver
+    private(set) var resolver: ClosureSemanticsResolver
 
     // MARK: - Lifecycle
 

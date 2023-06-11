@@ -42,19 +42,19 @@ public class SparrowSourceLocationConverter {
     // MARK: - Helpers
 
     public func updateForTree(_ tree: SyntaxProtocol, file: String = "") {
-        queue.sync {
+        queue.async(flags: .barrier) { [self] in
             converter = SourceLocationConverter(file: file, tree: tree)
         }
     }
 
     public func udpateForSource(_ source: String, file: String = "") {
-        queue.sync {
+        queue.async(flags: .barrier) { [self] in
             converter = SourceLocationConverter(file: file, source: source)
         }
     }
 
     public func updateToRootForNode(_ node: SyntaxProtocol, file: String = "") {
-        queue.sync {
+        queue.async(flags: .barrier) { [self] in
             converter = SourceLocationConverter(file: file, tree: node.root)
         }
     }

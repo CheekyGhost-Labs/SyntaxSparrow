@@ -9,9 +9,6 @@ import Foundation
 
 public final class DeclarationCollection {
 
-    /// Queue to ensure any alterations are made in a thread safe manner.
-    let queue: DispatchQueue = .init(label: "com.cheekyghost.SyntaxSparrow.DeclarationCollection", qos: .userInitiated)
-
     /// The collected class declarations.
     internal(set) public var classes: [Class] = []
 
@@ -58,42 +55,38 @@ public final class DeclarationCollection {
     internal(set) public var variables: [Variable] = []
 
     func reset() {
-        queue.sync {
-            classes = []
-            conditionalCompilationBlocks = []
-            deinitializers = []
-            enumerations = []
-            extensions = []
-            functions = []
-            imports = []
-            initializers = []
-            operators = []
-            precedenceGroups = []
-            protocols = []
-            structures = []
-            subscripts = []
-            typealiases = []
-            variables = []
-        }
+        classes = []
+        conditionalCompilationBlocks = []
+        deinitializers = []
+        enumerations = []
+        extensions = []
+        functions = []
+        imports = []
+        initializers = []
+        operators = []
+        precedenceGroups = []
+        protocols = []
+        structures = []
+        subscripts = []
+        typealiases = []
+        variables = []
     }
 
     func collect(from collection: DeclarationCollection) {
-        queue.sync {
-            classes = collection.classes
-            conditionalCompilationBlocks = collection.conditionalCompilationBlocks
-            deinitializers = collection.deinitializers
-            enumerations = collection.enumerations
-            extensions = collection.extensions
-            functions = collection.functions
-            imports = collection.imports
-            initializers = collection.initializers
-            operators = collection.operators
-            precedenceGroups = collection.precedenceGroups
-            protocols = collection.protocols
-            structures = collection.structures
-            subscripts = collection.subscripts
-            typealiases = collection.typealiases
-            variables = collection.variables
-        }
+        classes = collection.classes
+        conditionalCompilationBlocks = collection.conditionalCompilationBlocks
+        deinitializers = collection.deinitializers
+        enumerations = collection.enumerations
+        extensions = collection.extensions
+        functions = collection.functions
+        imports = collection.imports
+        initializers = collection.initializers
+        operators = collection.operators
+        precedenceGroups = collection.precedenceGroups
+        protocols = collection.protocols
+        structures = collection.structures
+        subscripts = collection.subscripts
+        typealiases = collection.typealiases
+        variables = collection.variables
     }
 }

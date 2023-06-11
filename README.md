@@ -1,12 +1,16 @@
 # SyntaxSparrow
 
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FCheekyGhost-Labs%2FSyntaxSparrow%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/CheekyGhost-Labs/SyntaxSparrow)
+
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FCheekyGhost-Labs%2FSyntaxSparrow%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/CheekyGhost-Labs/SyntaxSparrow)
+
 SyntaxSparrow is a Swift library designed to facilitate the analysis and interaction with Swift source code. It leverages SwiftSyntax to parse Swift code and produce a syntax tree which collects and traverses constituent declaration types for Swift code.
 
 ## Workflows:
 
 |  Branch  | Latest Swift/Xcode |
 |:---------|:------------------:|
-| main | [![Swift Unit Tests](https://github.com/CheekyGhost-Labs/SyntaxSparrow/actions/workflows/unit-tests.yml/badge.svg?branch=main)](https://github.com/CheekyGhost-Labs/SyntaxSparrow/actions/workflows/unit-tests.yml) |
+| main | [![Swift Unit Tests](https://github.com/CheekyGhost-Labs/SyntaxSparrow/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/CheekyGhost-Labs/SyntaxSparrow/actions/workflows/unit-tests.yml) |
 | develop | [![Swift Unit Tests](https://github.com/CheekyGhost-Labs/SyntaxSparrow/actions/workflows/unit-tests.yml/badge.svg?branch=develop)](https://github.com/CheekyGhost-Labs/SyntaxSparrow/actions/workflows/unit-tests.yml) |
 
 - [About the Project](#about-the-project)

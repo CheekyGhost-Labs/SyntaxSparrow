@@ -17,6 +17,9 @@ on:
       - develop
       - 'release/**'
     push:
+      branches:
+        - main
+        - develop
       tags:
         - '*' # Push events to every tag
 

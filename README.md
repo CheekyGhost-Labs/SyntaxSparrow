@@ -2,6 +2,13 @@
 
 SyntaxSparrow is a Swift library designed to facilitate the analysis and interaction with Swift source code. It leverages SwiftSyntax to parse Swift code and produce a syntax tree which collects and traverses constituent declaration types for Swift code.
 
+## Workflows:
+
+|  Branch  | Latest Swift/Xcode |
+|:---------|:------------------:|
+| main | [![Swift Unit Tests](https://github.com/CheekyGhost-Labs/SyntaxSparrow/actions/workflows/unit-tests.yml/badge.svg?branch=main)](https://github.com/CheekyGhost-Labs/SyntaxSparrow/actions/workflows/unit-tests.yml) |
+| develop | [![Swift Unit Tests](https://github.com/CheekyGhost-Labs/SyntaxSparrow/actions/workflows/unit-tests.yml/badge.svg?branch=develop)](https://github.com/CheekyGhost-Labs/SyntaxSparrow/actions/workflows/unit-tests.yml) |
+
 - [About the Project](#about-the-project)
 - [Features](#features)
 - [Usage](#usage)
@@ -20,7 +27,7 @@ SyntaxSparrow was built on heavy inspiration from the now archived [SwiftSemanti
 
 The primary goal of producing semantic types to abstract the underlying `Syntax` expressions produced by `SwiftSyntax` remains the same, however there are a few other goals that `SyntaxSparrow` tries to achieve:
 
-- **Lazy evaluation**: As some source can be quite verbose and complex, SyntaxSparrow aims to only process and iterate through nodes as you request them. This improves performance and lets the collectors focus on high-level traversal.
+- **Lazy evaluation**: As some source can be quite verbose and complex, SyntaxSparrow aims to only process and iterate through nodes as you request them. The goal being to improve performance and lets the collectors focus on high-level traversal. Whether this is worth the internal trade off from a code complexity perspective will be reviewed over updates. The publicly visible semantic types are not effected by any internal updates fortunately.
 
 - **Source Locations**: `SyntaxSparrow` enables asking for where a declaration is within the provided source.
 
@@ -28,10 +35,13 @@ The primary goal of producing semantic types to abstract the underlying `Syntax`
 
 - **Performance**: In the future, we aim to improve performance through more efficient parsing algorithms and data structures. This will be coupled with an expanded test suite, to ensure accuracy across a wider range of Swift code patterns and idioms. We're also looking at ways to allow users to tailor the library's behavior to their specific needs, such as customizable traversal strategies and fine-grained control over the amount of information collected.
 
-
 ## Features
 
+- **Swift Macro Development**: Parse the raw SwiftSyntax declarations a macro provides into their semantic code to focus on your generated code.
+
 - **Swift Code Analysis**: Parse Swift code and create a syntax tree for in-depth analysis.
+
+- **Swift Code Generation**: Use parsed semantic types to generate code in a far more readable manner.
 
 - **Semantic Extraction**: Extracts various semantic structures like classes, functions, enumerations, structures, protocols, etc. from the syntax tree into constituent types.
 
@@ -39,7 +49,7 @@ The primary goal of producing semantic types to abstract the underlying `Syntax`
 
 - **Different View Modes**: Control the parsing and traversal strategy when processing the source code.
 
-- **Lazy Evaluation**: Shared context with child elements for lazy evaluation or collection as needed.
+- **Lazy Evaluation**: The details of a semantic type are only loaded on request.
 
 - **Heirachy Based**: Semantic types support child declarations (where relevant) to allow for a more heirachy-based traversal.
 
@@ -55,24 +65,26 @@ The primary goal of producing semantic types to abstract the underlying `Syntax`
 
 ### General
 
-Initialize `SyntaxTree` with the path of a Swift source file or directly with a Swift source code string. Then, use the various properties of `SyntaxTree` to access the collected semantic structures. 
+Initialize `SyntaxTree` with the path of a Swift source file, directly with a Swift source code string, or by asking to parse a `SwiftSyntax.DeclSyntaxProtocol` conforming type. Then, use the various properties of `SyntaxTree` to access the collected semantic structures. 
+
+##### From Source File
 
 ```swift
 let syntaxTree = try SyntaxTree(viewMode: .fixedUp, sourceAtPath: "/path/to/your/swift/file")
 syntaxTree.collectChildren()
 ```
 
-Or you can initialize it directly with a source code string:
+##### From Source
 
 ```swift
-let sourceCode = """
-import SyntaxSparrow
+let syntaxTree = try SyntaxTree(viewMode: .fixedUp, sourceBuffer: "source code")
+syntaxTree.collectChildren()
+```
 
-protocol ListItemDisplaying {
-    func setListItems(_ items: [ListItem])
-}
-"""
-let syntaxTree = SyntaxTree(viewMode: .fixedUp, sourceBuffer: sourceCode)
+##### From SwiftSyntax.DeclSyntaxProtocol
+
+```swift
+let syntaxTree = try SyntaxTree(viewMode: .fixedUp, declarationSyntax: declaration)
 syntaxTree.collectChildren()
 ```
 
@@ -174,7 +186,7 @@ syntaxTree.functions[0].typealiases[0].initializedType.type // .simple("String")
 ```
 
 ### Source Locations and Bounds:
-Core declarations will support the `SyntaxSourceLocationResolving` protocol (structure, class, typealias, etc) and provides the means to access the start/end position of the declaration:
+`Declaration` types can can also be sent to the `SyntaxTree` to extract source location and content:
 
 ```swift
 let sourceCode = """
@@ -190,24 +202,21 @@ let sourceCode = """
 """
 let syntaxTree = SyntaxTree(viewMode: .fixedUp, sourceBuffer: sourceCode)
 syntaxTree.collectChildren()
+let sourceDetails = try syntaxTree.extractSource(forDeclaration: structure)
 
-syntaxTree.structures[0].sourceLocation.start.line // 5
-syntaxTree.structures[0].sourceLocation.start.column // 4
-syntaxTree.structures[0].sourceLocation.end.line // 8
-syntaxTree.structures[0].sourceLocation.end.line // 4
-```
+sourceDetails.location.start.line // 5
+sourceDetails.location.start.column // 4
+sourceDetails.location.end.line // 8
+sourceDetails.location.end.line // 4
+sourceDetails.source // "@available(*, unavailable, message: \"my message\")\nstruct MyStruct {\n    var name: String = \"name\"\n}"
 
-`Declaration` conforming instances also have source location conveniences to get the substring range and extract source:
-
-```swift
-// Can also extract source
-syntaxTree.structures[0].substringRange(in: source) // Range<String.Index>
-syntaxTree.structures[0].stringRange(in: source) // NSRange(location: 51, length: 99)
-syntaxTree.structures[0].extractFromSource(source) // "@available(*, unavailable, message: \"my message\")\nstruct MyStruct {\n    var name: String = \"name\"\n}"
+// The `SyntaxSourceDetails` struct also has some conveniences for calculating ranges
+sourceDetails.substringRange(in: source) // Range<String.Index>
+sourceDetails.stringRange(in: source) // NSRange(location: 51, length: 99)
 ```
 
 ### Entity Types:
-EntityType is a vital part of SyntaxSparrow. It represents the type of an entity within a Swift source code. These entities can include parameters, variables, function return types, etc.
+`EntityType` is a vital part of SyntaxSparrow. It represents the type of an entity within a Swift source code. These entities can include parameters, variables, function return types, etc.
 
 It provides a structured representation for type information extracted from the Swift code. EntityType has a comprehensive support for many Swift types, handling simple, optional, tuple, function, and result types.
 
@@ -251,8 +260,8 @@ case .result(let result):
     print(result.successType) // EntityType
     print(result.failureType) // EntityType
     // see `Tuple`
-case .void:
-   print("Void/() type")
+case .void(let rawType: let isOptional):
+   print(rawType) // "Void" or "()?" etc
 case .empty:
    print("undefined or partial")
 }
@@ -277,7 +286,7 @@ Then, add SyntaxSparrow as a dependency for your target:
 
 ## Requirements
 
-- Swift 5.3+
+- Swift 5.6+
 - macOS 10.15+
 
 ## License
@@ -286,4 +295,58 @@ SyntaxSparrow is released under the MIT License. See the LICENSE file for more i
 
 ## Contributing
 
-Contributions to SyntaxSparrow are welcomed! If you have a bug to report, feel free to help out by opening a new issue or submitting a pull request
+Contributions to SyntaxSparrow are welcomed! If you have a bug to report, feel free to help out by opening a new issue or submitting a pull request.
+
+SyntaxSparrow follows pretty closely to a standard git flow process. For the most part, pull requests should be made against the `develop` branch to coordinate any releases. This also provides a means to test from the `develop` branch in the wild to further test pending releases. Once a release is ready it will be merged into `main`, tagged, and have a release branch cut.
+
+#### To get started:
+
+1. **Fork the repository**: Start by creating a fork of the project to your own GitHub account.
+
+2. **Clone the forked repository**: After forking, clone your forked repository to your local machine so you can make changes.
+
+```shell
+git clone https://github.com/CheekyGhost-Labs/SyntaxSparrow.git
+```
+
+3. **Create a new branch**: Before making changes, create a new branch for your feature or bug fix. Use a descriptive name that reflects the purpose of your changes.
+
+```shell
+git checkout -b your-feature-branch
+```
+
+4. **Follow the Swift Language Guide**: Ensure that your code adheres to the [Swift Language Guide](https://swift.org/documentation/api-design-guidelines/) for styling and syntax conventions.
+
+5. **Make your changes**: Implement your feature or bug fix, following the project's code style and best practices. Don't forget to add tests and update documentation as needed.
+
+6. **Commit your changes**: Commit your changes with a descriptive and concise commit message. Use the imperative mood, and explain what your commit does, rather than what you did.
+
+```shell
+
+# Feature
+git commit -m "Feature: Adding convenience method for resolving awesomeness"
+
+
+# Bug
+git commit -m "Bug: Fixing issue where awesome query was not including awesome"
+```
+
+7. **Pull the latest changes from the upstream**: Before submitting your changes, make sure to pull the latest changes from the upstream repository and merge them into your branch. This helps to avoid any potential merge conflicts.
+
+```shell
+git pull origin develop
+```
+
+8. **Push your changes**: Push your changes to your forked repository on GitHub.
+
+```shell
+git push origin your-feature-branch
+```
+
+9. **Submit a pull request**: Finally, create a pull request from your forked repository to the original repository, targeting the `develop` branch. Fill in the pull request template with the necessary details, and wait for the project maintainers to review your contribution.
+
+### Unit Testing
+
+Please ensure you add unit tests for any changes. The aim is not `100%` coverage, but rather meaningful test coverage that ensures your changes are behaving as expected without negatively effecting existing behavior.
+
+Please note that the project maintainers may ask you to make changes to your contribution or provide additional information. Be open to feedback and willing to make adjustments as needed. Once your pull request is approved and merged, your changes will become part of the project!

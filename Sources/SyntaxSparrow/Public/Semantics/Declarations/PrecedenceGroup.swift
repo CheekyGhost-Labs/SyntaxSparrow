@@ -103,15 +103,6 @@ public struct PrecedenceGroup: Declaration, SyntaxSourceLocationResolving {
 
     // MARK: - Properties
 
-    /// Array of attributes found in the declaration.
-    ///
-    /// - See: ``SyntaxSparrow/Attribute``
-    public var attributes: [Attribute] { resolver.attributes }
-
-    /// Array of modifiers found in the declaration.
-    /// - See: ``SyntaxSparrow/Modifier``
-    public var modifiers: [Modifier] { resolver.modifiers }
-
     /// The declaration keyword.
     ///
     /// i.e: `"precedencegroup"`
@@ -141,8 +132,6 @@ public struct PrecedenceGroup: Declaration, SyntaxSourceLocationResolving {
     // MARK: - Properties: DeclarationCollecting
 
     private(set) var resolver: PrecedenceGroupSemanticsResolver
-
-    var declarationCollection: DeclarationCollection { resolver.declarationCollection }
 
     // MARK: - Lifecycle
 

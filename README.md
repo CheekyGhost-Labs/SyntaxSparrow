@@ -290,7 +290,7 @@ Then, add SyntaxSparrow as a dependency for your target:
 
 ## Requirements
 
-- Swift 5.6+
+- Swift 5.7+
 - macOS 10.15+
 
 ## License

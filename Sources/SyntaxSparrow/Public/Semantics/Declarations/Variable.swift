@@ -28,6 +28,19 @@ public struct Variable: Declaration, SyntaxSourceLocationResolving {
     // MARK: - Properties: Declaration
 
     public var node: PatternBindingSyntax { resolver.node }
+    
+    /// Returns the first `VariableDeclSyntax` node in sequence from the `node` property.
+    ///
+    /// This is provided as the `VariableDeclSyntax` contains one or more `PatternBindingSyntax` syntaxes that represent
+    /// the variable. The `VariableDeclSyntax` is a container.
+    ///
+    /// For example, you may declare multiple variables on the same line:
+    /// ```swift
+    /// var firstName: String, secondName: String
+    /// ```
+    public var parentDeclarationSyntax: VariableDeclSyntax? {
+        node.firstParent(returning: { $0.as(VariableDeclSyntax.self) })?.as(VariableDeclSyntax.self)
+    }
 
     // MARK: - Properties
 

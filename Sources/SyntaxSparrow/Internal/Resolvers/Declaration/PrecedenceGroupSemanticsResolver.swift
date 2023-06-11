@@ -8,8 +8,10 @@
 import Foundation
 import SwiftSyntax
 
-/// `DeclarationSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a `PrecedenceGroupDeclSyntax` node.
-/// It exposes the expected properties of a `Protocol` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed repeatedly.
+/// `DeclarationSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a
+/// `PrecedenceGroupDeclSyntax` node.
+/// It exposes the expected properties of a `Protocol` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when
+/// accessed repeatedly.
 class PrecedenceGroupSemanticsResolver: DeclarationSemanticsResolving {
     // MARK: - Properties: DeclarationSemanticsResolving
 
@@ -24,10 +26,6 @@ class PrecedenceGroupSemanticsResolver: DeclarationSemanticsResolving {
     private(set) lazy var sourceLocation: SyntaxSourceLocation = resolveSourceLocation()
 
     // MARK: - Properties: StructureDeclaration
-
-    private(set) lazy var attributes: [Attribute] = resolveAttributes()
-
-    private(set) lazy var modifiers: [Modifier] = resolveModifiers()
 
     private(set) lazy var keyword: String = resolveKeyword()
 
@@ -46,34 +44,20 @@ class PrecedenceGroupSemanticsResolver: DeclarationSemanticsResolving {
         self.context = context
     }
 
-    func collectChildren() {
-        // no-op
-    }
-
     // MARK: - Resolvers
 
     private func resolveName() -> String {
         node.identifier.text.trimmed
     }
 
-    private func resolveAttributes() -> [Attribute] {
-        Attribute.fromAttributeList(node.attributes)
-    }
-
     private func resolveKeyword() -> String {
         node.precedencegroupKeyword.text.trimmed
     }
 
-    private func resolveModifiers() -> [Modifier] {
-        guard let modifiers = node.modifiers else { return [] }
-        let mapped = modifiers.map { Modifier(node: $0) }
-        return mapped
-    }
-
     private func resolveAssignment() -> Bool? {
         for attribute in node.groupAttributes {
-            if let assignmentSyntax = PrecedenceGroupAssignmentSyntax(attribute) {
-                return Bool(assignmentSyntax.flag.text)
+            if let assignmentSyntax = attribute.as(PrecedenceGroupAssignmentSyntax.self) {
+                return Bool(assignmentSyntax.flag.text.trimmed)
             }
         }
         return nil
@@ -81,8 +65,8 @@ class PrecedenceGroupSemanticsResolver: DeclarationSemanticsResolving {
 
     private func resolveAssociativity() -> PrecedenceGroup.Associativity? {
         for attribute in node.groupAttributes {
-            if let associativitySyntax = PrecedenceGroupAssociativitySyntax(attribute) {
-                return PrecedenceGroup.Associativity(rawValue: associativitySyntax.value.description)
+            if let associativitySyntax = attribute.as(PrecedenceGroupAssociativitySyntax.self) {
+                return PrecedenceGroup.Associativity(rawValue: associativitySyntax.value.text.trimmed)
             }
         }
         return nil

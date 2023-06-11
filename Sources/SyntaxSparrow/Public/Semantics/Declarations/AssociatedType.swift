@@ -19,8 +19,14 @@ import SwiftSyntax
 ///
 /// Each instance of ``SyntaxSparrow/AssociatedType`` corresponds to a `AssociatedtypeDeclSyntax` node in the Swift syntax tree.
 ///
-/// The `AssociatedType` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the associated type declaration is located.
+/// The `AssociatedType` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the associated
+/// type declaration is located.
 public struct AssociatedType: Declaration, SyntaxSourceLocationResolving {
+
+    // MARK: - Properties: Declaration
+
+    public var node: AssociatedtypeDeclSyntax { resolver.node }
+
     // MARK: - Properties: Computed
 
     /// Array of attributes found in the declaration.
@@ -74,23 +80,5 @@ public struct AssociatedType: Declaration, SyntaxSourceLocationResolving {
     /// Creates a new ``SyntaxSparrow/AssociatedType`` instance from an `AssociatedtypeDeclSyntax` node.
     public init(node: AssociatedtypeDeclSyntax, context: SyntaxExplorerContext) {
         resolver = AssociatedTypeSemanticsResolver(node: node, context: context)
-    }
-
-    // MARK: - Equatable
-
-    public static func == (lhs: AssociatedType, rhs: AssociatedType) -> Bool {
-        return lhs.description == rhs.description
-    }
-
-    // MARK: - Hashable
-
-    public func hash(into hasher: inout Hasher) {
-        return hasher.combine(description.hashValue)
-    }
-
-    // MARK: - CustomStringConvertible
-
-    public var description: String {
-        resolver.node.description.trimmed
     }
 }

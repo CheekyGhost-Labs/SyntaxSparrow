@@ -160,6 +160,47 @@ final class StructureTests: XCTestCase {
         )
     }
 
+    func test_standard_withAttributes_willResolveExpectedProperties() throws {
+        let attributeExpectations: [(String?, String)] = [
+            (nil, "*"),
+            (nil, "unavailable"),
+            ("message", "\"my message\"")
+        ]
+        let source = #"""
+        @available(*, unavailable, message: "my message")
+        struct A {
+          struct B {
+            @available(*, unavailable, message: "my message")
+            struct C { }
+          }
+        }
+        """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        XCTAssertEqual(instanceUnderTest.structures.count, 1)
+        // A
+        var structUnderTest = instanceUnderTest.structures[0]
+        XCTAssertEqual(structUnderTest.name, "A")
+        var attributes = structUnderTest.attributes[0]
+        XCTAssertEqual(attributes.name, "available")
+        XCTAssertAttributesArgumentsEqual(attributes, attributeExpectations)
+        // B
+        structUnderTest = structUnderTest.structures[0]
+        XCTAssertEqual(structUnderTest.name, "B")
+        XCTAssertEqual(structUnderTest.attributes.count, 0)
+        // C
+        structUnderTest = structUnderTest.structures[0]
+        XCTAssertEqual(structUnderTest.name, "C")
+        XCTAssertEqual(structUnderTest.attributes.count, 1)
+        // Attributes
+        attributes = structUnderTest.attributes[0]
+        XCTAssertEqual(attributes.name, "available")
+        XCTAssertEqual(attributes.arguments.count, 3)
+        XCTAssertAttributesArgumentsEqual(attributes, attributeExpectations)
+    }
+
     func test_inheritance_willResolveExpectedValues() throws {
         let source = #"""
         protocol MyThing {}
@@ -185,8 +226,6 @@ final class StructureTests: XCTestCase {
         XCTAssertEqual(testClass.name, "C")
         XCTAssertEqual(testClass.inheritance, ["Equatable", "MyThing"])
     }
-
-    func test_generics_willResolveExpectedValues() throws {}
 
     func test_equatable_hashable() throws {
         let source = #"""
@@ -282,6 +321,8 @@ final class StructureTests: XCTestCase {
         XCTAssertEqual(genericRequirement.rightTypeIdentifier, "U")
     }
 
+    // TODO: children
+
     func test_hashable_equatable_willReturnExpectedResults() throws {
         let source = #"""
         struct SampleStruct { enum Nested: String {} }
@@ -321,7 +362,7 @@ final class StructureTests: XCTestCase {
         let equalCases: [(Structure, Structure)] = [
             (sampleOne, sampleTwo),
             (sampleOne, sampleThree),
-            (sampleTwo, sampleThree),
+            (sampleTwo, sampleThree)
         ]
         let notEqualCases: [(Structure, Structure)] = [
             (sampleOne, sampleFour),
@@ -329,7 +370,7 @@ final class StructureTests: XCTestCase {
             (sampleTwo, sampleFour),
             (sampleTwo, otherSample),
             (sampleThree, sampleFour),
-            (sampleThree, otherSample),
+            (sampleThree, otherSample)
         ]
         equalCases.forEach {
             XCTAssertEqual($0.0, $0.1)

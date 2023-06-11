@@ -21,8 +21,14 @@ import SwiftSyntax
 ///
 /// Each instance of ``SyntaxSparrow/Variable`` corresponds to a `PatternBindingSyntax` node in the Swift syntax tree.
 ///
-/// The `Variable` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the variable declaration is located.
+/// The `Variable` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the variable
+/// declaration is located.
 public struct Variable: Declaration, SyntaxSourceLocationResolving {
+
+    // MARK: - Properties: Declaration
+
+    public var node: PatternBindingSyntax { resolver.node }
+
     // MARK: - Properties
 
     /// Array of attributes found in the declaration.
@@ -66,10 +72,16 @@ public struct Variable: Declaration, SyntaxSourceLocationResolving {
     /// ```
     /// - The first declaration has an initialized type of `nil`
     /// - The second declaration has an initialized type of `"name"`
-    public var initializedType: String? { resolver.initializedValue }
+    public var initializedValue: String? { resolver.initializedValue }
 
     /// The variable or property accessors.
     public var accessors: [Accessor] { resolver.accessors }
+
+    /// Will return a `Bool` flag indicating if the variable type is marked as optional. `?`
+    var isOptional: Bool { resolver.isOptional }
+    
+    /// Bool whether the `accessors` contains the `set` kind, or the `keyword` is `"var"` and the variable is not within a protocol declaration.
+    public var hasSetter: Bool { resolver.hasSetter }
 
     // MARK: - Properties: SyntaxSourceLocationResolving
 
@@ -97,27 +109,10 @@ public struct Variable: Declaration, SyntaxSourceLocationResolving {
         resolver = VariableSemanticsResolver(node: node, context: context)
     }
 
-    // MARK: - Properties: Child Collection
-
-    func collectChildren() {
-        // no-op
-    }
-
-    // MARK: - Equatable
-
-    public static func == (lhs: Variable, rhs: Variable) -> Bool {
-        return lhs.description == rhs.description
-    }
-
-    // MARK: - Hashable
-
-    public func hash(into hasher: inout Hasher) {
-        return hasher.combine(description.hashValue)
-    }
-
     // MARK: - CustomStringConvertible
 
     public var description: String {
-        resolver.node.description.trimmed
+        let targetNode = node.context?._syntaxNode ?? node._syntaxNode
+        return targetNode.description.trimmed
     }
 }

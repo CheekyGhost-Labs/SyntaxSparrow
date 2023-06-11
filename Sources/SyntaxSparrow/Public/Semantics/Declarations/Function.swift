@@ -40,6 +40,10 @@ public struct Function: Declaration, SyntaxChildCollecting, SyntaxSourceLocation
         public let throwsOrRethrowsKeyword: String?
     }
 
+    // MARK: - Properties: Declaration
+
+    public var node: FunctionDeclSyntax { resolver.node }
+
     // MARK: - Properties
 
     /// Array of attributes found in the declaration.
@@ -96,6 +100,9 @@ public struct Function: Declaration, SyntaxChildCollecting, SyntaxSourceLocation
     /// `Bool` whether the subscript is a valid operator type.
     public var isOperator: Bool { resolver.isOperator }
 
+    /// `Operator.Kind` assigned when the `isOperator` is `true`.
+    public var operatorKind: Operator.Kind? { resolver.operatorKind }
+
     // MARK: - Properties: SyntaxSourceLocationResolving
 
     public var sourceLocation: SyntaxSourceLocation { resolver.sourceLocation }
@@ -117,24 +124,6 @@ public struct Function: Declaration, SyntaxChildCollecting, SyntaxSourceLocation
 
     func collectChildren() {
         resolver.collectChildren()
-    }
-
-    // MARK: - Equatable
-
-    public static func == (lhs: Function, rhs: Function) -> Bool {
-        return lhs.description == rhs.description
-    }
-
-    // MARK: - Hashable
-
-    public func hash(into hasher: inout Hasher) {
-        return hasher.combine(description.hashValue)
-    }
-
-    // MARK: - CustomStringConvertible
-
-    public var description: String {
-        resolver.node.description.trimmed
     }
 }
 

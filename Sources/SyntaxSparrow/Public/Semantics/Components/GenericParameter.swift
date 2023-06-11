@@ -18,8 +18,13 @@ import SwiftSyntax
 /// ```
 /// - The first parameter is named `"T"` with a `nil` type.
 /// - The second parameter is named `"U"` with a type constraint of `"Equatable"`
-public class GenericParameter: Equatable, Hashable, CustomStringConvertible, CustomDebugStringConvertible {
-    // MARK: - Properties - Public
+public struct GenericParameter: DeclarationComponent {
+
+    // MARK: - Properties: DeclarationComponent
+
+    public var node: GenericParameterSyntax { resolver.node }
+
+    // MARK: - Properties
 
     /// The generic parameter attributes.
     public var attributes: [Attribute] { resolver.attributes }
@@ -45,29 +50,5 @@ public class GenericParameter: Equatable, Hashable, CustomStringConvertible, Cus
     public static func fromParameterList(from node: GenericParameterListSyntax?) -> [GenericParameter] {
         guard let node = node else { return [] }
         return node.compactMap { GenericParameter(node: $0) }
-    }
-
-    // MARK: - Equatable
-
-    public static func == (lhs: GenericParameter, rhs: GenericParameter) -> Bool {
-        return lhs.description == rhs.description
-    }
-
-    // MARK: - Hashable
-
-    public func hash(into hasher: inout Hasher) {
-        return hasher.combine(description.hashValue)
-    }
-
-    // MARK: - CustomStringConvertible
-
-    public var description: String {
-        resolver.node.description.trimmed
-    }
-
-    // MARK: - CustomDebugStringConvertible
-
-    public var debugDescription: String {
-        resolver.node.debugDescription.trimmed
     }
 }

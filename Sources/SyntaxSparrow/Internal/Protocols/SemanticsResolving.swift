@@ -15,7 +15,7 @@ protocol SemanticsResolving {
     var node: Node { get }
 }
 
-protocol DeclarationSemanticsResolving: SemanticsResolving, SyntaxSourceLocationResolving, DeclarationCollecting {
+protocol DeclarationSemanticsResolving: SemanticsResolving, SyntaxSourceLocationResolving {
     /// `SyntaxExplorerContext` instance holding root collection details and instances.
     /// This context will be shared with any child elements that require lazy evaluation or collection as needed.
     var context: SyntaxExplorerContext { get }
@@ -35,6 +35,7 @@ protocol NodeSemanticsResolving: SemanticsResolving {
 
 protocol ParameterNodeSemanticsResolving: NodeSemanticsResolving {
     var attributes: [Attribute] { get }
+    var modifiers: [Modifier] { get }
     var name: String? { get }
     var secondName: String? { get }
     var type: EntityType { get }

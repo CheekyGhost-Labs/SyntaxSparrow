@@ -77,7 +77,7 @@ final class ClassTests: XCTestCase {
         let attributeExpectations: [(String?, String)] = [
             (nil, "*"),
             (nil, "unavailable"),
-            ("message", "\"my message\""),
+            ("message", "\"my message\"")
         ]
         let source = #"""
         @available(*, unavailable, message: "my message")
@@ -344,7 +344,7 @@ final class ClassTests: XCTestCase {
         let equalCases: [(Class, Class)] = [
             (sampleOne, sampleTwo),
             (sampleOne, sampleThree),
-            (sampleTwo, sampleThree),
+            (sampleTwo, sampleThree)
         ]
         let notEqualCases: [(Class, Class)] = [
             (sampleOne, sampleFour),
@@ -352,7 +352,7 @@ final class ClassTests: XCTestCase {
             (sampleTwo, sampleFour),
             (sampleTwo, otherSample),
             (sampleThree, sampleFour),
-            (sampleThree, otherSample),
+            (sampleThree, otherSample)
         ]
         equalCases.forEach {
             XCTAssertEqual($0.0, $0.1)

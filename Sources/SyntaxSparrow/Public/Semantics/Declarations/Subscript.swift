@@ -22,8 +22,14 @@ import SwiftSyntax
 ///
 /// Each instance of ``SyntaxSparrow/Structure`` corresponds to a `StructDeclSyntax` node in the Swift syntax tree.
 ///
-/// The `Subscript` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the subscript declaration is located.
+/// The `Subscript` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the subscript
+/// declaration is located.
 public struct Subscript: Declaration, SyntaxSourceLocationResolving {
+
+    // MARK: - Properties: Declaration
+
+    public var node: SubscriptDeclSyntax { resolver.node }
+
     // MARK: - Properties
 
     /// Array of attributes found in the declaration.
@@ -80,27 +86,5 @@ public struct Subscript: Declaration, SyntaxSourceLocationResolving {
         resolver = SubscriptSemanticsResolver(node: node, context: context)
     }
 
-    // MARK: - Properties: Child Collection
-
-    func collectChildren() {
-        // no-op
-    }
-
-    // MARK: - Equatable
-
-    public static func == (lhs: Subscript, rhs: Subscript) -> Bool {
-        return lhs.description == rhs.description
-    }
-
-    // MARK: - Hashable
-
-    public func hash(into hasher: inout Hasher) {
-        return hasher.combine(description.hashValue)
-    }
-
-    // MARK: - CustomStringConvertible
-
-    public var description: String {
-        resolver.node.description.trimmed
-    }
+    // TODO: Child collection within get/set?
 }

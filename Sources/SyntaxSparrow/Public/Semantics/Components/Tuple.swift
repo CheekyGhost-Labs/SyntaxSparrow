@@ -10,7 +10,8 @@ import SwiftSyntax
 
 /// Represents a Swift tuple.
 ///
-/// A tuple in Swift is a compound value that groups multiple values together. The ``SyntaxSparrow/Tuple`` struct provides a representation of a tuple within a Swift source file.
+/// A tuple in Swift is a compound value that groups multiple values together. The ``SyntaxSparrow/Tuple`` struct provides a representation of a tuple
+/// within a Swift source file.
 /// Each element in the tuple is represented as a `Parameter` instance.
 ///
 /// This struct provides access to:

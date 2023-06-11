@@ -14,10 +14,13 @@ import Foundation
 /// As support for more complex types are added they will be added as a dedicated enumeration case to the `EntityType`
 public enum EntityType: Equatable, Hashable, CustomStringConvertible {
     /// A `simple` type refers to a standard swift type can't does not have any nested or related syntax.
-    /// **Note:** This is also used for any unsupported syntax types. i.e `CVarArg` is not currently supported so it will use the `.simple("CVarArg...")`
+    /// **Note:** This is also used for any unsupported syntax types. i.e `CVarArg` is not currently supported so it will use the
+    /// `.simple("CVarArg...")`
     case simple(_ type: String)
 
     /// A `tuple` type is used when a parameter's type is a valid ``SyntaxSparrow/Tuple`` type.
+    ///
+    /// The `Tuple` type supports `isOptional` to derive if the type has the optional/`?` suffix.
     ///
     /// For example,
     /// ```swift
@@ -28,6 +31,8 @@ public enum EntityType: Equatable, Hashable, CustomStringConvertible {
 
     /// A `closure` type is used when a parameter's type resolves to a valid `Closure`.
     ///
+    /// The `Closure` type supports `isOptional` to derive if the type has the optional/`?` suffix.
+    ///
     /// For example,
     /// ```swift
     /// func example(_ handler: (name: String, age: Int) -> Void) { ... }
@@ -37,6 +42,8 @@ public enum EntityType: Equatable, Hashable, CustomStringConvertible {
 
     /// A `result` type is used when a parameter's type resolves to a valid `Result`.
     ///
+    /// The `Result` type supports `isOptional` to derive if the type has the optional/`?` suffix.
+    ///
     /// For example,
     /// ```swift
     /// func processResult(_ result: Result<String, Error>) { ... }
@@ -45,7 +52,7 @@ public enum EntityType: Equatable, Hashable, CustomStringConvertible {
     /// (the success case) or an `Error` (the failure case).
     case result(_ result: Result)
 
-    /// A `void` type is used when a parameter's type resolves to `Void`.
+    /// A `void` type is used when a parameter's type resolves to `Void`. It includes the raw declaration (`"Void"` or `"()"`) includes if the type is optional.
     ///
     /// For example,
     /// ```swift
@@ -56,7 +63,7 @@ public enum EntityType: Equatable, Hashable, CustomStringConvertible {
     /// - The first function would have a parameter with the type `.void`
     /// - The second function would have a parameter with the type `.void`
     /// - The third function would have a parameter with the type `.closure(Closure)` where the closure input and output are both `.void`
-    case void
+    case void(_ raw: String, _ isOptional: Bool)
 
     /// An `empty` type refers to a when a parameter or property is partially declared and does not have a type defined.
     ///
@@ -68,15 +75,15 @@ public enum EntityType: Equatable, Hashable, CustomStringConvertible {
     public var description: String {
         switch self {
         case let .simple(type):
-            return type.description
+            return type
         case let .tuple(tuple):
             return tuple.description
         case let .closure(closure):
             return closure.description
         case let .result(result):
             return result.description
-        case .void:
-            return "Void"
+        case .void(let rawType, let isOpional):
+            return "Void\(isOpional ? "?" : "")"
         case .empty:
             return ""
         }

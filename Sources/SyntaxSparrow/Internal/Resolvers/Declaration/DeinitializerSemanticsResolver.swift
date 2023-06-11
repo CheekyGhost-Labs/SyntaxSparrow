@@ -8,8 +8,10 @@
 import Foundation
 import SwiftSyntax
 
-/// `DeclarationSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a `DeinitializerDeclSyntax` node.
-/// It exposes the expected properties of a `Deinitializer` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed repeatedly.
+/// `DeclarationSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a
+/// `DeinitializerDeclSyntax` node.
+/// It exposes the expected properties of a `Deinitializer` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when
+/// accessed repeatedly.
 class DeinitializerSemanticsResolver: DeclarationSemanticsResolving {
     // MARK: - Properties: DeclarationSemanticsResolving
 
@@ -39,7 +41,8 @@ class DeinitializerSemanticsResolver: DeclarationSemanticsResolving {
     }
 
     func collectChildren() {
-        // no-op - log?
+        let nodeCollector = context.createRootDeclarationCollector()
+        declarationCollection = nodeCollector.collect(fromNode: node)
     }
 
     // MARK: - Resolvers

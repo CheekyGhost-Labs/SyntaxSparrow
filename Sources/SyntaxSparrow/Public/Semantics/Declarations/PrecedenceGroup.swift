@@ -13,7 +13,8 @@ import SwiftSyntax
 /// In Swift, operators belong to a certain precedence group. This precedence group determines how an operator interacts with
 /// other operators and how expressions involving this operator are evaluated.
 ///
-/// Precedence groups have several properties that affect this interaction, including the group's associativity, assignment and the relation to other groups.
+/// Precedence groups have several properties that affect this interaction, including the group's associativity, assignment and the relation to other
+/// groups.
 ///
 /// A precedence group is defined using the `precedencegroup` keyword followed by the group's name and body. The body contains the group's properties.
 ///
@@ -32,7 +33,8 @@ import SwiftSyntax
 ///
 /// Each instance of ``SyntaxSparrow/PrecedenceGroup`` corresponds to an `PrecedenceGroupDeclSyntax` node in the Swift syntax tree.
 ///
-/// This type conforms to the `Declaration` protocol, `SyntaxSourceLocationResolving` protocol, `Equatable`, `Hashable`, and `CustomStringConvertible`.
+/// This type conforms to the `Declaration` protocol, `SyntaxSourceLocationResolving` protocol, `Equatable`, `Hashable`, and
+/// `CustomStringConvertible`.
 public struct PrecedenceGroup: Declaration, SyntaxSourceLocationResolving {
     // MARK: - Supplementary
 
@@ -95,16 +97,11 @@ public struct PrecedenceGroup: Declaration, SyntaxSourceLocationResolving {
         case lowerThan([String])
     }
 
+    // MARK: - Properties: Declaration
+
+    public var node: PrecedenceGroupDeclSyntax { resolver.node }
+
     // MARK: - Properties
-
-    /// Array of attributes found in the declaration.
-    ///
-    /// - See: ``SyntaxSparrow/Attribute``
-    public var attributes: [Attribute] { resolver.attributes }
-
-    /// Array of modifiers found in the declaration.
-    /// - See: ``SyntaxSparrow/Modifier``
-    public var modifiers: [Modifier] { resolver.modifiers }
 
     /// The declaration keyword.
     ///
@@ -136,30 +133,10 @@ public struct PrecedenceGroup: Declaration, SyntaxSourceLocationResolving {
 
     private(set) var resolver: PrecedenceGroupSemanticsResolver
 
-    var declarationCollection: DeclarationCollection { resolver.declarationCollection }
-
     // MARK: - Lifecycle
 
     /// Creates a new ``SyntaxSparrow/PrecedenceGroup`` instance from an `PrecedenceGroupDeclSyntax` node.
     public init(node: PrecedenceGroupDeclSyntax, context: SyntaxExplorerContext) {
         resolver = PrecedenceGroupSemanticsResolver(node: node, context: context)
-    }
-
-    // MARK: - Equatable
-
-    public static func == (lhs: PrecedenceGroup, rhs: PrecedenceGroup) -> Bool {
-        return lhs.description == rhs.description
-    }
-
-    // MARK: - Hashable
-
-    public func hash(into hasher: inout Hasher) {
-        return hasher.combine(description.hashValue)
-    }
-
-    // MARK: - CustomStringConvertible
-
-    public var description: String {
-        resolver.node.description.trimmed
     }
 }

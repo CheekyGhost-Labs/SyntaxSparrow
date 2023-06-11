@@ -19,6 +19,11 @@ import SwiftSyntax
 /// This struct provides access to the branches within the conditional compilation block
 /// and the source location of the block.
 public struct ConditionalCompilationBlock: Declaration, SyntaxSourceLocationResolving {
+
+    // MARK: - Properties: Declaration
+
+    public var node: IfConfigDeclSyntax { resolver.node }
+
     // MARK: - Properties
 
     /// Array of conditional compilation block branches.
@@ -53,29 +58,5 @@ public struct ConditionalCompilationBlock: Declaration, SyntaxSourceLocationReso
         resolver = ConditionalCompilationBlockSemanticsResolver(node: node, context: context)
         // Resolving branches now to collect any declarations within (collection happens on init of branch)
         _ = branches
-    }
-
-    // MARK: - Properties: Child Collection
-
-    func collectChildren() {
-        // no-op
-    }
-
-    // MARK: - Equatable
-
-    public static func == (lhs: ConditionalCompilationBlock, rhs: ConditionalCompilationBlock) -> Bool {
-        return lhs.description == rhs.description
-    }
-
-    // MARK: - Hashable
-
-    public func hash(into hasher: inout Hasher) {
-        return hasher.combine(description.hashValue)
-    }
-
-    // MARK: - CustomStringConvertible
-
-    public var description: String {
-        resolver.node.description.trimmed
     }
 }

@@ -21,8 +21,14 @@ import SwiftSyntax
 ///
 /// Each instance of ``SyntaxSparrow/Typealias`` corresponds to a `TypealiasDeclSyntax` node in the Swift syntax tree.
 ///
-/// The `Typealias` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the typealias declaration is located.
+/// The `Typealias` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the typealias
+/// declaration is located.
 public struct Typealias: Declaration, SyntaxSourceLocationResolving {
+
+    // MARK: - Properties: Declaration
+
+    public var node: TypealiasDeclSyntax { resolver.node }
+
     // MARK: - Properties: Computed
 
     /// Array of attributes found in the declaration.
@@ -87,23 +93,5 @@ public struct Typealias: Declaration, SyntaxSourceLocationResolving {
     /// Creates a new ``SyntaxSparrow/Typealias`` instance from an `TypealiasDeclSyntax` node.
     public init(node: TypealiasDeclSyntax, context: SyntaxExplorerContext) {
         resolver = TypealiasSemanticsResolver(node: node, context: context)
-    }
-
-    // MARK: - Equatable
-
-    public static func == (lhs: Typealias, rhs: Typealias) -> Bool {
-        return lhs.description == rhs.description
-    }
-
-    // MARK: - Hashable
-
-    public func hash(into hasher: inout Hasher) {
-        return hasher.combine(description.hashValue)
-    }
-
-    // MARK: - CustomStringConvertible
-
-    public var description: String {
-        resolver.node.description.trimmed
     }
 }

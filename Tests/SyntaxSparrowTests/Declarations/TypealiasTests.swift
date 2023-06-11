@@ -127,7 +127,7 @@ final class TypealiasTests: XCTestCase {
 
     func test_typealiasWithModifier_willResolveExpectedDetails() throws {
         let source = #"""
-        public typealias MyCustomType = Int
+        public typealias MyCustomType = Int?
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
@@ -141,13 +141,13 @@ final class TypealiasTests: XCTestCase {
         XCTAssertEqual(typealiasDecl.modifiers[0].name, "public")
         XCTAssertEqual(typealiasDecl.keyword, "typealias")
         XCTAssertEqual(typealiasDecl.name, "MyCustomType")
-        XCTAssertEqual(typealiasDecl.initializedType, .simple("Int"))
+        XCTAssertEqual(typealiasDecl.initializedType, .simple("Int?"))
         XCTAssertEqual(typealiasDecl.genericParameters.count, 0)
         XCTAssertEqual(typealiasDecl.genericRequirements.count, 0)
         XCTAssertSourceStartPositionEquals(typealiasDecl.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(typealiasDecl.sourceLocation, (0, 35, 35))
-        XCTAssertEqual(typealiasDecl.extractFromSource(source), "public typealias MyCustomType = Int")
-        XCTAssertEqual(typealiasDecl.description, "public typealias MyCustomType = Int")
+        XCTAssertSourceEndPositionEquals(typealiasDecl.sourceLocation, (0, 36, 36))
+        XCTAssertEqual(typealiasDecl.extractFromSource(source), "public typealias MyCustomType = Int?")
+        XCTAssertEqual(typealiasDecl.description, "public typealias MyCustomType = Int?")
     }
 
     func test_hashable_equatable_willReturnExpectedResults() throws {
@@ -189,7 +189,7 @@ final class TypealiasTests: XCTestCase {
         let equalCases: [(Typealias, Typealias)] = [
             (sampleOne, sampleTwo),
             (sampleOne, sampleThree),
-            (sampleTwo, sampleThree),
+            (sampleTwo, sampleThree)
         ]
         let notEqualCases: [(Typealias, Typealias)] = [
             (sampleOne, sampleFour),
@@ -197,7 +197,7 @@ final class TypealiasTests: XCTestCase {
             (sampleTwo, sampleFour),
             (sampleTwo, otherSample),
             (sampleThree, sampleFour),
-            (sampleThree, otherSample),
+            (sampleThree, otherSample)
         ]
         equalCases.forEach {
             XCTAssertEqual($0.0, $0.1)

@@ -23,7 +23,12 @@ import SwiftSyntax
 ///
 /// This structure conforms to `Declaration`, `SyntaxChildCollecting`, and `SyntaxSourceLocationResolving`,
 /// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
-public struct ProtocolDecl: Declaration, SyntaxSourceLocationResolving {
+public struct ProtocolDecl: Declaration, SyntaxChildCollecting, SyntaxSourceLocationResolving {
+
+    // MARK: - Properties: Declaration
+
+    public var node: ProtocolDeclSyntax { resolver.node }
+
     // MARK: - Properties: Computed
 
     /// Array of attributes found in the declaration.
@@ -58,7 +63,8 @@ public struct ProtocolDecl: Declaration, SyntaxSourceLocationResolving {
     /// ```
     /// - The first type is `"Parameter"` with no inheritand or requirements
     /// - The second type is `"Object"` which needs to inherit `["Equatable"]`
-    /// - The third  type is `"Node"` which needs to be a class type (`["AnyObject"]`) and the inferred `"Node"` type is required to conform to `Hashable`
+    /// - The third  type is `"Node"` which needs to be a class type (`["AnyObject"]`) and the inferred `"Node"` type is required to conform to
+    /// `Hashable`
     public var associatedTypes: [AssociatedType] { resolver.associatedTypes }
 
     /// The primary associated types for the declaration.
@@ -97,6 +103,8 @@ public struct ProtocolDecl: Declaration, SyntaxSourceLocationResolving {
 
     private(set) var resolver: ProtocolSemanticsResolver
 
+    var declarationCollection: DeclarationCollection { resolver.declarationCollection }
+
     // MARK: - Lifecycle
 
     /// Creates a new ``SyntaxSparrow/Protocol`` instance from an `ProtocolDeclSyntax` node.
@@ -104,21 +112,11 @@ public struct ProtocolDecl: Declaration, SyntaxSourceLocationResolving {
         resolver = ProtocolSemanticsResolver(node: node, context: context)
     }
 
-    // MARK: - Equatable
+    // MARK: - Properties: Child Collection
 
-    public static func == (lhs: ProtocolDecl, rhs: ProtocolDecl) -> Bool {
-        return lhs.description == rhs.description
-    }
-
-    // MARK: - Hashable
-
-    public func hash(into hasher: inout Hasher) {
-        return hasher.combine(description.hashValue)
-    }
-
-    // MARK: - CustomStringConvertible
-
-    public var description: String {
-        resolver.node.description.trimmed
+    func collectChildren() {
+        resolver.collectChildren()
     }
 }
+
+extension ProtocolDecl: DeclarationCollecting {}

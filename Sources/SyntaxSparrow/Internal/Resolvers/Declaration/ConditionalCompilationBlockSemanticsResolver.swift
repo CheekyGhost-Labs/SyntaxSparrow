@@ -10,7 +10,8 @@ import SwiftSyntax
 
 /// `ConditionalCompilationBlockSemanticsResolver` conforming class that is responsible for exploring, retrieving properties,
 /// and child branches of a `IfConfigDeclSyntax` node.
-/// It exposes the expected properties of a `ConditionalCompilationBlock` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed repeatedly.
+/// It exposes the expected properties of a `ConditionalCompilationBlock` as `lazy` properties. This will allow the initial lazy evaluation to not be
+/// repeated when accessed repeatedly.
 class ConditionalCompilationBlockSemanticsResolver: DeclarationSemanticsResolving {
     // MARK: - Properties: DeclarationSemanticsResolving
 

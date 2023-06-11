@@ -10,7 +10,8 @@ import SwiftSyntax
 
 /// Represents a Swift function or method parameter.
 ///
-/// A parameter is a variable in a method or function definition that accepts input from the caller of the method or function. In Swift, function parameters can have a
+/// A parameter is a variable in a method or function definition that accepts input from the caller of the method or function. In Swift, function
+/// parameters can have a
 /// variety of attributes, including labels, types, default values, and special attributes like `inout`.
 ///
 /// An instance of the `Parameter` struct provides access to:
@@ -19,17 +20,39 @@ import SwiftSyntax
 /// - Whether the parameter is marked with `inout` or its label is omitted.
 /// - The default argument of the parameter, if any.
 ///
-/// A parameter has common properties, and then a ``SyntaxSparrow/EntityType`` property which further describes the input by including associated properties as needed.
-/// For example, a parameter with the type`.closure` will have a `Closure` provided, where as a parameter with the `.tuple` type will have a ``SyntaxSparrow/Tuple`` associated properties.
+/// A parameter has common properties, and then a ``SyntaxSparrow/EntityType`` property which further describes the input by including associated
+/// properties as needed.
+/// For example, a parameter with the type`.closure` will have a `Closure` provided, where as a parameter with the `.tuple` type will have a
+/// ``SyntaxSparrow/Tuple`` associated properties.
 ///
-/// This struct also includes functionality to create a `Parameter` instance from either a `FunctionParameterSyntax` node or a `TupleTypeElementSyntax` node.
-public struct Parameter: Hashable, Equatable, CustomStringConvertible {
+/// This struct also includes functionality to create a `Parameter` instance from either a `FunctionParameterSyntax` node or a
+/// `TupleTypeElementSyntax` node.
+public struct Parameter: Equatable, Hashable, CustomStringConvertible {
+    // MARK: - Properties: DeclarationComponent
+    
+    /// The node being represented by the ``Parameter`` instance.
+    /// **Note:** The node type will be one of the types supported by the `Paramater.init` methods.
+    /// You can use the `as(SyntaxProtocol.Protocol)` cast method to resolve the expected one.
+    /// For example:
+    /// ```swift
+    /// let node = parameter.node // The parameter node
+    /// node.as(FunctionParameterSyntax.self) // Casts to function parameter syntax node or returns `nil`
+    /// node.as(TupleTypeElementSyntax.self) // Casts to tuple element parameter syntax node or returns `nil`
+    /// node.as(EnumCaseParameterSyntax.self) // Casts to an enum associated value parameter syntax node or returns `nil`
+    /// ```
+    public var node: Syntax { resolver.node._syntaxNode }
+
+    
     // MARK: - Properties
 
     /// Array of attributes found in the declaration.
     ///
     /// - See: ``SyntaxSparrow/Attribute``
-    var attributes: [Attribute] { resolver.attributes }
+    public var attributes: [Attribute] { resolver.attributes }
+
+    /// Array of modifiers found in the declaration.
+    /// - See: ``SyntaxSparrow/Modifier``
+    public var modifiers: [Modifier] { resolver.modifiers }
 
     /// The first, external name of the parameter.
     ///
@@ -39,7 +62,7 @@ public struct Parameter: Hashable, Equatable, CustomStringConvertible {
     /// ```
     /// - The first parameter has a `name` equal to `"_"`
     /// - The second parameter has a `name` equal to `"by"`
-    var name: String? { resolver.name }
+    public var name: String? { resolver.name }
 
     /// The second internal name of the parameter.
     ///
@@ -49,7 +72,7 @@ public struct Parameter: Hashable, Equatable, CustomStringConvertible {
     /// ```
     /// - The first parameter has a `secondName` equal to `"number"`
     /// - The second parameter has a `secondName` equal to `"amount"`
-    var secondName: String? { resolver.secondName }
+    public var secondName: String? { resolver.secondName }
 
     /// The `EntityType` resolve from the parameter
     ///
@@ -59,12 +82,13 @@ public struct Parameter: Hashable, Equatable, CustomStringConvertible {
     /// ```
     /// - The first parameter type will be `.simple("Person")`
     /// - The second parameter type will be `.simple("String")`
-    /// - The third parameter type will be `.dimensions(Tuple)` where the associated tuple has parameters with types `.simple("Double")` and `.simple("Double")`
+    /// - The third parameter type will be `.dimensions(Tuple)` where the associated tuple has parameters with types `.simple("Double")` and
+    /// `.simple("Double")`
     /// - See: ``SyntaxSparrow/EntityType``
-    var type: EntityType { resolver.type }
+    public var type: EntityType { resolver.type }
 
     /// The raw type string.
-    var rawType: String? { resolver.rawType }
+    public var rawType: String? { resolver.rawType }
 
     /// Bool whether the parameter accepts a variadic argument.
     ///
@@ -73,10 +97,10 @@ public struct Parameter: Hashable, Equatable, CustomStringConvertible {
     /// func greet(_ person: Person, with phrases: String...)
     /// ```
     /// - The second parameter is variadic
-    var isVariadic: Bool { resolver.isVariadic }
+    public var isVariadic: Bool { resolver.isVariadic }
 
     /// Will return a `Bool` flag indicating if the closure declaration is marked as optional. `?`
-    var isOptional: Bool { resolver.isOptional }
+    public var isOptional: Bool { resolver.isOptional }
 
     /// The default argument of the parameter (if any).
     ///
@@ -85,7 +109,7 @@ public struct Parameter: Hashable, Equatable, CustomStringConvertible {
     /// func processCount(_ number: Int, by amount: Int = 1)
     /// ```
     /// - The second parameter has a default argument equal to `"1"`.
-    var defaultArgument: String? { resolver.defaultArgument }
+    public var defaultArgument: String? { resolver.defaultArgument }
 
     /// Bool whether the parameter is marked with `inout`
     ///
@@ -94,7 +118,7 @@ public struct Parameter: Hashable, Equatable, CustomStringConvertible {
     /// func processForm(_ form: inout Form)
     /// ```
     /// - The parameter is inout
-    var isInOut: Bool { resolver.isInOut }
+    public var isInOut: Bool { resolver.isInOut }
 
     /// Bool whether the parameter name is marked as no label `_`.
     ///
@@ -109,7 +133,7 @@ public struct Parameter: Hashable, Equatable, CustomStringConvertible {
     /// typealias Person = (String, Int)
     /// ```
     /// - Both parameter arguments in the tuple will have `isLabelOmitted` as `false`
-    var isLabelOmitted: Bool { name == "_" }
+    public var isLabelOmitted: Bool { name == "_" }
 
     // MARK: - Properties: Resolving
 
@@ -147,6 +171,10 @@ public struct Parameter: Hashable, Equatable, CustomStringConvertible {
     // MARK: - CustomStringConvertible
 
     public var description: String {
-        resolver.node.description.trimmed
+        let result = resolver.node.description.trimmed
+        if result.hasSuffix(",") {
+            return String(result.dropLast(1))
+        }
+        return result
     }
 }

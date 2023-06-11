@@ -8,8 +8,10 @@
 import Foundation
 import SwiftSyntax
 
-/// `DeclarationSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a `ProtocolDeclSyntax` node.
-/// It exposes the expected properties of a `Protocol` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed repeatedly.
+/// `DeclarationSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a
+/// `ProtocolDeclSyntax` node.
+/// It exposes the expected properties of a `Protocol` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when
+/// accessed repeatedly.
 class ProtocolSemanticsResolver: DeclarationSemanticsResolving {
     // MARK: - Properties: DeclarationSemanticsResolving
 
@@ -49,7 +51,8 @@ class ProtocolSemanticsResolver: DeclarationSemanticsResolving {
     }
 
     func collectChildren() {
-        // no-op
+        let nodeCollector = context.createRootDeclarationCollector()
+        declarationCollection = nodeCollector.collect(fromNode: node)
     }
 
     // MARK: - Resolvers

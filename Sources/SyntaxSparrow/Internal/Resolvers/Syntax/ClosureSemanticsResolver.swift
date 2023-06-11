@@ -8,8 +8,10 @@
 import Foundation
 import SwiftSyntax
 
-/// `NodeSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a `TupleTypeSyntax` node.
-/// It exposes the expected properties of a `Function` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed repeatedly.
+/// `NodeSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a `TupleTypeSyntax`
+/// node.
+/// It exposes the expected properties of a `Function` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when
+/// accessed repeatedly.
 class ClosureSemanticsResolver: NodeSemanticsResolving {
     // MARK: - Properties: NodeSemanticsResolving
 
@@ -42,7 +44,7 @@ class ClosureSemanticsResolver: NodeSemanticsResolving {
     // MARK: - Resolvers
 
     private func resolveInput() -> EntityType {
-        guard !node.arguments.isEmpty else { return .void }
+        guard !node.arguments.isEmpty else { return .void("()", false) }
         return EntityType.parseElementList(node.arguments)
         // Pending update - leaving here for easier reference
         // return EntityType.parseElementList(node.parameters)
@@ -63,20 +65,28 @@ class ClosureSemanticsResolver: NodeSemanticsResolving {
     }
 
     private func resolveIsOptional() -> Bool {
-        var nextParent = node.parent
-        while nextParent != nil {
-            if nextParent?.as(OptionalTypeSyntax.self) != nil {
-                return true
-            }
-            if nextParent?.syntaxNodeType == FunctionTypeSyntax.self {
+        // Resolve parent type syntax
+        var parentParameter: SyntaxProtocol?
+        for case let node? in sequence(first: node.parent, next: { $0?.parent }) {
+            if let declaration = node.as(FunctionParameterSyntax.self) {
+                parentParameter = declaration
                 break
             }
-            nextParent = nextParent?.parent
+            else if let declaration = node.as(PatternBindingSyntax.self) {
+                parentParameter = declaration
+                break
+            }
+            else if let declaration = node.as(VariableDeclSyntax.self) {
+                parentParameter = declaration
+                break
+            }
+            else if let declaration = node.as(TupleTypeSyntax.self) {
+                parentParameter = declaration
+                break
+            }
         }
-        if node.children(viewMode: .fixedUp).contains(where: { $0.syntaxNodeType == OptionalTypeSyntax.self }) {
-            return true
-        }
-        return false
+        guard let parentNode = parentParameter else { return false }
+        return parentNode.resolveIsOptional(viewMode: .fixedUp)
     }
 
     private func resolveIsEscaping() -> Bool {

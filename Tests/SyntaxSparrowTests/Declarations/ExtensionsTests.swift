@@ -25,13 +25,20 @@ final class ExtensionTests: XCTestCase {
 
     // MARK: - Tests
 
-    func test_basic_willResolveExpectedProperties() throws {
+    func test_extension_children_willResolveExpectedChildDeclarations() throws {
         let source = #"""
         extension String {
-          struct Nested {}
-          class Nested {}
-          enum Nested {}
-          typealias Nested = String
+            struct NestedStruct {}
+            class NestedClass {}
+            enum NestedEnum { case nested }
+            typealias NestedTypeAlias = String
+            func nestedFunction() {}
+            var nestedVariable: Int = 0
+            protocol NestedProtocol {}
+            subscript(nestedSubscript idx: Int) -> Int { return idx }
+            init(nestedInitializer: Int) {}
+            deinit { print("Nested deinit") }
+            infix operator +-: NestedOperator
         }
         """#
         instanceUnderTest.updateToSource(source)
@@ -46,11 +53,35 @@ final class ExtensionTests: XCTestCase {
         XCTAssertEqual(extensionUnderTest.modifiers.count, 0)
         XCTAssertEqual(extensionUnderTest.attributes.count, 0)
         XCTAssertSourceStartPositionEquals(extensionUnderTest.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(extensionUnderTest.sourceLocation, (5, 1, 102))
+        XCTAssertSourceEndPositionEquals(extensionUnderTest.sourceLocation, (12, 1, 413))
         XCTAssertEqual(extensionUnderTest.extractFromSource(source), source)
+        // Children
+        XCTAssertEqual(extensionUnderTest.structures.count, 1)
+        XCTAssertEqual(extensionUnderTest.structures[0].name, "NestedStruct")
+        XCTAssertEqual(extensionUnderTest.classes.count, 1)
+        XCTAssertEqual(extensionUnderTest.classes[0].name, "NestedClass")
+        XCTAssertEqual(extensionUnderTest.enumerations.count, 1)
+        XCTAssertEqual(extensionUnderTest.enumerations[0].name, "NestedEnum")
+        XCTAssertEqual(extensionUnderTest.typealiases.count, 1)
+        XCTAssertEqual(extensionUnderTest.typealiases[0].name, "NestedTypeAlias")
+        XCTAssertEqual(extensionUnderTest.functions.count, 1)
+        XCTAssertEqual(extensionUnderTest.functions[0].identifier, "nestedFunction")
+        XCTAssertEqual(extensionUnderTest.variables.count, 1)
+        XCTAssertEqual(extensionUnderTest.variables[0].name, "nestedVariable")
+        XCTAssertEqual(extensionUnderTest.protocols.count, 1)
+        XCTAssertEqual(extensionUnderTest.protocols[0].name, "NestedProtocol")
+        XCTAssertEqual(extensionUnderTest.subscripts.count, 1)
+        XCTAssertEqual(extensionUnderTest.subscripts[0].keyword, "subscript")
+        XCTAssertEqual(extensionUnderTest.initializers.count, 1)
+        XCTAssertEqual(extensionUnderTest.initializers[0].keyword, "init")
+        XCTAssertEqual(extensionUnderTest.deinitializers.count, 1)
+        XCTAssertEqual(extensionUnderTest.deinitializers[0].keyword, "deinit")
+        XCTAssertEqual(extensionUnderTest.operators.count, 1)
+        XCTAssertEqual(extensionUnderTest.operators[0].name, "+-")
     }
 
-    func test_extensionWithAttributes() throws {
+
+    func test_extension_withAttributes_willResolveExpectedValues() throws {
         let source = #"""
         @available(iOS 15, *)
         extension String {}
@@ -66,14 +97,14 @@ final class ExtensionTests: XCTestCase {
         XCTAssertEqual(extensionUnderTest.attributes[0].name, "available")
         XCTAssertAttributesArgumentsEqual(extensionUnderTest.attributes[0], [
             (nil, "iOS 15"),
-            (nil, "*"),
+            (nil, "*")
         ])
         XCTAssertEqual(extensionUnderTest.attributes[0].description, "@available(iOS 15, *)")
         XCTAssertSourceStartPositionEquals(extensionUnderTest.sourceLocation, (line: 0, column: 0, utf8Offset: 0))
         XCTAssertSourceEndPositionEquals(extensionUnderTest.sourceLocation, (line: 1, column: 19, utf8Offset: 41))
     }
 
-    func test_extensionWithModifiers() throws {
+    func test_extension_withModifiers_willResolveExpectedValues() throws {
         let source = #"""
         public extension String {}
         """#
@@ -90,7 +121,7 @@ final class ExtensionTests: XCTestCase {
         XCTAssertSourceEndPositionEquals(extensionUnderTest.sourceLocation, (line: 0, column: 26, utf8Offset: 26))
     }
 
-    func test_extensionWithInheritance() throws {
+    func test_extension_withInheritance_willResolveExpectedValues() throws {
         let source = #"""
         protocol A {}
         protocol B {}
@@ -108,7 +139,7 @@ final class ExtensionTests: XCTestCase {
         XCTAssertEqual(extensionUnderTest.inheritance[1], "B")
     }
 
-    func test_extensionWithGenericRequirements() throws {
+    func test_extension_withGenericRequirements_willResolveExpectedValues() throws {
         let source = #"""
         extension Array where Element: Comparable {}
         """#
@@ -167,7 +198,7 @@ final class ExtensionTests: XCTestCase {
         let equalCases: [(Extension, Extension)] = [
             (sampleOne, sampleTwo),
             (sampleOne, sampleThree),
-            (sampleTwo, sampleThree),
+            (sampleTwo, sampleThree)
         ]
         let notEqualCases: [(Extension, Extension)] = [
             (sampleOne, sampleFour),
@@ -175,7 +206,7 @@ final class ExtensionTests: XCTestCase {
             (sampleTwo, sampleFour),
             (sampleTwo, otherSample),
             (sampleThree, sampleFour),
-            (sampleThree, otherSample),
+            (sampleThree, otherSample)
         ]
         equalCases.forEach {
             XCTAssertEqual($0.0, $0.1)

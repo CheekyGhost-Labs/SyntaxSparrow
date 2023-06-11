@@ -22,13 +22,18 @@ import SwiftSyntax
 /// This structure conforms to `Declaration`, `SyntaxChildCollecting`, and `SyntaxSourceLocationResolving`,
 /// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
 public struct Initializer: Declaration, SyntaxChildCollecting, SyntaxSourceLocationResolving {
+
+    // MARK: - Properties: Declaration
+
+    public var node: InitializerDeclSyntax { resolver.node }
+
     // MARK: - Properties
 
     /// Flag indicating whether the initializer is optional (can return `nil`).
     ///
     /// If `true`, the initializer is declared with a `?` (e.g., `init?()`), which means it can return `nil`.
     /// If `false`, the initializer is a regular initializer (e.g., `init()`).
-    public let optional: Bool = false
+    public var isOptional: Bool { resolver.isOptional }
 
     /// Array of attributes found in the declaration.
     ///
@@ -87,24 +92,6 @@ public struct Initializer: Declaration, SyntaxChildCollecting, SyntaxSourceLocat
 
     func collectChildren() {
         resolver.collectChildren()
-    }
-
-    // MARK: - Equatable
-
-    public static func == (lhs: Initializer, rhs: Initializer) -> Bool {
-        return lhs.description == rhs.description
-    }
-
-    // MARK: - Hashable
-
-    public func hash(into hasher: inout Hasher) {
-        return hasher.combine(description.hashValue)
-    }
-
-    // MARK: - CustomStringConvertible
-
-    public var description: String {
-        resolver.node.description.trimmed
     }
 }
 

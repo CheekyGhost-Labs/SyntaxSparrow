@@ -14,7 +14,8 @@ import SwiftSyntax
 /// a Swift source file and provides access to the success and failure types.
 ///
 /// The success and failure types are represented as `EntityType` instances.
-/// For example, for the `Result` type `Result<String, Error>`, the success type will be `.simple("String")` and the failure type will be `.simple("Error")`.
+/// For example, for the `Result` type `Result<String, Error>`, the success type will be `.simple("String")` and the failure type will be
+/// `.simple("Error")`.
 ///
 /// This struct provides functionality to create a `Result` instance from a `SimpleTypeIdentifierSyntax` node. If the `node.firstToken.tokenKind` is
 /// not `"Result"`, the initializer will return `nil`.
@@ -30,6 +31,11 @@ public struct Result: Hashable, Equatable, CustomStringConvertible {
     ///
     /// For example, in the type `Result<String, Error>` the type will be `.simple("Error")`
     public var failureType: EntityType { resolver.failureType }
+
+    /// `Bool` whether the result type is optional.
+    ///
+    /// For example, `Result<String, Error>?` has `isOptional` as `true`.
+    public var isOptional: Bool { resolver.isOptional }
 
     // MARK: - Properties: Convenience
 

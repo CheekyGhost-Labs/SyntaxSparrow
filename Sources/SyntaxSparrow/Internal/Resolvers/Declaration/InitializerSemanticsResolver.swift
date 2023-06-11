@@ -8,8 +8,10 @@
 import Foundation
 import SwiftSyntax
 
-/// `DeclarationSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a `InitializerDeclSyntax` node.
-/// It exposes the expected properties of a `Function` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed repeatedly.
+/// `DeclarationSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a
+/// `InitializerDeclSyntax` node.
+/// It exposes the expected properties of a `Function` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when
+/// accessed repeatedly.
 class InitializerSemanticsResolver: DeclarationSemanticsResolving {
     // MARK: - Properties: DeclarationSemanticsResolving
 
@@ -30,6 +32,8 @@ class InitializerSemanticsResolver: DeclarationSemanticsResolving {
     private(set) lazy var modifiers: [Modifier] = resolveModifiers()
 
     private(set) lazy var keyword: String = resolveKeyword()
+
+    private(set) lazy var isOptional: Bool = resolveIsOptional()
 
     private(set) lazy var genericParameters: [GenericParameter] = resolveGenericParameters()
 
@@ -57,13 +61,17 @@ class InitializerSemanticsResolver: DeclarationSemanticsResolving {
         Attribute.fromAttributeList(node.attributes)
     }
 
+    private func resolveModifiers() -> [Modifier] {
+        guard let modifierList = node.modifiers else { return [] }
+        return modifierList.map { Modifier(node: $0) }
+    }
+
     private func resolveKeyword() -> String {
         node.initKeyword.text.trimmed
     }
 
-    private func resolveModifiers() -> [Modifier] {
-        guard let modifierList = node.modifiers else { return [] }
-        return modifierList.map { Modifier(node: $0) }
+    private func resolveIsOptional() -> Bool {
+        node.optionalMark != nil
     }
 
     private func resolveGenericParameters() -> [GenericParameter] {

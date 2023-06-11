@@ -18,6 +18,11 @@ import SwiftSyntax
 /// This structure conforms to `Declaration`, `SyntaxChildCollecting`, and `SyntaxSourceLocationResolving`,
 /// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
 public struct Enumeration: Declaration, SyntaxChildCollecting, SyntaxSourceLocationResolving {
+
+    // MARK: - Properties: Declaration
+
+    public var node: EnumDeclSyntax { resolver.node }
+
     // MARK: - Properties: Computed
 
     /// Array of attributes found in the declaration.
@@ -97,24 +102,6 @@ public struct Enumeration: Declaration, SyntaxChildCollecting, SyntaxSourceLocat
 
     func collectChildren() {
         resolver.collectChildren()
-    }
-
-    // MARK: - Equatable
-
-    public static func == (lhs: Enumeration, rhs: Enumeration) -> Bool {
-        return lhs.description == rhs.description
-    }
-
-    // MARK: - Hashable
-
-    public func hash(into hasher: inout Hasher) {
-        return hasher.combine(description.hashValue)
-    }
-
-    // MARK: - CustomStringConvertible
-
-    public var description: String {
-        resolver.node.description.trimmed
     }
 }
 

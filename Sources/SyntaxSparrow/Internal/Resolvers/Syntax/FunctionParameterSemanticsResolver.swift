@@ -8,8 +8,10 @@
 import Foundation
 import SwiftSyntax
 
-/// `NodeSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a `FunctionParameterSyntax` node.
-/// It exposes the expected properties of a `FunctionParameter` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed repeatedly.
+/// `NodeSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a
+/// `FunctionParameterSyntax` node.
+/// It exposes the expected properties of a `FunctionParameter` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated
+/// when accessed repeatedly.
 class FunctionParameterSemanticsResolver: ParameterNodeSemanticsResolving {
     // MARK: - Properties: DeclarationSemanticsResolving
 
@@ -20,6 +22,8 @@ class FunctionParameterSemanticsResolver: ParameterNodeSemanticsResolving {
     // MARK: - Properties: ParameterNodeSemanticsResolving
 
     private(set) lazy var attributes: [Attribute] = resolveAttributes()
+
+    private(set) lazy var modifiers: [Modifier] = resolveModifiers()
 
     private(set) lazy var name: String? = resolveName()
 
@@ -51,6 +55,11 @@ class FunctionParameterSemanticsResolver: ParameterNodeSemanticsResolving {
         AttributesCollector.collect(node)
     }
 
+    private func resolveModifiers() -> [Modifier] {
+        guard let modifierList = node.modifiers else { return [] }
+        return modifierList.map { Modifier(node: $0) }
+    }
+
     private func resolveName() -> String {
         node.firstName.text.trimmed
     }
@@ -60,7 +69,11 @@ class FunctionParameterSemanticsResolver: ParameterNodeSemanticsResolving {
     }
 
     private func resolveRawType() -> String {
-        node.type.description.trimmed
+        var result = node.type.description.trimmed
+        if let ellipsis = node.ellipsis {
+            result += ellipsis.text.trimmed
+        }
+        return result
     }
 
     private func resolveEntityType() -> EntityType {
@@ -72,7 +85,7 @@ class FunctionParameterSemanticsResolver: ParameterNodeSemanticsResolving {
     }
 
     private func resolveIsOptional() -> Bool {
-        false
+        node.type.resolveIsOptional()
     }
 
     private func resolveDefaultArgument() -> String? {

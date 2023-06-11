@@ -50,10 +50,6 @@ class SubscriptSemanticsResolver: DeclarationSemanticsResolving {
         self.context = context
     }
 
-    func collectChildren() {
-        // no-op
-    }
-
     // MARK: - Resolvers
 
     private func resolveIndices() -> [Parameter] {

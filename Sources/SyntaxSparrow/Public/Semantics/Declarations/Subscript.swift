@@ -86,9 +86,5 @@ public struct Subscript: Declaration, SyntaxSourceLocationResolving {
         resolver = SubscriptSemanticsResolver(node: node, context: context)
     }
 
-    // MARK: - Properties: Child Collection
-
-    func collectChildren() {
-        // no-op
-    }
+    // TODO: Child collection within get/set?
 }

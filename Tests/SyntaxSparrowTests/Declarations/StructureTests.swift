@@ -185,13 +185,7 @@ final class StructureTests: XCTestCase {
         XCTAssertEqual(structUnderTest.name, "A")
         var attributes = structUnderTest.attributes[0]
         XCTAssertEqual(attributes.name, "available")
-        XCTAssertEqual(attributes.arguments.count, 3)
-        let classAMap = attributes.arguments.map { ($0.name, $0.value) }
-        for (index, arg) in classAMap.enumerated() {
-            let expected = attributeExpectations[index]
-            XCTAssertEqual(arg.0, expected.0)
-            XCTAssertEqual(arg.1, expected.1)
-        }
+        XCTAssertAttributesArgumentsEqual(attributes, attributeExpectations)
         // B
         structUnderTest = structUnderTest.structures[0]
         XCTAssertEqual(structUnderTest.name, "B")
@@ -204,12 +198,7 @@ final class StructureTests: XCTestCase {
         attributes = structUnderTest.attributes[0]
         XCTAssertEqual(attributes.name, "available")
         XCTAssertEqual(attributes.arguments.count, 3)
-        let classCMap = attributes.arguments.map { ($0.name, $0.value) }
-        for (index, arg) in classCMap.enumerated() {
-            let expected = attributeExpectations[index]
-            XCTAssertEqual(arg.0, expected.0)
-            XCTAssertEqual(arg.1, expected.1)
-        }
+        XCTAssertAttributesArgumentsEqual(attributes, attributeExpectations)
     }
 
     func test_inheritance_willResolveExpectedValues() throws {
@@ -237,8 +226,6 @@ final class StructureTests: XCTestCase {
         XCTAssertEqual(testClass.name, "C")
         XCTAssertEqual(testClass.inheritance, ["Equatable", "MyThing"])
     }
-
-    func test_generics_willResolveExpectedValues() throws {}
 
     func test_equatable_hashable() throws {
         let source = #"""

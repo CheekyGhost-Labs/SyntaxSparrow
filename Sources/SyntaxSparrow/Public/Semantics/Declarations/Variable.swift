@@ -91,6 +91,8 @@ public struct Variable: Declaration, SyntaxSourceLocationResolving {
 
     private(set) var resolver: VariableSemanticsResolver
 
+    // TODO: Enable child collection within get/set blocks (may need to expose the get/set blocks too)?
+
     // MARK: - Lifecycle
 
     /// Will create and return an array of variables from the given variable declaration syntax, which can contain one or more pattern bindings.

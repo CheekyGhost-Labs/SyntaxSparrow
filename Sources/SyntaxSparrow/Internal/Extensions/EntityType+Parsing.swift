@@ -138,11 +138,10 @@ extension EntityType {
     }
 
     private static func resolveEllipsisToken(from typeSyntax: TypeSyntaxProtocol) -> TokenSyntax? {
-        if let enumCase = typeSyntax.firstParent(returning: { $0.as(EnumCaseParameterSyntax.self) })?.as(EnumCaseParameterSyntax.self) {
+        let enumParentType = EnumCaseParameterClauseSyntax.self
+        if let enumParent = typeSyntax.firstParent(returning: { $0.as(enumParentType) })?.as(enumParentType) {
             guard
-                // TODO: Move to convenience
-                let parent = enumCase.parent?.parent?.as(EnumCaseParameterClauseSyntax.self),
-                let unexpectedToken = parent.unexpectedBetweenParameterListAndRightParen,
+                let unexpectedToken = enumParent.unexpectedBetweenParameterListAndRightParen,
                 let tokenChild = unexpectedToken.children(viewMode: .fixedUp).first?.as(TokenSyntax.self),
                 tokenChild.tokenKind == .postfixOperator("...")
             else {

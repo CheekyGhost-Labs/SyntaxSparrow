@@ -39,8 +39,6 @@ class EnumerationCaseSemanticsResolver: DeclarationSemanticsResolving {
 
     private(set) lazy var associatedValues: [Parameter] = resolveAssociatedValues()
 
-    // TODO: Parameters
-
     // MARK: - Lifecycle
 
     required init(node: EnumCaseElementSyntax, context: SyntaxExplorerContext) {

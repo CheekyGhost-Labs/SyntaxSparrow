@@ -86,5 +86,5 @@ public struct Subscript: Declaration, SyntaxSourceLocationResolving {
         resolver = SubscriptSemanticsResolver(node: node, context: context)
     }
 
-    // TODO: Child collection within get/set?
+    // TODO: Enable child collection within get/set blocks (may need to expose the get/set blocks too)?
 }

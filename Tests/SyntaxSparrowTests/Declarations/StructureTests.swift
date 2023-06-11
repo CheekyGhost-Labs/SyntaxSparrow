@@ -321,7 +321,74 @@ final class StructureTests: XCTestCase {
         XCTAssertEqual(genericRequirement.rightTypeIdentifier, "U")
     }
 
-    // TODO: children
+    func test_withAllChildDeclarations_willResolveExpectedChildren() throws {
+        let source = #"""
+        struct MyStruct {
+            struct NestedStruct {}
+            class NestedClass {}
+            enum NestedEnum { case nested }
+            typealias NestedTypeAlias = String
+            func nestedFunction() {}
+            var nestedVariable: Int = 0
+            protocol NestedProtocol {}
+            subscript(nestedSubscript idx: Int) -> Int { return idx }
+            init(nestedInitializer: Int) {}
+            deinit { print("Nested deinit") }
+            infix operator +-: NestedOperator
+        }
+        """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        XCTAssertEqual(instanceUnderTest.structures.count, 1)
+
+        let structUnderTest = instanceUnderTest.structures[0]
+
+        // Check child structures
+        XCTAssertEqual(structUnderTest.declarationCollection.structures.count, 1)
+        XCTAssertEqual(structUnderTest.declarationCollection.structures[0].name, "NestedStruct")
+
+        // Check child classes
+        XCTAssertEqual(structUnderTest.declarationCollection.classes.count, 1)
+        XCTAssertEqual(structUnderTest.declarationCollection.classes[0].name, "NestedClass")
+
+        // Check child enums
+        XCTAssertEqual(structUnderTest.declarationCollection.enumerations.count, 1)
+        XCTAssertEqual(structUnderTest.declarationCollection.enumerations[0].name, "NestedEnum")
+
+        // Check child type aliases
+        XCTAssertEqual(structUnderTest.declarationCollection.typealiases.count, 1)
+        XCTAssertEqual(structUnderTest.declarationCollection.typealiases[0].name, "NestedTypeAlias")
+
+        // Check child functions
+        XCTAssertEqual(structUnderTest.declarationCollection.functions.count, 1)
+        XCTAssertEqual(structUnderTest.declarationCollection.functions[0].identifier, "nestedFunction")
+
+        // Check child variables
+        XCTAssertEqual(structUnderTest.declarationCollection.variables.count, 1)
+        XCTAssertEqual(structUnderTest.declarationCollection.variables[0].name, "nestedVariable")
+
+        // Check child protocols
+        XCTAssertEqual(structUnderTest.declarationCollection.protocols.count, 1)
+        XCTAssertEqual(structUnderTest.declarationCollection.protocols[0].name, "NestedProtocol")
+
+        // Check child subscripts
+        XCTAssertEqual(structUnderTest.declarationCollection.subscripts.count, 1)
+        XCTAssertEqual(structUnderTest.declarationCollection.subscripts[0].keyword, "subscript")
+
+        // Check child initializers
+        XCTAssertEqual(structUnderTest.declarationCollection.initializers.count, 1)
+        XCTAssertEqual(structUnderTest.declarationCollection.initializers[0].keyword, "init")
+
+        // Check child deinitializers
+        XCTAssertEqual(structUnderTest.declarationCollection.deinitializers.count, 1)
+        XCTAssertEqual(structUnderTest.declarationCollection.deinitializers[0].keyword, "deinit")
+
+        // Check child operators
+        XCTAssertEqual(structUnderTest.declarationCollection.operators.count, 1)
+        XCTAssertEqual(structUnderTest.declarationCollection.operators[0].name, "+-")
+    }
 
     func test_hashable_equatable_willReturnExpectedResults() throws {
         let source = #"""

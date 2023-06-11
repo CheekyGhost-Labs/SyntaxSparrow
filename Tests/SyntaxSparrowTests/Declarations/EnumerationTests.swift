@@ -321,8 +321,6 @@ final class DeinitializerTests: XCTestCase {
         }
     }
 
-    // TODO: Case tests
-
     func test_cases_associatedValues_willResolveExptectedTypes() throws {
         let source = #"""
         enum MyEnum {

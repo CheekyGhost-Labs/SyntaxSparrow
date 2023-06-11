@@ -41,27 +41,36 @@ final class OperatorTests: XCTestCase {
         XCTAssertEqual(prefix.name, "+++")
         XCTAssertEqual(prefix.kind, .prefix)
         XCTAssertEqual(prefix.description, "prefix operator +++")
-        XCTAssertSourceStartPositionEquals(prefix.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(prefix.sourceLocation, (0, 19, 19))
-        XCTAssertEqual(prefix.extractFromSource(source), "prefix operator +++")
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: prefix, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (0, 19, 19),
+            source: "prefix operator +++"
+        )
 
         // postfix
         let postfix = instanceUnderTest.operators[1]
         XCTAssertEqual(postfix.name, "+++")
         XCTAssertEqual(postfix.kind, .postfix)
         XCTAssertEqual(postfix.description, "postfix operator +++")
-        XCTAssertSourceStartPositionEquals(postfix.sourceLocation, (1, 0, 20))
-        XCTAssertSourceEndPositionEquals(postfix.sourceLocation, (1, 20, 40))
-        XCTAssertEqual(postfix.extractFromSource(source), "postfix operator +++")
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: postfix, from: instanceUnderTest),
+            start: (1, 0, 20),
+            end: (1, 20, 40),
+            source: "postfix operator +++"
+        )
 
         // infix
         let infix = instanceUnderTest.operators[2]
         XCTAssertEqual(infix.name, "+++")
         XCTAssertEqual(infix.kind, .infix)
         XCTAssertEqual(infix.description, "infix operator +++")
-        XCTAssertSourceStartPositionEquals(infix.sourceLocation, (2, 0, 41))
-        XCTAssertSourceEndPositionEquals(infix.sourceLocation, (2, 18, 59))
-        XCTAssertEqual(infix.extractFromSource(source), "infix operator +++")
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: infix, from: instanceUnderTest),
+            start: (2, 0, 41),
+            end: (2, 18, 59),
+            source: "infix operator +++"
+        )
     }
 
 #if swift(<5.8)
@@ -89,11 +98,11 @@ final class OperatorTests: XCTestCase {
         XCTAssertEqual(prefix.attributes.count, 1)
         XCTAssertEqual(prefix.modifiers.map(\.name), ["prefix"])
         XCTAssertAttributesArgumentsEqual(prefix.attributes[0], attributeExpectations)
-        XCTAssertSourceStartPositionEquals(prefix.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(prefix.sourceLocation, (1, 19, 69))
-        XCTAssertEqual(
-            prefix.extractFromSource(source),
-            "@available(*, unavailable, message: \"my message\")\nprefix operator +++"
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: prefix, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (1, 19, 69),
+            source: "@available(*, unavailable, message: \"my message\")\nprefix operator +++"
         )
     }
 
@@ -114,9 +123,12 @@ final class OperatorTests: XCTestCase {
         XCTAssertEqual(prefix.description, "public prefix operator +++")
         XCTAssertEqual(prefix.attributes.count, 0)
         XCTAssertEqual(prefix.modifiers.map(\.name), ["public", "prefix"])
-        XCTAssertSourceStartPositionEquals(prefix.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(prefix.sourceLocation, (0, 26, 26))
-        XCTAssertEqual(prefix.extractFromSource(source), "public prefix operator +++")
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: prefix, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (0, 26, 26),
+            source: "public prefix operator +++"
+        )
     }
 #endif
 

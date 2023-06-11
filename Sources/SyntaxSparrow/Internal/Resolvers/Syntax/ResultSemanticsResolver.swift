@@ -13,8 +13,8 @@ import SwiftSyntax
 /// It exposes the expected properties of a `Result` type as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when
 /// accessed repeatedly.
 /// The `GenericArgumentListSyntax` is resolved from a `SimpleTypeIdentifierSyntax`.
-class ResultSemanticsResolver: NodeSemanticsResolving {
-    // MARK: - Properties: NodeSemanticsResolving
+class ResultSemanticsResolver: SemanticsResolving {
+    // MARK: - Properties: SemanticsResolving
 
     typealias Node = SimpleTypeIdentifierSyntax
 

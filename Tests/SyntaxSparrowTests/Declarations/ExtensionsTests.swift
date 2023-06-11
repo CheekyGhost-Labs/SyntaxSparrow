@@ -52,9 +52,12 @@ final class ExtensionTests: XCTestCase {
         XCTAssertEqual(extensionUnderTest.keyword, "extension")
         XCTAssertEqual(extensionUnderTest.modifiers.count, 0)
         XCTAssertEqual(extensionUnderTest.attributes.count, 0)
-        XCTAssertSourceStartPositionEquals(extensionUnderTest.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(extensionUnderTest.sourceLocation, (12, 1, 413))
-        XCTAssertEqual(extensionUnderTest.extractFromSource(source), source)
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: extensionUnderTest, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (12, 1, 413),
+            source: source
+        )
         // Children
         XCTAssertEqual(extensionUnderTest.structures.count, 1)
         XCTAssertEqual(extensionUnderTest.structures[0].name, "NestedStruct")
@@ -100,8 +103,12 @@ final class ExtensionTests: XCTestCase {
             (nil, "*")
         ])
         XCTAssertEqual(extensionUnderTest.attributes[0].description, "@available(iOS 15, *)")
-        XCTAssertSourceStartPositionEquals(extensionUnderTest.sourceLocation, (line: 0, column: 0, utf8Offset: 0))
-        XCTAssertSourceEndPositionEquals(extensionUnderTest.sourceLocation, (line: 1, column: 19, utf8Offset: 41))
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: extensionUnderTest, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (1, 19, 41),
+            source: "@available(iOS 15, *)\nextension String {}"
+        )
     }
 
     func test_extension_withModifiers_willResolveExpectedValues() throws {
@@ -117,8 +124,12 @@ final class ExtensionTests: XCTestCase {
         let extensionUnderTest = instanceUnderTest.extensions[0]
         XCTAssertEqual(extensionUnderTest.modifiers.count, 1)
         XCTAssertEqual(extensionUnderTest.modifiers[0].name, "public")
-        XCTAssertSourceStartPositionEquals(extensionUnderTest.sourceLocation, (line: 0, column: 0, utf8Offset: 0))
-        XCTAssertSourceEndPositionEquals(extensionUnderTest.sourceLocation, (line: 0, column: 26, utf8Offset: 26))
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: extensionUnderTest, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (0, 26, 26),
+            source: "public extension String {}"
+        )
     }
 
     func test_extension_withInheritance_willResolveExpectedValues() throws {
@@ -155,8 +166,12 @@ final class ExtensionTests: XCTestCase {
         XCTAssertEqual(extensionUnderTest.genericRequirements[0].leftTypeIdentifier, "Element")
         XCTAssertEqual(extensionUnderTest.genericRequirements[0].rightTypeIdentifier, "Comparable")
         XCTAssertEqual(extensionUnderTest.genericRequirements[0].description, "Element: Comparable")
-        XCTAssertSourceStartPositionEquals(extensionUnderTest.sourceLocation, (line: 0, column: 0, utf8Offset: 0))
-        XCTAssertSourceEndPositionEquals(extensionUnderTest.sourceLocation, (line: 0, column: 44, utf8Offset: 44))
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: extensionUnderTest, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (0, 44, 44),
+            source: "extension Array where Element: Comparable {}"
+        )
     }
 
     func test_hashable_equatable_willReturnExpectedResults() throws {

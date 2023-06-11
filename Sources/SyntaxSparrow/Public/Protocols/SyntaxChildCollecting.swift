@@ -9,6 +9,10 @@ import Foundation
 import SwiftSyntax
 
 public protocol SyntaxChildCollecting {
+    
+    /// ``SyntaxSparrow/DeclarationCollection`` utility instance any results will be collected into.
+    var childCollection: DeclarationCollection { get }
+
     /// The collected class declarations.
     var classes: [Class] { get }
 
@@ -53,4 +57,32 @@ public protocol SyntaxChildCollecting {
 
     /// The collected variable declarations.
     var variables: [Variable] { get }
+    
+    /// Will reset the collected child instances and re-assess the represented node to collect any supported child declarations.
+    /// - Parameter viewMode: The view mode to use when parsing.
+    func collectChildren(viewMode: SyntaxTreeViewMode)
+}
+
+public extension SyntaxChildCollecting where Self: Declaration {
+    var classes: [Class] { childCollection.classes }
+    var conditionalCompilationBlocks: [ConditionalCompilationBlock] { childCollection.conditionalCompilationBlocks }
+    var deinitializers: [Deinitializer] { childCollection.deinitializers }
+    var enumerations: [Enumeration] { childCollection.enumerations }
+    var extensions: [Extension] { childCollection.extensions }
+    var functions: [Function] { childCollection.functions }
+    var imports: [Import] { childCollection.imports }
+    var initializers: [Initializer] { childCollection.initializers }
+    var operators: [Operator] { childCollection.operators }
+    var precedenceGroups: [PrecedenceGroup] { childCollection.precedenceGroups }
+    var protocols: [ProtocolDecl] { childCollection.protocols }
+    var structures: [Structure] { childCollection.structures }
+    var subscripts: [Subscript] { childCollection.subscripts }
+    var typealiases: [Typealias] { childCollection.typealiases }
+    var variables: [Variable] { childCollection.variables }
+
+    func collectChildren(viewMode: SyntaxTreeViewMode) {
+        let collector = RootDeclarationCollector(viewMode: viewMode)
+        let collection = collector.collect(fromNode: node)
+        childCollection.collect(from: collection)
+    }
 }

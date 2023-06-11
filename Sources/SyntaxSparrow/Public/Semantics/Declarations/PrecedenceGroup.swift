@@ -35,7 +35,7 @@ import SwiftSyntax
 ///
 /// This type conforms to the `Declaration` protocol, `SyntaxSourceLocationResolving` protocol, `Equatable`, `Hashable`, and
 /// `CustomStringConvertible`.
-public struct PrecedenceGroup: Declaration, SyntaxSourceLocationResolving {
+public struct PrecedenceGroup: Declaration {
     // MARK: - Supplementary
 
     /// Enumeration of associativity types for an operator.
@@ -125,18 +125,13 @@ public struct PrecedenceGroup: Declaration, SyntaxSourceLocationResolving {
     /// - See: ``SyntaxSparrow/PrecedenceGroup/Associativity-swift.enum``
     public var relations: [Relation] { resolver.relations }
 
-    // MARK: - Properties: SyntaxSourceLocationResolving
-
-    public var sourceLocation: SyntaxSourceLocation { resolver.sourceLocation }
-
     // MARK: - Properties: DeclarationCollecting
 
     private(set) var resolver: PrecedenceGroupSemanticsResolver
 
     // MARK: - Lifecycle
 
-    /// Creates a new ``SyntaxSparrow/PrecedenceGroup`` instance from an `PrecedenceGroupDeclSyntax` node.
-    public init(node: PrecedenceGroupDeclSyntax, context: SyntaxExplorerContext) {
-        resolver = PrecedenceGroupSemanticsResolver(node: node, context: context)
+    public init(node: PrecedenceGroupDeclSyntax) {
+        resolver = PrecedenceGroupSemanticsResolver(node: node)
     }
 }

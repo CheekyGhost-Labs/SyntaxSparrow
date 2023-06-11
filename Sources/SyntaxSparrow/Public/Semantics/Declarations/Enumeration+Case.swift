@@ -18,7 +18,7 @@ public extension Enumeration {
     ///
     /// This structure conforms to `Declaration` and `SyntaxSourceLocationResolving`,
     /// which provide access to the declaration attributes, modifiers, and source location information.
-    struct Case: Declaration, SyntaxSourceLocationResolving {
+    struct Case: Declaration {
 
         // MARK: - Properties: Declaration
 
@@ -52,19 +52,14 @@ public extension Enumeration {
         /// The raw value of the enumeration case, if any.
         public var rawValue: String? { resolver.rawValue }
 
-        // MARK: - Properties: SyntaxSourceLocationResolving
-
-        public var sourceLocation: SyntaxSourceLocation { resolver.sourceLocation }
-
         // MARK: - Properties: DeclarationCollecting
 
         private(set) var resolver: EnumerationCaseSemanticsResolver
 
         // MARK: - Lifecycle
 
-        /// Creates a new ``SyntaxSparrow/Enumeration/Case`` instance from an `EnumCaseElementSyntax` node.
-        public init(node: EnumCaseElementSyntax, context: SyntaxExplorerContext) {
-            resolver = EnumerationCaseSemanticsResolver(node: node, context: context)
+        public init(node: EnumCaseElementSyntax) {
+            resolver = EnumerationCaseSemanticsResolver(node: node)
         }
 
         // MARK: - CustomStringConvertible

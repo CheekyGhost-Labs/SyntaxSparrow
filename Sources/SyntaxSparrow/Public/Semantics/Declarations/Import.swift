@@ -19,7 +19,7 @@ import SwiftSyntax
 ///
 /// This structure conforms to `Declaration` and `SyntaxSourceLocationResolving`, which provide
 /// access to the declaration attributes, modifiers, and source location information.
-public struct Import: Declaration, SyntaxSourceLocationResolving {
+public struct Import: Declaration {
 
     // MARK: - Properties: Declaration
 
@@ -53,18 +53,13 @@ public struct Import: Declaration, SyntaxSourceLocationResolving {
     /// For example, `import SyntaxSparrow.Protocol` would have path components of `["SyntaxSparrow", "Protocol"]`.
     public var pathComponents: [String] { resolver.pathComponents }
 
-    // MARK: - Properties: SyntaxSourceLocationResolving
-
-    public var sourceLocation: SyntaxSourceLocation { resolver.sourceLocation }
-
     // MARK: - Properties: DeclarationCollecting
 
     private(set) var resolver: ImportSemanticsResolver
 
     // MARK: - Lifecycle
 
-    /// Creates a new ``SyntaxSparrow/Import`` instance from an `ImportDeclSyntax` node.
-    public init(node: ImportDeclSyntax, context: SyntaxExplorerContext) {
-        resolver = ImportSemanticsResolver(node: node, context: context)
+    public init(node: ImportDeclSyntax) {
+        resolver = ImportSemanticsResolver(node: node)
     }
 }

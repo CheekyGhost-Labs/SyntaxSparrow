@@ -12,18 +12,14 @@ import SwiftSyntax
 /// `StructDeclSyntax` node.
 /// It exposes the expected properties of a `Structure` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when
 /// accessed repeatedly.
-class ExtensionSemanticsResolver: DeclarationSemanticsResolving {
-    // MARK: - Properties: DeclarationSemanticsResolving
+class ExtensionSemanticsResolver: SemanticsResolving {
+    // MARK: - Properties: SemanticsResolving
 
     typealias Node = ExtensionDeclSyntax
 
     let node: Node
 
-    let context: SyntaxExplorerContext
-
     private(set) var declarationCollection: DeclarationCollection = .init()
-
-    private(set) lazy var sourceLocation: SyntaxSourceLocation = resolveSourceLocation()
 
     // MARK: - Properties: StructureDeclaration
 
@@ -41,14 +37,8 @@ class ExtensionSemanticsResolver: DeclarationSemanticsResolving {
 
     // MARK: - Lifecycle
 
-    required init(node: ExtensionDeclSyntax, context: SyntaxExplorerContext) {
+    required init(node: ExtensionDeclSyntax) {
         self.node = node
-        self.context = context
-    }
-
-    func collectChildren() {
-        let nodeCollector = context.createRootDeclarationCollector()
-        declarationCollection = nodeCollector.collect(fromNode: node)
     }
 
     // MARK: - Resolvers

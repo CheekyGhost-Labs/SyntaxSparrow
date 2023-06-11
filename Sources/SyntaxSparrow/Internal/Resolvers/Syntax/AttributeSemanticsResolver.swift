@@ -12,8 +12,8 @@ import SwiftSyntax
 /// `AttributeSyntax` node.
 /// It exposes the expected properties of a `Attribute` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when
 /// accessed repeatedly.
-class AttributeSemanticsResolver: NodeSemanticsResolving {
-    // MARK: - Properties: DeclarationSemanticsResolving
+class AttributeSemanticsResolver: SemanticsResolving {
+    // MARK: - Properties: SemanticsResolving
 
     typealias Node = AttributeSyntax
 

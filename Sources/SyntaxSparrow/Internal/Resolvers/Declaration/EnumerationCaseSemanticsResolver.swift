@@ -12,18 +12,14 @@ import SwiftSyntax
 /// `EnumCaseElementSyntax` node.
 /// It exposes the expected properties of a `Enumeration.Case` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated
 /// when accessed repeatedly.
-class EnumerationCaseSemanticsResolver: DeclarationSemanticsResolving {
-    // MARK: - Properties: DeclarationSemanticsResolving
+class EnumerationCaseSemanticsResolver: SemanticsResolving {
+    // MARK: - Properties: SemanticsResolving
 
     typealias Node = EnumCaseElementSyntax
 
     let node: Node
 
-    let context: SyntaxExplorerContext
-
     private(set) var declarationCollection: DeclarationCollection = .init()
-
-    private(set) lazy var sourceLocation: SyntaxSourceLocation = resolveSourceLocation()
 
     // MARK: - Properties: StructureDeclaration
 
@@ -41,9 +37,8 @@ class EnumerationCaseSemanticsResolver: DeclarationSemanticsResolving {
 
     // MARK: - Lifecycle
 
-    required init(node: EnumCaseElementSyntax, context: SyntaxExplorerContext) {
+    required init(node: EnumCaseElementSyntax) {
         self.node = node
-        self.context = context
     }
 
     func collectChildren() {

@@ -26,6 +26,7 @@ import SwiftSyntax
 /// elements
 /// that require lazy evaluation or collection as needed.
 public class SyntaxTree: SyntaxChildCollecting, SyntaxExplorerContextProviding {
+    
     // MARK: - Properties: SyntaxExplorerContextProviding
 
     /// `SyntaxExplorerContext` instance holding root collection details and instances. This context will be shared with any child elements
@@ -121,33 +122,60 @@ public class SyntaxTree: SyntaxChildCollecting, SyntaxExplorerContextProviding {
     ///
     /// Thus, `walk` facilitates a hierarchical exploration of the syntax tree.
     public func collectChildren() {
-        declarationCollector.collect(fromSource: context.sourceBuffer)
+        declarationCollector.collect(fromSource: context.sourceBuffer ?? "")
         context.resetIsStale()
+    }
+
+    // MARK: - SyntaxSourceResolving
+    
+    /// Will assess the given declaration within the current syntax tree context and return the source details.
+    ///
+    /// Source details includes the source location and extracted raw source code.
+    /// **Note:** This requires the tree to be working with a source buffer and to be created with one of the source based initializers:
+    /// - ``SyntaxSparrow/SyntaxTree/init(viewMode:sourceBuffer:)``
+    /// - ``SyntaxSparrow/SyntaxTree/init(viewMode:sourceAtPath:)``
+    /// - Parameter declaration: The declaration to resolve for.
+    /// - Returns: ``SyntaxSparrow/SyntaxSourceDetails``
+    /// - Throws: ``SyntaxSparrow/SyntaxTreeError``
+    public func extractSource(forDeclaration declaration: any Declaration) throws -> SyntaxSourceDetails {
+        guard let buffer = context.sourceBuffer else {
+            throw SyntaxTreeError.invalidContextForSourceResolving("No source buffer in syntax tree context")
+        }
+        if context.sourceLocationConverter.isEmpty {
+            context.sourceLocationConverter.updateToRootForNode(declaration.node)
+        }
+        let location = context.sourceLocationConverter.locationForNode(declaration.node)
+        let source = location.extractFromSource(buffer)
+        return SyntaxSourceDetails(location: location, source: source)
     }
 
     // MARK: - Conformance: SyntaxChildCollecting
 
-    public var classes: [Class] { declarationCollector.collection.classes }
-    public var deinitializers: [Deinitializer] { declarationCollector.collection.deinitializers }
-    public var enumerations: [Enumeration] { declarationCollector.collection.enumerations }
-    public var extensions: [Extension] { declarationCollector.collection.extensions }
-    public var functions: [Function] { declarationCollector.collection.functions }
-    public var imports: [Import] { declarationCollector.collection.imports }
-    public var initializers: [Initializer] { declarationCollector.collection.initializers }
-    public var operators: [Operator] { declarationCollector.collection.operators }
-    public var precedenceGroups: [PrecedenceGroup] { declarationCollector.collection.precedenceGroups }
-    public var protocols: [ProtocolDecl] { declarationCollector.collection.protocols }
-    public var structures: [Structure] { declarationCollector.collection.structures }
-    public var subscripts: [Subscript] { declarationCollector.collection.subscripts }
-    public var typealiases: [Typealias] { declarationCollector.collection.typealiases }
-    public var variables: [Variable] { declarationCollector.collection.variables }
-    public var conditionalCompilationBlocks: [ConditionalCompilationBlock] {
-        declarationCollector.collection.conditionalCompilationBlocks
+    public var childCollection: DeclarationCollection { declarationCollector.declarationCollection }
+
+    public var classes: [Class] { childCollection.classes }
+    public var deinitializers: [Deinitializer] { childCollection.deinitializers }
+    public var enumerations: [Enumeration] { childCollection.enumerations }
+    public var extensions: [Extension] { childCollection.extensions }
+    public var functions: [Function] { childCollection.functions }
+    public var imports: [Import] { childCollection.imports }
+    public var initializers: [Initializer] { childCollection.initializers }
+    public var operators: [Operator] { childCollection.operators }
+    public var precedenceGroups: [PrecedenceGroup] { childCollection.precedenceGroups }
+    public var protocols: [ProtocolDecl] { childCollection.protocols }
+    public var structures: [Structure] { childCollection.structures }
+    public var subscripts: [Subscript] { childCollection.subscripts }
+    public var typealiases: [Typealias] { childCollection.typealiases }
+    public var variables: [Variable] { childCollection.variables }
+    public var conditionalCompilationBlocks: [ConditionalCompilationBlock] { childCollection.conditionalCompilationBlocks }
+
+    public func collectChildren(viewMode: SwiftSyntax.SyntaxTreeViewMode) {
+        collectChildren()
     }
 
     // MARK: - Conformance: SyntaxExplorerContextProviding
 
-    public var sourceBuffer: String { context.sourceBuffer }
+    public var sourceBuffer: String? { context.sourceBuffer }
 
     public var viewMode: SyntaxTreeViewMode { context.viewMode }
 

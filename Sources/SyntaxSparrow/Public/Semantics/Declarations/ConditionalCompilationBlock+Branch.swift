@@ -29,7 +29,7 @@ public extension ConditionalCompilationBlock {
     /// Each instance of ``SyntaxSparrow/ConditionalCompilationBlock/Branch`` corresponds to a `IfConfigClauseSyntax` node in the Swift syntax tree.
     ///
     /// The `Branch` struct provides access to the keyword, the optional condition, and the source location of the branch.
-    struct Branch: Declaration, SyntaxChildCollecting, SyntaxSourceLocationResolving {
+    struct Branch: Declaration, SyntaxChildCollecting {
         // MARK: - Supplementary
 
         private enum Constants {
@@ -91,30 +91,18 @@ public extension ConditionalCompilationBlock {
         /// This `condition` is present when the `keyword` is `#if` or `#elseif`, and `nil` when the `keyword` is `#else`.
         public var condition: String? { resolver.condition }
 
-        // MARK: - Properties: SyntaxSourceLocationResolving
-
-        public var sourceLocation: SyntaxSourceLocation { resolver.sourceLocation }
-
-        // MARK: - Properties: DeclarationCollecting
+        // MARK: - Properties: Resolving
 
         private(set) var resolver: ConditionalCompilationBlockBranchSemanticsResolver
 
-        var declarationCollection: DeclarationCollection { resolver.declarationCollection }
+        // MARK: - Properties: SyntaxChildCollecting
+
+        public var childCollection: DeclarationCollection = DeclarationCollection()
 
         // MARK: - Lifecycle
 
-        /// Creates a new ``SyntaxSparrow/ConditionalCompilationBlock/Branch`` instance from an `IfConfigClauseSyntax` node.
-        public init(node: IfConfigClauseSyntax, context: SyntaxExplorerContext) {
-            resolver = ConditionalCompilationBlockBranchSemanticsResolver(node: node, context: context)
-            collectChildren()
-        }
-
-        // MARK: - Properties: Child Collection
-
-        func collectChildren() {
-            resolver.collectChildren()
+        public init(node: IfConfigClauseSyntax) {
+            resolver = ConditionalCompilationBlockBranchSemanticsResolver(node: node)
         }
     }
 }
-
-extension ConditionalCompilationBlock.Branch: DeclarationCollecting {}

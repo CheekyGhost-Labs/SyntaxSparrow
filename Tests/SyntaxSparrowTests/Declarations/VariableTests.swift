@@ -110,15 +110,18 @@ final class VariableTests: XCTestCase {
         XCTAssertEqual(instanceUnderTest.variables.count, 1)
         // Main
         let variable = instanceUnderTest.variables[0]
-        XCTAssertSourceStartPositionEquals(variable.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(variable.sourceLocation, (1, 16, 66))
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: variable, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (1, 16, 66),
+            source: "@available(*, unavailable, message: \"my message\")\nvar name: String"
+        )
         XCTAssertEqual(variable.keyword, "var")
         XCTAssertEqual(variable.name, "name")
         XCTAssertEqual(variable.type, .simple("String"))
         let attributes = variable.attributes[0]
         XCTAssertEqual(attributes.name, "available")
         XCTAssertAttributesArgumentsEqual(attributes, attributeExpectations)
-        XCTAssertEqual(variable.extractFromSource(source), "@available(*, unavailable, message: \"my message\")\nvar name: String")
     }
 
     func test_variable_withModifiers_willResolveExpectedValues() {
@@ -136,9 +139,12 @@ final class VariableTests: XCTestCase {
         XCTAssertEqual(variable.name, "name")
         XCTAssertEqual(variable.type, .simple("String"))
         XCTAssertEqual(variable.modifiers.map(\.name), ["public", "static"])
-        XCTAssertSourceStartPositionEquals(variable.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(variable.sourceLocation, (0, 39, 39))
-        XCTAssertEqual(variable.extractFromSource(source), "public static var name: String = \"name\"")
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: variable, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (0, 39, 39),
+            source: "public static var name: String = \"name\""
+        )
     }
 
     func test_variable_accessors_standard_willResolveExpectedValues() {

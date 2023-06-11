@@ -24,7 +24,7 @@ import SwiftSyntax
 ///
 /// The `Subscript` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the subscript
 /// declaration is located.
-public struct Subscript: Declaration, SyntaxSourceLocationResolving {
+public struct Subscript: Declaration {
 
     // MARK: - Properties: Declaration
 
@@ -71,19 +71,14 @@ public struct Subscript: Declaration, SyntaxSourceLocationResolving {
     /// The subscript getter and/or setter.
     public var accessors: [Accessor] { resolver.accessors }
 
-    // MARK: - Properties: SyntaxSourceLocationResolving
-
-    public var sourceLocation: SyntaxSourceLocation { resolver.sourceLocation }
-
     // MARK: - Properties: DeclarationCollecting
 
     private(set) var resolver: SubscriptSemanticsResolver
 
     // MARK: - Lifecycle
 
-    /// Creates a new ``SyntaxSparrow/Subscript`` instance from an `SubscriptDeclSyntax` node.
-    public init(node: SubscriptDeclSyntax, context: SyntaxExplorerContext) {
-        resolver = SubscriptSemanticsResolver(node: node, context: context)
+    public init(node: SubscriptDeclSyntax) {
+        resolver = SubscriptSemanticsResolver(node: node)
     }
 
     // TODO: Enable child collection within get/set blocks (may need to expose the get/set blocks too)?

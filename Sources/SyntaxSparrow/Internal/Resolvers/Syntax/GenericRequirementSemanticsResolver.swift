@@ -12,8 +12,8 @@ import SwiftSyntax
 /// `GenericRequirementSyntax` node.
 /// It exposes the expected properties of a `GenericRequirement` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated
 /// when accessed repeatedly.
-class GenericRequirementSemanticsResolver: NodeSemanticsResolving {
-    // MARK: - Properties: DeclarationSemanticsResolving
+class GenericRequirementSemanticsResolver: SemanticsResolving {
+    // MARK: - Properties: SemanticsResolving
 
     typealias Node = GenericRequirementSyntax
 

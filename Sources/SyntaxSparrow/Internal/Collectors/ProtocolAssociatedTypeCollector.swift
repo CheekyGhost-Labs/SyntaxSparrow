@@ -22,21 +22,10 @@ class ProtocolAssociatedTypeCollector: SkipByDefaultVisitor {
     /// Private array for holding any results. This is emptied when invoking the `collect(from:)` method.
     private var results: [AssociatedType] = []
 
-    /// `SyntaxExplorerContext` struct holding any instances that may be needed by children when collecting within the same context.
-    let context: SyntaxExplorerContext
-
-    // MARK: - Lifecycle
-
-    required init(context: SyntaxExplorerContext) {
-        self.context = context
-        super.init(viewMode: context.viewMode)
-    }
+    // MARK: - Helpers
 
     @discardableResult
     func collect(from node: ProtocolDeclSyntax) -> [AssociatedType] {
-        if context.sourceLocationConverter.isEmpty {
-            context.sourceLocationConverter.updateToRootForNode(node)
-        }
         results.removeAll()
         walk(node)
         return results
@@ -66,7 +55,7 @@ class ProtocolAssociatedTypeCollector: SkipByDefaultVisitor {
     }
 
     override func visit(_ node: AssociatedtypeDeclSyntax) -> SyntaxVisitorContinueKind {
-        let declaration = AssociatedType(node: node, context: context)
+        let declaration = AssociatedType(node: node)
         results.append(declaration)
         return .skipChildren
     }

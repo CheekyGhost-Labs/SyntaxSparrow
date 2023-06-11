@@ -21,7 +21,7 @@ import SwiftSyntax
 ///
 /// This structure conforms to `Declaration`, `SyntaxChildCollecting`, and `SyntaxSourceLocationResolving`,
 /// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
-public struct Initializer: Declaration, SyntaxChildCollecting, SyntaxSourceLocationResolving {
+public struct Initializer: Declaration, SyntaxChildCollecting {
 
     // MARK: - Properties: Declaration
 
@@ -71,28 +71,17 @@ public struct Initializer: Declaration, SyntaxChildCollecting, SyntaxSourceLocat
     /// The `throws` or `rethrows` keyword, if any.
     public var throwsOrRethrowsKeyword: String? { resolver.throwsOrRethrowsKeyword }
 
-    // MARK: - Properties: SyntaxSourceLocationResolving
-
-    public var sourceLocation: SyntaxSourceLocation { resolver.sourceLocation }
-
-    // MARK: - Properties: DeclarationCollecting
+    // MARK: - Properties: Resolving
 
     private(set) var resolver: InitializerSemanticsResolver
 
-    var declarationCollection: DeclarationCollection { resolver.declarationCollection }
+    // MARK: - Properties: SyntaxChildCollecting
+
+    public var childCollection: DeclarationCollection = DeclarationCollection()
 
     // MARK: - Lifecycle
 
-    /// Creates a new ``SyntaxSparrow/Initializer`` instance from an `InitializerDeclSyntax` node.
-    public init(node: InitializerDeclSyntax, context: SyntaxExplorerContext) {
-        resolver = InitializerSemanticsResolver(node: node, context: context)
-    }
-
-    // MARK: - Properties: Child Collection
-
-    func collectChildren() {
-        resolver.collectChildren()
+    public init(node: InitializerDeclSyntax) {
+        resolver = InitializerSemanticsResolver(node: node)
     }
 }
-
-extension Initializer: DeclarationCollecting {}

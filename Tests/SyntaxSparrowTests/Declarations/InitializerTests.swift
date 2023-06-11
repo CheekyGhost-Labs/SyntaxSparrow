@@ -46,11 +46,11 @@ final class InitializerTests: XCTestCase {
         XCTAssertEqual(initializerUnderTest.keyword, "init")
         XCTAssertTrue(initializerUnderTest.isOptional)
         XCTAssertEqual(initializerUnderTest.throwsOrRethrowsKeyword, "throws")
-        XCTAssertSourceStartPositionEquals(initializerUnderTest.sourceLocation, (1, 4, 22))
-        XCTAssertSourceEndPositionEquals(initializerUnderTest.sourceLocation, (2, 53, 97))
-        XCTAssertEqual(
-            initializerUnderTest.extractFromSource(source),
-            "@available(iOS 15, *)\n    public required init?(withAge age: Int) throws {}"
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: initializerUnderTest, from: instanceUnderTest),
+            start: (1, 4, 22),
+            end: (2, 53, 97),
+            source: "@available(iOS 15, *)\n    public required init?(withAge age: Int) throws {}"
         )
 
         // Test parameters

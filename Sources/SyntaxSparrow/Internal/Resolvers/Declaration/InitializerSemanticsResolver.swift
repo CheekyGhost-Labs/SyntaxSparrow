@@ -12,18 +12,14 @@ import SwiftSyntax
 /// `InitializerDeclSyntax` node.
 /// It exposes the expected properties of a `Function` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when
 /// accessed repeatedly.
-class InitializerSemanticsResolver: DeclarationSemanticsResolving {
-    // MARK: - Properties: DeclarationSemanticsResolving
+class InitializerSemanticsResolver: SemanticsResolving {
+    // MARK: - Properties: SemanticsResolving
 
     typealias Node = InitializerDeclSyntax
 
     let node: Node
 
-    let context: SyntaxExplorerContext
-
     private(set) var declarationCollection: DeclarationCollection = .init()
-
-    private(set) lazy var sourceLocation: SyntaxSourceLocation = resolveSourceLocation()
 
     // MARK: - Properties: StructureDeclaration
 
@@ -45,14 +41,8 @@ class InitializerSemanticsResolver: DeclarationSemanticsResolving {
 
     // MARK: - Lifecycle
 
-    required init(node: InitializerDeclSyntax, context: SyntaxExplorerContext) {
+    required init(node: InitializerDeclSyntax) {
         self.node = node
-        self.context = context
-    }
-
-    func collectChildren() {
-        let nodeCollector = context.createRootDeclarationCollector()
-        declarationCollection = nodeCollector.collect(fromNode: node)
     }
 
     // MARK: - Resolvers

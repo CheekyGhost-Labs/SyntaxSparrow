@@ -12,18 +12,16 @@ import SwiftSyntax
 /// `ProtocolDeclSyntax` node.
 /// It exposes the expected properties of a `Protocol` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when
 /// accessed repeatedly.
-class ProtocolSemanticsResolver: DeclarationSemanticsResolving {
-    // MARK: - Properties: DeclarationSemanticsResolving
+class ProtocolSemanticsResolver: SemanticsResolving {
+    // MARK: - Properties: SemanticsResolving
 
     typealias Node = ProtocolDeclSyntax
 
     let node: Node
 
-    let context: SyntaxExplorerContext
-
     private(set) var declarationCollection: DeclarationCollection = .init()
 
-    private(set) lazy var sourceLocation: SyntaxSourceLocation = resolveSourceLocation()
+    var viewMode: SyntaxTreeViewMode = .fixedUp
 
     // MARK: - Properties: StructureDeclaration
 
@@ -45,14 +43,8 @@ class ProtocolSemanticsResolver: DeclarationSemanticsResolving {
 
     // MARK: - Lifecycle
 
-    required init(node: ProtocolDeclSyntax, context: SyntaxExplorerContext) {
+    required init(node: ProtocolDeclSyntax) {
         self.node = node
-        self.context = context
-    }
-
-    func collectChildren() {
-        let nodeCollector = context.createRootDeclarationCollector()
-        declarationCollection = nodeCollector.collect(fromNode: node)
     }
 
     // MARK: - Resolvers
@@ -70,7 +62,7 @@ class ProtocolSemanticsResolver: DeclarationSemanticsResolving {
     }
 
     private func resolveAssociatedTypes() -> [AssociatedType] {
-        let collector = context.protocolAssociatedTypeCollector()
+        let collector = ProtocolAssociatedTypeCollector(viewMode: viewMode)
         return collector.collect(from: node)
     }
 

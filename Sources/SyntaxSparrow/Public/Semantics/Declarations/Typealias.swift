@@ -23,7 +23,7 @@ import SwiftSyntax
 ///
 /// The `Typealias` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the typealias
 /// declaration is located.
-public struct Typealias: Declaration, SyntaxSourceLocationResolving {
+public struct Typealias: Declaration {
 
     // MARK: - Properties: Declaration
 
@@ -80,10 +80,6 @@ public struct Typealias: Declaration, SyntaxSourceLocationResolving {
     /// ```
     public var genericRequirements: [GenericRequirement] { resolver.genericRequirements }
 
-    // MARK: - Properties: SyntaxSourceLocationResolving
-
-    public var sourceLocation: SyntaxSourceLocation { resolver.sourceLocation }
-
     // MARK: - Properties: SyntaxChildCollecting
 
     private(set) var resolver: TypealiasSemanticsResolver
@@ -91,7 +87,7 @@ public struct Typealias: Declaration, SyntaxSourceLocationResolving {
     // MARK: - Lifecycle
 
     /// Creates a new ``SyntaxSparrow/Typealias`` instance from an `TypealiasDeclSyntax` node.
-    public init(node: TypealiasDeclSyntax, context: SyntaxExplorerContext) {
-        resolver = TypealiasSemanticsResolver(node: node, context: context)
+    public init(node: TypealiasDeclSyntax) {
+        resolver = TypealiasSemanticsResolver(node: node)
     }
 }

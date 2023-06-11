@@ -13,7 +13,7 @@ import SwiftSyntax
 /// It exposes the expected properties of a `Tuple` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed
 /// repeatedly.
 class TupleParameterSemanticsResolver: ParameterNodeSemanticsResolving {
-    // MARK: - Properties: DeclarationSemanticsResolving
+    // MARK: - Properties: SemanticsResolving
 
     typealias Node = TupleTypeElementSyntax
 

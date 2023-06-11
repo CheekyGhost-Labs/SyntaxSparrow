@@ -44,11 +44,11 @@ final class EnumerationTests: XCTestCase {
         let deinitUnderTest = instanceUnderTest.classes[0].deinitializers[0]
 
         XCTAssertEqual(deinitUnderTest.keyword, "deinit")
-        XCTAssertSourceStartPositionEquals(deinitUnderTest.sourceLocation, (1, 4, 22))
-        XCTAssertSourceEndPositionEquals(deinitUnderTest.sourceLocation, (2, 22, 66))
-        XCTAssertEqual(
-            deinitUnderTest.extractFromSource(source),
-            "@available(iOS 15, *)\n    public deinit() {}"
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: deinitUnderTest, from: instanceUnderTest),
+            start: (1, 4, 22),
+            end: (2, 22, 66),
+            source: "@available(iOS 15, *)\n    public deinit() {}"
         )
 
         // Test attributes

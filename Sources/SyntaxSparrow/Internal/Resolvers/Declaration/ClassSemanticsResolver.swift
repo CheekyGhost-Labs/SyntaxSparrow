@@ -12,18 +12,14 @@ import SwiftSyntax
 /// `ClassDeclSyntax` node.
 /// It exposes the expected properties of a `Class` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed
 /// repeatedly.
-class ClassSemanticsResolver: DeclarationSemanticsResolving {
-    // MARK: - Properties: DeclarationSemanticsResolving
+class ClassSemanticsResolver: SemanticsResolving {
+    // MARK: - Properties: SemanticsResolving
 
     typealias Node = ClassDeclSyntax
 
     let node: Node
 
-    let context: SyntaxExplorerContext
-
     private(set) var declarationCollection: DeclarationCollection = .init()
-
-    private(set) lazy var sourceLocation: SyntaxSourceLocation = resolveSourceLocation()
 
     // MARK: - Properties: StructureDeclaration
 
@@ -43,14 +39,8 @@ class ClassSemanticsResolver: DeclarationSemanticsResolving {
 
     // MARK: - Lifecycle
 
-    required init(node: ClassDeclSyntax, context: SyntaxExplorerContext) {
+    required init(node: ClassDeclSyntax) {
         self.node = node
-        self.context = context
-    }
-
-    func collectChildren() {
-        let nodeCollector = context.createRootDeclarationCollector()
-        declarationCollection = nodeCollector.collect(fromNode: node)
     }
 
     // MARK: - Resolvers

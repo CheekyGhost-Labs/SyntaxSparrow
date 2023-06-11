@@ -12,18 +12,14 @@ import SwiftSyntax
 /// `PatternBindingSyntax` node.
 /// It exposes the expected properties of a `Function` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when
 /// accessed repeatedly.
-class VariableSemanticsResolver: DeclarationSemanticsResolving {
-    // MARK: - Properties: DeclarationSemanticsResolving
+class VariableSemanticsResolver: SemanticsResolving {
+    // MARK: - Properties: SemanticsResolving
 
     typealias Node = PatternBindingSyntax
 
     let node: Node
 
-    let context: SyntaxExplorerContext
-
     private(set) var declarationCollection: DeclarationCollection = .init()
-
-    private(set) lazy var sourceLocation: SyntaxSourceLocation = resolveSourceLocation()
 
     // MARK: - Properties: StructureDeclaration
 
@@ -47,9 +43,8 @@ class VariableSemanticsResolver: DeclarationSemanticsResolving {
 
     // MARK: - Lifecycle
 
-    required init(node: PatternBindingSyntax, context: SyntaxExplorerContext) {
+    required init(node: PatternBindingSyntax) {
         self.node = node
-        self.context = context
     }
 
     // MARK: - Resolvers
@@ -112,15 +107,5 @@ class VariableSemanticsResolver: DeclarationSemanticsResolving {
         guard !modifiers.contains(where: { $0.name == "private" && $0.detail == "set" }) else { return false }
         // Finally if the root context is not a protocol, and the keyword is var, it can have a setter
         return node.context?.as(ProtocolDeclSyntax.self) == nil && keyword == "var"
-    }
-
-    func resolveSourceLocation() -> SyntaxSourceLocation {
-        if context.sourceLocationConverter.isEmpty {
-            context.sourceLocationConverter.updateToRootForNode(node)
-        }
-        let targetNode: SyntaxProtocol = node.context ?? node
-        let start = context.sourceLocationConverter.startLocationForNode(targetNode)
-        let end = context.sourceLocationConverter.endLocationForNode(targetNode)
-        return SyntaxSourceLocation(start: start, end: end)
     }
 }

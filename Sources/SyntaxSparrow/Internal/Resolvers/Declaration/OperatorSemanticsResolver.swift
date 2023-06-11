@@ -12,18 +12,14 @@ import SwiftSyntax
 /// `OperatorDeclSyntax` node.
 /// It exposes the expected properties of a `Operator` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when
 /// accessed repeatedly.
-class OperatorSemanticsResolver: DeclarationSemanticsResolving {
-    // MARK: - Properties: DeclarationSemanticsResolving
+class OperatorSemanticsResolver: SemanticsResolving {
+    // MARK: - Properties: SemanticsResolving
 
     typealias Node = OperatorDeclSyntax
 
     let node: Node
 
-    let context: SyntaxExplorerContext
-
     private(set) var declarationCollection: DeclarationCollection = .init()
-
-    private(set) lazy var sourceLocation: SyntaxSourceLocation = resolveSourceLocation()
 
     // MARK: - Properties: StructureDeclaration
 
@@ -41,9 +37,8 @@ class OperatorSemanticsResolver: DeclarationSemanticsResolving {
 
     // MARK: - Lifecycle
 
-    required init(node: OperatorDeclSyntax, context: SyntaxExplorerContext) {
+    required init(node: OperatorDeclSyntax) {
         self.node = node
-        self.context = context
     }
 
     func collectChildren() {

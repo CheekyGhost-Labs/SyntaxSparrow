@@ -17,7 +17,7 @@ import SwiftSyntax
 ///
 /// This structure conforms to `Declaration`, `SyntaxChildCollecting`, and `SyntaxSourceLocationResolving`,
 /// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
-public struct Enumeration: Declaration, SyntaxChildCollecting, SyntaxSourceLocationResolving {
+public struct Enumeration: Declaration, SyntaxChildCollecting {
 
     // MARK: - Properties: Declaration
 
@@ -81,28 +81,17 @@ public struct Enumeration: Declaration, SyntaxChildCollecting, SyntaxSourceLocat
     /// ```
     public var cases: [Enumeration.Case] { resolver.cases }
 
-    // MARK: - Properties: SyntaxSourceLocationResolving
-
-    public var sourceLocation: SyntaxSourceLocation { resolver.sourceLocation }
-
-    // MARK: - Properties: DeclarationCollecting
+    // MARK: - Properties: Resolving
 
     private(set) var resolver: EnumerationSemanticsResolver
 
-    var declarationCollection: DeclarationCollection { resolver.declarationCollection }
+    // MARK: - Properties: SyntaxChildCollecting
+
+    public var childCollection: DeclarationCollection = DeclarationCollection()
 
     // MARK: - Lifecycle
 
-    /// Creates a new ``SyntaxSparrow/Enumeration`` instance from an `EnumDeclSyntax` node.
-    public init(node: EnumDeclSyntax, context: SyntaxExplorerContext) {
-        resolver = EnumerationSemanticsResolver(node: node, context: context)
-    }
-
-    // MARK: - Properties: Child Collection
-
-    func collectChildren() {
-        resolver.collectChildren()
+    public init(node: EnumDeclSyntax) {
+        resolver = EnumerationSemanticsResolver(node: node)
     }
 }
-
-extension Enumeration: DeclarationCollecting {}

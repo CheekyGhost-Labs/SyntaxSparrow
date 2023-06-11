@@ -17,7 +17,7 @@ import SwiftSyntax
 ///
 /// This structure conforms to `Declaration`, `SyntaxChildCollecting`, and `SyntaxSourceLocationResolving`,
 /// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
-public struct Function: Declaration, SyntaxChildCollecting, SyntaxSourceLocationResolving {
+public struct Function: Declaration, SyntaxChildCollecting {
     // MARK: - Supplementary
 
     /// Struct representing a function signature.
@@ -103,28 +103,17 @@ public struct Function: Declaration, SyntaxChildCollecting, SyntaxSourceLocation
     /// `Operator.Kind` assigned when the `isOperator` is `true`.
     public var operatorKind: Operator.Kind? { resolver.operatorKind }
 
-    // MARK: - Properties: SyntaxSourceLocationResolving
-
-    public var sourceLocation: SyntaxSourceLocation { resolver.sourceLocation }
-
-    // MARK: - Properties: DeclarationCollecting
+    // MARK: - Properties: Resolving
 
     private(set) var resolver: FunctionSemanticsResolver
 
-    var declarationCollection: DeclarationCollection { resolver.declarationCollection }
+    // MARK: - Properties: SyntaxChildCollecting
+
+    public var childCollection: DeclarationCollection = DeclarationCollection()
 
     // MARK: - Lifecycle
 
-    /// Creates a new ``SyntaxSparrow/Function`` instance from an `FunctionDeclSyntax` node.
-    public init(node: FunctionDeclSyntax, context: SyntaxExplorerContext) {
-        resolver = FunctionSemanticsResolver(node: node, context: context)
-    }
-
-    // MARK: - Properties: Child Collection
-
-    func collectChildren() {
-        resolver.collectChildren()
+    public init(node: FunctionDeclSyntax) {
+        resolver = FunctionSemanticsResolver(node: node)
     }
 }
-
-extension Function: DeclarationCollecting {}

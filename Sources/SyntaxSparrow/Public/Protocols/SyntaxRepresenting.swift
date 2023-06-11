@@ -2,7 +2,7 @@
 //  File.swift
 //  
 //
-//  Created by Michael O'Brien on 10/6/2023.
+//  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
 
 import Foundation
@@ -13,6 +13,10 @@ public protocol SyntaxRepresenting: Equatable, Hashable, CustomStringConvertible
 
     /// The raw syntax node being represented by the instance.
     var node: Syntax { get }
+
+    /// Will initialize a new instance that will resolve details from the given node as they are requested.
+    /// - Parameter node: The node to resolve from.
+    init(node: Syntax)
 }
 
 // MARK: - Equatable/Hashable/CustomStringConvertible

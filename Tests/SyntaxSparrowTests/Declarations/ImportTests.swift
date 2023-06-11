@@ -42,9 +42,12 @@ final class ImportTests: XCTestCase {
         XCTAssertEqual(foundationImport.keyword, "import")
         XCTAssertNil(foundationImport.kind)
         XCTAssertEqual(foundationImport.pathComponents, ["Foundation"])
-        XCTAssertSourceStartPositionEquals(foundationImport.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(foundationImport.sourceLocation, (0, 17, 17))
-        XCTAssertEqual(foundationImport.extractFromSource(source), "import Foundation")
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: foundationImport, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (0, 17, 17),
+            source: "import Foundation"
+        )
         XCTAssertEqual(foundationImport.description, "import Foundation")
 
         let sparrowImport = instanceUnderTest.imports[1]
@@ -53,9 +56,12 @@ final class ImportTests: XCTestCase {
         XCTAssertEqual(sparrowImport.keyword, "import")
         XCTAssertNil(sparrowImport.kind)
         XCTAssertEqual(sparrowImport.pathComponents, ["SyntaxSparrow"])
-        XCTAssertSourceStartPositionEquals(sparrowImport.sourceLocation, (1, 0, 18))
-        XCTAssertSourceEndPositionEquals(sparrowImport.sourceLocation, (1, 20, 38))
-        XCTAssertEqual(sparrowImport.extractFromSource(source), "import SyntaxSparrow")
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: sparrowImport, from: instanceUnderTest),
+            start: (1, 0, 18),
+            end: (1, 20, 38),
+            source: "import SyntaxSparrow"
+        )
         XCTAssertEqual(sparrowImport.description, "import SyntaxSparrow")
     }
 
@@ -75,9 +81,12 @@ final class ImportTests: XCTestCase {
         XCTAssertEqual(foundationImport.keyword, "import")
         XCTAssertEqual(foundationImport.kind, "struct")
         XCTAssertEqual(foundationImport.pathComponents, ["SyntaxSparrow", "Class"])
-        XCTAssertSourceStartPositionEquals(foundationImport.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(foundationImport.sourceLocation, (0, 33, 33))
-        XCTAssertEqual(foundationImport.extractFromSource(source), "import struct SyntaxSparrow.Class")
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: foundationImport, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (0, 33, 33),
+            source: "import struct SyntaxSparrow.Class"
+        )
         XCTAssertEqual(foundationImport.description, "import struct SyntaxSparrow.Class")
     }
 
@@ -99,9 +108,12 @@ final class ImportTests: XCTestCase {
         XCTAssertEqual(foundationImport.keyword, "import")
         XCTAssertNil(foundationImport.kind)
         XCTAssertEqual(foundationImport.pathComponents, ["Foundation"])
-        XCTAssertSourceStartPositionEquals(foundationImport.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(foundationImport.sourceLocation, (1, 17, 39))
-        XCTAssertEqual(foundationImport.extractFromSource(source), "@available(iOS 15, *)\nimport Foundation")
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: foundationImport, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (1, 17, 39),
+            source: "@available(iOS 15, *)\nimport Foundation"
+        )
         XCTAssertEqual(foundationImport.description, "@available(iOS 15, *)\nimport Foundation")
     }
 

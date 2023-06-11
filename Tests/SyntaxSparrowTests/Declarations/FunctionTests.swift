@@ -49,11 +49,11 @@ final class FunctionTests: XCTestCase {
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.identifier, "executeOrder66")
         XCTAssertEqual(function.signature.throwsOrRethrowsKeyword, "throws")
-        XCTAssertSourceStartPositionEquals(function.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(function.sourceLocation, (1, 45, 67))
-        XCTAssertEqual(
-            function.extractFromSource(source),
-            "@available(iOS 15, *)\nstatic public func executeOrder66() throws {}"
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: function, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (1, 45, 67),
+            source: "@available(iOS 15, *)\nstatic public func executeOrder66() throws {}"
         )
     }
 
@@ -84,9 +84,12 @@ final class FunctionTests: XCTestCase {
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.modifiers.count, 0)
         XCTAssertEqual(function.attributes.count, 0)
-        XCTAssertSourceStartPositionEquals(function.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(function.sourceLocation, (12, 1, 418))
-        XCTAssertEqual(function.extractFromSource(source), source)
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: function, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (12, 1, 418),
+            source: source
+        )
         // Children
         XCTAssertEqual(function.structures.count, 1)
         XCTAssertEqual(function.structures[0].name, "NestedStruct")
@@ -227,11 +230,11 @@ final class FunctionTests: XCTestCase {
         XCTAssertEqual(function.signature.input[0].type, .simple("T"))
         XCTAssertNil(function.signature.throwsOrRethrowsKeyword)
         XCTAssertNil(function.signature.output)
-        XCTAssertSourceStartPositionEquals(function.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(function.sourceLocation, (0, 74, 74))
-        XCTAssertEqual(
-            function.extractFromSource(source),
-            "func executeOrder66<T: Equatable>(withValue value: T) where T: Hashable {}"
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: function, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (0, 74, 74),
+            source: "func executeOrder66<T: Equatable>(withValue value: T) where T: Hashable {}"
         )
         // Function One: Parameters
         XCTAssertEqual(function.genericParameters.count, 1)
@@ -254,11 +257,11 @@ final class FunctionTests: XCTestCase {
         XCTAssertEqual(function.signature.input[1].type, .simple("C2"))
         XCTAssertNil(function.signature.throwsOrRethrowsKeyword)
         XCTAssertEqual(function.signature.output, .simple("[C1.Element]"))
-        XCTAssertSourceStartPositionEquals(function.sourceLocation, (1, 0, 75))
-        XCTAssertSourceEndPositionEquals(function.sourceLocation, (2, 65, 238))
-        XCTAssertEqual(
-            function.extractFromSource(source),
-            "func executeOrder66<C1: Collection, C2: Collection>(between lhs: C1, and rhs: C2) -> [C1.Element]\n    where C1.Element: Equatable, C1.Element == C2.Element { ... }"
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: function, from: instanceUnderTest),
+            start: (1, 0, 75),
+            end: (2, 65, 238),
+            source: "func executeOrder66<C1: Collection, C2: Collection>(between lhs: C1, and rhs: C2) -> [C1.Element]\n    where C1.Element: Equatable, C1.Element == C2.Element { ... }"
         )
         // Function One: Parameters
         XCTAssertEqual(function.genericParameters.count, 2)

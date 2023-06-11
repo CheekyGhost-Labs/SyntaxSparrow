@@ -44,9 +44,12 @@ final class ProtocolTests: XCTestCase {
         XCTAssertEqual(protocolUnderTest.primaryAssociatedTypes.count, 0)
         XCTAssertEqual(protocolUnderTest.inheritance.count, 0)
         XCTAssertEqual(protocolUnderTest.genericRequirements.count, 0)
-        XCTAssertSourceStartPositionEquals(protocolUnderTest.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(protocolUnderTest.sourceLocation, (0, 26, 26))
-        XCTAssertEqual(protocolUnderTest.extractFromSource(source), "protocol SimpleProtocol {}")
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: protocolUnderTest, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (0, 26, 26),
+            source: "protocol SimpleProtocol {}"
+        )
         XCTAssertEqual(protocolUnderTest.description, "protocol SimpleProtocol {}")
     }
 
@@ -75,9 +78,12 @@ final class ProtocolTests: XCTestCase {
         XCTAssertEqual(protocolUnderTest.primaryAssociatedTypes.count, 0)
         XCTAssertEqual(protocolUnderTest.inheritance.count, 0)
         XCTAssertEqual(protocolUnderTest.genericRequirements.count, 0)
-        XCTAssertSourceStartPositionEquals(protocolUnderTest.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(protocolUnderTest.sourceLocation, (1, 30, 52))
-        XCTAssertEqual(protocolUnderTest.extractFromSource(source), "@available(iOS 15, *)\nprotocol AttributedProtocol {}")
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: protocolUnderTest, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (1, 30, 52),
+            source: "@available(iOS 15, *)\nprotocol AttributedProtocol {}"
+        )
         XCTAssertEqual(protocolUnderTest.description, "@available(iOS 15, *)\nprotocol AttributedProtocol {}")
     }
 
@@ -101,9 +107,12 @@ final class ProtocolTests: XCTestCase {
         XCTAssertEqual(protocolUnderTest.primaryAssociatedTypes.count, 0)
         XCTAssertEqual(protocolUnderTest.inheritance.count, 0)
         XCTAssertEqual(protocolUnderTest.genericRequirements.count, 0)
-        XCTAssertSourceStartPositionEquals(protocolUnderTest.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(protocolUnderTest.sourceLocation, (0, 35, 35))
-        XCTAssertEqual(protocolUnderTest.extractFromSource(source), "public protocol ModifiedProtocol {}")
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: protocolUnderTest, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (0, 35, 35),
+            source: "public protocol ModifiedProtocol {}"
+        )
         XCTAssertEqual(protocolUnderTest.description, "public protocol ModifiedProtocol {}")
     }
 

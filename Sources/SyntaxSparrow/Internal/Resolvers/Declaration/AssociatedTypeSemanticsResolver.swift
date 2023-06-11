@@ -12,18 +12,14 @@ import SwiftSyntax
 /// `AssociatedtypeDeclSyntax` node.
 /// It exposes the expected properties of a `AssociatedType` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when
 /// accessed repeatedly.
-class AssociatedTypeSemanticsResolver: DeclarationSemanticsResolving {
-    // MARK: - Properties: DeclarationSemanticsResolving
+class AssociatedTypeSemanticsResolver: SemanticsResolving {
+    // MARK: - Properties: SemanticsResolving
 
     typealias Node = AssociatedtypeDeclSyntax
 
     let node: Node
 
-    let context: SyntaxExplorerContext
-
     private(set) var declarationCollection: DeclarationCollection = .init()
-
-    private(set) lazy var sourceLocation: SyntaxSourceLocation = resolveSourceLocation()
 
     // MARK: - Properties: StructureDeclaration
 
@@ -41,9 +37,8 @@ class AssociatedTypeSemanticsResolver: DeclarationSemanticsResolving {
 
     // MARK: - Lifecycle
 
-    required init(node: AssociatedtypeDeclSyntax, context: SyntaxExplorerContext) {
+    required init(node: AssociatedtypeDeclSyntax) {
         self.node = node
-        self.context = context
     }
 
     func collectChildren() {

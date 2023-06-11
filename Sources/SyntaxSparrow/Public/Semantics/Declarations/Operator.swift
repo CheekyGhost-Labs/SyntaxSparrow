@@ -21,7 +21,7 @@ import SwiftSyntax
 ///
 /// This structure conforms to `Declaration` and `SyntaxSourceLocationResolving`, which provides
 /// access to the declaration attributes, modifiers, and source location information.
-public struct Operator: Declaration, SyntaxSourceLocationResolving {
+public struct Operator: Declaration {
 
     /// Enumeration of possible operator kinds.
     public enum Kind: String, Hashable, Codable {
@@ -107,11 +107,6 @@ public struct Operator: Declaration, SyntaxSourceLocationResolving {
     /// The kind of operator (prefix, infix, or postfix).
     public var kind: Kind { resolver.kind ?? .infix }
 
-    // MARK: - Properties: SyntaxSourceLocationResolving
-
-    /// The location of the operator declaration in the source code.
-    public var sourceLocation: SyntaxSourceLocation { resolver.sourceLocation }
-
     // MARK: - Properties
 
     /// An object that resolves semantic information about the operator.
@@ -119,8 +114,7 @@ public struct Operator: Declaration, SyntaxSourceLocationResolving {
 
     // MARK: - Lifecycle
 
-    /// Creates a new ``SyntaxSparrow/Operator`` instance from an `OperatorDeclSyntax` node.
-    public init(node: OperatorDeclSyntax, context: SyntaxExplorerContext) {
-        resolver = OperatorSemanticsResolver(node: node, context: context)
+    public init(node: OperatorDeclSyntax) {
+        resolver = OperatorSemanticsResolver(node: node)
     }
 }

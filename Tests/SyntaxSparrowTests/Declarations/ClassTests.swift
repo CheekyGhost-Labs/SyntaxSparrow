@@ -45,10 +45,12 @@ final class ClassTests: XCTestCase {
         XCTAssertEqual(testClass.modifiers.count, 1)
         XCTAssertEqual(testClass.modifiers.first?.name, "public")
         XCTAssertNil(testClass.modifiers.first?.detail)
-        XCTAssertSourceStartPositionEquals(testClass.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(testClass.sourceLocation, (4, 1, 57))
-        XCTAssertEqual(testClass.extractFromSource(source), source)
-        XCTAssertEqual(testClass.extractFromSource(source), "public class A {\n  public class B {\n    class C { }\n  }\n}")
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: testClass, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (4, 1, 57),
+            source: source
+        )
         XCTAssertEqual(testClass.classes.count, 1)
         // B
         testClass = testClass.classes[0]
@@ -57,9 +59,12 @@ final class ClassTests: XCTestCase {
         XCTAssertEqual(testClass.modifiers.count, 1)
         XCTAssertEqual(testClass.modifiers.first?.name, "public")
         XCTAssertNil(testClass.modifiers.first?.detail)
-        XCTAssertSourceStartPositionEquals(testClass.sourceLocation, (1, 2, 19))
-        XCTAssertSourceEndPositionEquals(testClass.sourceLocation, (3, 3, 55))
-        XCTAssertEqual(testClass.extractFromSource(source), "public class B {\n    class C { }\n  }")
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: testClass, from: instanceUnderTest),
+            start: (1, 2, 19),
+            end: (3, 3, 55),
+            source: "public class B {\n    class C { }\n  }"
+        )
         XCTAssertEqual(testClass.classes.count, 1)
         // C
         testClass = testClass.classes[0]
@@ -67,9 +72,12 @@ final class ClassTests: XCTestCase {
         XCTAssertEqual(testClass.keyword, "class")
         XCTAssertEqual(testClass.modifiers.count, 0)
         XCTAssertNil(testClass.modifiers.first?.detail)
-        XCTAssertSourceStartPositionEquals(testClass.sourceLocation, (2, 4, 40))
-        XCTAssertSourceEndPositionEquals(testClass.sourceLocation, (2, 15, 51))
-        XCTAssertEqual(testClass.extractFromSource(source), "class C { }")
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: testClass, from: instanceUnderTest),
+            start: (2, 4, 40),
+            end: (2, 15, 51),
+            source: "class C { }"
+        )
         XCTAssertEqual(testClass.classes.count, 0)
     }
 
@@ -143,28 +151,28 @@ final class ClassTests: XCTestCase {
         // A
         var testClass = instanceUnderTest.classes[0]
         XCTAssertEqual(testClass.name, "A")
-        XCTAssertSourceStartPositionEquals(testClass.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(testClass.sourceLocation, (6, 1, 147))
-        XCTAssertEqual(
-            testClass.extractFromSource(source),
-            "@available(*, unavailable, message: \"my message\")\nclass A {\n  class B {\n    @available(*, unavailable, message: \"my message\")\n    class C { }\n  }\n}"
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: testClass, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (6, 1, 147),
+            source: "@available(*, unavailable, message: \"my message\")\nclass A {\n  class B {\n    @available(*, unavailable, message: \"my message\")\n    class C { }\n  }\n}"
         )
         // B
         testClass = testClass.classes[0]
         XCTAssertEqual(testClass.name, "B")
-        XCTAssertSourceStartPositionEquals(testClass.sourceLocation, (2, 2, 62))
-        XCTAssertSourceEndPositionEquals(testClass.sourceLocation, (5, 3, 145))
-        XCTAssertEqual(
-            testClass.extractFromSource(source),
-            "class B {\n    @available(*, unavailable, message: \"my message\")\n    class C { }\n  }"
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: testClass, from: instanceUnderTest),
+            start: (2, 2, 62),
+            end: (5, 3, 145),
+            source: "class B {\n    @available(*, unavailable, message: \"my message\")\n    class C { }\n  }"
         )
         // C
         testClass = testClass.classes[0]
-        XCTAssertSourceStartPositionEquals(testClass.sourceLocation, (3, 4, 76))
-        XCTAssertSourceEndPositionEquals(testClass.sourceLocation, (4, 15, 141))
-        XCTAssertEqual(
-            testClass.extractFromSource(source),
-            "@available(*, unavailable, message: \"my message\")\n    class C { }"
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: testClass, from: instanceUnderTest),
+            start: (3, 4, 76),
+            end: (4, 15, 141),
+            source: "@available(*, unavailable, message: \"my message\")\n    class C { }"
         )
     }
 
@@ -330,48 +338,48 @@ final class ClassTests: XCTestCase {
         let classUnderTest = instanceUnderTest.classes[0]
 
         // Check child structures
-        XCTAssertEqual(classUnderTest.declarationCollection.structures.count, 1)
-        XCTAssertEqual(classUnderTest.declarationCollection.structures[0].name, "NestedStruct")
+        XCTAssertEqual(classUnderTest.structures.count, 1)
+        XCTAssertEqual(classUnderTest.structures[0].name, "NestedStruct")
 
         // Check child classes
-        XCTAssertEqual(classUnderTest.declarationCollection.classes.count, 1)
-        XCTAssertEqual(classUnderTest.declarationCollection.classes[0].name, "NestedClass")
+        XCTAssertEqual(classUnderTest.classes.count, 1)
+        XCTAssertEqual(classUnderTest.classes[0].name, "NestedClass")
 
         // Check child enums
-        XCTAssertEqual(classUnderTest.declarationCollection.enumerations.count, 1)
-        XCTAssertEqual(classUnderTest.declarationCollection.enumerations[0].name, "NestedEnum")
+        XCTAssertEqual(classUnderTest.enumerations.count, 1)
+        XCTAssertEqual(classUnderTest.enumerations[0].name, "NestedEnum")
 
         // Check child type aliases
-        XCTAssertEqual(classUnderTest.declarationCollection.typealiases.count, 1)
-        XCTAssertEqual(classUnderTest.declarationCollection.typealiases[0].name, "NestedTypeAlias")
+        XCTAssertEqual(classUnderTest.typealiases.count, 1)
+        XCTAssertEqual(classUnderTest.typealiases[0].name, "NestedTypeAlias")
 
         // Check child functions
-        XCTAssertEqual(classUnderTest.declarationCollection.functions.count, 1)
-        XCTAssertEqual(classUnderTest.declarationCollection.functions[0].identifier, "nestedFunction")
+        XCTAssertEqual(classUnderTest.functions.count, 1)
+        XCTAssertEqual(classUnderTest.functions[0].identifier, "nestedFunction")
 
         // Check child variables
-        XCTAssertEqual(classUnderTest.declarationCollection.variables.count, 1)
-        XCTAssertEqual(classUnderTest.declarationCollection.variables[0].name, "nestedVariable")
+        XCTAssertEqual(classUnderTest.variables.count, 1)
+        XCTAssertEqual(classUnderTest.variables[0].name, "nestedVariable")
 
         // Check child protocols
-        XCTAssertEqual(classUnderTest.declarationCollection.protocols.count, 1)
-        XCTAssertEqual(classUnderTest.declarationCollection.protocols[0].name, "NestedProtocol")
+        XCTAssertEqual(classUnderTest.protocols.count, 1)
+        XCTAssertEqual(classUnderTest.protocols[0].name, "NestedProtocol")
 
         // Check child subscripts
-        XCTAssertEqual(classUnderTest.declarationCollection.subscripts.count, 1)
-        XCTAssertEqual(classUnderTest.declarationCollection.subscripts[0].keyword, "subscript")
+        XCTAssertEqual(classUnderTest.subscripts.count, 1)
+        XCTAssertEqual(classUnderTest.subscripts[0].keyword, "subscript")
 
         // Check child initializers
-        XCTAssertEqual(classUnderTest.declarationCollection.initializers.count, 1)
-        XCTAssertEqual(classUnderTest.declarationCollection.initializers[0].keyword, "init")
+        XCTAssertEqual(classUnderTest.initializers.count, 1)
+        XCTAssertEqual(classUnderTest.initializers[0].keyword, "init")
 
         // Check child deinitializers
-        XCTAssertEqual(classUnderTest.declarationCollection.deinitializers.count, 1)
-        XCTAssertEqual(classUnderTest.declarationCollection.deinitializers[0].keyword, "deinit")
+        XCTAssertEqual(classUnderTest.deinitializers.count, 1)
+        XCTAssertEqual(classUnderTest.deinitializers[0].keyword, "deinit")
 
         // Check child operators
-        XCTAssertEqual(classUnderTest.declarationCollection.operators.count, 1)
-        XCTAssertEqual(classUnderTest.declarationCollection.operators[0].name, "+-")
+        XCTAssertEqual(classUnderTest.operators.count, 1)
+        XCTAssertEqual(classUnderTest.operators[0].name, "+-")
     }
 
     func test_hashable_equatable_willReturnExpectedResults() throws {

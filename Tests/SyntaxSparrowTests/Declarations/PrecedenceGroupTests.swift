@@ -54,8 +54,19 @@ final class PrecedenceGroupTests: XCTestCase {
                 .higherThan(["AdditionPrecedence"]),
             ]
         )
-        XCTAssertSourceStartPositionEquals(group.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(group.sourceLocation, (5, 1, 159))
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: group, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (5, 1, 159),
+            source: #"""
+            precedencegroup CongruentPrecedence {
+                lowerThan: MultiplicationPrecedence
+                higherThan: AdditionPrecedence
+                associativity: left
+                assignment: true
+            }
+            """#
+        )
     }
 
     func test_precedenceGroup_allProperties_assignmentFalse_willResolveExpectedValues() {

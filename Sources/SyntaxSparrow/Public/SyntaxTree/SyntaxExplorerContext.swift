@@ -14,7 +14,7 @@ public protocol SyntaxExplorerContextProviding {
     /// This property holds the current source code being analyzed. The source code should be a valid Swift source code string. If you need
     /// to update the source code being analyzed, use the `updateToSource(_:)` method instead of
     /// directly changing the value of this property.
-    var sourceBuffer: String { get }
+    var sourceBuffer: String? { get }
 
     /// The mode in which the syntax tree is traversed. This influences how the `SyntaxExplorer` handles unexpected or invalid tokens.
     ///
@@ -57,7 +57,7 @@ public protocol SyntaxExplorerContextProviding {
 public struct SyntaxExplorerContext: SyntaxExplorerContextProviding {
     // MARK: - Properties: SyntaxExplorerContextProviding
 
-    public private(set) var sourceBuffer: String
+    public private(set) var sourceBuffer: String?
 
     public private(set) var viewMode: SyntaxTreeViewMode
 
@@ -69,12 +69,12 @@ public struct SyntaxExplorerContext: SyntaxExplorerContextProviding {
 
     public init(
         viewMode: SyntaxTreeViewMode,
-        sourceBuffer: String? = nil,
+        sourceBuffer: String?,
         sourceLocationConverter: SparrowSourceLocationConverter? = nil,
         isStale: Bool = true
     ) {
         self.viewMode = viewMode
-        self.sourceBuffer = sourceBuffer ?? ""
+        self.sourceBuffer = sourceBuffer
         self.sourceLocationConverter = sourceLocationConverter ?? .empty
         self.isStale = isStale
     }
@@ -96,10 +96,10 @@ public struct SyntaxExplorerContext: SyntaxExplorerContextProviding {
     // MARK: - Helpers: Collectors
 
     func createRootDeclarationCollector() -> RootDeclarationCollector {
-        RootDeclarationCollector(context: self)
+        RootDeclarationCollector(viewMode: viewMode)
     }
 
     func protocolAssociatedTypeCollector() -> ProtocolAssociatedTypeCollector {
-        ProtocolAssociatedTypeCollector(context: self)
+        ProtocolAssociatedTypeCollector(viewMode: viewMode)
     }
 }

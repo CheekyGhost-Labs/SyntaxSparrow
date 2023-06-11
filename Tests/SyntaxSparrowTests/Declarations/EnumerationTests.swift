@@ -44,11 +44,11 @@ final class DeinitializerTests: XCTestCase {
         XCTAssertEqual(enumUnderTest.keyword, "enum")
         XCTAssertEqual(enumUnderTest.name, "MyEnum")
         XCTAssertEqual(enumUnderTest.inheritance, ["String", "Codable"])
-        XCTAssertSourceStartPositionEquals(enumUnderTest.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(enumUnderTest.sourceLocation, (3, 1, 79))
-        XCTAssertEqual(
-            enumUnderTest.extractFromSource(source),
-            "@available(iOS 15, *)\npublic enum MyEnum: String, Codable {\n    case one, two\n}"
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: enumUnderTest, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (3, 1, 79),
+            source: "@available(iOS 15, *)\npublic enum MyEnum: String, Codable {\n    case one, two\n}"
         )
 
         // Test attributes
@@ -83,11 +83,11 @@ final class DeinitializerTests: XCTestCase {
 
         // Test cases
         XCTAssertEqual(enumUnderTest.cases.count, 2)
-        XCTAssertSourceStartPositionEquals(enumUnderTest.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(enumUnderTest.sourceLocation, (3, 1, 76))
-        XCTAssertEqual(
-            enumUnderTest.extractFromSource(source),
-            "public enum MyEnum: String {\n    case one(value: Int)\n    case two = \"TWO\"\n}"
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: enumUnderTest, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (3, 1, 76),
+            source: "public enum MyEnum: String {\n    case one(value: Int)\n    case two = \"TWO\"\n}"
         )
 
         // Test case with associated value
@@ -134,48 +134,48 @@ final class DeinitializerTests: XCTestCase {
         XCTAssertEqual(enumUnderTest.cases.count, 2)
 
         // Check child structures
-        XCTAssertEqual(enumUnderTest.declarationCollection.structures.count, 1)
-        XCTAssertEqual(enumUnderTest.declarationCollection.structures[0].name, "NestedStruct")
+        XCTAssertEqual(enumUnderTest.childCollection.structures.count, 1)
+        XCTAssertEqual(enumUnderTest.childCollection.structures[0].name, "NestedStruct")
 
         // Check child classes
-        XCTAssertEqual(enumUnderTest.declarationCollection.classes.count, 1)
-        XCTAssertEqual(enumUnderTest.declarationCollection.classes[0].name, "NestedClass")
+        XCTAssertEqual(enumUnderTest.childCollection.classes.count, 1)
+        XCTAssertEqual(enumUnderTest.childCollection.classes[0].name, "NestedClass")
 
         // Check child enums
-        XCTAssertEqual(enumUnderTest.declarationCollection.enumerations.count, 1)
-        XCTAssertEqual(enumUnderTest.declarationCollection.enumerations[0].name, "NestedEnum")
+        XCTAssertEqual(enumUnderTest.childCollection.enumerations.count, 1)
+        XCTAssertEqual(enumUnderTest.childCollection.enumerations[0].name, "NestedEnum")
 
         // Check child type aliases
-        XCTAssertEqual(enumUnderTest.declarationCollection.typealiases.count, 1)
-        XCTAssertEqual(enumUnderTest.declarationCollection.typealiases[0].name, "NestedTypeAlias")
+        XCTAssertEqual(enumUnderTest.childCollection.typealiases.count, 1)
+        XCTAssertEqual(enumUnderTest.childCollection.typealiases[0].name, "NestedTypeAlias")
 
         // Check child functions
-        XCTAssertEqual(enumUnderTest.declarationCollection.functions.count, 1)
-        XCTAssertEqual(enumUnderTest.declarationCollection.functions[0].identifier, "nestedFunction")
+        XCTAssertEqual(enumUnderTest.childCollection.functions.count, 1)
+        XCTAssertEqual(enumUnderTest.childCollection.functions[0].identifier, "nestedFunction")
 
         // Check child variables
-        XCTAssertEqual(enumUnderTest.declarationCollection.variables.count, 1)
-        XCTAssertEqual(enumUnderTest.declarationCollection.variables[0].name, "nestedVariable")
+        XCTAssertEqual(enumUnderTest.childCollection.variables.count, 1)
+        XCTAssertEqual(enumUnderTest.childCollection.variables[0].name, "nestedVariable")
 
         // Check child protocols
-        XCTAssertEqual(enumUnderTest.declarationCollection.protocols.count, 1)
-        XCTAssertEqual(enumUnderTest.declarationCollection.protocols[0].name, "NestedProtocol")
+        XCTAssertEqual(enumUnderTest.childCollection.protocols.count, 1)
+        XCTAssertEqual(enumUnderTest.childCollection.protocols[0].name, "NestedProtocol")
 
         // Check child subscripts
-        XCTAssertEqual(enumUnderTest.declarationCollection.subscripts.count, 1)
-        XCTAssertEqual(enumUnderTest.declarationCollection.subscripts[0].keyword, "subscript")
+        XCTAssertEqual(enumUnderTest.childCollection.subscripts.count, 1)
+        XCTAssertEqual(enumUnderTest.childCollection.subscripts[0].keyword, "subscript")
 
         // Check child initializers
-        XCTAssertEqual(enumUnderTest.declarationCollection.initializers.count, 1)
-        XCTAssertEqual(enumUnderTest.declarationCollection.initializers[0].keyword, "init")
+        XCTAssertEqual(enumUnderTest.childCollection.initializers.count, 1)
+        XCTAssertEqual(enumUnderTest.childCollection.initializers[0].keyword, "init")
 
         // Check child deinitializers
-        XCTAssertEqual(enumUnderTest.declarationCollection.deinitializers.count, 1)
-        XCTAssertEqual(enumUnderTest.declarationCollection.deinitializers[0].keyword, "deinit")
+        XCTAssertEqual(enumUnderTest.childCollection.deinitializers.count, 1)
+        XCTAssertEqual(enumUnderTest.childCollection.deinitializers[0].keyword, "deinit")
 
         // Check child operators
-        XCTAssertEqual(enumUnderTest.declarationCollection.operators.count, 1)
-        XCTAssertEqual(enumUnderTest.declarationCollection.operators[0].name, "+-")
+        XCTAssertEqual(enumUnderTest.childCollection.operators.count, 1)
+        XCTAssertEqual(enumUnderTest.childCollection.operators[0].name, "+-")
     }
 
     func test_enumeration_genericParameters() throws {

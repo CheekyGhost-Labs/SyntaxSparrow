@@ -21,7 +21,7 @@ import SwiftSyntax
 ///
 /// The `AssociatedType` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the associated
 /// type declaration is located.
-public struct AssociatedType: Declaration, SyntaxSourceLocationResolving {
+public struct AssociatedType: Declaration {
 
     // MARK: - Properties: Declaration
 
@@ -67,18 +67,13 @@ public struct AssociatedType: Declaration, SyntaxSourceLocationResolving {
     /// ```
     public var genericRequirements: [GenericRequirement] { resolver.genericRequirements }
 
-    // MARK: - Properties: SyntaxSourceLocationResolving
-
-    public var sourceLocation: SyntaxSourceLocation { resolver.sourceLocation }
-
     // MARK: - Properties: DeclarationCollecting
 
     private(set) var resolver: AssociatedTypeSemanticsResolver
 
     // MARK: - Lifecycle
 
-    /// Creates a new ``SyntaxSparrow/AssociatedType`` instance from an `AssociatedtypeDeclSyntax` node.
-    public init(node: AssociatedtypeDeclSyntax, context: SyntaxExplorerContext) {
-        resolver = AssociatedTypeSemanticsResolver(node: node, context: context)
+    public init(node: AssociatedtypeDeclSyntax) {
+        resolver = AssociatedTypeSemanticsResolver(node: node)
     }
 }

@@ -12,8 +12,8 @@ import SwiftSyntax
 /// `GenericParameterSyntax` node.
 /// It exposes the expected properties of a `GenericParameter` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated
 /// when accessed repeatedly.
-class GenericParameterSemanticsResolver: NodeSemanticsResolving {
-    // MARK: - Properties: DeclarationSemanticsResolving
+class GenericParameterSemanticsResolver: SemanticsResolving {
+    // MARK: - Properties: SemanticsResolving
 
     typealias Node = GenericParameterSyntax
 

@@ -47,11 +47,11 @@ final class SubscriptTests: XCTestCase {
         let attributes = subscriptUnderTest.attributes[0]
         XCTAssertEqual(attributes.name, "available")
         XCTAssertAttributesArgumentsEqual(attributes, attributeExpectations)
-        XCTAssertSourceStartPositionEquals(subscriptUnderTest.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(subscriptUnderTest.sourceLocation, (1, 34, 84))
-        XCTAssertEqual(
-            subscriptUnderTest.extractFromSource(source),
-            "@available(*, unavailable, message: \"my message\")\nsubscript(_ index: Int) -> Int? {}"
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: subscriptUnderTest, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (1, 34, 84),
+            source: "@available(*, unavailable, message: \"my message\")\nsubscript(_ index: Int) -> Int? {}"
         )
     }
 
@@ -68,11 +68,11 @@ final class SubscriptTests: XCTestCase {
         let subscriptUnderTest = instanceUnderTest.subscripts[0]
         XCTAssertEqual(subscriptUnderTest.keyword, "subscript")
         XCTAssertEqual(subscriptUnderTest.modifiers.map(\.name), ["public"])
-        XCTAssertSourceStartPositionEquals(subscriptUnderTest.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(subscriptUnderTest.sourceLocation, (0, 41, 41))
-        XCTAssertEqual(
-            subscriptUnderTest.extractFromSource(source),
-            "public subscript(_ index: Int) -> Int? {}"
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: subscriptUnderTest, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (0, 41, 41),
+            source: "public subscript(_ index: Int) -> Int? {}"
         )
     }
 

@@ -7,49 +7,93 @@
 
 import Foundation
 
-struct DeclarationCollection {
+public final class DeclarationCollection {
+
+    /// Queue to ensure any alterations are made in a thread safe manner.
+    let queue: DispatchQueue = .init(label: "com.cheekyghost.SyntaxSparrow.DeclarationCollection", qos: .userInitiated)
+
     /// The collected class declarations.
-    var classes: [Class] = []
+    internal(set) public var classes: [Class] = []
 
     /// The collected conditional compilation block declarations.
-    var conditionalCompilationBlocks: [ConditionalCompilationBlock] = []
+    internal(set) public var conditionalCompilationBlocks: [ConditionalCompilationBlock] = []
 
     /// The collected deinitializer declarations.
-    var deinitializers: [Deinitializer] = []
+    internal(set) public var deinitializers: [Deinitializer] = []
 
     /// The collected enumeration declarations.
-    var enumerations: [Enumeration] = []
+    internal(set) public var enumerations: [Enumeration] = []
 
     /// The collected extension declarations.
-    var extensions: [Extension] = []
+    internal(set) public var extensions: [Extension] = []
 
     /// The collected function declarations.
-    var functions: [Function] = []
+    internal(set) public var functions: [Function] = []
 
     /// The collected import declarations.
-    var imports: [Import] = []
+    internal(set) public var imports: [Import] = []
 
     /// The collected initializer declarations.
-    var initializers: [Initializer] = []
+    internal(set) public var initializers: [Initializer] = []
 
     /// The collected operator declarations.
-    var operators: [Operator] = []
+    internal(set) public var operators: [Operator] = []
 
     /// The collected precedence group declarations.
-    var precedenceGroups: [PrecedenceGroup] = []
+    internal(set) public var precedenceGroups: [PrecedenceGroup] = []
 
     /// The collected protocol declarations.
-    var protocols: [ProtocolDecl] = []
+    internal(set) public var protocols: [ProtocolDecl] = []
 
     /// The collected structure declarations.
-    var structures: [Structure] = []
+    internal(set) public var structures: [Structure] = []
 
     /// The collected subscript declarations.
-    var subscripts: [Subscript] = []
+    internal(set) public var subscripts: [Subscript] = []
 
     /// The collected type alias declarations.
-    var typealiases: [Typealias] = []
+    internal(set) public var typealiases: [Typealias] = []
 
-    /// The collected variable declarations.
-    var variables: [Variable] = []
+    /// The collected internal(set) public variable declarations.
+    internal(set) public var variables: [Variable] = []
+
+    func reset() {
+        queue.sync {
+            classes = []
+            conditionalCompilationBlocks = []
+            deinitializers = []
+            enumerations = []
+            extensions = []
+            functions = []
+            imports = []
+            initializers = []
+            operators = []
+            precedenceGroups = []
+            protocols = []
+            structures = []
+            subscripts = []
+            typealiases = []
+            variables = []
+        }
+    }
+
+    func collect(from collection: DeclarationCollection) {
+        queue.sync {
+            classes = collection.classes
+            conditionalCompilationBlocks = collection.conditionalCompilationBlocks
+            deinitializers = collection.deinitializers
+            enumerations = collection.enumerations
+            extensions = collection.extensions
+            functions = collection.functions
+            imports = collection.imports
+            initializers = collection.initializers
+            operators = collection.operators
+            precedenceGroups = collection.precedenceGroups
+            protocols = collection.protocols
+            structures = collection.structures
+            subscripts = collection.subscripts
+            typealiases = collection.typealiases
+            variables = collection.variables
+        }
+    }
 }

@@ -43,9 +43,12 @@ final class TypealiasTests: XCTestCase {
         XCTAssertEqual(typealiasDecl.initializedType, .simple("String"))
         XCTAssertEqual(typealiasDecl.genericParameters.count, 0)
         XCTAssertEqual(typealiasDecl.genericRequirements.count, 0)
-        XCTAssertSourceStartPositionEquals(typealiasDecl.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(typealiasDecl.sourceLocation, (0, 27, 27))
-        XCTAssertEqual(typealiasDecl.extractFromSource(source), "typealias MyString = String")
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: typealiasDecl, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (0, 27, 27),
+            source: "typealias MyString = String"
+        )
         XCTAssertEqual(typealiasDecl.description, "typealias MyString = String")
     }
 
@@ -69,9 +72,12 @@ final class TypealiasTests: XCTestCase {
         XCTAssertEqual(typealiasDecl.genericParameters[0].name, "T")
         XCTAssertEqual(typealiasDecl.genericParameters[0].type, "Equatable")
         XCTAssertEqual(typealiasDecl.genericRequirements.count, 0)
-        XCTAssertSourceStartPositionEquals(typealiasDecl.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(typealiasDecl.sourceLocation, (0, 49, 49))
-        XCTAssertEqual(typealiasDecl.extractFromSource(source), "typealias EquatableArray<T: Equatable> = Array<T>")
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: typealiasDecl, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (0, 49, 49),
+            source: "typealias EquatableArray<T: Equatable> = Array<T>"
+        )
         XCTAssertEqual(typealiasDecl.description, "typealias EquatableArray<T: Equatable> = Array<T>")
     }
 
@@ -93,9 +99,12 @@ final class TypealiasTests: XCTestCase {
         XCTAssertEqual(typealiasDecl.initializedType, .empty)
         XCTAssertEqual(typealiasDecl.genericParameters.count, 0)
         XCTAssertEqual(typealiasDecl.genericRequirements.count, 0)
-        XCTAssertSourceStartPositionEquals(typealiasDecl.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(typealiasDecl.sourceLocation, (0, 22, 22))
-        XCTAssertEqual(typealiasDecl.extractFromSource(source), "typealias MyCustomType")
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: typealiasDecl, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (0, 22, 22),
+            source: "typealias MyCustomType"
+        )
         XCTAssertEqual(typealiasDecl.description, "typealias MyCustomType")
     }
 
@@ -119,9 +128,12 @@ final class TypealiasTests: XCTestCase {
         XCTAssertEqual(typealiasDecl.initializedType, .simple("Int"))
         XCTAssertEqual(typealiasDecl.genericParameters.count, 0)
         XCTAssertEqual(typealiasDecl.genericRequirements.count, 0)
-        XCTAssertSourceStartPositionEquals(typealiasDecl.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(typealiasDecl.sourceLocation, (1, 28, 50))
-        XCTAssertEqual(typealiasDecl.extractFromSource(source), "@available(iOS 15, *)\ntypealias MyCustomType = Int")
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: typealiasDecl, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (1, 28, 50),
+            source: "@available(iOS 15, *)\ntypealias MyCustomType = Int"
+        )
         XCTAssertEqual(typealiasDecl.description, "@available(iOS 15, *)\ntypealias MyCustomType = Int")
     }
 
@@ -144,9 +156,12 @@ final class TypealiasTests: XCTestCase {
         XCTAssertEqual(typealiasDecl.initializedType, .simple("Int?"))
         XCTAssertEqual(typealiasDecl.genericParameters.count, 0)
         XCTAssertEqual(typealiasDecl.genericRequirements.count, 0)
-        XCTAssertSourceStartPositionEquals(typealiasDecl.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(typealiasDecl.sourceLocation, (0, 36, 36))
-        XCTAssertEqual(typealiasDecl.extractFromSource(source), "public typealias MyCustomType = Int?")
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: typealiasDecl, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (0, 36, 36),
+            source: "public typealias MyCustomType = Int?"
+        )
         XCTAssertEqual(typealiasDecl.description, "public typealias MyCustomType = Int?")
     }
 

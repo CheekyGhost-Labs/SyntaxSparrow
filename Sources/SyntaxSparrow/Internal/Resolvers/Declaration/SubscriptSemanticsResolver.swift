@@ -12,18 +12,14 @@ import SwiftSyntax
 /// `SubscriptDeclSyntax` node.
 /// It exposes the expected properties of a `Function` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when
 /// accessed repeatedly.
-class SubscriptSemanticsResolver: DeclarationSemanticsResolving {
-    // MARK: - Properties: DeclarationSemanticsResolving
+class SubscriptSemanticsResolver: SemanticsResolving {
+    // MARK: - Properties: SemanticsResolving
 
     typealias Node = SubscriptDeclSyntax
 
     let node: Node
 
-    let context: SyntaxExplorerContext
-
     private(set) var declarationCollection: DeclarationCollection = .init()
-
-    private(set) lazy var sourceLocation: SyntaxSourceLocation = resolveSourceLocation()
 
     // MARK: - Properties: StructureDeclaration
 
@@ -45,9 +41,8 @@ class SubscriptSemanticsResolver: DeclarationSemanticsResolving {
 
     // MARK: - Lifecycle
 
-    required init(node: SubscriptDeclSyntax, context: SyntaxExplorerContext) {
+    required init(node: SubscriptDeclSyntax) {
         self.node = node
-        self.context = context
     }
 
     // MARK: - Resolvers

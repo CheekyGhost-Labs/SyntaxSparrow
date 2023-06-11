@@ -42,40 +42,49 @@ public class SparrowSourceLocationConverter {
     // MARK: - Helpers
 
     public func updateForTree(_ tree: SyntaxProtocol, file: String = "") {
-        converter = SourceLocationConverter(file: file, tree: tree)
+        queue.sync {
+            converter = SourceLocationConverter(file: file, tree: tree)
+        }
     }
 
     public func udpateForSource(_ source: String, file: String = "") {
-        converter = SourceLocationConverter(file: file, source: source)
+        queue.sync {
+            converter = SourceLocationConverter(file: file, source: source)
+        }
     }
 
     public func updateToRootForNode(_ node: SyntaxProtocol, file: String = "") {
-        converter = SourceLocationConverter(file: file, tree: node.root)
+        queue.sync {
+            converter = SourceLocationConverter(file: file, tree: node.root)
+        }
     }
 
     public func locationForNode(_ node: SyntaxProtocol) -> SyntaxSourceLocation {
-        queue.sync {
-            SyntaxSourceLocation(start: startLocationForNode(node), end: endLocationForNode(node))
-        }
-    }
-
-    public func startLocationForNode(_ node: SyntaxProtocol) -> SyntaxSourceLocation.Position {
-        guard let token = node.firstToken(viewMode: .fixedUp) else { return .empty }
+        if isEmpty { updateToRootForNode(node) }
         return queue.sync {
-            let location = token.startLocation(converter: converter)
-            return normalisedLocation(location)
-        }
-    }
-
-    public func endLocationForNode(_ node: SyntaxProtocol) -> SyntaxSourceLocation.Position {
-        guard let token = node.lastToken(viewMode: .fixedUp) else { return .empty }
-        return queue.sync {
-            let location = token.endLocation(converter: converter)
-            return normalisedLocation(location)
+            var targetNode: SyntaxProtocol = node
+            if node.as(PatternBindingSyntax.self) != nil {
+                targetNode = node.context ?? node
+            }
+            let start = startLocationForNode(targetNode)
+            let end = endLocationForNode(targetNode)
+            return SyntaxSourceLocation(start: start, end: end)
         }
     }
 
     // MARK: - Helpers: Private
+
+    private func startLocationForNode(_ node: SyntaxProtocol) -> SyntaxSourceLocation.Position {
+        guard let token = node.firstToken(viewMode: .fixedUp) else { return .empty }
+        let location = token.startLocation(converter: converter)
+        return normalisedLocation(location)
+    }
+
+    private func endLocationForNode(_ node: SyntaxProtocol) -> SyntaxSourceLocation.Position {
+        guard let token = node.lastToken(viewMode: .fixedUp) else { return .empty }
+        let location = token.endLocation(converter: converter)
+        return normalisedLocation(location)
+    }
 
     private func normalisedLocation(_ location: SourceLocation) -> SyntaxSourceLocation.Position {
         SyntaxSourceLocation.Position(

@@ -12,8 +12,8 @@ import SwiftSyntax
 /// node.
 /// It exposes the expected properties of a `Function` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when
 /// accessed repeatedly.
-class ClosureSemanticsResolver: NodeSemanticsResolving {
-    // MARK: - Properties: NodeSemanticsResolving
+class ClosureSemanticsResolver: SemanticsResolving {
+    // MARK: - Properties: SemanticsResolving
 
     typealias Node = FunctionTypeSyntax
 

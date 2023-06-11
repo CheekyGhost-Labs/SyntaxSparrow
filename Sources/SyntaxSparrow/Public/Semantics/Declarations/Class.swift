@@ -21,7 +21,7 @@ import SwiftSyntax
 ///
 /// This structure conforms to `Declaration`, `SyntaxChildCollecting`, and `SyntaxSourceLocationResolving`,
 /// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
-public struct Class: Declaration, SyntaxChildCollecting, SyntaxSourceLocationResolving {
+public struct Class: Declaration, SyntaxChildCollecting {
 
     // MARK: - Properties: Declaration
 
@@ -75,28 +75,18 @@ public struct Class: Declaration, SyntaxChildCollecting, SyntaxSourceLocationRes
     /// ```
     public var genericRequirements: [GenericRequirement] { resolver.genericRequirements }
 
-    // MARK: - Properties: SyntaxSourceLocationResolving
-
-    public var sourceLocation: SyntaxSourceLocation { resolver.sourceLocation }
-
-    // MARK: - Properties: DeclarationCollecting
+    // MARK: - Properties: Resolving
 
     private(set) var resolver: ClassSemanticsResolver
 
-    var declarationCollection: DeclarationCollection { resolver.declarationCollection }
+    // MARK: - Properties: SyntaxChildCollecting
+
+    public var childCollection: DeclarationCollection = DeclarationCollection()
 
     // MARK: - Lifecycle
 
     /// Creates a new ``SyntaxSparrow/Class`` instance from an `ClassDeclSyntax` node.
-    public init(node: ClassDeclSyntax, context: SyntaxExplorerContext) {
-        resolver = ClassSemanticsResolver(node: node, context: context)
-    }
-
-    // MARK: - Properties: Child Collection
-
-    func collectChildren() {
-        resolver.collectChildren()
+    public init(node: ClassDeclSyntax) {
+        resolver = ClassSemanticsResolver(node: node)
     }
 }
-
-extension Class: DeclarationCollecting {}

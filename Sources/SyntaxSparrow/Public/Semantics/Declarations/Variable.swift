@@ -23,7 +23,7 @@ import SwiftSyntax
 ///
 /// The `Variable` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the variable
 /// declaration is located.
-public struct Variable: Declaration, SyntaxSourceLocationResolving {
+public struct Variable: Declaration {
 
     // MARK: - Properties: Declaration
 
@@ -96,10 +96,6 @@ public struct Variable: Declaration, SyntaxSourceLocationResolving {
     /// Bool whether the `accessors` contains the `set` kind, or the `keyword` is `"var"` and the variable is not within a protocol declaration.
     public var hasSetter: Bool { resolver.hasSetter }
 
-    // MARK: - Properties: SyntaxSourceLocationResolving
-
-    public var sourceLocation: SyntaxSourceLocation { resolver.sourceLocation }
-
     // MARK: - Properties: DeclarationCollecting
 
     private(set) var resolver: VariableSemanticsResolver
@@ -115,13 +111,12 @@ public struct Variable: Declaration, SyntaxSourceLocationResolving {
     ///   - node: The node to convert.
     ///   - context: The parent source explorer context.
     /// - Returns: Array of ``SyntaxSparrow/Variable`` instance.
-    public static func variables(from node: VariableDeclSyntax, context: SyntaxExplorerContext) -> [Variable] {
-        node.bindings.compactMap { Variable(node: $0, context: context) }
+    public static func variables(from node: VariableDeclSyntax) -> [Variable] {
+        node.bindings.compactMap { Variable(node: $0) }
     }
 
-    /// Creates a new ``SyntaxSparrow/Variable`` instance from an `PatternBindingSyntax` node.
-    public init(node: PatternBindingSyntax, context: SyntaxExplorerContext) {
-        resolver = VariableSemanticsResolver(node: node, context: context)
+    public init(node: PatternBindingSyntax) {
+        resolver = VariableSemanticsResolver(node: node)
     }
 
     // MARK: - CustomStringConvertible

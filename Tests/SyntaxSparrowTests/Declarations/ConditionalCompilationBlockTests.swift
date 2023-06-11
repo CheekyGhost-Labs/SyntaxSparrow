@@ -41,25 +41,34 @@ final class ConditionalCompilationBlockTests: XCTestCase {
         XCTAssertEqual(instanceUnderTest.conditionalCompilationBlocks.count, 1)
         // Block
         let block = instanceUnderTest.conditionalCompilationBlocks[0]
-        XCTAssertSourceStartPositionEquals(block.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(block.sourceLocation, (4, 6, 57))
-        XCTAssertEqual(block.extractFromSource(source), source)
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: block, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (4, 6, 57),
+            source: source
+        )
         // Branches
         XCTAssertEqual(block.branches.count, 2)
         // First branch
         var branch = block.branches[0]
         XCTAssertEqual(branch.keyword, .if)
         XCTAssertEqual(branch.condition, "DEBUG")
-        XCTAssertEqual(branch.extractFromSource(source), "#if DEBUG\nlet debug = true")
-        XCTAssertSourceStartPositionEquals(branch.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(branch.sourceLocation, (1, 16, 26))
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: branch, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (1, 16, 26),
+            source: "#if DEBUG\nlet debug = true"
+        )
         // Second branch
         branch = block.branches[1]
         XCTAssertEqual(branch.keyword, .else)
         XCTAssertNil(branch.condition)
-        XCTAssertEqual(branch.extractFromSource(source), "#else\nlet debug = false")
-        XCTAssertSourceStartPositionEquals(branch.sourceLocation, (2, 0, 27))
-        XCTAssertSourceEndPositionEquals(branch.sourceLocation, (3, 17, 50))
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: branch, from: instanceUnderTest),
+            start: (2, 0, 27),
+            end: (3, 17, 50),
+            source: "#else\nlet debug = false"
+        )
     }
 
     func test_conditionalCompilationBlock_withNestedBlocks_willResolveExpectedProperties() throws {
@@ -84,28 +93,34 @@ final class ConditionalCompilationBlockTests: XCTestCase {
         // First block
         let rootBlock = instanceUnderTest.conditionalCompilationBlocks[0]
         XCTAssertEqual(rootBlock.branches.count, 3)
-        XCTAssertSourceStartPositionEquals(rootBlock.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(rootBlock.sourceLocation, (10, 6, 191))
-        XCTAssertEqual(rootBlock.extractFromSource(source), source)
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: rootBlock, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (10, 6, 191),
+            source: source
+        )
         // First block: branches
         XCTAssertEqual(rootBlock.branches.count, 3)
         // First block: First branch
         var branch = rootBlock.branches[0]
         XCTAssertEqual(branch.keyword, .if)
         XCTAssertEqual(branch.condition, "os(macOS)")
-        XCTAssertEqual(branch.extractFromSource(source), "#if os(macOS)\nprint(\"Hello, macOS!\")")
-        XCTAssertSourceStartPositionEquals(branch.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(branch.sourceLocation, (1, 22, 36))
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: branch, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (1, 22, 36),
+            source: "#if os(macOS)\nprint(\"Hello, macOS!\")"
+        )
         // First block: Second branch
         branch = rootBlock.branches[1]
         XCTAssertEqual(branch.keyword, .elseif)
         XCTAssertEqual(branch.condition, "os(iOS)")
-        XCTAssertEqual(
-            branch.extractFromSource(source),
-            "#elseif os(iOS)\n#if targetEnvironment(simulator)\nprint(\"Hello, iOS Simulator!\")\n#else\nprint(\"Hello, iOS!\")\n#endif"
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: branch, from: instanceUnderTest),
+            start: (2, 0, 37),
+            end: (7, 6, 150),
+            source: "#elseif os(iOS)\n#if targetEnvironment(simulator)\nprint(\"Hello, iOS Simulator!\")\n#else\nprint(\"Hello, iOS!\")\n#endif"
         )
-        XCTAssertSourceStartPositionEquals(branch.sourceLocation, (2, 0, 37))
-        XCTAssertSourceEndPositionEquals(branch.sourceLocation, (7, 6, 150))
         // First block: Second branch: Block
         XCTAssertEqual(branch.conditionalCompilationBlocks.count, 1)
         let nestedBlock = branch.conditionalCompilationBlocks[0]
@@ -114,24 +129,33 @@ final class ConditionalCompilationBlockTests: XCTestCase {
         branch = nestedBlock.branches[0]
         XCTAssertEqual(branch.keyword, .if)
         XCTAssertEqual(branch.condition, "targetEnvironment(simulator)")
-        XCTAssertEqual(branch.extractFromSource(source), "#if targetEnvironment(simulator)\nprint(\"Hello, iOS Simulator!\")")
-        XCTAssertSourceStartPositionEquals(branch.sourceLocation, (3, 0, 53))
-        XCTAssertSourceEndPositionEquals(branch.sourceLocation, (4, 30, 116))
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: branch, from: instanceUnderTest),
+            start: (3, 0, 53),
+            end: (4, 30, 116),
+            source: "#if targetEnvironment(simulator)\nprint(\"Hello, iOS Simulator!\")"
+        )
         // Nested Block: Second branch
         branch = nestedBlock.branches[1]
         XCTAssertEqual(branch.keyword, .else)
         XCTAssertNil(branch.condition)
-        XCTAssertEqual(branch.extractFromSource(source), "#else\nprint(\"Hello, iOS!\")")
-        XCTAssertSourceStartPositionEquals(branch.sourceLocation, (5, 0, 117))
-        XCTAssertSourceEndPositionEquals(branch.sourceLocation, (6, 20, 143))
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: branch, from: instanceUnderTest),
+            start: (5, 0, 117),
+            end: (6, 20, 143),
+            source: "#else\nprint(\"Hello, iOS!\")"
+        )
 
         // First block: Third branch
         branch = rootBlock.branches[2]
         XCTAssertEqual(branch.keyword, .else)
         XCTAssertNil(branch.condition)
-        XCTAssertEqual(branch.extractFromSource(source), "#else\nprint(\"Hello, unknown OS!\")")
-        XCTAssertSourceStartPositionEquals(branch.sourceLocation, (8, 0, 151))
-        XCTAssertSourceEndPositionEquals(branch.sourceLocation, (9, 27, 184))
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: branch, from: instanceUnderTest),
+            start: (8, 0, 151),
+            end: (9, 27, 184),
+            source: "#else\nprint(\"Hello, unknown OS!\")"
+        )
     }
 
     func test_conditionalCompilationBlock_collectsDeclarations() throws {

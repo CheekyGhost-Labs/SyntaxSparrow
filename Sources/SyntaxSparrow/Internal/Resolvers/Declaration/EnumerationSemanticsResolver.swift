@@ -12,18 +12,14 @@ import SwiftSyntax
 /// `EnumDeclSyntax` node.
 /// It exposes the expected properties of a `Enumeration` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when
 /// accessed repeatedly.
-class EnumerationSemanticsResolver: DeclarationSemanticsResolving {
-    // MARK: - Properties: DeclarationSemanticsResolving
+class EnumerationSemanticsResolver: SemanticsResolving {
+    // MARK: - Properties: SemanticsResolving
 
     typealias Node = EnumDeclSyntax
 
     let node: Node
 
-    let context: SyntaxExplorerContext
-
     private(set) var declarationCollection: DeclarationCollection = .init()
-
-    private(set) lazy var sourceLocation: SyntaxSourceLocation = resolveSourceLocation()
 
     // MARK: - Properties: StructureDeclaration
 
@@ -45,15 +41,10 @@ class EnumerationSemanticsResolver: DeclarationSemanticsResolving {
 
     // MARK: - Lifecycle
 
-    required init(node: EnumDeclSyntax, context: SyntaxExplorerContext) {
+    required init(node: EnumDeclSyntax) {
         self.node = node
-        self.context = context
     }
 
-    func collectChildren() {
-        let nodeCollector = context.createRootDeclarationCollector()
-        declarationCollection = nodeCollector.collect(fromNode: node)
-    }
 
     // MARK: - Resolvers
 
@@ -94,7 +85,7 @@ class EnumerationSemanticsResolver: DeclarationSemanticsResolving {
     private func resolveCases() -> [Enumeration.Case] {
         let caseNodes = node.memberBlock.members.compactMap { $0.decl.as(EnumCaseDeclSyntax.self) }
         return caseNodes.flatMap { caseDecl in
-            caseDecl.elements.map { Enumeration.Case(node: $0, context: context) }
+            caseDecl.elements.map { Enumeration.Case(node: $0) }
         }
     }
 }

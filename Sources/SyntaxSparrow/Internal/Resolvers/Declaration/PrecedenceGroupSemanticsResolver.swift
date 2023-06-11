@@ -12,18 +12,14 @@ import SwiftSyntax
 /// `PrecedenceGroupDeclSyntax` node.
 /// It exposes the expected properties of a `Protocol` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when
 /// accessed repeatedly.
-class PrecedenceGroupSemanticsResolver: DeclarationSemanticsResolving {
-    // MARK: - Properties: DeclarationSemanticsResolving
+class PrecedenceGroupSemanticsResolver: SemanticsResolving {
+    // MARK: - Properties: SemanticsResolving
 
     typealias Node = PrecedenceGroupDeclSyntax
 
     let node: Node
 
-    let context: SyntaxExplorerContext
-
     private(set) var declarationCollection: DeclarationCollection = .init()
-
-    private(set) lazy var sourceLocation: SyntaxSourceLocation = resolveSourceLocation()
 
     // MARK: - Properties: StructureDeclaration
 
@@ -39,9 +35,8 @@ class PrecedenceGroupSemanticsResolver: DeclarationSemanticsResolving {
 
     // MARK: - Lifecycle
 
-    required init(node: PrecedenceGroupDeclSyntax, context: SyntaxExplorerContext) {
+    required init(node: PrecedenceGroupDeclSyntax) {
         self.node = node
-        self.context = context
     }
 
     // MARK: - Resolvers

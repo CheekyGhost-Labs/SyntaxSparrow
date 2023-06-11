@@ -42,19 +42,24 @@ final class StructureTests: XCTestCase {
         var structure = instanceUnderTest.structures[0]
         XCTAssertEqual(structure.name, "A")
         XCTAssertEqual(structure.keyword, "struct")
-        XCTAssertSourceStartPositionEquals(structure.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(structure.sourceLocation, (4, 1, 46))
-        XCTAssertEqual(structure.extractFromSource(source), source)
-        XCTAssertEqual(structure.extractFromSource(source), "struct A {\n  struct B {\n    struct C { }\n  }\n}")
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: structure, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (4, 1, 46),
+            source: source
+        )
         XCTAssertEqual(structure.structures.count, 1)
         // B
         structure = structure.structures[0]
         XCTAssertEqual(structure.name, "B")
         XCTAssertEqual(structure.keyword, "struct")
         XCTAssertNil(structure.modifiers.first?.detail)
-        XCTAssertSourceStartPositionEquals(structure.sourceLocation, (1, 2, 13))
-        XCTAssertSourceEndPositionEquals(structure.sourceLocation, (3, 3, 44))
-        XCTAssertEqual(structure.extractFromSource(source), "struct B {\n    struct C { }\n  }")
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: structure, from: instanceUnderTest),
+            start: (1, 2, 13),
+            end: (3, 3, 44),
+            source: "struct B {\n    struct C { }\n  }"
+        )
         XCTAssertEqual(structure.structures.count, 1)
         // C
         structure = structure.structures[0]
@@ -62,9 +67,12 @@ final class StructureTests: XCTestCase {
         XCTAssertEqual(structure.keyword, "struct")
         XCTAssertEqual(structure.modifiers.count, 0)
         XCTAssertNil(structure.modifiers.first?.detail)
-        XCTAssertSourceStartPositionEquals(structure.sourceLocation, (2, 4, 28))
-        XCTAssertSourceEndPositionEquals(structure.sourceLocation, (2, 16, 40))
-        XCTAssertEqual(structure.extractFromSource(source), "struct C { }")
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: structure, from: instanceUnderTest),
+            start: (2, 4, 28),
+            end: (2, 16, 40),
+            source: "struct C { }"
+        )
         XCTAssertEqual(structure.structures.count, 0)
     }
 
@@ -88,10 +96,12 @@ final class StructureTests: XCTestCase {
         XCTAssertEqual(structure.modifiers.count, 1)
         XCTAssertEqual(structure.modifiers.first?.name, "public")
         XCTAssertNil(structure.modifiers.first?.detail)
-        XCTAssertSourceStartPositionEquals(structure.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(structure.sourceLocation, (4, 1, 60))
-        XCTAssertEqual(structure.extractFromSource(source), source)
-        XCTAssertEqual(structure.extractFromSource(source), "public struct A {\n  struct B {\n    public struct C { }\n  }\n}")
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: structure, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (4, 1, 60),
+            source: "public struct A {\n  struct B {\n    public struct C { }\n  }\n}"
+        )
         XCTAssertEqual(structure.structures.count, 1)
         // B
         structure = structure.structures[0]
@@ -100,9 +110,12 @@ final class StructureTests: XCTestCase {
         XCTAssertEqual(structure.modifiers.count, 0)
         XCTAssertNil(structure.modifiers.first?.name)
         XCTAssertNil(structure.modifiers.first?.detail)
-        XCTAssertSourceStartPositionEquals(structure.sourceLocation, (1, 2, 20))
-        XCTAssertSourceEndPositionEquals(structure.sourceLocation, (3, 3, 58))
-        XCTAssertEqual(structure.extractFromSource(source), "struct B {\n    public struct C { }\n  }")
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: structure, from: instanceUnderTest),
+            start: (1, 2, 20),
+            end: (3, 3, 58),
+            source: "struct B {\n    public struct C { }\n  }"
+        )
         XCTAssertEqual(structure.structures.count, 1)
         // C
         structure = structure.structures[0]
@@ -111,9 +124,12 @@ final class StructureTests: XCTestCase {
         XCTAssertEqual(structure.modifiers.count, 1)
         XCTAssertEqual(structure.modifiers.first?.name, "public")
         XCTAssertNil(structure.modifiers.first?.detail)
-        XCTAssertSourceStartPositionEquals(structure.sourceLocation, (2, 4, 35))
-        XCTAssertSourceEndPositionEquals(structure.sourceLocation, (2, 23, 54))
-        XCTAssertEqual(structure.extractFromSource(source), "public struct C { }")
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: structure, from: instanceUnderTest),
+            start: (2, 4, 35),
+            end: (2, 23, 54),
+            source: "public struct C { }"
+        )
         XCTAssertEqual(structure.structures.count, 0)
     }
 
@@ -135,28 +151,28 @@ final class StructureTests: XCTestCase {
         // A
         var structure = instanceUnderTest.structures[0]
         XCTAssertEqual(structure.name, "A")
-        XCTAssertSourceStartPositionEquals(structure.sourceLocation, (0, 0, 0))
-        XCTAssertSourceEndPositionEquals(structure.sourceLocation, (6, 1, 150))
-        XCTAssertEqual(
-            structure.extractFromSource(source),
-            "@available(*, unavailable, message: \"my message\")\nstruct A {\n  struct B {\n    @available(*, unavailable, message: \"my message\")\n    struct C { }\n  }\n}"
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: structure, from: instanceUnderTest),
+            start: (0, 0, 0),
+            end: (6, 1, 150),
+            source: "@available(*, unavailable, message: \"my message\")\nstruct A {\n  struct B {\n    @available(*, unavailable, message: \"my message\")\n    struct C { }\n  }\n}"
         )
         // B
         structure = structure.structures[0]
         XCTAssertEqual(structure.name, "B")
-        XCTAssertSourceStartPositionEquals(structure.sourceLocation, (2, 2, 63))
-        XCTAssertSourceEndPositionEquals(structure.sourceLocation, (5, 3, 148))
-        XCTAssertEqual(
-            structure.extractFromSource(source),
-            "struct B {\n    @available(*, unavailable, message: \"my message\")\n    struct C { }\n  }"
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: structure, from: instanceUnderTest),
+            start: (2, 2, 63),
+            end: (5, 3, 148),
+            source: "struct B {\n    @available(*, unavailable, message: \"my message\")\n    struct C { }\n  }"
         )
         // C
         structure = structure.structures[0]
-        XCTAssertSourceStartPositionEquals(structure.sourceLocation, (3, 4, 78))
-        XCTAssertSourceEndPositionEquals(structure.sourceLocation, (4, 16, 144))
-        XCTAssertEqual(
-            structure.extractFromSource(source),
-            "@available(*, unavailable, message: \"my message\")\n    struct C { }"
+        AssertSourceDetailsEquals(
+            getSourceLocation(for: structure, from: instanceUnderTest),
+            start: (3, 4, 78),
+            end: (4, 16, 144),
+            source: "@available(*, unavailable, message: \"my message\")\n    struct C { }"
         )
     }
 
@@ -346,48 +362,48 @@ final class StructureTests: XCTestCase {
         let structUnderTest = instanceUnderTest.structures[0]
 
         // Check child structures
-        XCTAssertEqual(structUnderTest.declarationCollection.structures.count, 1)
-        XCTAssertEqual(structUnderTest.declarationCollection.structures[0].name, "NestedStruct")
+        XCTAssertEqual(structUnderTest.childCollection.structures.count, 1)
+        XCTAssertEqual(structUnderTest.childCollection.structures[0].name, "NestedStruct")
 
         // Check child classes
-        XCTAssertEqual(structUnderTest.declarationCollection.classes.count, 1)
-        XCTAssertEqual(structUnderTest.declarationCollection.classes[0].name, "NestedClass")
+        XCTAssertEqual(structUnderTest.childCollection.classes.count, 1)
+        XCTAssertEqual(structUnderTest.childCollection.classes[0].name, "NestedClass")
 
         // Check child enums
-        XCTAssertEqual(structUnderTest.declarationCollection.enumerations.count, 1)
-        XCTAssertEqual(structUnderTest.declarationCollection.enumerations[0].name, "NestedEnum")
+        XCTAssertEqual(structUnderTest.childCollection.enumerations.count, 1)
+        XCTAssertEqual(structUnderTest.childCollection.enumerations[0].name, "NestedEnum")
 
         // Check child type aliases
-        XCTAssertEqual(structUnderTest.declarationCollection.typealiases.count, 1)
-        XCTAssertEqual(structUnderTest.declarationCollection.typealiases[0].name, "NestedTypeAlias")
+        XCTAssertEqual(structUnderTest.childCollection.typealiases.count, 1)
+        XCTAssertEqual(structUnderTest.childCollection.typealiases[0].name, "NestedTypeAlias")
 
         // Check child functions
-        XCTAssertEqual(structUnderTest.declarationCollection.functions.count, 1)
-        XCTAssertEqual(structUnderTest.declarationCollection.functions[0].identifier, "nestedFunction")
+        XCTAssertEqual(structUnderTest.childCollection.functions.count, 1)
+        XCTAssertEqual(structUnderTest.childCollection.functions[0].identifier, "nestedFunction")
 
         // Check child variables
-        XCTAssertEqual(structUnderTest.declarationCollection.variables.count, 1)
-        XCTAssertEqual(structUnderTest.declarationCollection.variables[0].name, "nestedVariable")
+        XCTAssertEqual(structUnderTest.childCollection.variables.count, 1)
+        XCTAssertEqual(structUnderTest.childCollection.variables[0].name, "nestedVariable")
 
         // Check child protocols
-        XCTAssertEqual(structUnderTest.declarationCollection.protocols.count, 1)
-        XCTAssertEqual(structUnderTest.declarationCollection.protocols[0].name, "NestedProtocol")
+        XCTAssertEqual(structUnderTest.childCollection.protocols.count, 1)
+        XCTAssertEqual(structUnderTest.childCollection.protocols[0].name, "NestedProtocol")
 
         // Check child subscripts
-        XCTAssertEqual(structUnderTest.declarationCollection.subscripts.count, 1)
-        XCTAssertEqual(structUnderTest.declarationCollection.subscripts[0].keyword, "subscript")
+        XCTAssertEqual(structUnderTest.childCollection.subscripts.count, 1)
+        XCTAssertEqual(structUnderTest.childCollection.subscripts[0].keyword, "subscript")
 
         // Check child initializers
-        XCTAssertEqual(structUnderTest.declarationCollection.initializers.count, 1)
-        XCTAssertEqual(structUnderTest.declarationCollection.initializers[0].keyword, "init")
+        XCTAssertEqual(structUnderTest.childCollection.initializers.count, 1)
+        XCTAssertEqual(structUnderTest.childCollection.initializers[0].keyword, "init")
 
         // Check child deinitializers
-        XCTAssertEqual(structUnderTest.declarationCollection.deinitializers.count, 1)
-        XCTAssertEqual(structUnderTest.declarationCollection.deinitializers[0].keyword, "deinit")
+        XCTAssertEqual(structUnderTest.childCollection.deinitializers.count, 1)
+        XCTAssertEqual(structUnderTest.childCollection.deinitializers[0].keyword, "deinit")
 
         // Check child operators
-        XCTAssertEqual(structUnderTest.declarationCollection.operators.count, 1)
-        XCTAssertEqual(structUnderTest.declarationCollection.operators[0].name, "+-")
+        XCTAssertEqual(structUnderTest.childCollection.operators.count, 1)
+        XCTAssertEqual(structUnderTest.childCollection.operators[0].name, "+-")
     }
 
     func test_hashable_equatable_willReturnExpectedResults() throws {

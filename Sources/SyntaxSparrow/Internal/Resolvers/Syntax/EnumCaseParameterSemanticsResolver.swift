@@ -92,7 +92,7 @@ class EnumCaseParameterSemanticsResolver: ParameterNodeSemanticsResolving {
     }
 
     private func resolveIsOptional() -> Bool {
-        false
+        return node.type.resolveIsOptional()
     }
 
     private func resolveDefaultArgument() -> String? {
@@ -103,5 +103,16 @@ class EnumCaseParameterSemanticsResolver: ParameterNodeSemanticsResolving {
         node.type.tokens(viewMode: .fixedUp).contains(where: {
             $0.tokenKind == TokenKind.keyword(.inout)
         })
+    }
+
+    var description: String {
+        var result = node.description.trimmed
+        if result.hasSuffix(",") {
+            result = String(result.dropLast(1))
+        }
+        if isVariadic {
+            result += "..."
+        }
+        return result.trimmed
     }
 }

@@ -47,7 +47,7 @@ public extension Enumeration {
         public var name: String { resolver.name }
 
         /// The associated values of the enumeration case, if any.
-        public var associatedValues: [Parameter]? { resolver.associatedValues }
+        public var associatedValues: [Parameter] { resolver.associatedValues }
 
         /// The raw value of the enumeration case, if any.
         public var rawValue: String? { resolver.rawValue }

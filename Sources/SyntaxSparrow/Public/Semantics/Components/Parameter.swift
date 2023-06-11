@@ -171,10 +171,6 @@ public struct Parameter: Equatable, Hashable, CustomStringConvertible {
     // MARK: - CustomStringConvertible
 
     public var description: String {
-        let result = resolver.node.description.trimmed
-        if result.hasSuffix(",") {
-            return String(result.dropLast(1))
-        }
-        return result
+        resolver.description
     }
 }

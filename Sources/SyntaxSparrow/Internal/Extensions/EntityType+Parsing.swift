@@ -89,7 +89,9 @@ extension EntityType {
         return .tuple(tuple)
     }
 
-    static func getEmptyTuple(_ tuple: Tuple) -> Tuple? {
+    // MARK: - Helpers: Private
+
+    private static func getEmptyTuple(_ tuple: Tuple) -> Tuple? {
         // If the tuple is empty, return the tuple
         if tuple.elements.isEmpty {
             return tuple
@@ -110,7 +112,7 @@ extension EntityType {
     }
 
     // This is probably not needed
-    static func getSingleTupleElement(_ tuple: Tuple) -> EntityType? {
+    private static func getSingleTupleElement(_ tuple: Tuple) -> EntityType? {
         guard tuple.elements.count == 1 else { return nil }
         if let result = tuple.elements.first?.type {
             return result
@@ -118,7 +120,7 @@ extension EntityType {
         return nil
     }
 
-    static func resolveSimpleTypeString(from typeSyntax: TypeSyntaxProtocol) -> String {
+    private static func resolveSimpleTypeString(from typeSyntax: TypeSyntaxProtocol) -> String {
         // Standard
         let isOptional = resolveIsOptional(from: typeSyntax)
         var simpleType = typeSyntax.description.trimmed
@@ -128,6 +130,25 @@ extension EntityType {
         // enum case, and receive an accurate text description.
         if isOptional {
             simpleType += "?"
+        }
+        if let ellipsis = resolveEllipsisToken(from: typeSyntax) {
+            simpleType += ellipsis.text.trimmed
+        }
+        return simpleType.trimmed
+    }
+
+    private static func resolveEllipsisToken(from typeSyntax: TypeSyntaxProtocol) -> TokenSyntax? {
+        if let enumCase = typeSyntax.firstParent(returning: { $0.as(EnumCaseParameterSyntax.self) })?.as(EnumCaseParameterSyntax.self) {
+            guard
+                // TODO: Move to convenience
+                let parent = enumCase.parent?.parent?.as(EnumCaseParameterClauseSyntax.self),
+                let unexpectedToken = parent.unexpectedBetweenParameterListAndRightParen,
+                let tokenChild = unexpectedToken.children(viewMode: .fixedUp).first?.as(TokenSyntax.self),
+                tokenChild.tokenKind == .postfixOperator("...")
+            else {
+                return nil
+            }
+            return tokenChild
         }
         // Need to check if ellipsis is present after type to declare variadic. This has no parent parameter context so the type atm
         // has no context. i.e if we had `"String?..." as the parameter type, the `simpleType` at the moment is "String?"
@@ -142,13 +163,10 @@ extension EntityType {
             }
             nextToken = nextToken?.nextToken(viewMode: .fixedUp)
         }
-        if let ellipsis = ellipsisToken {
-            simpleType += ellipsis.text.trimmed
-        }
-        return simpleType.trimmed
+        return ellipsisToken
     }
 
-    static func resolveVoidType(from tokenKind: TokenKind, isOptional: Bool) -> EntityType? {
+    private static func resolveVoidType(from tokenKind: TokenKind, isOptional: Bool) -> EntityType? {
         switch tokenKind {
         case .identifier("Void"):
             return voidType(withRawValue: "Void", isOptional: isOptional)
@@ -159,7 +177,7 @@ extension EntityType {
         }
     }
 
-    static func voidType(withRawValue value: String, isOptional: Bool) -> EntityType {
+    private static func voidType(withRawValue value: String, isOptional: Bool) -> EntityType {
         var rawType: String = value
         if isOptional {
             rawType += "?"
@@ -169,7 +187,7 @@ extension EntityType {
 
     // MARK: - Helpers: Optional and Variadic
 
-    static func resolveIsOptional(from typeSyntax: TypeSyntaxProtocol) -> Bool {
+    private static func resolveIsOptional(from typeSyntax: TypeSyntaxProtocol) -> Bool {
         let softCheck = typeSyntax.parent?.description.trimmed.hasSuffix("?") ?? false
         guard !softCheck else { return true }
         // Token assessment approach

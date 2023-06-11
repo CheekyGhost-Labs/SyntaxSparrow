@@ -37,7 +37,7 @@ class EnumerationCaseSemanticsResolver: DeclarationSemanticsResolving {
 
     private(set) lazy var rawValue: String? = resolveRawValue()
 
-    private(set) lazy var associatedValues: [Parameter]? = resolveAssociatedValues()
+    private(set) lazy var associatedValues: [Parameter] = resolveAssociatedValues()
 
     // TODO: Parameters
 
@@ -84,8 +84,8 @@ class EnumerationCaseSemanticsResolver: DeclarationSemanticsResolving {
         node.rawValue?.value.description.trimmed
     }
 
-    private func resolveAssociatedValues() -> [Parameter]? {
-        guard let associatedValue = node.associatedValue else { return nil }
+    private func resolveAssociatedValues() -> [Parameter] {
+        guard let associatedValue = node.associatedValue else { return [] }
         return associatedValue.parameterList.map {
             Parameter(node: $0)
         }

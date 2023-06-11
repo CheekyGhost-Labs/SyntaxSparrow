@@ -45,6 +45,17 @@ protocol ParameterNodeSemanticsResolving: NodeSemanticsResolving {
     var defaultArgument: String? { get }
     var isInOut: Bool { get }
     var isLabelOmitted: Bool { get }
+    var description: String { get }
+}
+
+extension ParameterNodeSemanticsResolving {
+    var description: String {
+        let result = node.description.trimmed
+        if result.hasSuffix(",") {
+            return String(result.dropLast(1))
+        }
+        return result
+    }
 }
 
 protocol TupleNodeSemanticsResolving: NodeSemanticsResolving {

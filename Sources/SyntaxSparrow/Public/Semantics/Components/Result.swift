@@ -39,7 +39,7 @@ public struct Result: Hashable, Equatable, CustomStringConvertible {
 
     // MARK: - Properties: Convenience
 
-    var resolver: ResultSemanticsResolver
+    private(set) var resolver: ResultSemanticsResolver
 
     // MARK: - Lifecycle
 

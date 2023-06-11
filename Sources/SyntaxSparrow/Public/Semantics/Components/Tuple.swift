@@ -27,7 +27,7 @@ public struct Tuple: Hashable, Equatable, CustomStringConvertible {
 
     public var isOptional: Bool { resolver.isOptional }
 
-    var resolver: any TupleNodeSemanticsResolving
+    private(set) var resolver: any TupleNodeSemanticsResolving
 
     // MARK: - Lifecycle
 

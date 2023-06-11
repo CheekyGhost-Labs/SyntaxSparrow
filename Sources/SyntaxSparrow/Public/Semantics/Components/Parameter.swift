@@ -137,7 +137,7 @@ public struct Parameter: Equatable, Hashable, CustomStringConvertible {
 
     // MARK: - Properties: Resolving
 
-    var resolver: any ParameterNodeSemanticsResolving
+    private(set) var resolver: any ParameterNodeSemanticsResolving
 
     // MARK: - Lifecycle
 

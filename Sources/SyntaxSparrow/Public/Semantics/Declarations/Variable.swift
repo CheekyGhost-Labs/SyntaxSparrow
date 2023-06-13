@@ -91,7 +91,7 @@ public struct Variable: Declaration {
     public var accessors: [Accessor] { resolver.accessors }
 
     /// Will return a `Bool` flag indicating if the variable type is marked as optional. `?`
-    var isOptional: Bool { resolver.isOptional }
+    public var isOptional: Bool { resolver.isOptional }
     
     /// Bool whether the `accessors` contains the `set` kind, or the `keyword` is `"var"` and the variable is not within a protocol declaration.
     public var hasSetter: Bool { resolver.hasSetter }

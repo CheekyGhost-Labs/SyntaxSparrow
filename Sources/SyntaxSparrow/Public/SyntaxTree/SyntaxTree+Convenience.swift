@@ -58,9 +58,30 @@ public extension SyntaxTree {
         return instance.declarations(of: type).first
     }
 
+    /// Will assess and process the given declaration syntax protocol and convert it into an array of the  provided declaration type (if possible).
+    /// - Parameters:
+    ///   - type: The ``SyntaxSparrow/Declaration`` conforming type to parse into.
+    ///   - declarationSyntax: The raw `DeclSyntaxProtocol` from `SwiftSyntax`
+    ///   - viewMode: The view mode to use when iterating children or related parsing processes
+    /// - Returns: Array containing any instances matching the `T` constraint
+    static func declarations<T: Declaration>(
+        of type: T.Type,
+        fromSyntax declarationSyntax: DeclSyntaxProtocol,
+        viewMode: SyntaxTreeViewMode = .fixedUp
+    ) -> [T] {
+        let instance = SyntaxTree(viewMode: viewMode, declarationSyntax: declarationSyntax)
+        instance.collectChildren()
+        return instance.declarations(of: type)
+    }
+
     // MARK: - Internal Convenience Enabler
 
-    internal func declarations<T: Declaration>(of type: T.Type) -> [T] {
+    /// Will assess the given declaration type and return the corresponding array of items from the current syntax tree.
+    ///
+    /// **Note:** You need to have run ``SyntaxSparrow/SyntaxTree/collectChildren()`` first to obtain accurate results.
+    /// - Parameter type: The ``SyntaxSparrow/Declaration`` conforming type to parse into.
+    /// - Returns: Array containing any instances matching the `T` constraint
+    func declarations<T: Declaration>(of type: T.Type) -> [T] {
         var result: [Any] = []
         switch type {
         case is Class.Type:

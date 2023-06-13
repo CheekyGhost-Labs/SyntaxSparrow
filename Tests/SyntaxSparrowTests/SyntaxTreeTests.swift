@@ -95,4 +95,15 @@ final class SyntaxTreeTests: XCTestCase {
         XCTAssertNotNil(SyntaxTree.declaration(of: PrecedenceGroup.self, fromSyntax: tree.precedenceGroups[0].node))
         XCTAssertNotNil(SyntaxTree.declaration(of: ConditionalCompilationBlock.self, fromSyntax: tree.conditionalCompilationBlocks[0].node))
     }
+
+    func test_resolvingFromDeclarationSyntax_array_willReturnExpectedValue() {
+        let source = #"""
+        var firstName: String, secondName: String
+        """#
+        let tree = SyntaxTree(viewMode: .fixedUp, sourceBuffer: source)
+        tree.collectChildren()
+        //
+        let variableDecl = tree.variables[0].parentDeclarationSyntax!
+        XCTAssertEqual(SyntaxTree.declarations(of: Variable.self, fromSyntax: variableDecl).count, 2)
+    }
 }

@@ -25,17 +25,17 @@ public struct Result: Hashable, Equatable, CustomStringConvertible {
     /// The success type from the `Result`.
     ///
     /// For example, in the type `Result<String, Error>` the type will be `.simple("String")`
-    public var successType: EntityType { resolver.successType }
+    public var successType: EntityType { resolver.resolveSuccessType() }
 
     /// The failure type from the `Result`.
     ///
     /// For example, in the type `Result<String, Error>` the type will be `.simple("Error")`
-    public var failureType: EntityType { resolver.failureType }
+    public var failureType: EntityType { resolver.resolveFailureType() }
 
     /// `Bool` whether the result type is optional.
     ///
     /// For example, `Result<String, Error>?` has `isOptional` as `true`.
-    public var isOptional: Bool { resolver.isOptional }
+    public var isOptional: Bool { resolver.resolveIsOptional() }
 
     // MARK: - Properties: Convenience
 

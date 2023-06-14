@@ -9,7 +9,6 @@ import Foundation
 import SwiftSyntax
 
 public protocol SyntaxChildCollecting {
-    
     /// ``SyntaxSparrow/DeclarationCollection`` utility instance any results will be collected into.
     var childCollection: DeclarationCollection { get }
 
@@ -57,13 +56,14 @@ public protocol SyntaxChildCollecting {
 
     /// The collected variable declarations.
     var variables: [Variable] { get }
-    
+
     /// Will reset the collected child instances and re-assess the represented node to collect any supported child declarations.
     /// - Parameter viewMode: The view mode to use when parsing.
     func collectChildren(viewMode: SyntaxTreeViewMode)
 }
 
 public extension SyntaxChildCollecting where Self: Declaration {
+    var actors: [Actor] { childCollection.actors }
     var classes: [Class] { childCollection.classes }
     var conditionalCompilationBlocks: [ConditionalCompilationBlock] { childCollection.conditionalCompilationBlocks }
     var deinitializers: [Deinitializer] { childCollection.deinitializers }

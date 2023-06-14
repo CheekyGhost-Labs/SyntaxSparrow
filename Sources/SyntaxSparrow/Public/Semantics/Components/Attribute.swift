@@ -63,10 +63,10 @@ public struct Attribute: DeclarationComponent {
     /// ```swift
     /// @available(macOS 10.15, iOS 13, *)
     /// ```
-    public var name: String { resolver.name }
+    public var name: String { resolver.resolveName() }
 
     /// Array of attribute ``Attribute/Argument`` instances (if any).
-    public var arguments: [Argument] { resolver.arguments }
+    public var arguments: [Argument] { resolver.resolveArguments() }
 
     // MARK: - Properties: SyntaxChildCollecting
 

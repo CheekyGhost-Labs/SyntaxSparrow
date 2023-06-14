@@ -23,7 +23,6 @@ import SwiftSyntax
 /// - The first modifier has a `name` equal to `"public"` and `nil` for `detail`
 /// - The second modifier has a `name` equal to `"private"` and a `detail` equal to `"set"`
 public struct Modifier: DeclarationComponent {
-
     // MARK: - Properties: DeclarationComponent
 
     public let node: DeclModifierSyntax

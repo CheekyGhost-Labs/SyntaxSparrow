@@ -32,7 +32,6 @@ import SwiftSyntax
 /// it is a
 /// pre-requisite for the declaration.
 public struct GenericRequirement: DeclarationComponent {
-
     // MARK: - Supplementary
 
     /**
@@ -76,15 +75,15 @@ public struct GenericRequirement: DeclarationComponent {
     // MARK: - Properties
 
     /// The relation between the two identified types.
-    public var relation: Relation { resolver.relation }
+    public var relation: Relation { resolver.resolveRelation() }
 
     /// The identifier for the left-hand side type.
     /// **Note:** When the relation is `.layout` the value will always be `Self`. While this is accurate, it is worth noting that it is not directly
     /// declared in he requirement
-    public var leftTypeIdentifier: String { resolver.leftTypeIdentifier }
+    public var leftTypeIdentifier: String { resolver.resolveLeftType() }
 
     /// The identifier for the right-hand side type.
-    public var rightTypeIdentifier: String { resolver.rightTypeIdentifier }
+    public var rightTypeIdentifier: String { resolver.resolveRightType() }
 
     // MARK: - Properties: SyntaxChildCollecting
 

@@ -17,10 +17,9 @@ import SwiftSyntax
 ///
 /// Each instance of ``SyntaxSparrow/Import`` corresponds to an `ImportDeclSyntax` node in the Swift syntax tree.
 ///
-/// This structure conforms to `Declaration` and `SyntaxSourceLocationResolving`, which provide
+/// This structure conforms to `Declaration` , which provide
 /// access to the declaration attributes, modifiers, and source location information.
 public struct Import: Declaration {
-
     // MARK: - Properties: Declaration
 
     public var node: ImportDeclSyntax { resolver.node }
@@ -30,28 +29,28 @@ public struct Import: Declaration {
     /// Array of attributes found in the declaration.
     ///
     /// - See: ``SyntaxSparrow/Attribute``
-    public var attributes: [Attribute] { resolver.attributes }
+    public var attributes: [Attribute] { resolver.resolveAttributes() }
 
     /// Array of modifiers found in the declaration.
     /// - See: ``SyntaxSparrow/Modifier``
-    public var modifiers: [Modifier] { resolver.modifiers }
+    public var modifiers: [Modifier] { resolver.resolveModifiers() }
 
     /// The declaration keyword.
     ///
     /// i.e: `"import"` for import declarations
-    public var keyword: String { resolver.keyword }
+    public var keyword: String { resolver.resolveKeyword() }
 
     /// Optional kind of the import.
     ///
     /// Specifies the type of symbol being imported from the module.
     /// For example, `import struct SyntaxSparrow.Protocol` would have a kind of `"struct`.
-    public var kind: String? { resolver.kind }
+    public var kind: String? { resolver.resolveKind() }
 
     /// The import access path components.
     ///
     /// Represents the hierarchical names used to specify the module to import.
     /// For example, `import SyntaxSparrow.Protocol` would have path components of `["SyntaxSparrow", "Protocol"]`.
-    public var pathComponents: [String] { resolver.pathComponents }
+    public var pathComponents: [String] { resolver.resolvePathComponents() }
 
     // MARK: - Properties: DeclarationCollecting
 

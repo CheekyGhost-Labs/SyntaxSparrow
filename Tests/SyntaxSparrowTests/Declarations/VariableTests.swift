@@ -5,6 +5,7 @@
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
 
+import SwiftSyntax
 @testable import SyntaxSparrow
 import XCTest
 
@@ -97,7 +98,7 @@ final class VariableTests: XCTestCase {
         let attributeExpectations: [(String?, String)] = [
             (nil, "*"),
             (nil, "unavailable"),
-            ("message", "\"my message\"")
+            ("message", "\"my message\""),
         ]
         let source = #"""
         @available(*, unavailable, message: "my message")
@@ -147,7 +148,7 @@ final class VariableTests: XCTestCase {
         )
     }
 
-    func test_variable_accessors_standard_willResolveExpectedValues() {
+    func test_variable_accessors_standard_withBody_willResolveExpectedValues() {
         let source = #"""
         var name: String {
             get { "name" }
@@ -404,6 +405,114 @@ final class VariableTests: XCTestCase {
         XCTAssertEqual(variable.type, .empty)
     }
 
+    func test_variable_accessors_standard_willResolveExpectedValues() throws {
+        let source = #"""
+        var name: String {
+            get {
+                "name"
+                print("boop")
+            }
+            set {
+                print("hello")
+                self.name = newValue
+            }
+        }
+        """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        XCTAssertEqual(instanceUnderTest.variables.count, 1)
+
+        let variable = instanceUnderTest.variables[0]
+        XCTAssertEqual(variable.accessors.count, 2)
+        // Get
+        XCTAssertEqual(variable.accessors[0].kind, .get)
+        let getterBody = try XCTUnwrap(variable.accessors[0].body)
+        XCTAssertEqual(getterBody.statements.count, 2)
+        XCTAssertEqual(getterBody.statements[0].kind, .init(getterBody.statements[0].node.item))
+        XCTAssertEqual(getterBody.statements[0].description, "\"name\"")
+        XCTAssertEqual(getterBody.statements[1].kind, .init(getterBody.statements[1].node.item))
+        XCTAssertEqual(getterBody.statements[1].description, "print(\"boop\")")
+        // Set
+        XCTAssertEqual(variable.accessors[1].kind, .set)
+        let setterBody = try XCTUnwrap(variable.accessors[1].body)
+        XCTAssertEqual(setterBody.statements.count, 2)
+        XCTAssertEqual(setterBody.statements[0].kind, .init(setterBody.statements[0].node.item))
+        XCTAssertEqual(setterBody.statements[0].description, "print(\"hello\")")
+        XCTAssertEqual(setterBody.statements[1].kind, .init(setterBody.statements[1].node.item))
+        XCTAssertEqual(setterBody.statements[1].description, "self.name = newValue")
+    }
+
+    func test_variable_accessors_effects_throws_willResolveExpectedValues() throws {
+        let source = #"""
+        var name: String {
+            get throws {
+                "name"
+                print("boop")
+            }
+        }
+        """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        XCTAssertEqual(instanceUnderTest.variables.count, 1)
+
+        let variable = instanceUnderTest.variables[0]
+        XCTAssertEqual(variable.accessors.count, 1)
+        // Get
+        XCTAssertEqual(variable.accessors[0].kind, .get)
+        XCTAssertEqual(variable.accessors[0].effectSpecifiers?.throwsSpecifier, "throws")
+        XCTAssertNil(variable.accessors[0].effectSpecifiers?.asyncSpecifier)
+    }
+
+    func test_variable_accessors_effects_async_willResolveExpectedValues() throws {
+        let source = #"""
+        var name: String {
+            get async {
+                "name"
+                print("boop")
+            }
+        }
+        """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        XCTAssertEqual(instanceUnderTest.variables.count, 1)
+
+        let variable = instanceUnderTest.variables[0]
+        XCTAssertEqual(variable.accessors.count, 1)
+        // Get
+        XCTAssertEqual(variable.accessors[0].kind, .get)
+        XCTAssertNil(variable.accessors[0].effectSpecifiers?.throwsSpecifier)
+        XCTAssertEqual(variable.accessors[0].effectSpecifiers?.asyncSpecifier, "async")
+    }
+
+    func test_variable_accessors_effects_multiple_willResolveExpectedValues() throws {
+        let source = #"""
+        var name: String {
+            get async throws {
+                "name"
+                print("boop")
+            }
+        }
+        """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        XCTAssertEqual(instanceUnderTest.variables.count, 1)
+
+        let variable = instanceUnderTest.variables[0]
+        XCTAssertEqual(variable.accessors.count, 1)
+        // Get
+        XCTAssertEqual(variable.accessors[0].kind, .get)
+        XCTAssertEqual(variable.accessors[0].effectSpecifiers?.throwsSpecifier, "throws")
+        XCTAssertEqual(variable.accessors[0].effectSpecifiers?.asyncSpecifier, "async")
+    }
+
     func test_hashable_equatable_willReturnExpectedResults() throws {
         let source = #"""
         var name: String = "name"
@@ -443,7 +552,7 @@ final class VariableTests: XCTestCase {
         let equalCases: [(Variable, Variable)] = [
             (sampleOne, sampleTwo),
             (sampleOne, sampleThree),
-            (sampleTwo, sampleThree)
+            (sampleTwo, sampleThree),
         ]
         let notEqualCases: [(Variable, Variable)] = [
             (sampleOne, sampleFour),
@@ -451,7 +560,7 @@ final class VariableTests: XCTestCase {
             (sampleTwo, sampleFour),
             (sampleTwo, otherSample),
             (sampleThree, sampleFour),
-            (sampleThree, otherSample)
+            (sampleThree, otherSample),
         ]
         equalCases.forEach {
             XCTAssertEqual($0.0, $0.1)

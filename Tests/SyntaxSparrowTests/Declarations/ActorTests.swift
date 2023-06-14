@@ -8,7 +8,7 @@
 @testable import SyntaxSparrow
 import XCTest
 
-final class ClassTests: XCTestCase {
+final class ActorTests: XCTestCase {
     // MARK: - Properties
 
     var instanceUnderTest: SyntaxTree!
@@ -27,9 +27,9 @@ final class ClassTests: XCTestCase {
 
     func test_standardDeclarations_willResolveExpectedProperties() throws {
         let source = #"""
-        public class A {
-          public class B {
-            class C { }
+        public actor A {
+          public actor B {
+            actor C { }
           }
         }
         """#
@@ -37,48 +37,48 @@ final class ClassTests: XCTestCase {
         XCTAssertTrue(instanceUnderTest.isStale)
         instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.classes.count, 1)
+        XCTAssertEqual(instanceUnderTest.actors.count, 1)
         // A
-        var testClass = instanceUnderTest.classes[0]
-        XCTAssertEqual(testClass.name, "A")
-        XCTAssertEqual(testClass.keyword, "class")
-        XCTAssertEqual(testClass.modifiers.count, 1)
-        XCTAssertEqual(testClass.modifiers.first?.name, "public")
-        XCTAssertNil(testClass.modifiers.first?.detail)
+        var testActor = instanceUnderTest.actors[0]
+        XCTAssertEqual(testActor.name, "A")
+        XCTAssertEqual(testActor.keyword, "actor")
+        XCTAssertEqual(testActor.modifiers.count, 1)
+        XCTAssertEqual(testActor.modifiers.first?.name, "public")
+        XCTAssertNil(testActor.modifiers.first?.detail)
         AssertSourceDetailsEquals(
-            getSourceLocation(for: testClass, from: instanceUnderTest),
+            getSourceLocation(for: testActor, from: instanceUnderTest),
             start: (0, 0, 0),
             end: (4, 1, 57),
             source: source
         )
-        XCTAssertEqual(testClass.classes.count, 1)
+        XCTAssertEqual(testActor.actors.count, 1)
         // B
-        testClass = testClass.classes[0]
-        XCTAssertEqual(testClass.name, "B")
-        XCTAssertEqual(testClass.keyword, "class")
-        XCTAssertEqual(testClass.modifiers.count, 1)
-        XCTAssertEqual(testClass.modifiers.first?.name, "public")
-        XCTAssertNil(testClass.modifiers.first?.detail)
+        testActor = testActor.actors[0]
+        XCTAssertEqual(testActor.name, "B")
+        XCTAssertEqual(testActor.keyword, "actor")
+        XCTAssertEqual(testActor.modifiers.count, 1)
+        XCTAssertEqual(testActor.modifiers.first?.name, "public")
+        XCTAssertNil(testActor.modifiers.first?.detail)
         AssertSourceDetailsEquals(
-            getSourceLocation(for: testClass, from: instanceUnderTest),
+            getSourceLocation(for: testActor, from: instanceUnderTest),
             start: (1, 2, 19),
             end: (3, 3, 55),
-            source: "public class B {\n    class C { }\n  }"
+            source: "public actor B {\n    actor C { }\n  }"
         )
-        XCTAssertEqual(testClass.classes.count, 1)
+        XCTAssertEqual(testActor.actors.count, 1)
         // C
-        testClass = testClass.classes[0]
-        XCTAssertEqual(testClass.name, "C")
-        XCTAssertEqual(testClass.keyword, "class")
-        XCTAssertEqual(testClass.modifiers.count, 0)
-        XCTAssertNil(testClass.modifiers.first?.detail)
+        testActor = testActor.actors[0]
+        XCTAssertEqual(testActor.name, "C")
+        XCTAssertEqual(testActor.keyword, "actor")
+        XCTAssertEqual(testActor.modifiers.count, 0)
+        XCTAssertNil(testActor.modifiers.first?.detail)
         AssertSourceDetailsEquals(
-            getSourceLocation(for: testClass, from: instanceUnderTest),
+            getSourceLocation(for: testActor, from: instanceUnderTest),
             start: (2, 4, 40),
             end: (2, 15, 51),
-            source: "class C { }"
+            source: "actor C { }"
         )
-        XCTAssertEqual(testClass.classes.count, 0)
+        XCTAssertEqual(testActor.classes.count, 0)
     }
 
     func test_standard_withAttributes_willResolveExpectedProperties() throws {
@@ -89,10 +89,10 @@ final class ClassTests: XCTestCase {
         ]
         let source = #"""
         @available(*, unavailable, message: "my message")
-        class A {
-          class B {
+        actor A {
+          actor B {
             @available(*, unavailable, message: "my message")
-            class C { }
+            actor C { }
           }
         }
         """#
@@ -100,11 +100,11 @@ final class ClassTests: XCTestCase {
         XCTAssertTrue(instanceUnderTest.isStale)
         instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.classes.count, 1)
+        XCTAssertEqual(instanceUnderTest.actors.count, 1)
         // A
-        var testClass = instanceUnderTest.classes[0]
-        XCTAssertEqual(testClass.name, "A")
-        var attributes = testClass.attributes[0]
+        var testActor = instanceUnderTest.actors[0]
+        XCTAssertEqual(testActor.name, "A")
+        var attributes = testActor.attributes[0]
         XCTAssertEqual(attributes.name, "available")
         XCTAssertEqual(attributes.arguments.count, 3)
         let classAMap = attributes.arguments.map { ($0.name, $0.value) }
@@ -114,15 +114,15 @@ final class ClassTests: XCTestCase {
             XCTAssertEqual(arg.1, expected.1)
         }
         // B
-        testClass = testClass.classes[0]
-        XCTAssertEqual(testClass.name, "B")
-        XCTAssertEqual(testClass.attributes.count, 0)
+        testActor = testActor.actors[0]
+        XCTAssertEqual(testActor.name, "B")
+        XCTAssertEqual(testActor.attributes.count, 0)
         // C
-        testClass = testClass.classes[0]
-        XCTAssertEqual(testClass.name, "C")
-        XCTAssertEqual(testClass.attributes.count, 1)
+        testActor = testActor.actors[0]
+        XCTAssertEqual(testActor.name, "C")
+        XCTAssertEqual(testActor.attributes.count, 1)
         // Attributes
-        attributes = testClass.attributes[0]
+        attributes = testActor.attributes[0]
         XCTAssertEqual(attributes.name, "available")
         XCTAssertEqual(attributes.arguments.count, 3)
         let classCMap = attributes.arguments.map { ($0.name, $0.value) }
@@ -136,10 +136,10 @@ final class ClassTests: XCTestCase {
     func test_standard_withAttributes_willIncludeAttributesInSourceResolving() throws {
         let source = #"""
         @available(*, unavailable, message: "my message")
-        class A {
-          class B {
+        actor A {
+          actor B {
             @available(*, unavailable, message: "my message")
-            class C { }
+            actor C { }
           }
         }
         """#
@@ -147,40 +147,40 @@ final class ClassTests: XCTestCase {
         XCTAssertTrue(instanceUnderTest.isStale)
         instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.classes.count, 1)
+        XCTAssertEqual(instanceUnderTest.actors.count, 1)
         // A
-        var testClass = instanceUnderTest.classes[0]
-        XCTAssertEqual(testClass.name, "A")
+        var testActor = instanceUnderTest.actors[0]
+        XCTAssertEqual(testActor.name, "A")
         AssertSourceDetailsEquals(
-            getSourceLocation(for: testClass, from: instanceUnderTest),
+            getSourceLocation(for: testActor, from: instanceUnderTest),
             start: (0, 0, 0),
             end: (6, 1, 147),
-            source: "@available(*, unavailable, message: \"my message\")\nclass A {\n  class B {\n    @available(*, unavailable, message: \"my message\")\n    class C { }\n  }\n}"
+            source: "@available(*, unavailable, message: \"my message\")\nactor A {\n  actor B {\n    @available(*, unavailable, message: \"my message\")\n    actor C { }\n  }\n}"
         )
         // B
-        testClass = testClass.classes[0]
-        XCTAssertEqual(testClass.name, "B")
+        testActor = testActor.actors[0]
+        XCTAssertEqual(testActor.name, "B")
         AssertSourceDetailsEquals(
-            getSourceLocation(for: testClass, from: instanceUnderTest),
+            getSourceLocation(for: testActor, from: instanceUnderTest),
             start: (2, 2, 62),
             end: (5, 3, 145),
-            source: "class B {\n    @available(*, unavailable, message: \"my message\")\n    class C { }\n  }"
+            source: "actor B {\n    @available(*, unavailable, message: \"my message\")\n    actor C { }\n  }"
         )
         // C
-        testClass = testClass.classes[0]
+        testActor = testActor.actors[0]
         AssertSourceDetailsEquals(
-            getSourceLocation(for: testClass, from: instanceUnderTest),
+            getSourceLocation(for: testActor, from: instanceUnderTest),
             start: (3, 4, 76),
             end: (4, 15, 141),
-            source: "@available(*, unavailable, message: \"my message\")\n    class C { }"
+            source: "@available(*, unavailable, message: \"my message\")\n    actor C { }"
         )
     }
 
     func test_multipleModifiers_willResolveExpectedProperties() throws {
         let source = #"""
-        open class A {
-          public final class B {
-            private class C { }
+        open actor A {
+          public final actor B {
+            private actor C { }
           }
         }
         """#
@@ -188,59 +188,59 @@ final class ClassTests: XCTestCase {
         XCTAssertTrue(instanceUnderTest.isStale)
         instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.classes.count, 1)
+        XCTAssertEqual(instanceUnderTest.actors.count, 1)
         // A
-        var testClass = instanceUnderTest.classes[0]
-        XCTAssertEqual(testClass.name, "A")
-        XCTAssertEqual(testClass.modifiers.count, 1)
-        XCTAssertEqual(testClass.modifiers.first?.name, "open")
-        XCTAssertNil(testClass.modifiers.first?.detail)
+        var testActor = instanceUnderTest.actors[0]
+        XCTAssertEqual(testActor.name, "A")
+        XCTAssertEqual(testActor.modifiers.count, 1)
+        XCTAssertEqual(testActor.modifiers.first?.name, "open")
+        XCTAssertNil(testActor.modifiers.first?.detail)
         // B
-        testClass = testClass.classes[0]
-        XCTAssertEqual(testClass.name, "B")
-        XCTAssertEqual(testClass.modifiers.count, 2)
-        XCTAssertEqual(testClass.modifiers[0].name, "public")
-        XCTAssertNil(testClass.modifiers[0].detail)
-        XCTAssertEqual(testClass.modifiers[1].name, "final")
-        XCTAssertNil(testClass.modifiers[1].detail)
+        testActor = testActor.actors[0]
+        XCTAssertEqual(testActor.name, "B")
+        XCTAssertEqual(testActor.modifiers.count, 2)
+        XCTAssertEqual(testActor.modifiers[0].name, "public")
+        XCTAssertNil(testActor.modifiers[0].detail)
+        XCTAssertEqual(testActor.modifiers[1].name, "final")
+        XCTAssertNil(testActor.modifiers[1].detail)
         // C
-        testClass = testClass.classes[0]
-        XCTAssertEqual(testClass.name, "C")
-        XCTAssertEqual(testClass.modifiers.count, 1)
-        XCTAssertEqual(testClass.modifiers[0].name, "private")
-        XCTAssertNil(testClass.modifiers[0].detail)
+        testActor = testActor.actors[0]
+        XCTAssertEqual(testActor.name, "C")
+        XCTAssertEqual(testActor.modifiers.count, 1)
+        XCTAssertEqual(testActor.modifiers[0].name, "private")
+        XCTAssertNil(testActor.modifiers[0].detail)
     }
 
     func test_inheritance_willResolveExpectedValues() throws {
         let source = #"""
         protocol MyThing {}
-        class A: MyThing {}
-        class B {}
-        private class C: B, MyThing { }
+        actor A: MyThing {}
+        actor B {}
+        private actor C: B, MyThing { }
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
         instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.classes.count, 3)
+        XCTAssertEqual(instanceUnderTest.actors.count, 3)
         // A
-        var testClass = instanceUnderTest.classes[0]
-        XCTAssertEqual(testClass.name, "A")
-        XCTAssertEqual(testClass.inheritance, ["MyThing"])
+        var testActor = instanceUnderTest.actors[0]
+        XCTAssertEqual(testActor.name, "A")
+        XCTAssertEqual(testActor.inheritance, ["MyThing"])
         // B
-        testClass = instanceUnderTest.classes[1]
-        XCTAssertEqual(testClass.name, "B")
-        XCTAssertEqual(testClass.inheritance, [])
+        testActor = instanceUnderTest.actors[1]
+        XCTAssertEqual(testActor.name, "B")
+        XCTAssertEqual(testActor.inheritance, [])
         // C
-        testClass = instanceUnderTest.classes[2]
-        XCTAssertEqual(testClass.name, "C")
-        XCTAssertEqual(testClass.inheritance, ["B", "MyThing"])
+        testActor = instanceUnderTest.actors[2]
+        XCTAssertEqual(testActor.name, "C")
+        XCTAssertEqual(testActor.inheritance, ["B", "MyThing"])
     }
 
     func test_withGenerics_willResolveExpectedValues() throws {
         let source = #"""
-        class MyClass<T: Equatable & Comparable, U> where U: Hashable {
-            // class body here...
+        actor MyClass<T: Equatable & Comparable, U> where U: Hashable {
+            // actor body here...
         }
         """#
 
@@ -250,26 +250,26 @@ final class ClassTests: XCTestCase {
         instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
 
-        XCTAssertEqual(instanceUnderTest.classes.count, 1)
+        XCTAssertEqual(instanceUnderTest.actors.count, 1)
 
-        let testClass = instanceUnderTest.classes[0]
+        let testActor = instanceUnderTest.actors[0]
 
-        // Check class name
-        XCTAssertEqual(testClass.name, "MyClass")
+        // Check actor name
+        XCTAssertEqual(testActor.name, "MyClass")
 
         // Check generic parameters
-        XCTAssertEqual(testClass.genericParameters.count, 2)
-        let firstGenericParam = testClass.genericParameters[0]
+        XCTAssertEqual(testActor.genericParameters.count, 2)
+        let firstGenericParam = testActor.genericParameters[0]
         XCTAssertEqual(firstGenericParam.name, "T")
         XCTAssertEqual(firstGenericParam.type, "Equatable & Comparable") // Explicit type in this context
-        let secondGenericParam = testClass.genericParameters[1]
+        let secondGenericParam = testActor.genericParameters[1]
         XCTAssertEqual(secondGenericParam.name, "U")
         XCTAssertNil(secondGenericParam.type) // No explicit type in this context
 
         // Check generic requirements
-        XCTAssertEqual(testClass.genericRequirements.count, 1)
+        XCTAssertEqual(testActor.genericRequirements.count, 1)
 
-        let genericRequirement = testClass.genericRequirements[0]
+        let genericRequirement = testActor.genericRequirements[0]
         XCTAssertEqual(genericRequirement.leftTypeIdentifier, "U")
         XCTAssertEqual(genericRequirement.relation, .conformance)
         XCTAssertEqual(genericRequirement.rightTypeIdentifier, "Hashable")
@@ -277,8 +277,8 @@ final class ClassTests: XCTestCase {
 
     func test_withSameTypeGenericRequirement_willResolveExpectedValues() throws {
         let source = #"""
-        class MyClass<T, U> where T == U {
-            // class body here...
+        actor MyClass<T, U> where T == U {
+            // actor body here...
         }
         """#
 
@@ -288,11 +288,11 @@ final class ClassTests: XCTestCase {
         instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
 
-        XCTAssertEqual(instanceUnderTest.classes.count, 1)
+        XCTAssertEqual(instanceUnderTest.actors.count, 1)
 
-        let myClass = instanceUnderTest.classes[0]
+        let myClass = instanceUnderTest.actors[0]
 
-        // Check class name
+        // Check actor name
         XCTAssertEqual(myClass.name, "MyClass")
 
         // Check generic parameters
@@ -315,8 +315,9 @@ final class ClassTests: XCTestCase {
 
     func test_withAllChildDeclarations_willResolveExpectedChildren() throws {
         let source = #"""
-        class MyClass {
+        actor MyActor {
             struct NestedStruct {}
+            actor NestedActor {}
             class NestedClass {}
             enum NestedEnum { case nested }
             typealias NestedTypeAlias = String
@@ -333,97 +334,101 @@ final class ClassTests: XCTestCase {
         XCTAssertTrue(instanceUnderTest.isStale)
         instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.classes.count, 1)
+        XCTAssertEqual(instanceUnderTest.actors.count, 1)
 
-        let classUnderTest = instanceUnderTest.classes[0]
+        let actorUnderTest = instanceUnderTest.actors[0]
 
         // Check child structures
-        XCTAssertEqual(classUnderTest.structures.count, 1)
-        XCTAssertEqual(classUnderTest.structures[0].name, "NestedStruct")
+        XCTAssertEqual(actorUnderTest.structures.count, 1)
+        XCTAssertEqual(actorUnderTest.structures[0].name, "NestedStruct")
 
         // Check child classes
-        XCTAssertEqual(classUnderTest.classes.count, 1)
-        XCTAssertEqual(classUnderTest.classes[0].name, "NestedClass")
+        XCTAssertEqual(actorUnderTest.actors.count, 1)
+        XCTAssertEqual(actorUnderTest.actors[0].name, "NestedActor")
+
+        // Check child classes
+        XCTAssertEqual(actorUnderTest.classes.count, 1)
+        XCTAssertEqual(actorUnderTest.classes[0].name, "NestedClass")
 
         // Check child enums
-        XCTAssertEqual(classUnderTest.enumerations.count, 1)
-        XCTAssertEqual(classUnderTest.enumerations[0].name, "NestedEnum")
+        XCTAssertEqual(actorUnderTest.enumerations.count, 1)
+        XCTAssertEqual(actorUnderTest.enumerations[0].name, "NestedEnum")
 
         // Check child type aliases
-        XCTAssertEqual(classUnderTest.typealiases.count, 1)
-        XCTAssertEqual(classUnderTest.typealiases[0].name, "NestedTypeAlias")
+        XCTAssertEqual(actorUnderTest.typealiases.count, 1)
+        XCTAssertEqual(actorUnderTest.typealiases[0].name, "NestedTypeAlias")
 
         // Check child functions
-        XCTAssertEqual(classUnderTest.functions.count, 1)
-        XCTAssertEqual(classUnderTest.functions[0].identifier, "nestedFunction")
+        XCTAssertEqual(actorUnderTest.functions.count, 1)
+        XCTAssertEqual(actorUnderTest.functions[0].identifier, "nestedFunction")
 
         // Check child variables
-        XCTAssertEqual(classUnderTest.variables.count, 1)
-        XCTAssertEqual(classUnderTest.variables[0].name, "nestedVariable")
+        XCTAssertEqual(actorUnderTest.variables.count, 1)
+        XCTAssertEqual(actorUnderTest.variables[0].name, "nestedVariable")
 
         // Check child protocols
-        XCTAssertEqual(classUnderTest.protocols.count, 1)
-        XCTAssertEqual(classUnderTest.protocols[0].name, "NestedProtocol")
+        XCTAssertEqual(actorUnderTest.protocols.count, 1)
+        XCTAssertEqual(actorUnderTest.protocols[0].name, "NestedProtocol")
 
         // Check child subscripts
-        XCTAssertEqual(classUnderTest.subscripts.count, 1)
-        XCTAssertEqual(classUnderTest.subscripts[0].keyword, "subscript")
+        XCTAssertEqual(actorUnderTest.subscripts.count, 1)
+        XCTAssertEqual(actorUnderTest.subscripts[0].keyword, "subscript")
 
         // Check child initializers
-        XCTAssertEqual(classUnderTest.initializers.count, 1)
-        XCTAssertEqual(classUnderTest.initializers[0].keyword, "init")
+        XCTAssertEqual(actorUnderTest.initializers.count, 1)
+        XCTAssertEqual(actorUnderTest.initializers[0].keyword, "init")
 
         // Check child deinitializers
-        XCTAssertEqual(classUnderTest.deinitializers.count, 1)
-        XCTAssertEqual(classUnderTest.deinitializers[0].keyword, "deinit")
+        XCTAssertEqual(actorUnderTest.deinitializers.count, 1)
+        XCTAssertEqual(actorUnderTest.deinitializers[0].keyword, "deinit")
 
         // Check child operators
-        XCTAssertEqual(classUnderTest.operators.count, 1)
-        XCTAssertEqual(classUnderTest.operators[0].name, "+-")
+        XCTAssertEqual(actorUnderTest.operators.count, 1)
+        XCTAssertEqual(actorUnderTest.operators[0].name, "+-")
     }
 
     func test_hashable_equatable_willReturnExpectedResults() throws {
         let source = #"""
-        class SampleProtocol {}
+        actor SampleActor {}
         """#
         let sourceTwo = #"""
-        class SampleProtocol {}
+        actor SampleActor {}
         """#
         let sourceThree = #"""
-        class SampleProtocol {}
-        public class SampleProtocol {}
-        class OtherSampleProtocol {}
+        actor SampleActor {}
+        public actor SampleActor {}
+        actor OtherSampleActor {}
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
         instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.classes.count, 1)
+        XCTAssertEqual(instanceUnderTest.actors.count, 1)
 
-        let sampleOne = instanceUnderTest.classes[0]
+        let sampleOne = instanceUnderTest.actors[0]
 
         instanceUnderTest.updateToSource(sourceTwo)
         instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.classes.count, 1)
+        XCTAssertEqual(instanceUnderTest.actors.count, 1)
 
-        let sampleTwo = instanceUnderTest.classes[0]
+        let sampleTwo = instanceUnderTest.actors[0]
 
         instanceUnderTest.updateToSource(sourceThree)
         instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.classes.count, 3)
+        XCTAssertEqual(instanceUnderTest.actors.count, 3)
 
-        let sampleThree = instanceUnderTest.classes[0]
-        let sampleFour = instanceUnderTest.classes[1]
-        let otherSample = instanceUnderTest.classes[2]
+        let sampleThree = instanceUnderTest.actors[0]
+        let sampleFour = instanceUnderTest.actors[1]
+        let otherSample = instanceUnderTest.actors[2]
 
-        let equalCases: [(Class, Class)] = [
+        let equalCases: [(Actor, Actor)] = [
             (sampleOne, sampleTwo),
             (sampleOne, sampleThree),
             (sampleTwo, sampleThree),
         ]
-        let notEqualCases: [(Class, Class)] = [
+        let notEqualCases: [(Actor, Actor)] = [
             (sampleOne, sampleFour),
             (sampleOne, otherSample),
             (sampleTwo, sampleFour),

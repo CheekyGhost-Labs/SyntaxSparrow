@@ -231,7 +231,7 @@ final class InitializerTests: XCTestCase {
         let equalCases: [(Initializer, Initializer)] = [
             (sampleOne, sampleTwo),
             (sampleOne, sampleThree),
-            (sampleTwo, sampleThree)
+            (sampleTwo, sampleThree),
         ]
         let notEqualCases: [(Initializer, Initializer)] = [
             (sampleOne, sampleFour),
@@ -239,7 +239,7 @@ final class InitializerTests: XCTestCase {
             (sampleTwo, sampleFour),
             (sampleTwo, otherSample),
             (sampleThree, sampleFour),
-            (sampleThree, otherSample)
+            (sampleThree, otherSample),
         ]
         equalCases.forEach {
             XCTAssertEqual($0.0, $0.1)

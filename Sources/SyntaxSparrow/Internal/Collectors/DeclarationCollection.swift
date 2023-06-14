@@ -8,53 +8,56 @@
 import Foundation
 
 public final class DeclarationCollection {
+    /// The collected actor declarations.
+    public internal(set) var actors: [Actor] = []
 
     /// The collected class declarations.
-    internal(set) public var classes: [Class] = []
+    public internal(set) var classes: [Class] = []
 
     /// The collected conditional compilation block declarations.
-    internal(set) public var conditionalCompilationBlocks: [ConditionalCompilationBlock] = []
+    public internal(set) var conditionalCompilationBlocks: [ConditionalCompilationBlock] = []
 
     /// The collected deinitializer declarations.
-    internal(set) public var deinitializers: [Deinitializer] = []
+    public internal(set) var deinitializers: [Deinitializer] = []
 
     /// The collected enumeration declarations.
-    internal(set) public var enumerations: [Enumeration] = []
+    public internal(set) var enumerations: [Enumeration] = []
 
     /// The collected extension declarations.
-    internal(set) public var extensions: [Extension] = []
+    public internal(set) var extensions: [Extension] = []
 
     /// The collected function declarations.
-    internal(set) public var functions: [Function] = []
+    public internal(set) var functions: [Function] = []
 
     /// The collected import declarations.
-    internal(set) public var imports: [Import] = []
+    public internal(set) var imports: [Import] = []
 
     /// The collected initializer declarations.
-    internal(set) public var initializers: [Initializer] = []
+    public internal(set) var initializers: [Initializer] = []
 
     /// The collected operator declarations.
-    internal(set) public var operators: [Operator] = []
+    public internal(set) var operators: [Operator] = []
 
     /// The collected precedence group declarations.
-    internal(set) public var precedenceGroups: [PrecedenceGroup] = []
+    public internal(set) var precedenceGroups: [PrecedenceGroup] = []
 
     /// The collected protocol declarations.
-    internal(set) public var protocols: [ProtocolDecl] = []
+    public internal(set) var protocols: [ProtocolDecl] = []
 
     /// The collected structure declarations.
-    internal(set) public var structures: [Structure] = []
+    public internal(set) var structures: [Structure] = []
 
     /// The collected subscript declarations.
-    internal(set) public var subscripts: [Subscript] = []
+    public internal(set) var subscripts: [Subscript] = []
 
     /// The collected type alias declarations.
-    internal(set) public var typealiases: [Typealias] = []
+    public internal(set) var typealiases: [Typealias] = []
 
     /// The collected internal(set) public variable declarations.
-    internal(set) public var variables: [Variable] = []
+    public internal(set) var variables: [Variable] = []
 
     func reset() {
+        actors = []
         classes = []
         conditionalCompilationBlocks = []
         deinitializers = []
@@ -73,6 +76,7 @@ public final class DeclarationCollection {
     }
 
     func collect(from collection: DeclarationCollection) {
+        actors = collection.actors
         classes = collection.classes
         conditionalCompilationBlocks = collection.conditionalCompilationBlocks
         deinitializers = collection.deinitializers

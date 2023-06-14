@@ -299,12 +299,15 @@ final class FunctionTests: XCTestCase {
         func resultOptional(processResult: Result<String, Error>?) {}
         func defaultValue(name: String = "name") {}
         func inoutValue(names: inout [String]) {}
+        func asyncAwaitMethod() async {}
+        func asyncAwaitMethodThrowing() throws async {}
+        func asyncAwaitMethodThrowingReturning() throws async -> String {}
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
         instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.functions.count, 18)
+        XCTAssertEqual(instanceUnderTest.functions.count, 21)
 
         // No Parameters
         // func noParameters() throws {}
@@ -766,6 +769,55 @@ final class FunctionTests: XCTestCase {
         XCTAssertEqual(function.signature.input[0].type, .simple("[String]"))
         XCTAssertNil(function.signature.input[0].defaultArgument)
         XCTAssertEqual(function.signature.input[0].description, "names: inout [String]")
+
+        // async function
+        // func asyncAwaitMethod() async {}
+        function = instanceUnderTest.functions[18]
+        XCTAssertEqual(function.keyword, "func")
+        XCTAssertEqual(function.identifier, "asyncAwaitMethod")
+        XCTAssertNil(function.signature.throwsOrRethrowsKeyword)
+        XCTAssertEqual(function.signature.asyncKeyword, "async")
+        XCTAssertNil(function.signature.output)
+        XCTAssertEqual(function.signature.input.count, 0)
+
+        // async throwing function
+        // func asyncAwaitMethodThrowing() throws async {}
+        function = instanceUnderTest.functions[19]
+        XCTAssertEqual(function.keyword, "func")
+        XCTAssertEqual(function.identifier, "asyncAwaitMethodThrowing")
+        XCTAssertEqual(function.signature.throwsOrRethrowsKeyword, "throws")
+        XCTAssertEqual(function.signature.asyncKeyword, "async")
+        XCTAssertNil(function.signature.output)
+        XCTAssertEqual(function.signature.input.count, 0)
+
+        // async throwing function
+        // func asyncAwaitMethodThrowingReturning() throws async -> String {}
+        function = instanceUnderTest.functions[20]
+        XCTAssertEqual(function.keyword, "func")
+        XCTAssertEqual(function.identifier, "asyncAwaitMethodThrowingReturning")
+        XCTAssertEqual(function.signature.throwsOrRethrowsKeyword, "throws")
+        XCTAssertEqual(function.signature.asyncKeyword, "async")
+        XCTAssertEqual(function.signature.output, .simple("String"))
+        XCTAssertEqual(function.signature.input.count, 0)
+    }
+
+    func test_function_body_willResolveExpectedResult() throws {
+        let source = #"""
+        func executeOrder66() throws {
+            print("hello")
+            print("world")
+        }
+        """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        XCTAssertEqual(instanceUnderTest.functions.count, 1)
+
+        let body = try XCTUnwrap(instanceUnderTest.functions[0].body)
+        XCTAssertEqual(body.statements.count, 2)
+        XCTAssertEqual(body.statements[0].kind, CodeBlock.Statement.Kind(body.statements[0].node.item))
+        XCTAssertEqual(body.statements[1].kind, CodeBlock.Statement.Kind(body.statements[1].node.item))
     }
 
     func test_function_hashable_equatable_willReturnExpectedResults() throws {
@@ -807,7 +859,7 @@ final class FunctionTests: XCTestCase {
         let equalCases: [(Function, Function)] = [
             (sampleOne, sampleTwo),
             (sampleOne, sampleThree),
-            (sampleTwo, sampleThree)
+            (sampleTwo, sampleThree),
         ]
         let notEqualCases: [(Function, Function)] = [
             (sampleOne, sampleFour),
@@ -815,7 +867,7 @@ final class FunctionTests: XCTestCase {
             (sampleTwo, sampleFour),
             (sampleTwo, otherSample),
             (sampleThree, sampleFour),
-            (sampleThree, otherSample)
+            (sampleThree, otherSample),
         ]
         equalCases.forEach {
             XCTAssertEqual($0.0, $0.1)

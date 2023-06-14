@@ -12,62 +12,42 @@ import SwiftSyntax
 /// children of a `TupleTypeElementSyntax` node.
 /// It exposes the expected properties of a `Tuple` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed
 /// repeatedly.
-class TupleParameterSemanticsResolver: ParameterNodeSemanticsResolving {
+struct TupleParameterSemanticsResolver: ParameterNodeSemanticsResolving {
     // MARK: - Properties: SemanticsResolving
 
     typealias Node = TupleTypeElementSyntax
 
     let node: Node
 
-    // MARK: - Properties: ParameterNodeSemanticsResolving
-
-    private(set) lazy var attributes: [Attribute] = resolveAttributes()
-
-    private(set) lazy var modifiers: [Modifier] = resolveModifiers()
-
-    private(set) lazy var name: String? = resolveName()
-
-    private(set) lazy var secondName: String? = resolveSecondName()
-
-    private(set) lazy var type: EntityType = resolveEntityType()
-
-    private(set) lazy var rawType: String? = resolveRawType()
-
-    private(set) lazy var isVariadic: Bool = resolveIsVariadic()
-
-    private(set) lazy var isOptional: Bool = resolveIsOptional()
-
-    private(set) lazy var isInOut: Bool = resolveIsInout()
-
-    let defaultArgument: String? = nil
-
-    var isLabelOmitted: Bool { name == "_" }
-
     // MARK: - Lifecycle
 
-    required init(node: TupleTypeElementSyntax) {
+    init(node: TupleTypeElementSyntax) {
         self.node = node
     }
 
     // MARK: - Resolvers
 
-    private func resolveAttributes() -> [Attribute] {
+    func resolveAttributes() -> [Attribute] {
         []
     }
 
-    private func resolveModifiers() -> [Modifier] {
+    func resolveModifiers() -> [Modifier] {
         []
     }
 
-    private func resolveName() -> String? {
+    func resolveDefaultArgument() -> String? {
+        nil
+    }
+
+    func resolveName() -> String? {
         node.name?.text.trimmed
     }
 
-    private func resolveSecondName() -> String? {
+    func resolveSecondName() -> String? {
         node.secondName?.text.trimmed
     }
 
-    private func resolveRawType() -> String? {
+    func resolveRawType() -> String {
         var result = node.type.description.trimmed
         if let ellipsis = node.ellipsis {
             result += ellipsis.text.trimmed
@@ -75,19 +55,19 @@ class TupleParameterSemanticsResolver: ParameterNodeSemanticsResolving {
         return result
     }
 
-    private func resolveEntityType() -> EntityType {
+    func resolveType() -> EntityType {
         return EntityType.parseType(node.type)
     }
 
-    private func resolveIsVariadic() -> Bool {
+    func resolveIsVariadic() -> Bool {
         node.ellipsis != nil
     }
 
-    private func resolveIsOptional() -> Bool {
+    func resolveIsOptional() -> Bool {
         node.resolveIsOptional(viewMode: .fixedUp)
     }
 
-    private func resolveIsInout() -> Bool {
+    func resolveIsInOut() -> Bool {
         node.inOut != nil
     }
 }

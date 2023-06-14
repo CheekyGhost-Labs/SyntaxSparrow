@@ -19,10 +19,9 @@ import SwiftSyntax
 ///
 /// Each instance of ``SyntaxSparrow/Initializer`` corresponds to an `InitializerDeclSyntax` node in the Swift syntax tree.
 ///
-/// This structure conforms to `Declaration`, `SyntaxChildCollecting`, and `SyntaxSourceLocationResolving`,
+/// This structure conforms to `Declaration`, `SyntaxChildCollecting`, ,
 /// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
 public struct Initializer: Declaration, SyntaxChildCollecting {
-
     // MARK: - Properties: Declaration
 
     public var node: InitializerDeclSyntax { resolver.node }
@@ -33,21 +32,21 @@ public struct Initializer: Declaration, SyntaxChildCollecting {
     ///
     /// If `true`, the initializer is declared with a `?` (e.g., `init?()`), which means it can return `nil`.
     /// If `false`, the initializer is a regular initializer (e.g., `init()`).
-    public var isOptional: Bool { resolver.isOptional }
+    public var isOptional: Bool { resolver.resolveIsOptional() }
 
     /// Array of attributes found in the declaration.
     ///
     /// - See: ``SyntaxSparrow/Attribute``
-    public var attributes: [Attribute] { resolver.attributes }
+    public var attributes: [Attribute] { resolver.resolveAttributes() }
 
     /// Array of modifiers found in the declaration.
     /// - See: ``SyntaxSparrow/Modifier``
-    public var modifiers: [Modifier] { resolver.modifiers }
+    public var modifiers: [Modifier] { resolver.resolveModifiers() }
 
     /// The declaration keyword.
     ///
     /// i.e: `"init"` for initializers
-    public var keyword: String { resolver.keyword }
+    public var keyword: String { resolver.resolveKeyword() }
 
     /// Array of generic parameters found in the declaration.
     ///
@@ -55,7 +54,7 @@ public struct Initializer: Declaration, SyntaxChildCollecting {
     /// ```swift
     /// init<T: Equatable>(input: T) {}
     /// ```
-    public var genericParameters: [GenericParameter] { resolver.genericParameters }
+    public var genericParameters: [GenericParameter] { resolver.resolveGenericParameters() }
 
     /// Array of generic requirements found in the declaration.
     ///
@@ -63,13 +62,13 @@ public struct Initializer: Declaration, SyntaxChildCollecting {
     /// ```swift
     /// init<T>(input: T) where T: Hashable {}
     /// ```
-    public var genericRequirements: [GenericRequirement] { resolver.genericRequirements }
+    public var genericRequirements: [GenericRequirement] { resolver.resolveGenericRequirements() }
 
     /// Array of input parameters for the initializer.
-    public var parameters: [Parameter] { resolver.parameters }
+    public var parameters: [Parameter] { resolver.resolveParameters() }
 
     /// The `throws` or `rethrows` keyword, if any.
-    public var throwsOrRethrowsKeyword: String? { resolver.throwsOrRethrowsKeyword }
+    public var throwsOrRethrowsKeyword: String? { resolver.resolveThrowsOrRethrowsKeyword() }
 
     // MARK: - Properties: Resolving
 
@@ -77,7 +76,7 @@ public struct Initializer: Declaration, SyntaxChildCollecting {
 
     // MARK: - Properties: SyntaxChildCollecting
 
-    public var childCollection: DeclarationCollection = DeclarationCollection()
+    public var childCollection: DeclarationCollection = .init()
 
     // MARK: - Lifecycle
 

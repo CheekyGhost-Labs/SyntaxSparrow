@@ -204,7 +204,7 @@ final class TypealiasTests: XCTestCase {
         let equalCases: [(Typealias, Typealias)] = [
             (sampleOne, sampleTwo),
             (sampleOne, sampleThree),
-            (sampleTwo, sampleThree)
+            (sampleTwo, sampleThree),
         ]
         let notEqualCases: [(Typealias, Typealias)] = [
             (sampleOne, sampleFour),
@@ -212,7 +212,7 @@ final class TypealiasTests: XCTestCase {
             (sampleTwo, sampleFour),
             (sampleTwo, otherSample),
             (sampleThree, sampleFour),
-            (sampleThree, otherSample)
+            (sampleThree, otherSample),
         ]
         equalCases.forEach {
             XCTAssertEqual($0.0, $0.1)

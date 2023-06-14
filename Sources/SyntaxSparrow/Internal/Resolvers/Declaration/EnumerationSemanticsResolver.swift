@@ -8,81 +8,60 @@
 import Foundation
 import SwiftSyntax
 
-/// `DeclarationSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a
+/// `DeclarationSemanticsResolving` conforming struct that is responsible for exploring, retrieving properties, and collecting children of a
 /// `EnumDeclSyntax` node.
 /// It exposes the expected properties of a `Enumeration` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when
 /// accessed repeatedly.
-class EnumerationSemanticsResolver: SemanticsResolving {
+struct EnumerationSemanticsResolver: SemanticsResolving {
     // MARK: - Properties: SemanticsResolving
 
     typealias Node = EnumDeclSyntax
 
     let node: Node
 
-    private(set) var declarationCollection: DeclarationCollection = .init()
-
-    // MARK: - Properties: StructureDeclaration
-
-    private(set) lazy var attributes: [Attribute] = resolveAttributes()
-
-    private(set) lazy var modifiers: [Modifier] = resolveModifiers()
-
-    private(set) lazy var keyword: String = resolveKeyword()
-
-    private(set) lazy var name: String = resolveName()
-
-    private(set) lazy var inheritance: [String] = resolveInheritance()
-
-    private(set) lazy var genericParameters: [GenericParameter] = resolveGenericParameters()
-
-    private(set) lazy var genericRequirements: [GenericRequirement] = resolveGenericRequirements()
-
-    private(set) lazy var cases: [Enumeration.Case] = resolveCases()
-
     // MARK: - Lifecycle
 
-    required init(node: EnumDeclSyntax) {
+    init(node: EnumDeclSyntax) {
         self.node = node
     }
 
-
     // MARK: - Resolvers
 
-    private func resolveName() -> String {
+    func resolveName() -> String {
         node.identifier.text.trimmed
     }
 
-    private func resolveAttributes() -> [Attribute] {
+    func resolveAttributes() -> [Attribute] {
         Attribute.fromAttributeList(node.attributes)
     }
 
-    private func resolveKeyword() -> String {
+    func resolveKeyword() -> String {
         node.enumKeyword.text.trimmed
     }
 
-    private func resolveModifiers() -> [Modifier] {
+    func resolveModifiers() -> [Modifier] {
         guard let modifierList = node.modifiers else { return [] }
         return modifierList.map { Modifier(node: $0) }
     }
 
-    private func resolveInheritance() -> [String] {
+    func resolveInheritance() -> [String] {
         guard let inheritanceNode = node.inheritanceClause else { return [] }
         let types = inheritanceNode.inheritedTypeCollection.map { $0.typeName.description.trimmed }
         return types
     }
 
-    private func resolveGenericParameters() -> [GenericParameter] {
+    func resolveGenericParameters() -> [GenericParameter] {
         GenericParameter.fromParameterList(from: node.genericParameters?.genericParameterList)
         // Pending update - leaving here for easier reference
         // GenericParameter.fromParameterList(from: node.genericParameterClause?.genericParameterList)
     }
 
-    private func resolveGenericRequirements() -> [GenericRequirement] {
+    func resolveGenericRequirements() -> [GenericRequirement] {
         let requirements = GenericRequirement.fromRequirementList(from: node.genericWhereClause?.requirementList)
         return requirements
     }
 
-    private func resolveCases() -> [Enumeration.Case] {
+    func resolveCases() -> [Enumeration.Case] {
         let caseNodes = node.memberBlock.members.compactMap { $0.decl.as(EnumCaseDeclSyntax.self) }
         return caseNodes.flatMap { caseDecl in
             caseDecl.elements.map { Enumeration.Case(node: $0) }

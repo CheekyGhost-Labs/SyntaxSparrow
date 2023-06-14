@@ -21,10 +21,9 @@ import SwiftSyntax
 ///
 /// Each instance of ``SyntaxSparrow/ProtocolDecl`` corresponds to a `ProtocolDeclSyntax` node in the Swift syntax tree.
 ///
-/// This structure conforms to `Declaration`, `SyntaxChildCollecting`, and `SyntaxSourceLocationResolving`,
+/// This structure conforms to `Declaration`, `SyntaxChildCollecting`, ,
 /// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
 public struct ProtocolDecl: Declaration, SyntaxChildCollecting {
-
     // MARK: - Properties: Declaration
 
     public var node: ProtocolDeclSyntax { resolver.node }
@@ -34,22 +33,22 @@ public struct ProtocolDecl: Declaration, SyntaxChildCollecting {
     /// Array of attributes found in the declaration.
     ///
     /// - See: ``SyntaxSparrow/Attribute``
-    public var attributes: [Attribute] { resolver.attributes }
+    public var attributes: [Attribute] { resolver.resolveAttributes() }
 
     /// Array of modifiers found in the declaration.
     /// - See: ``SyntaxSparrow/Modifier``
-    public var modifiers: [Modifier] { resolver.modifiers }
+    public var modifiers: [Modifier] { resolver.resolveModifiers() }
 
     /// The declaration keyword.
     ///
     /// i.e: `"class"`
-    public var keyword: String { resolver.keyword }
+    public var keyword: String { resolver.resolveKeyword() }
 
     /// The structure name.
     ///
     /// i.e: `struct MyClass { ... }` would have a name of `"MyClass"`
     /// If the structure is unnamed, this will be an empty string.
-    public var name: String { resolver.name }
+    public var name: String { resolver.resolveName() }
 
     /// The primary associated types for the declaration.
     ///
@@ -65,7 +64,7 @@ public struct ProtocolDecl: Declaration, SyntaxChildCollecting {
     /// - The second type is `"Object"` which needs to inherit `["Equatable"]`
     /// - The third  type is `"Node"` which needs to be a class type (`["AnyObject"]`) and the inferred `"Node"` type is required to conform to
     /// `Hashable`
-    public var associatedTypes: [AssociatedType] { resolver.associatedTypes }
+    public var associatedTypes: [AssociatedType] { resolver.resolveAssociatedTypes() }
 
     /// The primary associated types for the declaration.
     ///
@@ -75,7 +74,7 @@ public struct ProtocolDecl: Declaration, SyntaxChildCollecting {
     /// ```
     /// - The first type is `"Parameter"`
     /// - The first type is `"Object"`
-    public var primaryAssociatedTypes: [String] { resolver.primaryAssociatedTypes }
+    public var primaryAssociatedTypes: [String] { resolver.resolvePrimaryAssociatedTypes() }
 
     /// Array of type names representing the types the class inherits.
     ///
@@ -85,7 +84,7 @@ public struct ProtocolDecl: Declaration, SyntaxChildCollecting {
     /// class B {}
     /// class MyClass: B, A {}
     /// ```
-    public var inheritance: [String] { resolver.inheritance }
+    public var inheritance: [String] { resolver.resolveInheritance() }
 
     /// Array of generic requirements found in the declaration.
     ///
@@ -93,7 +92,7 @@ public struct ProtocolDecl: Declaration, SyntaxChildCollecting {
     /// ```swift
     /// struct MyClass<T> where T: Hashable {}
     /// ```
-    public var genericRequirements: [GenericRequirement] { resolver.genericRequirements }
+    public var genericRequirements: [GenericRequirement] { resolver.resolveGenericRequirements() }
 
     // MARK: - Properties: Resolving
 
@@ -101,11 +100,15 @@ public struct ProtocolDecl: Declaration, SyntaxChildCollecting {
 
     // MARK: - Properties: SyntaxChildCollecting
 
-    public var childCollection: DeclarationCollection = DeclarationCollection()
+    public var childCollection: DeclarationCollection = .init()
 
     // MARK: - Lifecycle
 
     public init(node: ProtocolDeclSyntax) {
         resolver = ProtocolSemanticsResolver(node: node)
+    }
+
+    init(node: ProtocolDeclSyntax, viewMode: SyntaxTreeViewMode) {
+        resolver = ProtocolSemanticsResolver(node: node, viewMode: viewMode)
     }
 }

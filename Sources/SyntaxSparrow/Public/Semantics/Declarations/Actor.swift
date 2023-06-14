@@ -1,5 +1,5 @@
 //
-//  Enumeration.swift
+//  Actor.swift
 //
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
@@ -8,19 +8,23 @@
 import Foundation
 import SwiftSyntax
 
-/// Represents a Swift enumeration declaration.
+/// Represents a class declaration in Swift source code.
 ///
-/// An enumeration is a common type of data structure that consists of a set of named cases, which are known as its members.
-/// In Swift, enumerations are first-class types, and they adopt many features traditionally supported only by classes.
+/// A `Actor` struct provides access to various aspects of the class declaration it represents, such as:
+/// - Attributes: Any attributes associated with the class declaration, e.g. `@available`.
+/// - Modifiers: Modifiers applied to the class, e.g. `public`, `final`.
+/// - Name: The name of the actor.
+/// - Inheritance: Types that the class inherits from (if any), including both classes and protocols.
+/// - Generic parameters and requirements: Information about any generic parameters or requirements that the class has.
 ///
-/// Each instance of ``SyntaxSparrow/Enumeration`` corresponds to an `EnumDeclSyntax` node in the Swift syntax tree.
+/// Each instance of ``SyntaxSparrow/Actor`` corresponds to a `ActorDeclSyntax` node in the Swift syntax tree.
 ///
 /// This structure conforms to `Declaration`, `SyntaxChildCollecting`, ,
 /// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
-public struct Enumeration: Declaration, SyntaxChildCollecting {
+public struct Actor: Declaration, SyntaxChildCollecting {
     // MARK: - Properties: Declaration
 
-    public var node: EnumDeclSyntax { resolver.node }
+    public var node: ActorDeclSyntax { resolver.node }
 
     // MARK: - Properties: Computed
 
@@ -35,21 +39,22 @@ public struct Enumeration: Declaration, SyntaxChildCollecting {
 
     /// The declaration keyword.
     ///
-    /// i.e: `"enum"`
+    /// i.e: `"actor"`
     public var keyword: String { resolver.resolveKeyword() }
 
-    /// The structure name.
+    /// The actor name.
     ///
-    /// i.e: `enum MyEnum { ... }` would have a name of `"MyEnum"`
+    /// i.e: `actor MyActor { ... }` would have a name of `"MyActor"`
     /// If the structure is unnamed, this will be an empty string.
     public var name: String { resolver.resolveName() }
 
-    /// Array of type names representing the adopted protocols.
+    /// Array of type names representing the types the actor inherits.
     ///
-    /// For example, in the following declaration, the inheritance of the struct would be `["String", "A"]`
+    /// For example, in the following declaration, the inheritance of the struct would be `["A", "B"]`
     /// ```swift
     /// protocol A {}
-    /// enum MyEnum: String, A {}
+    /// protocol B {}
+    /// actor MyActor: A, B {}
     /// ```
     public var inheritance: [String] { resolver.resolveInheritance() }
 
@@ -57,7 +62,7 @@ public struct Enumeration: Declaration, SyntaxChildCollecting {
     ///
     /// For example, in the following declaration, there is a single parameter whose `name` is `"T"` and `type` of `"Equatable"`
     /// ```swift
-    /// struct MyEnum<T: Equatable>: String {}
+    /// actor MyActor<T: Equatable> {}
     /// ```
     public var genericParameters: [GenericParameter] { resolver.resolveGenericParameters() }
 
@@ -65,24 +70,13 @@ public struct Enumeration: Declaration, SyntaxChildCollecting {
     ///
     /// For example, in the following declaration, there is a single parameter `"T"` whose requirement is that it conforms to `"Hashable"`
     /// ```swift
-    /// enum MyEnum<T>: String where T: Hashable {}
+    /// actor MyActor<T> where T: Hashable {}
     /// ```
     public var genericRequirements: [GenericRequirement] { resolver.resolveGenericRequirements() }
 
-    /// Array of cases declared within the enumeration.
-    ///
-    /// For example, ind the following declaration there are two cases named `optionOne` and `optionTwo`
-    /// ```swift
-    /// enum MyEnum {
-    ///     case optionOne
-    ///     case optionTwo
-    /// }
-    /// ```
-    public var cases: [Enumeration.Case] { resolver.resolveCases() }
-
     // MARK: - Properties: Resolving
 
-    private(set) var resolver: EnumerationSemanticsResolver
+    private(set) var resolver: ActorSemanticsResolver
 
     // MARK: - Properties: SyntaxChildCollecting
 
@@ -90,7 +84,8 @@ public struct Enumeration: Declaration, SyntaxChildCollecting {
 
     // MARK: - Lifecycle
 
-    public init(node: EnumDeclSyntax) {
-        resolver = EnumerationSemanticsResolver(node: node)
+    /// Creates a new ``SyntaxSparrow/Class`` instance from an `ClassDeclSyntax` node.
+    public init(node: ActorDeclSyntax) {
+        resolver = ActorSemanticsResolver(node: node)
     }
 }

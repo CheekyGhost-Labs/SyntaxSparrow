@@ -16,10 +16,9 @@ public extension Enumeration {
     ///
     /// Each instance of ``SyntaxSparrow/Enumeration/Case`` corresponds to an `EnumCaseElementSyntax` node in the Swift syntax tree.
     ///
-    /// This structure conforms to `Declaration` and `SyntaxSourceLocationResolving`,
+    /// This structure conforms to `Declaration` ,
     /// which provide access to the declaration attributes, modifiers, and source location information.
     struct Case: Declaration {
-
         // MARK: - Properties: Declaration
 
         public var node: EnumCaseElementSyntax { resolver.node }
@@ -29,28 +28,28 @@ public extension Enumeration {
         /// Array of attributes found in the declaration.
         ///
         /// - See: ``SyntaxSparrow/Attribute``
-        public var attributes: [Attribute] { resolver.attributes }
+        public var attributes: [Attribute] { resolver.resolveAttributes() }
 
         /// Array of modifiers found in the declaration.
         /// - See: ``SyntaxSparrow/Modifier``
-        public var modifiers: [Modifier] { resolver.modifiers }
+        public var modifiers: [Modifier] { resolver.resolveModifiers() }
 
         /// The declaration keyword.
         ///
         /// i.e: `"enum"`
-        public var keyword: String { resolver.keyword }
+        public var keyword: String { resolver.resolveKeyword() }
 
         /// The structure name.
         ///
         /// i.e: `enum MyEnum { ... }` would have a name of `"MyEnum"`
         /// If the structure is unnamed, this will be an empty string.
-        public var name: String { resolver.name }
+        public var name: String { resolver.resolveName() }
 
         /// The associated values of the enumeration case, if any.
-        public var associatedValues: [Parameter] { resolver.associatedValues }
+        public var associatedValues: [Parameter] { resolver.resolveAssociatedValues() }
 
         /// The raw value of the enumeration case, if any.
-        public var rawValue: String? { resolver.rawValue }
+        public var rawValue: String? { resolver.resolveRawValue() }
 
         // MARK: - Properties: DeclarationCollecting
 
@@ -63,6 +62,7 @@ public extension Enumeration {
         }
 
         // MARK: - CustomStringConvertible
+
         // Override the protocol default
 
         public var description: String {

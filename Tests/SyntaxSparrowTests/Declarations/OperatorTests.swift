@@ -24,6 +24,7 @@ final class OperatorTests: XCTestCase {
     }
 
     // MARK: - Tests
+
     func test_operator_standard_willReoslveExpectedValues() {
         let source = #"""
         prefix operator +++
@@ -73,64 +74,64 @@ final class OperatorTests: XCTestCase {
         )
     }
 
-#if swift(<5.8)
-    func test_operator_legacySwift_attributes_willResolveExpectedValues() {
-        let source = #"""
-        @available(*, unavailable, message: "my message")
-        prefix operator +++
-        """#
-        instanceUnderTest.updateToSource(source)
-        XCTAssertTrue(instanceUnderTest.isStale)
-        instanceUnderTest.collectChildren()
-        XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.operators.count, 1)
+    #if swift(<5.8)
+        func test_operator_legacySwift_attributes_willResolveExpectedValues() {
+            let source = #"""
+            @available(*, unavailable, message: "my message")
+            prefix operator +++
+            """#
+            instanceUnderTest.updateToSource(source)
+            XCTAssertTrue(instanceUnderTest.isStale)
+            instanceUnderTest.collectChildren()
+            XCTAssertFalse(instanceUnderTest.isStale)
+            XCTAssertEqual(instanceUnderTest.operators.count, 1)
 
-        let attributeExpectations: [(String?, String)] = [
-            (nil, "*"),
-            (nil, "unavailable"),
-            ("message", "\"my message\"")
-        ]
-        // prefix
-        let prefix = instanceUnderTest.operators[0]
-        XCTAssertEqual(prefix.name, "+++")
-        XCTAssertEqual(prefix.kind, .prefix)
-        XCTAssertEqual(prefix.description, "@available(*, unavailable, message: \"my message\")\nprefix operator +++")
-        XCTAssertEqual(prefix.attributes.count, 1)
-        XCTAssertEqual(prefix.modifiers.map(\.name), ["prefix"])
-        XCTAssertAttributesArgumentsEqual(prefix.attributes[0], attributeExpectations)
-        AssertSourceDetailsEquals(
-            getSourceLocation(for: prefix, from: instanceUnderTest),
-            start: (0, 0, 0),
-            end: (1, 19, 69),
-            source: "@available(*, unavailable, message: \"my message\")\nprefix operator +++"
-        )
-    }
+            let attributeExpectations: [(String?, String)] = [
+                (nil, "*"),
+                (nil, "unavailable"),
+                ("message", "\"my message\""),
+            ]
+            // prefix
+            let prefix = instanceUnderTest.operators[0]
+            XCTAssertEqual(prefix.name, "+++")
+            XCTAssertEqual(prefix.kind, .prefix)
+            XCTAssertEqual(prefix.description, "@available(*, unavailable, message: \"my message\")\nprefix operator +++")
+            XCTAssertEqual(prefix.attributes.count, 1)
+            XCTAssertEqual(prefix.modifiers.map(\.name), ["prefix"])
+            XCTAssertAttributesArgumentsEqual(prefix.attributes[0], attributeExpectations)
+            AssertSourceDetailsEquals(
+                getSourceLocation(for: prefix, from: instanceUnderTest),
+                start: (0, 0, 0),
+                end: (1, 19, 69),
+                source: "@available(*, unavailable, message: \"my message\")\nprefix operator +++"
+            )
+        }
 
-    func test_operator_legacySwift_modifiers_willResolveExpectedValues() {
-        let source = #"""
-        public prefix operator +++
-        """#
-        instanceUnderTest.updateToSource(source)
-        XCTAssertTrue(instanceUnderTest.isStale)
-        instanceUnderTest.collectChildren()
-        XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.operators.count, 1)
+        func test_operator_legacySwift_modifiers_willResolveExpectedValues() {
+            let source = #"""
+            public prefix operator +++
+            """#
+            instanceUnderTest.updateToSource(source)
+            XCTAssertTrue(instanceUnderTest.isStale)
+            instanceUnderTest.collectChildren()
+            XCTAssertFalse(instanceUnderTest.isStale)
+            XCTAssertEqual(instanceUnderTest.operators.count, 1)
 
-        // prefix
-        let prefix = instanceUnderTest.operators[0]
-        XCTAssertEqual(prefix.name, "+++")
-        XCTAssertEqual(prefix.kind, .prefix)
-        XCTAssertEqual(prefix.description, "public prefix operator +++")
-        XCTAssertEqual(prefix.attributes.count, 0)
-        XCTAssertEqual(prefix.modifiers.map(\.name), ["public", "prefix"])
-        AssertSourceDetailsEquals(
-            getSourceLocation(for: prefix, from: instanceUnderTest),
-            start: (0, 0, 0),
-            end: (0, 26, 26),
-            source: "public prefix operator +++"
-        )
-    }
-#endif
+            // prefix
+            let prefix = instanceUnderTest.operators[0]
+            XCTAssertEqual(prefix.name, "+++")
+            XCTAssertEqual(prefix.kind, .prefix)
+            XCTAssertEqual(prefix.description, "public prefix operator +++")
+            XCTAssertEqual(prefix.attributes.count, 0)
+            XCTAssertEqual(prefix.modifiers.map(\.name), ["public", "prefix"])
+            AssertSourceDetailsEquals(
+                getSourceLocation(for: prefix, from: instanceUnderTest),
+                start: (0, 0, 0),
+                end: (0, 26, 26),
+                source: "public prefix operator +++"
+            )
+        }
+    #endif
 
     func test_hashable_equatable_willReturnExpectedResults() throws {
         let source = #"""
@@ -171,7 +172,7 @@ final class OperatorTests: XCTestCase {
         let equalCases: [(Operator, Operator)] = [
             (sampleOne, sampleTwo),
             (sampleOne, sampleThree),
-            (sampleTwo, sampleThree)
+            (sampleTwo, sampleThree),
         ]
         let notEqualCases: [(Operator, Operator)] = [
             (sampleOne, sampleFour),
@@ -179,7 +180,7 @@ final class OperatorTests: XCTestCase {
             (sampleTwo, sampleFour),
             (sampleTwo, otherSample),
             (sampleThree, sampleFour),
-            (sampleThree, otherSample)
+            (sampleThree, otherSample),
         ]
         equalCases.forEach {
             XCTAssertEqual($0.0, $0.1)

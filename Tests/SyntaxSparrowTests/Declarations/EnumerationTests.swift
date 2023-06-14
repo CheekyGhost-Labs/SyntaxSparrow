@@ -240,7 +240,7 @@ final class DeinitializerTests: XCTestCase {
         // Test case attributes
         let attributeExpectations: [(String?, String)] = [
             (nil, "iOS 15"),
-            (nil, "*")
+            (nil, "*"),
         ]
         XCTAssertEqual(enumUnderTest.cases.count, 2)
         XCTAssertEqual(enumUnderTest.cases[0].name, "one")
@@ -301,7 +301,7 @@ final class DeinitializerTests: XCTestCase {
         let equalCases: [(Enumeration, Enumeration)] = [
             (sampleOne, sampleTwo),
             (sampleOne, sampleThree),
-            (sampleTwo, sampleThree)
+            (sampleTwo, sampleThree),
         ]
         let notEqualCases: [(Enumeration, Enumeration)] = [
             (sampleOne, sampleFour),
@@ -309,7 +309,7 @@ final class DeinitializerTests: XCTestCase {
             (sampleTwo, sampleFour),
             (sampleTwo, otherSample),
             (sampleThree, sampleFour),
-            (sampleThree, otherSample)
+            (sampleThree, otherSample),
         ]
         equalCases.forEach {
             XCTAssertEqual($0.0, $0.1)

@@ -9,7 +9,6 @@ import Foundation
 import SwiftSyntax
 
 extension EntityType {
-
     var isVoid: Bool {
         switch self {
         case .void:
@@ -190,7 +189,7 @@ extension EntityType {
         let softCheck = typeSyntax.parent?.description.trimmed.hasSuffix("?") ?? false
         guard !softCheck else { return true }
         // Token assessment approach
-        var result: Bool = false
+        var result = false
         var nextToken = typeSyntax.nextToken(viewMode: .fixedUp)
         var potentialOptional: Bool = nextToken?.text == "?"
         while nextToken != nil {

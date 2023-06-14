@@ -26,7 +26,6 @@ import SwiftSyntax
 /// elements
 /// that require lazy evaluation or collection as needed.
 public class SyntaxTree: SyntaxChildCollecting, SyntaxExplorerContextProviding {
-    
     // MARK: - Properties: SyntaxExplorerContextProviding
 
     /// `SyntaxExplorerContext` instance holding root collection details and instances. This context will be shared with any child elements
@@ -127,7 +126,7 @@ public class SyntaxTree: SyntaxChildCollecting, SyntaxExplorerContextProviding {
     }
 
     // MARK: - SyntaxSourceResolving
-    
+
     /// Will assess the given declaration within the current syntax tree context and return the source details.
     ///
     /// Source details includes the source location and extracted raw source code.
@@ -170,7 +169,7 @@ public class SyntaxTree: SyntaxChildCollecting, SyntaxExplorerContextProviding {
     public var variables: [Variable] { childCollection.variables }
     public var conditionalCompilationBlocks: [ConditionalCompilationBlock] { childCollection.conditionalCompilationBlocks }
 
-    public func collectChildren(viewMode: SwiftSyntax.SyntaxTreeViewMode) {
+    public func collectChildren(viewMode _: SwiftSyntax.SyntaxTreeViewMode) {
         collectChildren()
     }
 

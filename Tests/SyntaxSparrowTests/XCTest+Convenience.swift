@@ -9,7 +9,6 @@ import SyntaxSparrow
 import XCTest
 
 extension XCTest {
-
     private func buildPositionFailureMessage(
         _ prefix: String = "",
         _ lhs: (line: Int?, column: Int?, utf8Offset: Int?),

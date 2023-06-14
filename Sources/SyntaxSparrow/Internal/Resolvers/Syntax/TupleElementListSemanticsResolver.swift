@@ -12,20 +12,16 @@ import SwiftSyntax
 /// node.
 /// It exposes the expected properties of a `Tuple` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed
 /// repeatedly.
-class TupleElementListSemanticsResolver: TupleNodeSemanticsResolving {
+struct TupleElementListSemanticsResolver: TupleNodeSemanticsResolving {
     // MARK: - Properties: SemanticsResolving
 
     typealias Node = TupleTypeElementListSyntax
 
     let node: Node
 
-    private(set) lazy var elements: [Parameter] = resolveElements()
-
-    private(set) lazy var isOptional: Bool = resolveIsOptional()
-
     // MARK: - Lifecycle
 
-    required init(node: TupleTypeElementListSyntax) {
+    init(node: TupleTypeElementListSyntax) {
         self.node = node
     }
 
@@ -35,11 +31,11 @@ class TupleElementListSemanticsResolver: TupleNodeSemanticsResolving {
 
     // MARK: - Resolvers
 
-    private func resolveElements() -> [Parameter] {
+    func resolveElements() -> [Parameter] {
         node.map(Parameter.init)
     }
 
-    private func resolveIsOptional() -> Bool {
+    func resolveIsOptional() -> Bool {
         node.resolveIsOptional(viewMode: .fixedUp)
     }
 }

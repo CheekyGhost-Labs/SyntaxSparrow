@@ -24,11 +24,10 @@ import SwiftSyntax
 /// The `Variable` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the variable
 /// declaration is located.
 public struct Variable: Declaration {
-
     // MARK: - Properties: Declaration
 
     public var node: PatternBindingSyntax { resolver.node }
-    
+
     /// Returns the first `VariableDeclSyntax` node in sequence from the `node` property.
     ///
     /// This is provided as the `VariableDeclSyntax` contains one or more `PatternBindingSyntax` syntaxes that represent
@@ -47,16 +46,16 @@ public struct Variable: Declaration {
     /// Array of attributes found in the declaration.
     ///
     /// - See: ``SyntaxSparrow/Attribute``
-    public var attributes: [Attribute] { resolver.attributes }
+    public var attributes: [Attribute] { resolver.resolveAttributes() }
 
     /// Array of modifiers found in the declaration.
     /// - See: ``SyntaxSparrow/Modifier``
-    public var modifiers: [Modifier] { resolver.modifiers }
+    public var modifiers: [Modifier] { resolver.resolveModifiers() }
 
     /// The declaration keyword.
     ///
     /// i.e: `"let"` or `"var"`
-    public var keyword: String { resolver.keyword }
+    public var keyword: String { resolver.resolveKeyword() }
 
     /// The variable name.
     ///
@@ -65,7 +64,7 @@ public struct Variable: Declaration {
     /// var myName: String = "name"
     /// ```
     /// - The `name` is equal to `myName`
-    public var name: String { resolver.name }
+    public var name: String { resolver.resolveName() }
 
     /// The variable name.
     ///
@@ -74,7 +73,7 @@ public struct Variable: Declaration {
     /// var myName: String
     /// ```
     /// - The `name` is equal to `myName`
-    public var type: EntityType { resolver.type }
+    public var type: EntityType { resolver.resolveType() }
 
     /// The initialized type, if any.
     ///
@@ -85,16 +84,16 @@ public struct Variable: Declaration {
     /// ```
     /// - The first declaration has an initialized type of `nil`
     /// - The second declaration has an initialized type of `"name"`
-    public var initializedValue: String? { resolver.initializedValue }
+    public var initializedValue: String? { resolver.resolveInitializedValue() }
 
     /// The variable or property accessors.
-    public var accessors: [Accessor] { resolver.accessors }
+    public var accessors: [Accessor] { resolver.resolveAccessors() }
 
     /// Will return a `Bool` flag indicating if the variable type is marked as optional. `?`
-    public var isOptional: Bool { resolver.isOptional }
-    
+    public var isOptional: Bool { resolver.resolveIsOptional() }
+
     /// Bool whether the `accessors` contains the `set` kind, or the `keyword` is `"var"` and the variable is not within a protocol declaration.
-    public var hasSetter: Bool { resolver.hasSetter }
+    public var hasSetter: Bool { resolver.resolveHasSetter() }
 
     // MARK: - Properties: DeclarationCollecting
 

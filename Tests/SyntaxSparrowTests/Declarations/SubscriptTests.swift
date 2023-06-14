@@ -30,7 +30,7 @@ final class SubscriptTests: XCTestCase {
         let attributeExpectations: [(String?, String)] = [
             (nil, "*"),
             (nil, "unavailable"),
-            ("message", "\"my message\"")
+            ("message", "\"my message\""),
         ]
         let source = #"""
         @available(*, unavailable, message: "my message")
@@ -272,7 +272,7 @@ final class SubscriptTests: XCTestCase {
         let equalCases: [(Subscript, Subscript)] = [
             (sampleOne, sampleTwo),
             (sampleOne, sampleThree),
-            (sampleTwo, sampleThree)
+            (sampleTwo, sampleThree),
         ]
         let notEqualCases: [(Subscript, Subscript)] = [
             (sampleOne, sampleFour),
@@ -280,7 +280,7 @@ final class SubscriptTests: XCTestCase {
             (sampleTwo, sampleFour),
             (sampleTwo, otherSample),
             (sampleThree, sampleFour),
-            (sampleThree, otherSample)
+            (sampleThree, otherSample),
         ]
         equalCases.forEach {
             XCTAssertEqual($0.0, $0.1)

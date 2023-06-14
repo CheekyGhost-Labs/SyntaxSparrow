@@ -5,12 +5,11 @@
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
 
-import XCTest
 import SwiftSyntax
 import SyntaxSparrow
+import XCTest
 
 final class SyntaxTreeTests: XCTestCase {
-
     // MARK: - Lifecycle
 
     func test_resolvingFromSourceConvenience_willReturnExpectedValues() throws {

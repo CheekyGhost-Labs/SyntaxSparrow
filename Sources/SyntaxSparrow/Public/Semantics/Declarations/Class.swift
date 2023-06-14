@@ -22,7 +22,6 @@ import SwiftSyntax
 /// This structure conforms to `Declaration`, `SyntaxChildCollecting`, ,
 /// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
 public struct Class: Declaration, SyntaxChildCollecting {
-
     // MARK: - Properties: Declaration
 
     public var node: ClassDeclSyntax { resolver.node }
@@ -32,22 +31,22 @@ public struct Class: Declaration, SyntaxChildCollecting {
     /// Array of attributes found in the declaration.
     ///
     /// - See: ``SyntaxSparrow/Attribute``
-    public var attributes: [Attribute] { resolver.attributes }
+    public var attributes: [Attribute] { resolver.resolveAttributes() }
 
     /// Array of modifiers found in the declaration.
     /// - See: ``SyntaxSparrow/Modifier``
-    public var modifiers: [Modifier] { resolver.modifiers }
+    public var modifiers: [Modifier] { resolver.resolveModifiers() }
 
     /// The declaration keyword.
     ///
     /// i.e: `"class"`
-    public var keyword: String { resolver.keyword }
+    public var keyword: String { resolver.resolveKeyword() }
 
     /// The class name.
     ///
     /// i.e: `class MyClass { ... }` would have a name of `"MyClass"`
     /// If the structure is unnamed, this will be an empty string.
-    public var name: String { resolver.name }
+    public var name: String { resolver.resolveName() }
 
     /// Array of type names representing the types the class inherits.
     ///
@@ -57,7 +56,7 @@ public struct Class: Declaration, SyntaxChildCollecting {
     /// class B {}
     /// class MyClass: B, A {}
     /// ```
-    public var inheritance: [String] { resolver.inheritance }
+    public var inheritance: [String] { resolver.resolveInheritance() }
 
     /// Array of generic parameters found in the declaration.
     ///
@@ -65,7 +64,7 @@ public struct Class: Declaration, SyntaxChildCollecting {
     /// ```swift
     /// struct MyClass<T: Equatable> {}
     /// ```
-    public var genericParameters: [GenericParameter] { resolver.genericParameters }
+    public var genericParameters: [GenericParameter] { resolver.resolveGenericParameters() }
 
     /// Array of generic requirements found in the declaration.
     ///
@@ -73,7 +72,7 @@ public struct Class: Declaration, SyntaxChildCollecting {
     /// ```swift
     /// struct MyClass<T> where T: Hashable {}
     /// ```
-    public var genericRequirements: [GenericRequirement] { resolver.genericRequirements }
+    public var genericRequirements: [GenericRequirement] { resolver.resolveGenericRequirements() }
 
     // MARK: - Properties: Resolving
 
@@ -81,7 +80,7 @@ public struct Class: Declaration, SyntaxChildCollecting {
 
     // MARK: - Properties: SyntaxChildCollecting
 
-    public var childCollection: DeclarationCollection = DeclarationCollection()
+    public var childCollection: DeclarationCollection = .init()
 
     // MARK: - Lifecycle
 

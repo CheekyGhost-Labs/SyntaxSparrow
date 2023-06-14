@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Michael O'Brien on 13/6/2023.
 //
@@ -14,7 +14,6 @@ import SwiftSyntax
 ///
 /// An instance of the `CodeBlock` struct provides access to an array of statements held within.
 public struct CodeBlock: DeclarationComponent {
-
     // MARK: - Supplementary
 
     /// The kind of accessor (`get` or `set`).

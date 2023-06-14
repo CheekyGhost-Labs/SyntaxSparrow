@@ -8,44 +8,34 @@
 import Foundation
 import SwiftSyntax
 
-/// `DeclarationSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a
+/// `DeclarationSemanticsResolving` conforming struct that is responsible for exploring, retrieving properties, and collecting children of a
 /// `DeinitializerDeclSyntax` node.
 /// It exposes the expected properties of a `Deinitializer` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when
 /// accessed repeatedly.
-class DeinitializerSemanticsResolver: SemanticsResolving {
+struct DeinitializerSemanticsResolver: SemanticsResolving {
     // MARK: - Properties: SemanticsResolving
 
     typealias Node = DeinitializerDeclSyntax
 
     let node: Node
 
-    private(set) var declarationCollection: DeclarationCollection = .init()
-
-    // MARK: - Properties: StructureDeclaration
-
-    private(set) lazy var attributes: [Attribute] = resolveAttributes()
-
-    private(set) lazy var modifiers: [Modifier] = resolveModifiers()
-
-    private(set) lazy var keyword: String = resolveKeyword()
-
     // MARK: - Lifecycle
 
-    required init(node: DeinitializerDeclSyntax) {
+    init(node: DeinitializerDeclSyntax) {
         self.node = node
     }
 
     // MARK: - Resolvers
 
-    private func resolveAttributes() -> [Attribute] {
+    func resolveAttributes() -> [Attribute] {
         Attribute.fromAttributeList(node.attributes)
     }
 
-    private func resolveKeyword() -> String {
+    func resolveKeyword() -> String {
         node.deinitKeyword.text.trimmed
     }
 
-    private func resolveModifiers() -> [Modifier] {
+    func resolveModifiers() -> [Modifier] {
         guard let modifierList = node.modifiers else { return [] }
         return modifierList.map { Modifier(node: $0) }
     }

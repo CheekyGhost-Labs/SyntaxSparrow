@@ -19,7 +19,6 @@ import SwiftSyntax
 ///
 /// This struct provides access to the deinitializer attributes, modifiers, keyword, and source location.
 public struct Deinitializer: Declaration, SyntaxChildCollecting {
-
     // MARK: - Properties: Declaration
 
     public var node: DeinitializerDeclSyntax { resolver.node }
@@ -29,16 +28,16 @@ public struct Deinitializer: Declaration, SyntaxChildCollecting {
     /// Array of attributes found in the declaration.
     ///
     /// - See: ``SyntaxSparrow/Attribute``
-    public var attributes: [Attribute] { resolver.attributes }
+    public var attributes: [Attribute] { resolver.resolveAttributes() }
 
     /// Array of modifiers found in the declaration.
     /// - See: ``SyntaxSparrow/Modifier``
-    public var modifiers: [Modifier] { resolver.modifiers }
+    public var modifiers: [Modifier] { resolver.resolveModifiers() }
 
     /// The declaration keyword.
     ///
     /// i.e: `"class"`
-    public var keyword: String { resolver.keyword }
+    public var keyword: String { resolver.resolveKeyword() }
 
     // MARK: - Properties: Resolving
 
@@ -46,7 +45,7 @@ public struct Deinitializer: Declaration, SyntaxChildCollecting {
 
     // MARK: - Properties: SyntaxChildCollecting
 
-    public var childCollection: DeclarationCollection = DeclarationCollection()
+    public var childCollection: DeclarationCollection = .init()
 
     // MARK: - Lifecycle
 

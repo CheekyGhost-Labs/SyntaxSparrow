@@ -25,7 +25,6 @@ import SwiftSyntax
 /// The `Subscript` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the subscript
 /// declaration is located.
 public struct Subscript: Declaration {
-
     // MARK: - Properties: Declaration
 
     public var node: SubscriptDeclSyntax { resolver.node }
@@ -35,19 +34,19 @@ public struct Subscript: Declaration {
     /// Array of attributes found in the declaration.
     ///
     /// - See: ``SyntaxSparrow/Attribute``
-    public var attributes: [Attribute] { resolver.attributes }
+    public var attributes: [Attribute] { resolver.resolveAttributes() }
 
     /// Array of modifiers found in the declaration.
     /// - See: ``SyntaxSparrow/Modifier``
-    public var modifiers: [Modifier] { resolver.modifiers }
+    public var modifiers: [Modifier] { resolver.resolveModifiers() }
 
     /// The declaration keyword.
     ///
     /// i.e: `"func"`
-    public var keyword: String { resolver.keyword }
+    public var keyword: String { resolver.resolveKeyword() }
 
     /// The subscript parameter indices
-    public var indices: [Parameter] { resolver.indices }
+    public var indices: [Parameter] { resolver.resolveIndices() }
 
     /// Array of generic parameters found in the declaration.
     ///
@@ -55,7 +54,7 @@ public struct Subscript: Declaration {
     /// ```swift
     /// func performOperation<T: Equatable>(input: T) {}
     /// ```
-    public var genericParameters: [GenericParameter] { resolver.genericParameters }
+    public var genericParameters: [GenericParameter] { resolver.resolveGenericParameters() }
 
     /// Array of generic requirements found in the declaration.
     ///
@@ -63,13 +62,13 @@ public struct Subscript: Declaration {
     /// ```swift
     /// func performOperation<T>(input: T) where T: Hashable {}
     /// ```
-    public var genericRequirements: [GenericRequirement] { resolver.genericRequirements }
+    public var genericRequirements: [GenericRequirement] { resolver.resolveGenericRequirements() }
 
     /// The return type of the subscript.
-    public var returnType: EntityType { resolver.returnType }
+    public var returnType: EntityType { resolver.resolveReturnType() }
 
     /// The subscript getter and/or setter.
-    public var accessors: [Accessor] { resolver.accessors }
+    public var accessors: [Accessor] { resolver.resolveAccessors() }
 
     // MARK: - Properties: DeclarationCollecting
 

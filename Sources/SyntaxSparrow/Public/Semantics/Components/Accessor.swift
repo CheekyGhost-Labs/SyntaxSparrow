@@ -20,7 +20,6 @@ import SwiftSyntax
 ///
 /// The `Accessor` struct also includes functionality to create an accessor instance from an `AccessorDeclSyntax` node.
 public struct Accessor: DeclarationComponent {
-
     // MARK: - Supplementary
 
     /// The kind of accessor (`get` or `set`).
@@ -102,7 +101,7 @@ public struct Accessor: DeclarationComponent {
         if let body = node.body {
             self.body = CodeBlock(node: body)
         } else {
-            self.body = nil
+            body = nil
         }
         // effectSpecifier
         if let effectSpecifiers = node.effectSpecifiers {

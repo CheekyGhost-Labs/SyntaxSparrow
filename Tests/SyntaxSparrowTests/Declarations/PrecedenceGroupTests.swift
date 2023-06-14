@@ -243,7 +243,7 @@ final class PrecedenceGroupTests: XCTestCase {
         let equalCases: [(PrecedenceGroup, PrecedenceGroup)] = [
             (sampleOne, sampleTwo),
             (sampleOne, sampleThree),
-            (sampleTwo, sampleThree)
+            (sampleTwo, sampleThree),
         ]
         let notEqualCases: [(PrecedenceGroup, PrecedenceGroup)] = [
             (sampleOne, sampleFour),
@@ -251,7 +251,7 @@ final class PrecedenceGroupTests: XCTestCase {
             (sampleTwo, sampleFour),
             (sampleTwo, otherSample),
             (sampleThree, sampleFour),
-            (sampleThree, otherSample)
+            (sampleThree, otherSample),
         ]
         equalCases.forEach {
             XCTAssertEqual($0.0, $0.1)

@@ -106,24 +106,24 @@ public struct PrecedenceGroup: Declaration {
     /// The declaration keyword.
     ///
     /// i.e: `"precedencegroup"`
-    public var keyword: String { resolver.keyword }
+    public var keyword: String { resolver.resolveKeyword() }
 
     /// The precedence group name.
-    public var name: String { resolver.name }
+    public var name: String { resolver.resolveName() }
 
     /// `Bool` whether the operators in the precedence group are folded into optional chains.
     ///
     /// For example, if `assignment` is `true`, the expression `entry?.count += 1` has the effect of `entry?(.count += 1)`
     /// otherwise the same expression would be interpreted as `(entry?.count) += 1` which would fail to type-check.
-    public var assignment: Bool? { resolver.assignment }
+    public var assignment: Bool? { resolver.resolveAssignment() }
 
     /// The associativity of operators in the precedence group.
     /// - See: ``SyntaxSparrow/PrecedenceGroup/Associativity-swift.enum``
-    public var associativity: Associativity? { resolver.associativity }
+    public var associativity: Associativity? { resolver.resolveAssociativity() }
 
     /// The relation of operators to operators in other precedence groups.
     /// - See: ``SyntaxSparrow/PrecedenceGroup/Associativity-swift.enum``
-    public var relations: [Relation] { resolver.relations }
+    public var relations: [Relation] { resolver.resolveRelations() }
 
     // MARK: - Properties: DeclarationCollecting
 

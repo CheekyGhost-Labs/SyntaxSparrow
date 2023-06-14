@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Michael O'Brien on 14/6/2023.
 //
@@ -9,9 +9,7 @@ import Foundation
 import SwiftSyntax
 
 public extension Accessor {
-
     struct EffectSpecifiers: DeclarationComponent {
-
         // MARK: - Properties: DeclarationComponent
 
         public let node: AccessorEffectSpecifiersSyntax

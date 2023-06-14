@@ -13,32 +13,26 @@ import SwiftSyntax
 /// It exposes the expected properties of a `Result` type as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when
 /// accessed repeatedly.
 /// The `GenericArgumentListSyntax` is resolved from a `SimpleTypeIdentifierSyntax`.
-class ResultSemanticsResolver: SemanticsResolving {
+struct ResultSemanticsResolver: SemanticsResolving {
     // MARK: - Properties: SemanticsResolving
 
     typealias Node = SimpleTypeIdentifierSyntax
 
     let node: Node
 
-    private(set) lazy var successType: EntityType = resolveSuccessType()
-
-    private(set) lazy var failureType: EntityType = resolveFailureType()
-
-    private(set) lazy var isOptional: Bool = resolveIsOptional()
-
     // MARK: - Lifecycle
 
-    required init(node: SimpleTypeIdentifierSyntax) {
+    init(node: SimpleTypeIdentifierSyntax) {
         self.node = node
     }
 
     // MARK: - Resolvers
 
-    private func resolveIsOptional() -> Bool {
+    func resolveIsOptional() -> Bool {
         node.resolveIsOptional(viewMode: .fixedUp)
     }
 
-    private func resolveSuccessType() -> EntityType {
+    func resolveSuccessType() -> EntityType {
         guard
             let arguments = node.genericArgumentClause?.arguments,
             arguments.count == 2,
@@ -49,7 +43,7 @@ class ResultSemanticsResolver: SemanticsResolving {
         return EntityType.parseType(successType.argumentType)
     }
 
-    private func resolveFailureType() -> EntityType {
+    func resolveFailureType() -> EntityType {
         guard
             let arguments = node.genericArgumentClause?.arguments,
             arguments.count == 2,

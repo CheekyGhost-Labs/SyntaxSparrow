@@ -8,34 +8,25 @@
 import Foundation
 import SwiftSyntax
 
-/// `DeclarationSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a
+/// `DeclarationSemanticsResolving` conforming struct that is responsible for exploring, retrieving properties, and collecting children of a
 /// `GenericRequirementSyntax` node.
-/// It exposes the expected properties of a `GenericRequirement` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated
-/// when accessed repeatedly.
-class GenericRequirementSemanticsResolver: SemanticsResolving {
+/// It exposes the expected properties of a `GenericRequirement` via resolving methods
+struct GenericRequirementSemanticsResolver: SemanticsResolving {
     // MARK: - Properties: SemanticsResolving
 
     typealias Node = GenericRequirementSyntax
 
     let node: Node
 
-    // MARK: - Properties: StructureDeclaration
-
-    private(set) lazy var relation: GenericRequirement.Relation = resolveRelation()
-
-    private(set) lazy var leftTypeIdentifier: String = resolveLeftType()
-
-    private(set) lazy var rightTypeIdentifier: String = resolveRightType()
-
     // MARK: - Lifecycle
 
-    required init(node: GenericRequirementSyntax) {
+    init(node: GenericRequirementSyntax) {
         self.node = node
     }
 
     // MARK: - Resolvers
 
-    private func resolveLeftType() -> String {
+    func resolveLeftType() -> String {
         switch node.body {
         case let .sameTypeRequirement(syntax):
             return syntax.leftTypeIdentifier.description.trimmed
@@ -46,7 +37,7 @@ class GenericRequirementSemanticsResolver: SemanticsResolving {
         }
     }
 
-    private func resolveRightType() -> String {
+    func resolveRightType() -> String {
         switch node.body {
         case let .sameTypeRequirement(syntax):
             return syntax.rightTypeIdentifier.description.trimmed
@@ -57,7 +48,7 @@ class GenericRequirementSemanticsResolver: SemanticsResolving {
         }
     }
 
-    private func resolveRelation() -> GenericRequirement.Relation {
+    func resolveRelation() -> GenericRequirement.Relation {
         switch node.body {
         case .sameTypeRequirement:
             return .sameType

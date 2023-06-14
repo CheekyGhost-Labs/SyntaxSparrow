@@ -8,11 +8,11 @@
 import Foundation
 import SwiftSyntax
 
-/// `DeclarationSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a
+/// `DeclarationSemanticsResolving` conforming struct that is responsible for exploring, retrieving properties, and collecting children of a
 /// `AttributeSyntax` node.
 /// It exposes the expected properties of a `Attribute` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when
 /// accessed repeatedly.
-class AttributeSemanticsResolver: SemanticsResolving {
+struct AttributeSemanticsResolver: SemanticsResolving {
     // MARK: - Properties: SemanticsResolving
 
     typealias Node = AttributeSyntax
@@ -21,23 +21,21 @@ class AttributeSemanticsResolver: SemanticsResolving {
 
     // MARK: - Properties: StructureDeclaration
 
-    private(set) lazy var name: String = resolveName()
-
     private(set) lazy var arguments: [Attribute.Argument] = resolveArguments()
 
     // MARK: - Lifecycle
 
-    required init(node: AttributeSyntax) {
+    init(node: AttributeSyntax) {
         self.node = node
     }
 
     // MARK: - Resolvers
 
-    private func resolveName() -> String {
+    func resolveName() -> String {
         node.attributeName.description.trimmed
     }
 
-    private func resolveArguments() -> [Attribute.Argument] {
+    func resolveArguments() -> [Attribute.Argument] {
         guard let argumentNode = node.argument else { return [] }
         // Can ultimately switch here for more accuracy and support for specialized types. For now just getting name:value pairs
         let components = argumentNode.description.split(separator: ",")

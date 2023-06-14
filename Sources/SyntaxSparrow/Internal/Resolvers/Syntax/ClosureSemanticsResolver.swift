@@ -12,28 +12,16 @@ import SwiftSyntax
 /// node.
 /// It exposes the expected properties of a `Function` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when
 /// accessed repeatedly.
-class ClosureSemanticsResolver: SemanticsResolving {
+struct ClosureSemanticsResolver: SemanticsResolving {
     // MARK: - Properties: SemanticsResolving
 
     typealias Node = FunctionTypeSyntax
 
     let node: Node
 
-    private(set) lazy var input: EntityType = resolveInput()
-
-    private(set) lazy var output: EntityType = resolveOutput()
-
-    private(set) lazy var rawInput: String = resolveRawInput()
-
-    private(set) lazy var rawOutput: String = resolveRawOutput()
-
-    private(set) lazy var isEscaping: Bool = resolveIsEscaping()
-
-    private(set) lazy var isOptional: Bool = resolveIsOptional()
-
     // MARK: - Lifecycle
 
-    required init(node: FunctionTypeSyntax) {
+    init(node: FunctionTypeSyntax) {
         self.node = node
     }
 
@@ -43,44 +31,41 @@ class ClosureSemanticsResolver: SemanticsResolving {
 
     // MARK: - Resolvers
 
-    private func resolveInput() -> EntityType {
+    func resolveInput() -> EntityType {
         guard !node.arguments.isEmpty else { return .void("()", false) }
         return EntityType.parseElementList(node.arguments)
         // Pending update - leaving here for easier reference
         // return EntityType.parseElementList(node.parameters)
     }
 
-    private func resolveOutput() -> EntityType {
+    func resolveOutput() -> EntityType {
         EntityType.parseType(node.output.returnType)
     }
 
-    private func resolveRawInput() -> String {
+    func resolveRawInput() -> String {
         node.arguments.description.trimmed
         // Pending update - leaving here for easier reference
         // node.parameters.description.trimmed
     }
 
-    private func resolveRawOutput() -> String {
+    func resolveRawOutput() -> String {
         node.output.returnType.description.trimmed
     }
 
-    private func resolveIsOptional() -> Bool {
+    func resolveIsOptional() -> Bool {
         // Resolve parent type syntax
         var parentParameter: SyntaxProtocol?
         for case let node? in sequence(first: node.parent, next: { $0?.parent }) {
             if let declaration = node.as(FunctionParameterSyntax.self) {
                 parentParameter = declaration
                 break
-            }
-            else if let declaration = node.as(PatternBindingSyntax.self) {
+            } else if let declaration = node.as(PatternBindingSyntax.self) {
                 parentParameter = declaration
                 break
-            }
-            else if let declaration = node.as(VariableDeclSyntax.self) {
+            } else if let declaration = node.as(VariableDeclSyntax.self) {
                 parentParameter = declaration
                 break
-            }
-            else if let declaration = node.as(TupleTypeSyntax.self) {
+            } else if let declaration = node.as(TupleTypeSyntax.self) {
                 parentParameter = declaration
                 break
             }
@@ -89,7 +74,7 @@ class ClosureSemanticsResolver: SemanticsResolving {
         return parentNode.resolveIsOptional(viewMode: .fixedUp)
     }
 
-    private func resolveIsEscaping() -> Bool {
+    func resolveIsEscaping() -> Bool {
         var nextParent = node.parent
         while nextParent != nil {
             if let attributed = nextParent?.as(AttributedTypeSyntax.self) {

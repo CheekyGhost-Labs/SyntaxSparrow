@@ -31,8 +31,8 @@ private extension DeclarationCollection {
 }
 
 final class SyntaxSparrowTests: XCTestCase {
-
     // MARK: - Properties
+
     let source = #"""
     #if DEBUG
     typealias StringAlias = String
@@ -275,14 +275,14 @@ final class SyntaxSparrowTests: XCTestCase {
     // These are for testing performance on refactors and as a base point for future changes. They are disabled by way of a `x_` prefix.
 
     func x_test_initialCollectionPerformance() throws {
-        self.measure {
+        measure {
             let tree = SyntaxTree(viewMode: .fixedUp, sourceBuffer: source)
             tree.collectChildren()
         }
     }
 
     func x_test_sourceResolving_topLevelOnly_Performance() throws {
-        self.measure {
+        measure {
             let tree = SyntaxTree(viewMode: .fixedUp, sourceBuffer: source)
             tree.collectChildren()
             tree.childCollection.allDeclarations.forEach {
@@ -292,7 +292,7 @@ final class SyntaxSparrowTests: XCTestCase {
     }
 
     func x_test_sourceResolving_traversed_Performance() throws {
-        self.measure {
+        measure {
             let tree = SyntaxTree(viewMode: .fixedUp, sourceBuffer: source)
             tree.collectChildren()
             performTraversedSourceLocationCheck(on: tree.childCollection, tree: tree)

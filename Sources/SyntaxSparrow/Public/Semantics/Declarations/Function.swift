@@ -53,16 +53,16 @@ public struct Function: Declaration, SyntaxChildCollecting {
     /// Array of attributes found in the declaration.
     ///
     /// - See: ``SyntaxSparrow/Attribute``
-    public var attributes: [Attribute] { resolver.attributes }
+    public var attributes: [Attribute] { resolver.resolveAttributes() }
 
     /// Array of modifiers found in the declaration.
     /// - See: ``SyntaxSparrow/Modifier``
-    public var modifiers: [Modifier] { resolver.modifiers }
+    public var modifiers: [Modifier] { resolver.resolveModifiers() }
 
     /// The declaration keyword.
     ///
     /// i.e: `"func"` for function declarations.
-    public var keyword: String { resolver.keyword }
+    public var keyword: String { resolver.resolveKeyword() }
 
     /// The function identifier (similar to name).
     ///
@@ -71,7 +71,7 @@ public struct Function: Declaration, SyntaxChildCollecting {
     /// func performOperation(withName name: String) -> String
     /// ```
     /// - The `identifier` is equal to `performOperation`
-    public var identifier: String { resolver.identifier }
+    public var identifier: String { resolver.resolveIdentifier() }
 
     /// Array of generic parameters found in the declaration.
     ///
@@ -79,7 +79,7 @@ public struct Function: Declaration, SyntaxChildCollecting {
     /// ```swift
     /// func performOperation<T: Equatable>(input: T) {}
     /// ```
-    public var genericParameters: [GenericParameter] { resolver.genericParameters }
+    public var genericParameters: [GenericParameter] { resolver.resolveGenericParameters() }
 
     /// Array of generic requirements found in the declaration.
     ///
@@ -87,7 +87,7 @@ public struct Function: Declaration, SyntaxChildCollecting {
     /// ```swift
     /// func performOperation<T>(input: T) where T: Hashable {}
     /// ```
-    public var genericRequirements: [GenericRequirement] { resolver.genericRequirements }
+    public var genericRequirements: [GenericRequirement] { resolver.resolveGenericRequirements() }
 
     /// Struct representing the function signature.
     ///
@@ -99,8 +99,8 @@ public struct Function: Declaration, SyntaxChildCollecting {
     /// - An `input` equal to an array with a single `Parameter` item.
     /// - An `output` equal to `EntityType.simple("String")`
     /// - A `throwsOrRethrowsKeyword` equal to `"throws"`
-    public var signature: Function.Signature { resolver.signature }
-    
+    public var signature: Function.Signature { resolver.resolveSignature() }
+
     /// Struct representing the body of the function.
     ///
     /// For example in the following declaration:
@@ -111,13 +111,13 @@ public struct Function: Declaration, SyntaxChildCollecting {
     /// }
     /// ```
     /// would provide a `body` that is not `nil` and would have 2 statements within it.
-    public var body: CodeBlock? { resolver.body }
+    public var body: CodeBlock? { resolver.resolveBody() }
 
     /// `Bool` whether the subscript is a valid operator type.
-    public var isOperator: Bool { resolver.isOperator }
+    public var isOperator: Bool { resolver.resolveIsOperator() }
 
     /// `Operator.Kind` assigned when the `isOperator` is `true`.
-    public var operatorKind: Operator.Kind? { resolver.operatorKind }
+    public var operatorKind: Operator.Kind? { resolver.resolveOperatorKind() }
 
     // MARK: - Properties: Resolving
 
@@ -125,7 +125,7 @@ public struct Function: Declaration, SyntaxChildCollecting {
 
     // MARK: - Properties: SyntaxChildCollecting
 
-    public var childCollection: DeclarationCollection = DeclarationCollection()
+    public var childCollection: DeclarationCollection = .init()
 
     // MARK: - Lifecycle
 

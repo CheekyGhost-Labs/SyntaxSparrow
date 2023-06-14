@@ -31,7 +31,7 @@ SyntaxSparrow was built on heavy inspiration from the now archived [SwiftSemanti
 
 The primary goal of producing semantic types to abstract the underlying `Syntax` expressions produced by `SwiftSyntax` remains the same, however there are a few other goals that `SyntaxSparrow` tries to achieve:
 
-- **Lazy evaluation**: As some source can be quite verbose and complex, SyntaxSparrow aims to only process and iterate through nodes as you request them. The goal being to improve performance and lets the collectors focus on high-level traversal. Whether this is worth the internal trade off from a code complexity perspective will be reviewed over updates. The publicly visible semantic types are not effected by any internal updates fortunately.
+- **On-request evaluation**: As some source can be quite verbose and complex, SyntaxSparrow aims to only process and iterate through nodes as you request them. The goal being to improve performance and lets the collectors focus on high-level traversal. Whether this is worth the internal trade off from a code complexity perspective will be reviewed over updates. The publicly visible semantic types are not effected by any internal updates fortunately.
 
 - **Source Locations**: `SyntaxSparrow` enables asking for where a declaration is within the provided source.
 
@@ -53,7 +53,7 @@ The primary goal of producing semantic types to abstract the underlying `Syntax`
 
 - **Different View Modes**: Control the parsing and traversal strategy when processing the source code.
 
-- **Lazy Evaluation**: The details of a semantic type are only loaded on request.
+- **On-demand Evaluation**: The details of a semantic type are only loaded on request.
 
 - **Heirachy Based**: Semantic types support child declarations (where relevant) to allow for a more heirachy-based traversal.
 

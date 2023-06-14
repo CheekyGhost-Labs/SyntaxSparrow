@@ -9,10 +9,9 @@ import Foundation
 import SwiftSyntax
 
 public extension CodeBlock {
-
     struct Statement: DeclarationComponent {
-
         // MARK: - Kind
+
         public enum Kind: Equatable {
             case declaration(DeclSyntax) // decl
             case statement(StmtSyntax) // stmt
@@ -20,11 +19,11 @@ public extension CodeBlock {
 
             public static func == (lhs: Kind, rhs: Kind) -> Bool {
                 switch (lhs, rhs) {
-                case (.declaration(let lhsNode), .declaration(let rhsNode)):
+                case let (.declaration(lhsNode), .declaration(rhsNode)):
                     return lhsNode.id == rhsNode.id
-                case (.statement(let lhsNode), .statement(let rhsNode)):
+                case let (.statement(lhsNode), .statement(rhsNode)):
                     return lhsNode.id == rhsNode.id
-                case (.expression(let lhsNode), .expression(let rhsNode)):
+                case let (.expression(lhsNode), .expression(rhsNode)):
                     return lhsNode.id == rhsNode.id
                 default:
                     return false
@@ -35,11 +34,11 @@ public extension CodeBlock {
 
             init(_ item: CodeBlockItemSyntax.Item) {
                 switch item {
-                case .decl(let declSyntax):
+                case let .decl(declSyntax):
                     self = .declaration(declSyntax)
-                case .stmt(let stmtSyntax):
+                case let .stmt(stmtSyntax):
                     self = .statement(stmtSyntax)
-                case .expr(let exprSyntax):
+                case let .expr(exprSyntax):
                     self = .expression(exprSyntax)
                 }
             }
@@ -56,11 +55,11 @@ public extension CodeBlock {
         public init(node: CodeBlockItemSyntax) {
             self.node = node
             switch node.item {
-            case .decl(let declSyntax):
+            case let .decl(declSyntax):
                 kind = .declaration(declSyntax)
-            case .stmt(let stmtSyntax):
+            case let .stmt(stmtSyntax):
                 kind = .statement(stmtSyntax)
-            case .expr(let exprSyntax):
+            case let .expr(exprSyntax):
                 kind = .expression(exprSyntax)
             }
         }

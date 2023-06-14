@@ -153,6 +153,7 @@ public class SyntaxTree: SyntaxChildCollecting, SyntaxExplorerContextProviding {
 
     public var childCollection: DeclarationCollection { declarationCollector.declarationCollection }
 
+    public var actors: [Actor] { childCollection.actors }
     public var classes: [Class] { childCollection.classes }
     public var deinitializers: [Deinitializer] { childCollection.deinitializers }
     public var enumerations: [Enumeration] { childCollection.enumerations }

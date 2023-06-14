@@ -47,6 +47,41 @@ public struct Accessor: DeclarationComponent {
     /// The kind of accessor.
     public let kind: Kind?
 
+    /// Struct representing the state of any effect specifiers on the accessor.
+    ///
+    /// For example, your accessor might support structured concurrency:
+    /// ```swift
+    /// var name: String {
+    ///    async get { "..." }
+    /// }
+    /// ```
+    /// in which case the `effectSpecifiers` property would be present and output:
+    /// - `effectSpecifiers.throwsSpecifier` // nil
+    /// - `effectSpecifiers.asyncAwaitKeyword` // "async""
+    ///
+    /// **Note:** `effectSpecifiers` will be `nil` if no specifiers are found on the node.
+    public let effectSpecifiers: EffectSpecifiers?
+
+    /// The accessor code body (when present).
+    /// An example when this would be `nil` would be within a protocol var declaration. For example:
+    /// ```swift
+    /// protocol MyProtocol {
+    ///     var name: String { get set }
+    /// }
+    /// ```
+    /// where as within a variable with a get/set, it would be present
+    /// ```swift
+    ///     var name: String {
+    ///         get {
+    ///             "name"
+    ///         }
+    ///         set {
+    ///             self.name = newValue
+    ///         }
+    ///     }
+    /// ```
+    public let body: CodeBlock?
+
     // MARK: - Lifecycle
 
     /// Creates a new ``SyntaxSparrow/Accessor`` instance from an `AccessorDeclSyntax` node.
@@ -63,5 +98,17 @@ public struct Accessor: DeclarationComponent {
         // Kind
         let rawKind = node.accessorKind.text.trimmed
         kind = Kind(rawValue: rawKind)
+        // Body
+        if let body = node.body {
+            self.body = CodeBlock(node: body)
+        } else {
+            self.body = nil
+        }
+        // effectSpecifier
+        if let effectSpecifiers = node.effectSpecifiers {
+            self.effectSpecifiers = EffectSpecifiers(node: effectSpecifiers)
+        } else {
+            effectSpecifiers = nil
+        }
     }
 }

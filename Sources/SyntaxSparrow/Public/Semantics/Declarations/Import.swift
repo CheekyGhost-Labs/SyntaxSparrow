@@ -17,7 +17,7 @@ import SwiftSyntax
 ///
 /// Each instance of ``SyntaxSparrow/Import`` corresponds to an `ImportDeclSyntax` node in the Swift syntax tree.
 ///
-/// This structure conforms to `Declaration` and `SyntaxSourceLocationResolving`, which provide
+/// This structure conforms to `Declaration` , which provide
 /// access to the declaration attributes, modifiers, and source location information.
 public struct Import: Declaration {
 

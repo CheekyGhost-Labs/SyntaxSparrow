@@ -41,6 +41,8 @@ class FunctionSemanticsResolver: SemanticsResolving {
 
     private(set) lazy var signature: Function.Signature = resolveSignature()
 
+    private(set) lazy var body: CodeBlock? = resolveBody()
+
     // MARK: - Lifecycle
 
     required init(node: FunctionDeclSyntax) {
@@ -87,11 +89,22 @@ class FunctionSemanticsResolver: SemanticsResolving {
             outputType = EntityType.parseType(output.returnType)
         }
         let throwsKeyword = node.signature.effectSpecifiers?.throwsSpecifier?.text.trimmed
-        return Function.Signature(input: inputParameters, output: outputType, throwsOrRethrowsKeyword: throwsKeyword)
+        let asyncKeyword = node.signature.effectSpecifiers?.asyncSpecifier?.text.trimmed
+        return Function.Signature(
+            input: inputParameters,
+            output: outputType,
+            throwsOrRethrowsKeyword: throwsKeyword,
+            asyncKeyword: asyncKeyword
+        )
     }
 
     private func resolveOperatorKind() -> Operator.Kind? {
         guard isOperator else { return nil }
         return Operator.Kind(modifiers) ?? .infix
+    }
+
+    private func resolveBody() -> CodeBlock? {
+        guard let body = node.body else { return nil }
+        return CodeBlock(node: body)
     }
 }

@@ -38,6 +38,10 @@ public struct Function: Declaration, SyntaxChildCollecting {
         /// The `throws` or `rethrows` keyword, if any.
         /// Indicates whether the function can throw an error.
         public let throwsOrRethrowsKeyword: String?
+
+        /// The `asyncAwait` keyword, if any.
+        /// Indicates whether the function supports structured concurrency.
+        public let asyncKeyword: String?
     }
 
     // MARK: - Properties: Declaration
@@ -96,6 +100,18 @@ public struct Function: Declaration, SyntaxChildCollecting {
     /// - An `output` equal to `EntityType.simple("String")`
     /// - A `throwsOrRethrowsKeyword` equal to `"throws"`
     public var signature: Function.Signature { resolver.signature }
+    
+    /// Struct representing the body of the function.
+    ///
+    /// For example in the following declaration:
+    /// ```swift
+    /// func performOperation() {
+    ///     print("hello")
+    ///     print("world")
+    /// }
+    /// ```
+    /// would provide a `body` that is not `nil` and would have 2 statements within it.
+    public var body: CodeBlock? { resolver.body }
 
     /// `Bool` whether the subscript is a valid operator type.
     public var isOperator: Bool { resolver.isOperator }

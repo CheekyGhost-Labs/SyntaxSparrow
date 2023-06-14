@@ -16,7 +16,7 @@ public extension Enumeration {
     ///
     /// Each instance of ``SyntaxSparrow/Enumeration/Case`` corresponds to an `EnumCaseElementSyntax` node in the Swift syntax tree.
     ///
-    /// This structure conforms to `Declaration` and `SyntaxSourceLocationResolving`,
+    /// This structure conforms to `Declaration` ,
     /// which provide access to the declaration attributes, modifiers, and source location information.
     struct Case: Declaration {
 

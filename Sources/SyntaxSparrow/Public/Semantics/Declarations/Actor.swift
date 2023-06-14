@@ -1,5 +1,5 @@
 //
-//  Class.swift
+//  Actor.swift
 //
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
@@ -13,13 +13,13 @@ import SwiftSyntax
 /// A `Actor` struct provides access to various aspects of the class declaration it represents, such as:
 /// - Attributes: Any attributes associated with the class declaration, e.g. `@available`.
 /// - Modifiers: Modifiers applied to the class, e.g. `public`, `final`.
-/// - Name: The name of the class.
+/// - Name: The name of the actor.
 /// - Inheritance: Types that the class inherits from (if any), including both classes and protocols.
 /// - Generic parameters and requirements: Information about any generic parameters or requirements that the class has.
 ///
 /// Each instance of ``SyntaxSparrow/Actor`` corresponds to a `ActorDeclSyntax` node in the Swift syntax tree.
 ///
-/// This structure conforms to `Declaration`, `SyntaxChildCollecting`, and `SyntaxSourceLocationResolving`,
+/// This structure conforms to `Declaration`, `SyntaxChildCollecting`, ,
 /// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
 public struct Actor: Declaration, SyntaxChildCollecting {
 

@@ -336,55 +336,55 @@ final class ActorTests: XCTestCase {
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.actors.count, 1)
 
-        let classUnderTest = instanceUnderTest.actors[0]
+        let actorUnderTest = instanceUnderTest.actors[0]
 
         // Check child structures
-        XCTAssertEqual(classUnderTest.structures.count, 1)
-        XCTAssertEqual(classUnderTest.structures[0].name, "NestedStruct")
+        XCTAssertEqual(actorUnderTest.structures.count, 1)
+        XCTAssertEqual(actorUnderTest.structures[0].name, "NestedStruct")
 
         // Check child classes
-        XCTAssertEqual(classUnderTest.actors.count, 1)
-        XCTAssertEqual(classUnderTest.actors[0].name, "NestedActor")
+        XCTAssertEqual(actorUnderTest.actors.count, 1)
+        XCTAssertEqual(actorUnderTest.actors[0].name, "NestedActor")
 
         // Check child classes
-        XCTAssertEqual(classUnderTest.classes.count, 1)
-        XCTAssertEqual(classUnderTest.classes[0].name, "NestedClass")
+        XCTAssertEqual(actorUnderTest.classes.count, 1)
+        XCTAssertEqual(actorUnderTest.classes[0].name, "NestedClass")
 
         // Check child enums
-        XCTAssertEqual(classUnderTest.enumerations.count, 1)
-        XCTAssertEqual(classUnderTest.enumerations[0].name, "NestedEnum")
+        XCTAssertEqual(actorUnderTest.enumerations.count, 1)
+        XCTAssertEqual(actorUnderTest.enumerations[0].name, "NestedEnum")
 
         // Check child type aliases
-        XCTAssertEqual(classUnderTest.typealiases.count, 1)
-        XCTAssertEqual(classUnderTest.typealiases[0].name, "NestedTypeAlias")
+        XCTAssertEqual(actorUnderTest.typealiases.count, 1)
+        XCTAssertEqual(actorUnderTest.typealiases[0].name, "NestedTypeAlias")
 
         // Check child functions
-        XCTAssertEqual(classUnderTest.functions.count, 1)
-        XCTAssertEqual(classUnderTest.functions[0].identifier, "nestedFunction")
+        XCTAssertEqual(actorUnderTest.functions.count, 1)
+        XCTAssertEqual(actorUnderTest.functions[0].identifier, "nestedFunction")
 
         // Check child variables
-        XCTAssertEqual(classUnderTest.variables.count, 1)
-        XCTAssertEqual(classUnderTest.variables[0].name, "nestedVariable")
+        XCTAssertEqual(actorUnderTest.variables.count, 1)
+        XCTAssertEqual(actorUnderTest.variables[0].name, "nestedVariable")
 
         // Check child protocols
-        XCTAssertEqual(classUnderTest.protocols.count, 1)
-        XCTAssertEqual(classUnderTest.protocols[0].name, "NestedProtocol")
+        XCTAssertEqual(actorUnderTest.protocols.count, 1)
+        XCTAssertEqual(actorUnderTest.protocols[0].name, "NestedProtocol")
 
         // Check child subscripts
-        XCTAssertEqual(classUnderTest.subscripts.count, 1)
-        XCTAssertEqual(classUnderTest.subscripts[0].keyword, "subscript")
+        XCTAssertEqual(actorUnderTest.subscripts.count, 1)
+        XCTAssertEqual(actorUnderTest.subscripts[0].keyword, "subscript")
 
         // Check child initializers
-        XCTAssertEqual(classUnderTest.initializers.count, 1)
-        XCTAssertEqual(classUnderTest.initializers[0].keyword, "init")
+        XCTAssertEqual(actorUnderTest.initializers.count, 1)
+        XCTAssertEqual(actorUnderTest.initializers[0].keyword, "init")
 
         // Check child deinitializers
-        XCTAssertEqual(classUnderTest.deinitializers.count, 1)
-        XCTAssertEqual(classUnderTest.deinitializers[0].keyword, "deinit")
+        XCTAssertEqual(actorUnderTest.deinitializers.count, 1)
+        XCTAssertEqual(actorUnderTest.deinitializers[0].keyword, "deinit")
 
         // Check child operators
-        XCTAssertEqual(classUnderTest.operators.count, 1)
-        XCTAssertEqual(classUnderTest.operators[0].name, "+-")
+        XCTAssertEqual(actorUnderTest.operators.count, 1)
+        XCTAssertEqual(actorUnderTest.operators[0].name, "+-")
     }
 
     func test_hashable_equatable_willReturnExpectedResults() throws {

@@ -21,7 +21,7 @@ import SwiftSyntax
 ///
 /// Each instance of ``SyntaxSparrow/ProtocolDecl`` corresponds to a `ProtocolDeclSyntax` node in the Swift syntax tree.
 ///
-/// This structure conforms to `Declaration`, `SyntaxChildCollecting`, and `SyntaxSourceLocationResolving`,
+/// This structure conforms to `Declaration`, `SyntaxChildCollecting`, ,
 /// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
 public struct ProtocolDecl: Declaration, SyntaxChildCollecting {
 

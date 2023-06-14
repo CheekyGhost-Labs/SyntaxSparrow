@@ -10,7 +10,7 @@ import SwiftSyntax
 
 /// `DeclarationSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a
 /// `ActorDeclSyntax` node.
-/// It exposes the expected properties of a `Class` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed
+/// It exposes the expected properties of a `Actor` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when accessed
 /// repeatedly.
 class ActorSemanticsResolver: SemanticsResolving {
     // MARK: - Properties: SemanticsResolving

@@ -19,7 +19,7 @@ import SwiftSyntax
 ///
 /// Each instance of ``SyntaxSparrow/Class`` corresponds to a `ClassDeclSyntax` node in the Swift syntax tree.
 ///
-/// This structure conforms to `Declaration`, `SyntaxChildCollecting`, and `SyntaxSourceLocationResolving`,
+/// This structure conforms to `Declaration`, `SyntaxChildCollecting`, ,
 /// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
 public struct Class: Declaration, SyntaxChildCollecting {
 
@@ -45,7 +45,7 @@ public struct Class: Declaration, SyntaxChildCollecting {
 
     /// The class name.
     ///
-    /// i.e: `struct MyClass { ... }` would have a name of `"MyClass"`
+    /// i.e: `class MyClass { ... }` would have a name of `"MyClass"`
     /// If the structure is unnamed, this will be an empty string.
     public var name: String { resolver.name }
 

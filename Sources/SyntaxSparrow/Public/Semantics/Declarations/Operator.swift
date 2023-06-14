@@ -19,7 +19,7 @@ import SwiftSyntax
 ///
 /// Each instance of ``SyntaxSparrow/Operator`` corresponds to an `OperatorDeclSyntax` node in the Swift syntax tree.
 ///
-/// This structure conforms to `Declaration` and `SyntaxSourceLocationResolving`, which provides
+/// This structure conforms to `Declaration` , which provides
 /// access to the declaration attributes, modifiers, and source location information.
 public struct Operator: Declaration {
 

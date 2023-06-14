@@ -159,7 +159,7 @@ final class ImportTests: XCTestCase {
         let equalCases: [(Import, Import)] = [
             (sampleOne, sampleTwo),
             (sampleOne, sampleThree),
-            (sampleTwo, sampleThree)
+            (sampleTwo, sampleThree),
         ]
         let notEqualCases: [(Import, Import)] = [
             (sampleOne, sampleFour),
@@ -167,7 +167,7 @@ final class ImportTests: XCTestCase {
             (sampleTwo, sampleFour),
             (sampleTwo, otherSample),
             (sampleThree, sampleFour),
-            (sampleThree, otherSample)
+            (sampleThree, otherSample),
         ]
         equalCases.forEach {
             XCTAssertEqual($0.0, $0.1)

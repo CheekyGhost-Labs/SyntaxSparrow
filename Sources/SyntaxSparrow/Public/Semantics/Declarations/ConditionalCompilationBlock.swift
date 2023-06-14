@@ -19,7 +19,6 @@ import SwiftSyntax
 /// This struct provides access to the branches within the conditional compilation block
 /// and the source location of the block.
 public struct ConditionalCompilationBlock: Declaration {
-
     // MARK: - Properties: Declaration
 
     public var node: IfConfigDeclSyntax { resolver.node }
@@ -41,7 +40,7 @@ public struct ConditionalCompilationBlock: Declaration {
     /// - The first branch has the keyword `#if` and the condition `true`
     /// - The first branch has the keyword `#elseif` and the condition `UNIT_TEST` (compiler flag presence)
     /// - The second branch has the keyword `#else` and no condition
-    public var branches: [Branch] { resolver.branches }
+    public var branches: [Branch] { resolver.resolveBranches() }
 
     // MARK: - Properties: DeclarationCollecting
 
@@ -51,6 +50,5 @@ public struct ConditionalCompilationBlock: Declaration {
 
     public init(node: IfConfigDeclSyntax) {
         resolver = ConditionalCompilationBlockSemanticsResolver(node: node)
-        _ = branches
     }
 }

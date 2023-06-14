@@ -23,9 +23,9 @@ import SwiftSyntax
 public struct Tuple: Hashable, Equatable, CustomStringConvertible {
     // MARK: - Properties: TupleType
 
-    public var elements: [Parameter] { resolver.elements }
+    public var elements: [Parameter] { resolver.resolveElements() }
 
-    public var isOptional: Bool { resolver.isOptional }
+    public var isOptional: Bool { resolver.resolveIsOptional() }
 
     private(set) var resolver: any TupleNodeSemanticsResolving
 

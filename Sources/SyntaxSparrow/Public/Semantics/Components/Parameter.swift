@@ -29,7 +29,7 @@ import SwiftSyntax
 /// `TupleTypeElementSyntax` node.
 public struct Parameter: Equatable, Hashable, CustomStringConvertible {
     // MARK: - Properties: DeclarationComponent
-    
+
     /// The node being represented by the ``Parameter`` instance.
     /// **Note:** The node type will be one of the types supported by the `Paramater.init` methods.
     /// You can use the `as(SyntaxProtocol.Protocol)` cast method to resolve the expected one.
@@ -42,17 +42,16 @@ public struct Parameter: Equatable, Hashable, CustomStringConvertible {
     /// ```
     public var node: Syntax { resolver.node._syntaxNode }
 
-    
     // MARK: - Properties
 
     /// Array of attributes found in the declaration.
     ///
     /// - See: ``SyntaxSparrow/Attribute``
-    public var attributes: [Attribute] { resolver.attributes }
+    public var attributes: [Attribute] { resolver.resolveAttributes() }
 
     /// Array of modifiers found in the declaration.
     /// - See: ``SyntaxSparrow/Modifier``
-    public var modifiers: [Modifier] { resolver.modifiers }
+    public var modifiers: [Modifier] { resolver.resolveModifiers() }
 
     /// The first, external name of the parameter.
     ///
@@ -62,7 +61,7 @@ public struct Parameter: Equatable, Hashable, CustomStringConvertible {
     /// ```
     /// - The first parameter has a `name` equal to `"_"`
     /// - The second parameter has a `name` equal to `"by"`
-    public var name: String? { resolver.name }
+    public var name: String? { resolver.resolveName() }
 
     /// The second internal name of the parameter.
     ///
@@ -72,7 +71,7 @@ public struct Parameter: Equatable, Hashable, CustomStringConvertible {
     /// ```
     /// - The first parameter has a `secondName` equal to `"number"`
     /// - The second parameter has a `secondName` equal to `"amount"`
-    public var secondName: String? { resolver.secondName }
+    public var secondName: String? { resolver.resolveSecondName() }
 
     /// The `EntityType` resolve from the parameter
     ///
@@ -85,10 +84,10 @@ public struct Parameter: Equatable, Hashable, CustomStringConvertible {
     /// - The third parameter type will be `.dimensions(Tuple)` where the associated tuple has parameters with types `.simple("Double")` and
     /// `.simple("Double")`
     /// - See: ``SyntaxSparrow/EntityType``
-    public var type: EntityType { resolver.type }
+    public var type: EntityType { resolver.resolveType() }
 
     /// The raw type string.
-    public var rawType: String? { resolver.rawType }
+    public var rawType: String? { resolver.resolveRawType() }
 
     /// Bool whether the parameter accepts a variadic argument.
     ///
@@ -97,10 +96,10 @@ public struct Parameter: Equatable, Hashable, CustomStringConvertible {
     /// func greet(_ person: Person, with phrases: String...)
     /// ```
     /// - The second parameter is variadic
-    public var isVariadic: Bool { resolver.isVariadic }
+    public var isVariadic: Bool { resolver.resolveIsVariadic() }
 
     /// Will return a `Bool` flag indicating if the closure declaration is marked as optional. `?`
-    public var isOptional: Bool { resolver.isOptional }
+    public var isOptional: Bool { resolver.resolveIsOptional() }
 
     /// The default argument of the parameter (if any).
     ///
@@ -109,7 +108,7 @@ public struct Parameter: Equatable, Hashable, CustomStringConvertible {
     /// func processCount(_ number: Int, by amount: Int = 1)
     /// ```
     /// - The second parameter has a default argument equal to `"1"`.
-    public var defaultArgument: String? { resolver.defaultArgument }
+    public var defaultArgument: String? { resolver.resolveDefaultArgument() }
 
     /// Bool whether the parameter is marked with `inout`
     ///
@@ -118,7 +117,7 @@ public struct Parameter: Equatable, Hashable, CustomStringConvertible {
     /// func processForm(_ form: inout Form)
     /// ```
     /// - The parameter is inout
-    public var isInOut: Bool { resolver.isInOut }
+    public var isInOut: Bool { resolver.resolveIsInOut() }
 
     /// Bool whether the parameter name is marked as no label `_`.
     ///
@@ -171,6 +170,6 @@ public struct Parameter: Equatable, Hashable, CustomStringConvertible {
     // MARK: - CustomStringConvertible
 
     public var description: String {
-        resolver.description
+        resolver.resolveDescription()
     }
 }

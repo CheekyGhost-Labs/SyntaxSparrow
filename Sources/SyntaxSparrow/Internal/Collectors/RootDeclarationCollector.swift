@@ -157,8 +157,7 @@ class RootDeclarationCollector: SyntaxVisitor {
     /// Called when visiting a `ProtocolDeclSyntax` node
     override func visit(_ node: ProtocolDeclSyntax) -> SyntaxVisitorContinueKind {
         if let entryNode = entryNode, node.id == entryNode.id { return .visitChildren }
-        let declaration = ProtocolDecl(node: node)
-        declaration.resolver.viewMode = viewMode
+        let declaration = ProtocolDecl(node: node, viewMode: viewMode)
         declarationCollection.protocols.append(declaration)
         declaration.collectChildren(viewMode: viewMode)
         return .skipChildren

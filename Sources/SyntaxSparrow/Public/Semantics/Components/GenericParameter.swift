@@ -19,7 +19,6 @@ import SwiftSyntax
 /// - The first parameter is named `"T"` with a `nil` type.
 /// - The second parameter is named `"U"` with a type constraint of `"Equatable"`
 public struct GenericParameter: DeclarationComponent {
-
     // MARK: - Properties: DeclarationComponent
 
     public var node: GenericParameterSyntax { resolver.node }
@@ -27,13 +26,13 @@ public struct GenericParameter: DeclarationComponent {
     // MARK: - Properties
 
     /// The generic parameter attributes.
-    public var attributes: [Attribute] { resolver.attributes }
+    public var attributes: [Attribute] { resolver.resolveAttributes() }
 
     /// The generic parameter name.
-    public var name: String { resolver.name }
+    public var name: String { resolver.resolveName() }
 
     /// The generic parameter type, if any.
-    public var type: String? { resolver.type }
+    public var type: String? { resolver.resolveType() }
 
     // MARK: - Properties: SyntaxChildCollecting
 

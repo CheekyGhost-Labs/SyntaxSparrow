@@ -82,7 +82,7 @@ public enum EntityType: Equatable, Hashable, CustomStringConvertible {
             return closure.description
         case let .result(result):
             return result.description
-        case .void(let rawType, let isOptional):
+        case let .void(rawType, isOptional):
             if rawType.hasSuffix("?") { return rawType }
             return "\(rawType)\(isOptional ? "?" : "")"
         case .empty:

@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -22,7 +22,6 @@ public protocol SyntaxRepresenting: Equatable, Hashable, CustomStringConvertible
 // MARK: - Equatable/Hashable/CustomStringConvertible
 
 public extension SyntaxRepresenting {
-
     // MARK: - Equatable
 
     static func == (lhs: Self, rhs: Self) -> Bool {

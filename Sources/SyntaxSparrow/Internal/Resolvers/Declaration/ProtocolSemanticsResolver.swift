@@ -8,81 +8,67 @@
 import Foundation
 import SwiftSyntax
 
-/// `DeclarationSemanticsResolving` conforming class that is responsible for exploring, retrieving properties, and collecting children of a
+/// `DeclarationSemanticsResolving` conforming struct that is responsible for exploring, retrieving properties, and collecting children of a
 /// `ProtocolDeclSyntax` node.
 /// It exposes the expected properties of a `Protocol` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when
 /// accessed repeatedly.
-class ProtocolSemanticsResolver: SemanticsResolving {
+struct ProtocolSemanticsResolver: SemanticsResolving {
     // MARK: - Properties: SemanticsResolving
 
     typealias Node = ProtocolDeclSyntax
 
     let node: Node
 
-    private(set) var declarationCollection: DeclarationCollection = .init()
-
-    var viewMode: SyntaxTreeViewMode = .fixedUp
-
-    // MARK: - Properties: StructureDeclaration
-
-    private(set) lazy var attributes: [Attribute] = resolveAttributes()
-
-    private(set) lazy var modifiers: [Modifier] = resolveModifiers()
-
-    private(set) lazy var keyword: String = resolveKeyword()
-
-    private(set) lazy var name: String = resolveName()
-
-    private(set) lazy var inheritance: [String] = resolveInheritance()
-
-    private(set) lazy var primaryAssociatedTypes: [String] = resolvePrimaryAssociatedTypes()
-
-    private(set) lazy var genericRequirements: [GenericRequirement] = resolveGenericRequirements()
-
-    private(set) lazy var associatedTypes: [AssociatedType] = resolveAssociatedTypes()
+    var viewMode: SyntaxTreeViewMode
 
     // MARK: - Lifecycle
 
-    required init(node: ProtocolDeclSyntax) {
+    init(node: ProtocolDeclSyntax) {
         self.node = node
+        viewMode = .fixedUp
+    }
+
+    init(node: ProtocolDeclSyntax, viewMode: SyntaxTreeViewMode = .fixedUp) {
+        self.node = node
+        self.viewMode = viewMode
     }
 
     // MARK: - Resolvers
 
-    private func resolveName() -> String {
+    func resolveName() -> String {
         node.identifier.text.trimmed
     }
 
-    private func resolveAttributes() -> [Attribute] {
+    func resolveAttributes() -> [Attribute] {
         Attribute.fromAttributeList(node.attributes)
     }
 
-    private func resolveKeyword() -> String {
+    func resolveKeyword() -> String {
         node.protocolKeyword.text.trimmed
     }
 
-    private func resolveAssociatedTypes() -> [AssociatedType] {
+    func resolveAssociatedTypes() -> [AssociatedType] {
         let collector = ProtocolAssociatedTypeCollector(viewMode: viewMode)
         return collector.collect(from: node)
     }
 
-    private func resolvePrimaryAssociatedTypes() -> [String] {
+    func resolvePrimaryAssociatedTypes() -> [String] {
         guard let clause = node.primaryAssociatedTypeClause else { return [] }
         return clause.primaryAssociatedTypeList.map { $0.name.text.trimmed }
     }
 
-    private func resolveModifiers() -> [Modifier] {
+    func resolveModifiers() -> [Modifier] {
         guard let modifierList = node.modifiers else { return [] }
         return modifierList.map { Modifier(node: $0) }
     }
 
-    private func resolveInheritance() -> [String] {
+    func resolveInheritance() -> [String] {
         guard let inheritanceNode = node.inheritanceClause else { return [] }
         let types = inheritanceNode.inheritedTypeCollection.map { $0.typeName.description.trimmed }
         return types
     }
 
-    private func resolveGenericRequirements() -> [GenericRequirement] {
+    func resolveGenericRequirements() -> [GenericRequirement] {
         let requirements = GenericRequirement.fromRequirementList(from: node.genericWhereClause?.requirementList)
         return requirements
     }

@@ -859,7 +859,7 @@ final class FunctionTests: XCTestCase {
         let equalCases: [(Function, Function)] = [
             (sampleOne, sampleTwo),
             (sampleOne, sampleThree),
-            (sampleTwo, sampleThree)
+            (sampleTwo, sampleThree),
         ]
         let notEqualCases: [(Function, Function)] = [
             (sampleOne, sampleFour),
@@ -867,7 +867,7 @@ final class FunctionTests: XCTestCase {
             (sampleTwo, sampleFour),
             (sampleTwo, otherSample),
             (sampleThree, sampleFour),
-            (sampleThree, otherSample)
+            (sampleThree, otherSample),
         ]
         equalCases.forEach {
             XCTAssertEqual($0.0, $0.1)

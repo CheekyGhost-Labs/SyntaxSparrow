@@ -83,7 +83,6 @@ final class ExtensionTests: XCTestCase {
         XCTAssertEqual(extensionUnderTest.operators[0].name, "+-")
     }
 
-
     func test_extension_withAttributes_willResolveExpectedValues() throws {
         let source = #"""
         @available(iOS 15, *)
@@ -100,7 +99,7 @@ final class ExtensionTests: XCTestCase {
         XCTAssertEqual(extensionUnderTest.attributes[0].name, "available")
         XCTAssertAttributesArgumentsEqual(extensionUnderTest.attributes[0], [
             (nil, "iOS 15"),
-            (nil, "*")
+            (nil, "*"),
         ])
         XCTAssertEqual(extensionUnderTest.attributes[0].description, "@available(iOS 15, *)")
         AssertSourceDetailsEquals(
@@ -213,7 +212,7 @@ final class ExtensionTests: XCTestCase {
         let equalCases: [(Extension, Extension)] = [
             (sampleOne, sampleTwo),
             (sampleOne, sampleThree),
-            (sampleTwo, sampleThree)
+            (sampleTwo, sampleThree),
         ]
         let notEqualCases: [(Extension, Extension)] = [
             (sampleOne, sampleFour),
@@ -221,7 +220,7 @@ final class ExtensionTests: XCTestCase {
             (sampleTwo, sampleFour),
             (sampleTwo, otherSample),
             (sampleThree, sampleFour),
-            (sampleThree, otherSample)
+            (sampleThree, otherSample),
         ]
         equalCases.forEach {
             XCTAssertEqual($0.0, $0.1)

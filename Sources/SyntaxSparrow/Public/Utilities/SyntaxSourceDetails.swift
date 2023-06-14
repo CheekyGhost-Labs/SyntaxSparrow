@@ -9,7 +9,6 @@ import Foundation
 
 /// Struct representing the raw source for a supporting ``SyntaxSparrow/Declaration` conforming instance
 public struct SyntaxSourceDetails {
-    
     /// The start and end bounds of the source.
     public let location: SyntaxSourceLocation
 

@@ -18,7 +18,6 @@ import SwiftSyntax
 /// This structure conforms to `Declaration`, `SyntaxChildCollecting`, ,
 /// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
 public struct Enumeration: Declaration, SyntaxChildCollecting {
-
     // MARK: - Properties: Declaration
 
     public var node: EnumDeclSyntax { resolver.node }
@@ -28,22 +27,22 @@ public struct Enumeration: Declaration, SyntaxChildCollecting {
     /// Array of attributes found in the declaration.
     ///
     /// - See: ``SyntaxSparrow/Attribute``
-    public var attributes: [Attribute] { resolver.attributes }
+    public var attributes: [Attribute] { resolver.resolveAttributes() }
 
     /// Array of modifiers found in the declaration.
     /// - See: ``SyntaxSparrow/Modifier``
-    public var modifiers: [Modifier] { resolver.modifiers }
+    public var modifiers: [Modifier] { resolver.resolveModifiers() }
 
     /// The declaration keyword.
     ///
     /// i.e: `"enum"`
-    public var keyword: String { resolver.keyword }
+    public var keyword: String { resolver.resolveKeyword() }
 
     /// The structure name.
     ///
     /// i.e: `enum MyEnum { ... }` would have a name of `"MyEnum"`
     /// If the structure is unnamed, this will be an empty string.
-    public var name: String { resolver.name }
+    public var name: String { resolver.resolveName() }
 
     /// Array of type names representing the adopted protocols.
     ///
@@ -52,7 +51,7 @@ public struct Enumeration: Declaration, SyntaxChildCollecting {
     /// protocol A {}
     /// enum MyEnum: String, A {}
     /// ```
-    public var inheritance: [String] { resolver.inheritance }
+    public var inheritance: [String] { resolver.resolveInheritance() }
 
     /// Array of generic parameters found in the declaration.
     ///
@@ -60,7 +59,7 @@ public struct Enumeration: Declaration, SyntaxChildCollecting {
     /// ```swift
     /// struct MyEnum<T: Equatable>: String {}
     /// ```
-    public var genericParameters: [GenericParameter] { resolver.genericParameters }
+    public var genericParameters: [GenericParameter] { resolver.resolveGenericParameters() }
 
     /// Array of generic requirements found in the declaration.
     ///
@@ -68,7 +67,7 @@ public struct Enumeration: Declaration, SyntaxChildCollecting {
     /// ```swift
     /// enum MyEnum<T>: String where T: Hashable {}
     /// ```
-    public var genericRequirements: [GenericRequirement] { resolver.genericRequirements }
+    public var genericRequirements: [GenericRequirement] { resolver.resolveGenericRequirements() }
 
     /// Array of cases declared within the enumeration.
     ///
@@ -79,7 +78,7 @@ public struct Enumeration: Declaration, SyntaxChildCollecting {
     ///     case optionTwo
     /// }
     /// ```
-    public var cases: [Enumeration.Case] { resolver.cases }
+    public var cases: [Enumeration.Case] { resolver.resolveCases() }
 
     // MARK: - Properties: Resolving
 
@@ -87,7 +86,7 @@ public struct Enumeration: Declaration, SyntaxChildCollecting {
 
     // MARK: - Properties: SyntaxChildCollecting
 
-    public var childCollection: DeclarationCollection = DeclarationCollection()
+    public var childCollection: DeclarationCollection = .init()
 
     // MARK: - Lifecycle
 

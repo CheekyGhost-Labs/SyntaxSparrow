@@ -22,7 +22,6 @@ import SwiftSyntax
 ///
 /// This struct also includes functionality to create a closure instance from a `FunctionTypeSyntax` node.
 public struct Closure: DeclarationComponent {
-
     // MARK: - Properties: DeclarationComponent
 
     public var node: FunctionTypeSyntax { resolver.node }
@@ -30,16 +29,16 @@ public struct Closure: DeclarationComponent {
     // MARK: - Properties
 
     /// Will return the closure input element from the input `typeAnnotation` for the closure.
-    public var input: EntityType { resolver.input }
+    public var input: EntityType { resolver.resolveInput() }
 
     /// Will return the input string for the closure. Returns an empty string if no result is found.
-    public var rawInput: String { resolver.rawInput }
+    public var rawInput: String { resolver.resolveRawInput() }
 
     /// Will return the closure output elements from the input `typeAnnotation` for the closure.
-    public var output: EntityType { resolver.output }
+    public var output: EntityType { resolver.resolveOutput() }
 
     /// Will return the return type string for the closure. Returns an empty string if no result is found.
-    public var rawOutput: String { resolver.rawOutput }
+    public var rawOutput: String { resolver.resolveRawOutput() }
 
     /// Will return`true` if the `input` is equal to `.void`.
     public var isVoidInput: Bool { input.isVoid }
@@ -48,15 +47,15 @@ public struct Closure: DeclarationComponent {
     public var isVoidOutput: Bool { output.isVoid }
 
     /// Will return`true` if the `output` is equal to `.void`.
-    public var isOptional: Bool { resolver.isOptional }
+    public var isOptional: Bool { resolver.resolveIsOptional() }
 
     /// Bool whether the closure has the `@escaping` attribute.
     /// **Note:** This separate from the `isAutoEscaping` proeprty as you may want to know whether something has the attribute or not.
-    public var isEscaping: Bool { resolver.isEscaping || isAutoEscaping }
+    public var isEscaping: Bool { resolver.resolveIsEscaping() || isAutoEscaping }
 
     /// Bool whether the closure is auto escaping.
     /// This would be `true` when the closure itself is optional as swift expects them to be auto-escaping.
-    public var isAutoEscaping: Bool { resolver.isOptional }
+    public var isAutoEscaping: Bool { resolver.resolveIsOptional() }
 
     /// The full declaration string.
     public var declaration: String { description }

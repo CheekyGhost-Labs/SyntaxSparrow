@@ -17,7 +17,6 @@ import SwiftSyntax
 /// This structure conforms to `Declaration`, `SyntaxChildCollecting`, ,
 /// which provide access to the declaration attributes, modifiers, child nodes, and source location information.
 public struct Extension: Declaration, SyntaxChildCollecting {
-
     // MARK: - Properties: Declaration
 
     public var node: ExtensionDeclSyntax { resolver.node }
@@ -27,22 +26,22 @@ public struct Extension: Declaration, SyntaxChildCollecting {
     /// Array of attributes found in the declaration.
     ///
     /// - See: ``SyntaxSparrow/Attribute``
-    public var attributes: [Attribute] { resolver.attributes }
+    public var attributes: [Attribute] { resolver.resolveAttributes() }
 
     /// Array of modifiers found in the declaration.
     /// - See: ``SyntaxSparrow/Modifier``
-    public var modifiers: [Modifier] { resolver.modifiers }
+    public var modifiers: [Modifier] { resolver.resolveModifiers() }
 
     /// The declaration keyword.
     ///
     /// i.e: `"extension"`
-    public var keyword: String { resolver.keyword }
+    public var keyword: String { resolver.resolveKeyword() }
 
     /// The type the declaration is extending.
     ///
     /// i.e: `extension String { ... }` would have an extendedType of `"String"`
     /// If the structure is unnamed, this will be an empty string.
-    public var extendedType: String { resolver.extendedType }
+    public var extendedType: String { resolver.resolveExtendedType() }
 
     /// Array of type names representing the adopted protocols.
     ///
@@ -52,7 +51,7 @@ public struct Extension: Declaration, SyntaxChildCollecting {
     /// protocol B {}
     /// extension String: A, B {}
     /// ```
-    public var inheritance: [String] { resolver.inheritance }
+    public var inheritance: [String] { resolver.resolveInheritance() }
 
     /// Array of generic requirements found in the declaration.
     ///
@@ -60,7 +59,7 @@ public struct Extension: Declaration, SyntaxChildCollecting {
     /// ```swift
     /// extension Collection where Element: String {}
     /// ```
-    public var genericRequirements: [GenericRequirement] { resolver.genericRequirements }
+    public var genericRequirements: [GenericRequirement] { resolver.resolveGenericRequirements() }
 
     // MARK: - Properties: Resolving
 
@@ -68,7 +67,7 @@ public struct Extension: Declaration, SyntaxChildCollecting {
 
     // MARK: - Properties: SyntaxChildCollecting
 
-    public var childCollection: DeclarationCollection = DeclarationCollection()
+    public var childCollection: DeclarationCollection = .init()
 
     // MARK: - Lifecycle
 

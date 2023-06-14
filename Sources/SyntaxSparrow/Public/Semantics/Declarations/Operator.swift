@@ -22,7 +22,6 @@ import SwiftSyntax
 /// This structure conforms to `Declaration` , which provides
 /// access to the declaration attributes, modifiers, and source location information.
 public struct Operator: Declaration {
-
     /// Enumeration of possible operator kinds.
     public enum Kind: String, Hashable, Codable {
         /// A unary operator that comes before its operand.
@@ -77,7 +76,7 @@ public struct Operator: Declaration {
         deprecated,
         message: "SyntaxSparrow is removing support for operator attributes in version 2.0 to align with Swift 5.9 and latest SwiftSyntax."
     )
-    public var attributes: [Attribute] { resolver.attributes }
+    public var attributes: [Attribute] { resolver.resolveAttributes() }
 
     /// Array of modifiers found in the declaration.
     /// - See: ``SyntaxSparrow/Modifier``
@@ -91,21 +90,21 @@ public struct Operator: Declaration {
         deprecated,
         message: "SyntaxSparrow is removing support for operator modifiers in version 2.0 to align with Swift 5.9 and latest SwiftSyntax."
     )
-    public var modifiers: [Modifier] { resolver.modifiers }
+    public var modifiers: [Modifier] { resolver.resolveModifiers() }
 
     /// The declaration keyword.
     ///
     /// i.e: `"operator"`
-    public var keyword: String { resolver.keyword }
+    public var keyword: String { resolver.resolveKeyword() }
 
     /// The operator name.
     ///
     /// i.e: `prefix operator +++` would have a name of `"+++"`
     /// If the operator is unnamed, this will be an empty string.
-    public var name: String { resolver.name }
+    public var name: String { resolver.resolveName() }
 
     /// The kind of operator (prefix, infix, or postfix).
-    public var kind: Kind { resolver.kind ?? .infix }
+    public var kind: Kind { resolver.resolveKind() ?? .infix }
 
     // MARK: - Properties
 

@@ -44,7 +44,7 @@ public struct SyntaxSourceLocation: Equatable, Codable, Hashable {
     /// The line and column position the declaration ends at.
     /// - See: ``SyntaxSparrow/SyntaxSourceLocation/Position``
     public let end: Position
-    
+
     /// Returns a location with empty start/end properties.
     public static let empty: SyntaxSourceLocation = .init(start: .empty, end: .empty)
 

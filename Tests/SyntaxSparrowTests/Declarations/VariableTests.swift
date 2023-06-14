@@ -5,8 +5,8 @@
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
 
-@testable import SyntaxSparrow
 import SwiftSyntax
+@testable import SyntaxSparrow
 import XCTest
 
 final class VariableTests: XCTestCase {
@@ -98,7 +98,7 @@ final class VariableTests: XCTestCase {
         let attributeExpectations: [(String?, String)] = [
             (nil, "*"),
             (nil, "unavailable"),
-            ("message", "\"my message\"")
+            ("message", "\"my message\""),
         ]
         let source = #"""
         @available(*, unavailable, message: "my message")
@@ -552,7 +552,7 @@ final class VariableTests: XCTestCase {
         let equalCases: [(Variable, Variable)] = [
             (sampleOne, sampleTwo),
             (sampleOne, sampleThree),
-            (sampleTwo, sampleThree)
+            (sampleTwo, sampleThree),
         ]
         let notEqualCases: [(Variable, Variable)] = [
             (sampleOne, sampleFour),
@@ -560,7 +560,7 @@ final class VariableTests: XCTestCase {
             (sampleTwo, sampleFour),
             (sampleTwo, otherSample),
             (sampleThree, sampleFour),
-            (sampleThree, otherSample)
+            (sampleThree, otherSample),
         ]
         equalCases.forEach {
             XCTAssertEqual($0.0, $0.1)

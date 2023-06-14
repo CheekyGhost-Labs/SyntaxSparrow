@@ -9,7 +9,6 @@ import Foundation
 import SwiftSyntax
 
 public extension SyntaxProtocol {
-
     /// Will return the parent `DeclSyntaxProtocol` token if it exists.
     var context: DeclSyntaxProtocol? {
         if let current = _syntaxNode.asProtocol(DeclSyntaxProtocol.self) {
@@ -21,7 +20,7 @@ public extension SyntaxProtocol {
         }
         return nil
     }
-    
+
     /// Will iterate through the node parents in sequence the first parent that returns a non-nil result from the given handler.
     ///
     /// **Note:** As the `SyntaxProtocol` and `Syntax` types are not class based we can't cast easily here. You should

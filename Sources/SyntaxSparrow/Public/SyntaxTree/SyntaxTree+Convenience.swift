@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
@@ -9,7 +9,6 @@ import Foundation
 import SwiftSyntax
 
 public extension SyntaxTree {
-
     /// Will assess and process the source at the given path and resolve an array containing instances of the provided declaration type.
     /// - Parameters:
     ///   - type: The ``SyntaxSparrow/Declaration`` conforming type to parse into.
@@ -41,7 +40,7 @@ public extension SyntaxTree {
         instance.collectChildren()
         return instance.declarations(of: type)
     }
-    
+
     /// Will assess and process the given declaration syntax protocol and convert it into the provided declaration type (if possible).
     /// - Parameters:
     ///   - type: The ``SyntaxSparrow/Declaration`` conforming type to parse into.

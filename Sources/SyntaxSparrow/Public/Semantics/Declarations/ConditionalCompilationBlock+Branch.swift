@@ -73,7 +73,7 @@ public extension ConditionalCompilationBlock {
 
         /// The branch keyword, either `"#if"`, `"#elseif"`, or `"#else"`.
         public var keyword: Keyword {
-            let rawKeyword = resolver.keyword
+            let rawKeyword = resolver.resolveKeyword()
             switch rawKeyword {
             case Constants.ifKeyword:
                 return .if
@@ -89,7 +89,7 @@ public extension ConditionalCompilationBlock {
         /// The branch condition (if any).
         ///
         /// This `condition` is present when the `keyword` is `#if` or `#elseif`, and `nil` when the `keyword` is `#else`.
-        public var condition: String? { resolver.condition }
+        public var condition: String? { resolver.resolveCondition() }
 
         // MARK: - Properties: Resolving
 
@@ -97,12 +97,13 @@ public extension ConditionalCompilationBlock {
 
         // MARK: - Properties: SyntaxChildCollecting
 
-        public var childCollection: DeclarationCollection = DeclarationCollection()
+        public var childCollection: DeclarationCollection = .init()
 
         // MARK: - Lifecycle
 
         public init(node: IfConfigClauseSyntax) {
             resolver = ConditionalCompilationBlockBranchSemanticsResolver(node: node)
+            collectChildren(viewMode: .fixedUp)
         }
     }
 }

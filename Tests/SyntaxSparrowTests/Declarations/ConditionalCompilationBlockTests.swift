@@ -310,7 +310,7 @@ final class ConditionalCompilationBlockTests: XCTestCase {
         let equalCases: [(ConditionalCompilationBlock, ConditionalCompilationBlock)] = [
             (sampleOne, sampleTwo),
             (sampleOne, sampleThree),
-            (sampleTwo, sampleThree)
+            (sampleTwo, sampleThree),
         ]
         let notEqualCases: [(ConditionalCompilationBlock, ConditionalCompilationBlock)] = [
             (sampleOne, sampleFour),
@@ -318,7 +318,7 @@ final class ConditionalCompilationBlockTests: XCTestCase {
             (sampleTwo, sampleFour),
             (sampleTwo, otherSample),
             (sampleThree, sampleFour),
-            (sampleThree, otherSample)
+            (sampleThree, otherSample),
         ]
         equalCases.forEach {
             XCTAssertEqual($0.0, $0.1)
@@ -335,7 +335,7 @@ final class ConditionalCompilationBlockTests: XCTestCase {
             (sampleOne.branches[0], sampleThree.branches[0]),
             (sampleOne.branches[1], sampleThree.branches[1]),
             (sampleTwo.branches[0], sampleThree.branches[0]),
-            (sampleTwo.branches[1], sampleThree.branches[1])
+            (sampleTwo.branches[1], sampleThree.branches[1]),
         ]
         let notEqualBranchCases: [(ConditionalCompilationBlock.Branch, ConditionalCompilationBlock.Branch)] = [
             (sampleOne.branches[0], sampleFour.branches[0]),
@@ -349,7 +349,7 @@ final class ConditionalCompilationBlockTests: XCTestCase {
             (sampleThree.branches[0], sampleFour.branches[0]),
             (sampleThree.branches[1], sampleFour.branches[1]),
             (sampleThree.branches[0], otherSample.branches[0]),
-            (sampleThree.branches[1], otherSample.branches[1])
+            (sampleThree.branches[1], otherSample.branches[1]),
         ]
         equalBranchCases.forEach {
             XCTAssertEqual($0.0, $0.1)

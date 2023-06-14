@@ -13,7 +13,7 @@ extension SyntaxProtocol {
         guard self.as(OptionalTypeSyntax.self) == nil else { return true }
         guard parent?.as(OptionalTypeSyntax.self) == nil else { return true }
         // Token assessment approach
-        var result: Bool = false
+        var result = false
         var nextToken = nextToken(viewMode: .fixedUp)
         var potentialOptional: Bool = nextToken?.text == "?"
         while nextToken != nil {

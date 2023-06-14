@@ -22,31 +22,35 @@ protocol SemanticsResolving {
 }
 
 protocol ParameterNodeSemanticsResolving: SemanticsResolving {
-    var attributes: [Attribute] { get }
-    var modifiers: [Modifier] { get }
-    var name: String? { get }
-    var secondName: String? { get }
-    var type: EntityType { get }
-    var rawType: String? { get }
-    var isVariadic: Bool { get }
-    var isOptional: Bool { get }
-    var defaultArgument: String? { get }
-    var isInOut: Bool { get }
-    var isLabelOmitted: Bool { get }
-    var description: String { get }
+    func resolveAttributes() -> [Attribute]
+    func resolveModifiers() -> [Modifier]
+    func resolveName() -> String?
+    func resolveSecondName() -> String?
+    func resolveType() -> EntityType
+    func resolveRawType() -> String
+    func resolveIsVariadic() -> Bool
+    func resolveIsOptional() -> Bool
+    func resolveDefaultArgument() -> String?
+    func resolveIsInOut() -> Bool
+    func resolveIsLabelOmitted() -> Bool
+    func resolveDescription() -> String
 }
 
 extension ParameterNodeSemanticsResolving {
-    var description: String {
+    func resolveDescription() -> String {
         let result = node.description.trimmed
         if result.hasSuffix(",") {
             return String(result.dropLast(1))
         }
         return result
     }
+
+    func resolveIsLabelOmitted() -> Bool {
+        resolveName() == "_"
+    }
 }
 
 protocol TupleNodeSemanticsResolving: SemanticsResolving {
-    var elements: [Parameter] { get }
-    var isOptional: Bool { get }
+    func resolveElements() -> [Parameter]
+    func resolveIsOptional() -> Bool
 }

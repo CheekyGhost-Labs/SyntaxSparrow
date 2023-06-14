@@ -9,6 +9,9 @@ import Foundation
 
 public final class DeclarationCollection {
 
+    /// The collected actor declarations.
+    internal(set) public var actors: [Actor] = []
+
     /// The collected class declarations.
     internal(set) public var classes: [Class] = []
 
@@ -55,6 +58,7 @@ public final class DeclarationCollection {
     internal(set) public var variables: [Variable] = []
 
     func reset() {
+        actors = []
         classes = []
         conditionalCompilationBlocks = []
         deinitializers = []
@@ -73,6 +77,7 @@ public final class DeclarationCollection {
     }
 
     func collect(from collection: DeclarationCollection) {
+        actors = collection.actors
         classes = collection.classes
         conditionalCompilationBlocks = collection.conditionalCompilationBlocks
         deinitializers = collection.deinitializers

@@ -64,6 +64,7 @@ public protocol SyntaxChildCollecting {
 }
 
 public extension SyntaxChildCollecting where Self: Declaration {
+    var actors: [Actor] { childCollection.actors }
     var classes: [Class] { childCollection.classes }
     var conditionalCompilationBlocks: [ConditionalCompilationBlock] { childCollection.conditionalCompilationBlocks }
     var deinitializers: [Deinitializer] { childCollection.deinitializers }

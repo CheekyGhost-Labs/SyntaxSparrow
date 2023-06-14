@@ -54,6 +54,14 @@ class RootDeclarationCollector: SyntaxVisitor {
         return .skipChildren
     }
 
+    override func visit(_ node: ActorDeclSyntax) -> SyntaxVisitorContinueKind {
+        if let entryNode = entryNode, node.id == entryNode.id { return .visitChildren }
+        let declaration = Actor(node: node)
+        declarationCollection.actors.append(declaration)
+        declaration.collectChildren(viewMode: viewMode)
+        return .skipChildren
+    }
+
     /// Called when visiting a `ClassDeclSyntax` node
     override func visit(_ node: ClassDeclSyntax) -> SyntaxVisitorContinueKind {
         if let entryNode = entryNode, node.id == entryNode.id { return .visitChildren }

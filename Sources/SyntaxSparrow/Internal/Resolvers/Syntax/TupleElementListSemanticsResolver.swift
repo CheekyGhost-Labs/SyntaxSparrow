@@ -36,6 +36,6 @@ struct TupleElementListSemanticsResolver: TupleNodeSemanticsResolving {
     }
 
     func resolveIsOptional() -> Bool {
-        node.resolveIsOptional(viewMode: .fixedUp)
+        node.resolveIsSyntaxOptional(viewMode: .fixedUp)
     }
 }

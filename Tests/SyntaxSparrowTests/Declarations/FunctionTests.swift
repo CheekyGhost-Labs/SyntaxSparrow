@@ -279,6 +279,18 @@ final class FunctionTests: XCTestCase {
         XCTAssertEqual(function.genericRequirements[1].rightTypeIdentifier, "C2.Element")
     }
 
+    func test_thing() {
+        let source = #"""
+        func variadicOptional(_ names: String?...) {}
+        """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        XCTAssertEqual(instanceUnderTest.functions.count, 1)
+        XCTAssertTrue(instanceUnderTest.functions[0].signature.input[0].isOptional)
+    }
+
     func test_function_parameters_willResolveExptectedTypes() throws {
         let source = #"""
         func noParameters() throws {}
@@ -799,6 +811,28 @@ final class FunctionTests: XCTestCase {
         XCTAssertEqual(function.signature.asyncKeyword, "async")
         XCTAssertEqual(function.signature.output, .simple("String"))
         XCTAssertEqual(function.signature.input.count, 0)
+    }
+
+    func test_function_outputIsOptional_willResolveExptectedTypes() throws {
+        let source = #"""
+        func returnTypeNotOptional() -> String {}
+        func returnTypeIsOptional() -> String? {}
+        func returnTypeNotOptional() -> (() -> Void) {}
+        func returnTypeIsOptional() -> (() -> Void)? {}
+        func returnTypeNotOptional() -> (name: String, age: Int?) {}
+        func returnTypeIsOptional() -> (name: String, age: Int?)? {}
+        """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        XCTAssertEqual(instanceUnderTest.functions.count, 6)
+        XCTAssertFalse(instanceUnderTest.functions[0].signature.outputIsOptional)
+        XCTAssertTrue(instanceUnderTest.functions[1].signature.outputIsOptional)
+        XCTAssertFalse(instanceUnderTest.functions[2].signature.outputIsOptional)
+        XCTAssertTrue(instanceUnderTest.functions[3].signature.outputIsOptional)
+        XCTAssertFalse(instanceUnderTest.functions[4].signature.outputIsOptional)
+        XCTAssertTrue(instanceUnderTest.functions[5].signature.outputIsOptional)
     }
 
     func test_function_body_willResolveExpectedResult() throws {

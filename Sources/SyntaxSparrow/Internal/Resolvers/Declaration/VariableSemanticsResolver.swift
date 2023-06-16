@@ -71,7 +71,7 @@ struct VariableSemanticsResolver: SemanticsResolving {
 
     func resolveIsOptional() -> Bool {
         guard let typeNode = node.typeAnnotation else { return false }
-        return typeNode.type.resolveIsOptional()
+        return typeNode.type.resolveIsSyntaxOptional()
     }
 
     func resolveHasSetter() -> Bool {

@@ -67,6 +67,17 @@ public struct Subscript: Declaration {
     /// The return type of the subscript.
     public var returnType: EntityType { resolver.resolveReturnType() }
 
+    /// Bool indicating whether the resolved `returnType` property is optional.
+    ///
+    /// For example:
+    /// ```swift
+    /// subscript(key: Int) -> String?
+    /// subscript(key: Int) -> String
+    /// ```
+    /// - The first subscript `returnType` is `.simple("String?")` and `returnTypeIsOptional` is `true`
+    /// - The first subscript `returnType` is `.simple("String")` and `returnTypeIsOptional` is `false`
+    public var returnTypeIsOptional: Bool { resolver.resolveReturnTypeIsOptional() }
+
     /// The subscript getter and/or setter.
     public var accessors: [Accessor] { resolver.resolveAccessors() }
 

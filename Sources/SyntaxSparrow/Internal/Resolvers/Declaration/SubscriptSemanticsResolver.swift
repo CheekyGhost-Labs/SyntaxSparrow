@@ -58,6 +58,10 @@ struct SubscriptSemanticsResolver: SemanticsResolving {
         EntityType.parseType(node.result.returnType)
     }
 
+    func resolveReturnTypeIsOptional() -> Bool {
+        node.result.returnType.resolveIsTypeOptional()
+    }
+
     func resolveAccessors() -> [Accessor] {
         guard let accessor = node.accessor?.as(AccessorBlockSyntax.self) else { return [] }
         return accessor.accessors.map(Accessor.init)

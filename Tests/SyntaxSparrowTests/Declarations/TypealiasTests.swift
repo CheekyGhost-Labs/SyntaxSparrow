@@ -165,6 +165,28 @@ final class TypealiasTests: XCTestCase {
         XCTAssertEqual(typealiasDecl.description, "public typealias MyCustomType = Int?")
     }
 
+    func test_typealias_initializedTypeIsOptional_willResolveExpectedValues() {
+        let source = #"""
+        typealias MyAlias = String
+        typealias MyAlias = String?
+        typealias MyAlias = (() -> Void)
+        typealias MyAlias = (() -> Void)?
+        typealias MyAlias = (name: String, age: Int?)
+        typealias MyAlias = (name: String, age: Int?)?
+        """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        XCTAssertEqual(instanceUnderTest.typealiases.count, 6)
+        XCTAssertFalse(instanceUnderTest.typealiases[0].initializedTypeIsOptional)
+        XCTAssertTrue(instanceUnderTest.typealiases[1].initializedTypeIsOptional)
+        XCTAssertFalse(instanceUnderTest.typealiases[2].initializedTypeIsOptional)
+        XCTAssertTrue(instanceUnderTest.typealiases[3].initializedTypeIsOptional)
+        XCTAssertFalse(instanceUnderTest.typealiases[4].initializedTypeIsOptional)
+        XCTAssertTrue(instanceUnderTest.typealiases[5].initializedTypeIsOptional)
+    }
+
     func test_hashable_equatable_willReturnExpectedResults() throws {
         let source = #"""
         typealias MyCustomType = Int

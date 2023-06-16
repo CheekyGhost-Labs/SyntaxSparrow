@@ -71,7 +71,7 @@ struct ClosureSemanticsResolver: SemanticsResolving {
             }
         }
         guard let parentNode = parentParameter else { return false }
-        return parentNode.resolveIsOptional(viewMode: .fixedUp)
+        return parentNode.resolveIsSyntaxOptional(viewMode: .fixedUp)
     }
 
     func resolveIsEscaping() -> Bool {

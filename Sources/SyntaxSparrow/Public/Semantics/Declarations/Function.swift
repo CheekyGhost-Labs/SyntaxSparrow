@@ -34,6 +34,19 @@ public struct Function: Declaration, SyntaxChildCollecting {
         /// The function output type, if any.
         /// This is the return type of the function.
         public let output: EntityType?
+        
+        /// Bool indicating whether the resolved `output` property is optional.
+        ///
+        /// For example:
+        /// ```swift
+        /// func executeOrder() -> String?
+        /// func executeOtherOrder() -> String
+        /// ```
+        /// - The `executeOrder` `output` is `.simple("String?")` and `outputIsOptional` is `true`
+        /// - The `executeOtherOrder` `output` is `.simple("String")` and `outputIsOptional` is `false`
+        ///
+        /// **Note:** Value will be `false` when the `output` is `nil`
+        public let outputIsOptional: Bool
 
         /// The `throws` or `rethrows` keyword, if any.
         /// Indicates whether the function can throw an error.

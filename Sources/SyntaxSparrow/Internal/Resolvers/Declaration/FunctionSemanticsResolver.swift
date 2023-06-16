@@ -61,14 +61,17 @@ struct FunctionSemanticsResolver: SemanticsResolving {
     func resolveSignature() -> Function.Signature {
         let inputParameters = node.signature.input.parameterList.map(Parameter.init)
         var outputType: EntityType?
+        var isOutputOptional: Bool = false
         if let output = node.signature.output {
             outputType = EntityType.parseType(output.returnType)
+            isOutputOptional = output.returnType.resolveIsTypeOptional()
         }
         let throwsKeyword = node.signature.effectSpecifiers?.throwsSpecifier?.text.trimmed
         let asyncKeyword = node.signature.effectSpecifiers?.asyncSpecifier?.text.trimmed
         return Function.Signature(
             input: inputParameters,
             output: outputType,
+            outputIsOptional: isOutputOptional,
             throwsOrRethrowsKeyword: throwsKeyword,
             asyncKeyword: asyncKeyword
         )

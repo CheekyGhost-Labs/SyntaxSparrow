@@ -158,6 +158,28 @@ final class SubscriptTests: XCTestCase {
         XCTAssertEqual(instanceUnderTest.subscripts[2].accessors.map(\.kind?.rawValue), ["get", "set"])
     }
 
+    func test_subscript_returnTypeIsOptional_willResolveExpectedValues() {
+        let source = #"""
+        subscript(index: Int) -> Int { 0 }
+        subscript(index: Int) -> Int? { 0 }
+        subscript(index: Int) -> (() -> Void) { 0 }
+        subscript(index: Int) -> (() -> Void)? { 0 }
+        subscript(index: Int) -> (name: String, age: Int?) { 0 }
+        subscript(index: Int) -> (name: String, age: Int?)? { 0 }
+        """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        XCTAssertEqual(instanceUnderTest.subscripts.count, 6)
+        XCTAssertFalse(instanceUnderTest.subscripts[0].returnTypeIsOptional)
+        XCTAssertTrue(instanceUnderTest.subscripts[1].returnTypeIsOptional)
+        XCTAssertFalse(instanceUnderTest.subscripts[2].returnTypeIsOptional)
+        XCTAssertTrue(instanceUnderTest.subscripts[3].returnTypeIsOptional)
+        XCTAssertFalse(instanceUnderTest.subscripts[4].returnTypeIsOptional)
+        XCTAssertTrue(instanceUnderTest.subscripts[5].returnTypeIsOptional)
+    }
+
     func test_subscript_indicies_willResolveExpectedValues() throws {
         let source = #"""
         subscript(_ index: Int) -> Int {}

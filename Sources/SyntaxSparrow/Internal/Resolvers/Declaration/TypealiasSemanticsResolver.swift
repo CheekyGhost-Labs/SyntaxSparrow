@@ -48,6 +48,10 @@ struct TypealiasSemanticsResolver: SemanticsResolving {
         EntityType.parseType(node.initializer.value)
     }
 
+    func resolveInitializedTypeIsOptional() -> Bool {
+        node.initializer.value.resolveIsTypeOptional()
+    }
+
     func resolveGenericParameters() -> [GenericParameter] {
         let parameters = GenericParameter.fromParameterList(from: node.genericParameterClause?.genericParameterList)
         return parameters

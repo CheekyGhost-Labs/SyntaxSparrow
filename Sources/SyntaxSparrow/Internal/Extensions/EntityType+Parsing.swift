@@ -26,7 +26,7 @@ extension EntityType {
                 let result = Result(simpleType)
                 return .result(result!)
             }
-            let isOptional = resolveIsOptional(from: simpleType)
+            let isOptional = simpleType.resolveIsTypeOptional()
             // Void check
             if
                 let firstKind = simpleType.firstToken(viewMode: .fixedUp)?.tokenKind,
@@ -44,7 +44,7 @@ extension EntityType {
             if tupleTypeSyntax.elements.count == 1, let innerElement = tupleTypeSyntax.elements.first {
                 return parseType(innerElement.type)
             } else if tupleTypeSyntax.elements.isEmpty {
-                let isOptional = resolveIsOptional(from: tupleTypeSyntax)
+                let isOptional = tupleTypeSyntax.resolveIsTypeOptional()
                 return voidType(withRawValue: "()", isOptional: isOptional)
             }
             let tuple = Tuple(node: tupleTypeSyntax)
@@ -78,7 +78,7 @@ extension EntityType {
     static func parseElementList(_ syntax: TupleTypeElementListSyntax) -> EntityType {
         let tuple = Tuple(node: syntax)
         if getEmptyTuple(tuple) != nil {
-            let isOptional = syntax.resolveIsOptional()
+            let isOptional = syntax.resolveIsSyntaxOptional()
             return voidType(withRawValue: "()", isOptional: isOptional)
         }
         // This is probably not needed?
@@ -121,7 +121,7 @@ extension EntityType {
 
     private static func resolveSimpleTypeString(from typeSyntax: TypeSyntaxProtocol) -> String {
         // Standard
-        let isOptional = resolveIsOptional(from: typeSyntax)
+        let isOptional = typeSyntax.resolveIsTypeOptional()
         var simpleType = typeSyntax.description.trimmed
         // Need to check if parent parameter context (if any) is an optional. This has no parent parameter context so the type atm
         // has no context. i.e if we had `"String?..." as the parameter type, the `simpleType` at the moment is "String".
@@ -181,30 +181,5 @@ extension EntityType {
             rawType += "?"
         }
         return .void(rawType, isOptional)
-    }
-
-    // MARK: - Helpers: Optional and Variadic
-
-    private static func resolveIsOptional(from typeSyntax: TypeSyntaxProtocol) -> Bool {
-        let softCheck = typeSyntax.parent?.description.trimmed.hasSuffix("?") ?? false
-        guard !softCheck else { return true }
-        // Token assessment approach
-        var result = false
-        var nextToken = typeSyntax.nextToken(viewMode: .fixedUp)
-        var potentialOptional: Bool = nextToken?.text == "?"
-        while nextToken != nil {
-            if nextToken?.text == ")" {
-                potentialOptional = true
-            }
-            if potentialOptional, nextToken?.text == ")" {
-                break
-            }
-            if potentialOptional, nextToken?.text == "?" {
-                result = true
-                break
-            }
-            nextToken = nextToken?.nextToken(viewMode: .fixedUp)
-        }
-        return result
     }
 }

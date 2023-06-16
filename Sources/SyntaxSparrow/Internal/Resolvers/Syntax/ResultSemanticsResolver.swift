@@ -29,7 +29,7 @@ struct ResultSemanticsResolver: SemanticsResolving {
     // MARK: - Resolvers
 
     func resolveIsOptional() -> Bool {
-        node.resolveIsOptional(viewMode: .fixedUp)
+        node.resolveIsSyntaxOptional(viewMode: .fixedUp)
     }
 
     func resolveSuccessType() -> EntityType {

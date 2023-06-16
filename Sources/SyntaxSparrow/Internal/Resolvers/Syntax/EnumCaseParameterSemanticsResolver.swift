@@ -67,7 +67,7 @@ struct EnumCaseParameterSemanticsResolver: ParameterNodeSemanticsResolving {
     }
 
     func resolveIsOptional() -> Bool {
-        return node.type.resolveIsOptional()
+        return node.type.resolveIsSyntaxOptional()
     }
 
     func resolveDefaultArgument() -> String? {

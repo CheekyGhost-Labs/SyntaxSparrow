@@ -60,7 +60,7 @@ struct FunctionParameterSemanticsResolver: ParameterNodeSemanticsResolving {
     }
 
     func resolveIsOptional() -> Bool {
-        node.type.resolveIsOptional()
+        node.type.resolveIsSyntaxOptional()
     }
 
     func resolveDefaultArgument() -> String? {

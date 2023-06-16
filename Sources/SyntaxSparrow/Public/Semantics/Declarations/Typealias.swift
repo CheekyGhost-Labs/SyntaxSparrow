@@ -63,6 +63,17 @@ public struct Typealias: Declaration {
     /// - The third declaration has no initialized type of `.tuple(Tuple)`
     public var initializedType: EntityType { resolver.resolveInitializedType() }
 
+    /// Bool indicating whether the resolved `initializedType` property is optional.
+    ///
+    /// For example:
+    /// ```swift
+    /// typealias StringAlias = String?
+    /// typealias IntAlias = Int
+    /// ```
+    /// - The `StringAlias` `initializedType` is `.simple("String?")` and `initializedTypeIsOptional` is `true`
+    /// - The `IntAlias` `initializedType` is `.simple("Int")` and `initializedTypeIsOptional` is `false`
+    public var initializedTypeIsOptional: Bool { resolver.resolveInitializedTypeIsOptional() }
+
     /// Array of generic parameters found in the declaration.
     ///
     /// For example, in the following declaration, there is a single parameter whose `name` is `"T"` and `type` of `"Equatable"`

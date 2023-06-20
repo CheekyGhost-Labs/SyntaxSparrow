@@ -60,6 +60,21 @@ public struct Closure: DeclarationComponent {
     /// The full declaration string.
     public var declaration: String { description }
 
+    /// Struct representing the state of any effect specifiers on the initializer signature.
+    ///
+    /// For example, your accessor might support structured concurrency:
+    /// ```swift
+    /// var name: String {
+    ///    func performAndWait<T>(_ block: () throws -> T) async rethrows -> T
+    /// }
+    /// ```
+    /// in which case the `effectSpecifiers` property would be present and output:
+    /// - `effectSpecifiers.throwsSpecifier` // `"throws"`
+    /// - `effectSpecifiers.asyncAwaitKeyword` // `nil`
+    ///
+    /// **Note:** `effectSpecifiers` will be `nil` if no specifiers are found on the node.
+    public var effectSpecifiers: EffectSpecifiers? { resolver.resolveEffectSpecifiers() }
+
     // MARK: - Properties: Convenience
 
     private(set) var resolver: ClosureSemanticsResolver

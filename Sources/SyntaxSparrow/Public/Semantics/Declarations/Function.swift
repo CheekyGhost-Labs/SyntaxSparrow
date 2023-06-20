@@ -50,11 +50,45 @@ public struct Function: Declaration, SyntaxChildCollecting {
 
         /// The `throws` or `rethrows` keyword, if any.
         /// Indicates whether the function can throw an error.
-        public let throwsOrRethrowsKeyword: String?
+        @available(
+            *,
+            deprecated,
+            message: "`throwsOrRethrowsKeyword` will be deprecated in 2.0 - Please use `effectSpecifiers.throwsSpecifier` instead"
+        )
+        public var throwsOrRethrowsKeyword: String? {
+            effectSpecifiers?.throwsSpecifier
+        }
 
         /// The `asyncAwait` keyword, if any.
         /// Indicates whether the function supports structured concurrency.
-        public let asyncKeyword: String?
+        @available(
+            *,
+            deprecated,
+            message: "`asyncKeyword` will be deprecated in 2.0 - Please use `effectSpecifiers.asyncSpecifier` instead"
+        )
+        public var asyncKeyword: String? {
+            effectSpecifiers?.asyncSpecifier
+        }
+
+        /// Struct representing the state of any effect specifiers on the function signature.
+        ///
+        /// For example, your accessor might support structured concurrency:
+        /// ```swift
+        /// var name: String {
+        ///    func executeOrder66() async throws { ... }
+        ///    func performAndWait<T>(_ block: () throws -> T) rethrows -> T
+        /// }
+        /// ```
+        /// in the first function, the `effectSpecifiers` property would be present and output:
+        /// - `effectSpecifiers.throwsSpecifier` // `"throws"`
+        /// - `effectSpecifiers.asyncAwaitKeyword` // `"async"`
+        ///
+        /// in the second function, the `effectSpecifiers` property would be present and output:
+        /// - `effectSpecifiers.throwsSpecifier` // `"rethrows"`
+        /// - `effectSpecifiers.asyncAwaitKeyword` // `nil`
+        ///
+        /// **Note:** `effectSpecifiers` will be `nil` if no specifiers are found on the node.
+        public let effectSpecifiers: EffectSpecifiers?
     }
 
     // MARK: - Properties: Declaration

@@ -48,7 +48,7 @@ final class FunctionTests: XCTestCase {
         XCTAssertEqual(function.attributes[0].arguments[1].value, "*")
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.identifier, "executeOrder66")
-        XCTAssertEqual(function.signature.throwsOrRethrowsKeyword, "throws")
+        XCTAssertEqual(function.signature.effectSpecifiers?.throwsSpecifier, "throws")
         AssertSourceDetailsEquals(
             getSourceLocation(for: function, from: instanceUnderTest),
             start: (0, 0, 0),
@@ -228,8 +228,7 @@ final class FunctionTests: XCTestCase {
         XCTAssertEqual(function.signature.input[0].name, "withValue")
         XCTAssertEqual(function.signature.input[0].secondName, "value")
         XCTAssertEqual(function.signature.input[0].type, .simple("T"))
-        XCTAssertNil(function.signature.throwsOrRethrowsKeyword)
-        XCTAssertNil(function.signature.output)
+        XCTAssertNil(function.signature.effectSpecifiers)
         AssertSourceDetailsEquals(
             getSourceLocation(for: function, from: instanceUnderTest),
             start: (0, 0, 0),
@@ -255,7 +254,7 @@ final class FunctionTests: XCTestCase {
         XCTAssertEqual(function.signature.input[1].name, "and")
         XCTAssertEqual(function.signature.input[1].secondName, "rhs")
         XCTAssertEqual(function.signature.input[1].type, .simple("C2"))
-        XCTAssertNil(function.signature.throwsOrRethrowsKeyword)
+        XCTAssertNil(function.signature.effectSpecifiers?.throwsSpecifier)
         XCTAssertEqual(function.signature.output, .simple("[C1.Element]"))
         AssertSourceDetailsEquals(
             getSourceLocation(for: function, from: instanceUnderTest),
@@ -326,7 +325,7 @@ final class FunctionTests: XCTestCase {
         var function = instanceUnderTest.functions[0]
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.identifier, "noParameters")
-        XCTAssertEqual(function.signature.throwsOrRethrowsKeyword, "throws")
+        XCTAssertEqual(function.signature.effectSpecifiers?.throwsSpecifier, "throws")
         XCTAssertNil(function.signature.output)
         XCTAssertEqual(function.signature.input.count, 0)
 
@@ -335,8 +334,7 @@ final class FunctionTests: XCTestCase {
         function = instanceUnderTest.functions[1]
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.identifier, "labelOmitted")
-        XCTAssertNil(function.signature.throwsOrRethrowsKeyword)
-        XCTAssertNil(function.signature.output)
+        XCTAssertNil(function.signature.effectSpecifiers)
         XCTAssertEqual(function.signature.input.count, 1)
         XCTAssertEqual(function.signature.input[0].attributes, [])
         XCTAssertEqual(function.signature.input[0].modifiers, [])
@@ -356,8 +354,7 @@ final class FunctionTests: XCTestCase {
         function = instanceUnderTest.functions[2]
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.identifier, "singleName")
-        XCTAssertNil(function.signature.throwsOrRethrowsKeyword)
-        XCTAssertNil(function.signature.output)
+        XCTAssertNil(function.signature.effectSpecifiers)
         XCTAssertEqual(function.signature.input.count, 1)
         XCTAssertEqual(function.signature.input[0].attributes, [])
         XCTAssertEqual(function.signature.input[0].modifiers, [])
@@ -377,8 +374,7 @@ final class FunctionTests: XCTestCase {
         function = instanceUnderTest.functions[3]
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.identifier, "singleNameOptional")
-        XCTAssertNil(function.signature.throwsOrRethrowsKeyword)
-        XCTAssertNil(function.signature.output)
+        XCTAssertNil(function.signature.effectSpecifiers)
         XCTAssertEqual(function.signature.input.count, 1)
         XCTAssertEqual(function.signature.input[0].attributes, [])
         XCTAssertEqual(function.signature.input[0].modifiers, [])
@@ -398,8 +394,7 @@ final class FunctionTests: XCTestCase {
         function = instanceUnderTest.functions[4]
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.identifier, "twoNames")
-        XCTAssertNil(function.signature.throwsOrRethrowsKeyword)
-        XCTAssertNil(function.signature.output)
+        XCTAssertNil(function.signature.effectSpecifiers)
         XCTAssertEqual(function.signature.input.count, 1)
         XCTAssertEqual(function.signature.input[0].attributes, [])
         XCTAssertEqual(function.signature.input[0].modifiers, [])
@@ -419,8 +414,7 @@ final class FunctionTests: XCTestCase {
         function = instanceUnderTest.functions[5]
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.identifier, "optionalSimple")
-        XCTAssertNil(function.signature.throwsOrRethrowsKeyword)
-        XCTAssertNil(function.signature.output)
+        XCTAssertNil(function.signature.effectSpecifiers)
         XCTAssertEqual(function.signature.input.count, 1)
         XCTAssertEqual(function.signature.input[0].attributes, [])
         XCTAssertEqual(function.signature.input[0].modifiers, [])
@@ -440,8 +434,7 @@ final class FunctionTests: XCTestCase {
         function = instanceUnderTest.functions[6]
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.identifier, "variadic")
-        XCTAssertNil(function.signature.throwsOrRethrowsKeyword)
-        XCTAssertNil(function.signature.output)
+        XCTAssertNil(function.signature.effectSpecifiers)
         XCTAssertEqual(function.signature.input.count, 1)
         XCTAssertEqual(function.signature.input[0].attributes, [])
         XCTAssertEqual(function.signature.input[0].modifiers, [])
@@ -461,8 +454,7 @@ final class FunctionTests: XCTestCase {
         function = instanceUnderTest.functions[7]
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.identifier, "variadicOptional")
-        XCTAssertNil(function.signature.throwsOrRethrowsKeyword)
-        XCTAssertNil(function.signature.output)
+        XCTAssertNil(function.signature.effectSpecifiers)
         XCTAssertEqual(function.signature.input.count, 1)
         XCTAssertEqual(function.signature.input[0].attributes, [])
         XCTAssertEqual(function.signature.input[0].modifiers, [])
@@ -482,8 +474,7 @@ final class FunctionTests: XCTestCase {
         function = instanceUnderTest.functions[8]
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.identifier, "multipleParameters")
-        XCTAssertNil(function.signature.throwsOrRethrowsKeyword)
-        XCTAssertNil(function.signature.output)
+        XCTAssertNil(function.signature.effectSpecifiers)
         XCTAssertEqual(function.signature.input.count, 2)
         XCTAssertEqual(function.signature.input[0].attributes, [])
         XCTAssertEqual(function.signature.input[0].modifiers, [])
@@ -515,7 +506,7 @@ final class FunctionTests: XCTestCase {
         function = instanceUnderTest.functions[9]
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.identifier, "throwing")
-        XCTAssertEqual(function.signature.throwsOrRethrowsKeyword, "throws")
+        XCTAssertEqual(function.signature.effectSpecifiers?.throwsSpecifier, "throws")
         XCTAssertNil(function.signature.output)
         XCTAssertEqual(function.signature.input.count, 2)
         XCTAssertEqual(function.signature.input[0].attributes, [])
@@ -550,8 +541,7 @@ final class FunctionTests: XCTestCase {
         function = instanceUnderTest.functions[10]
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.identifier, "tuple")
-        XCTAssertNil(function.signature.throwsOrRethrowsKeyword)
-        XCTAssertNil(function.signature.output)
+        XCTAssertNil(function.signature.effectSpecifiers)
         XCTAssertEqual(function.signature.input.count, 1)
         XCTAssertEqual(function.signature.input[0].attributes, [])
         XCTAssertEqual(function.signature.input[0].modifiers, [])
@@ -584,8 +574,7 @@ final class FunctionTests: XCTestCase {
         function = instanceUnderTest.functions[11]
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.identifier, "closure")
-        XCTAssertNil(function.signature.throwsOrRethrowsKeyword)
-        XCTAssertNil(function.signature.output)
+        XCTAssertNil(function.signature.effectSpecifiers)
         XCTAssertEqual(function.signature.input.count, 1)
         XCTAssertEqual(function.signature.input[0].attributes.map(\.name), ["escaping"])
         XCTAssertEqual(function.signature.input[0].attributes.flatMap(\.arguments), [])
@@ -617,8 +606,7 @@ final class FunctionTests: XCTestCase {
         function = instanceUnderTest.functions[12]
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.identifier, "autoEscapingClosure")
-        XCTAssertNil(function.signature.throwsOrRethrowsKeyword)
-        XCTAssertNil(function.signature.output)
+        XCTAssertNil(function.signature.effectSpecifiers)
         XCTAssertEqual(function.signature.input.count, 1)
         XCTAssertEqual(function.signature.input[0].attributes, [])
         XCTAssertEqual(function.signature.input[0].modifiers, [])
@@ -649,8 +637,7 @@ final class FunctionTests: XCTestCase {
         function = instanceUnderTest.functions[13]
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.identifier, "complexClosure")
-        XCTAssertNil(function.signature.throwsOrRethrowsKeyword)
-        XCTAssertNil(function.signature.output)
+        XCTAssertNil(function.signature.effectSpecifiers)
         XCTAssertEqual(function.signature.input.count, 1)
         XCTAssertEqual(function.signature.input[0].attributes, [])
         XCTAssertEqual(function.signature.input[0].modifiers, [])
@@ -689,8 +676,7 @@ final class FunctionTests: XCTestCase {
         function = instanceUnderTest.functions[14]
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.identifier, "result")
-        XCTAssertNil(function.signature.throwsOrRethrowsKeyword)
-        XCTAssertNil(function.signature.output)
+        XCTAssertNil(function.signature.effectSpecifiers)
         XCTAssertEqual(function.signature.input.count, 1)
         XCTAssertEqual(function.signature.input[0].attributes, [])
         XCTAssertEqual(function.signature.input[0].modifiers, [])
@@ -717,8 +703,7 @@ final class FunctionTests: XCTestCase {
         function = instanceUnderTest.functions[15]
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.identifier, "resultOptional")
-        XCTAssertNil(function.signature.throwsOrRethrowsKeyword)
-        XCTAssertNil(function.signature.output)
+        XCTAssertNil(function.signature.effectSpecifiers)
         XCTAssertEqual(function.signature.input.count, 1)
         XCTAssertEqual(function.signature.input[0].attributes, [])
         XCTAssertEqual(function.signature.input[0].modifiers, [])
@@ -745,8 +730,7 @@ final class FunctionTests: XCTestCase {
         function = instanceUnderTest.functions[16]
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.identifier, "defaultValue")
-        XCTAssertNil(function.signature.throwsOrRethrowsKeyword)
-        XCTAssertNil(function.signature.output)
+        XCTAssertNil(function.signature.effectSpecifiers)
         XCTAssertEqual(function.signature.input.count, 1)
         XCTAssertEqual(function.signature.input[0].attributes, [])
         XCTAssertEqual(function.signature.input[0].modifiers, [])
@@ -766,8 +750,7 @@ final class FunctionTests: XCTestCase {
         function = instanceUnderTest.functions[17]
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.identifier, "inoutValue")
-        XCTAssertNil(function.signature.throwsOrRethrowsKeyword)
-        XCTAssertNil(function.signature.output)
+        XCTAssertNil(function.signature.effectSpecifiers)
         XCTAssertEqual(function.signature.input.count, 1)
         XCTAssertEqual(function.signature.input[0].attributes, [])
         XCTAssertEqual(function.signature.input[0].modifiers, [])
@@ -787,8 +770,8 @@ final class FunctionTests: XCTestCase {
         function = instanceUnderTest.functions[18]
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.identifier, "asyncAwaitMethod")
-        XCTAssertNil(function.signature.throwsOrRethrowsKeyword)
-        XCTAssertEqual(function.signature.asyncKeyword, "async")
+        XCTAssertNil(function.signature.effectSpecifiers?.throwsSpecifier)
+        XCTAssertEqual(function.signature.effectSpecifiers?.asyncSpecifier, "async")
         XCTAssertNil(function.signature.output)
         XCTAssertEqual(function.signature.input.count, 0)
 
@@ -797,8 +780,8 @@ final class FunctionTests: XCTestCase {
         function = instanceUnderTest.functions[19]
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.identifier, "asyncAwaitMethodThrowing")
-        XCTAssertEqual(function.signature.throwsOrRethrowsKeyword, "throws")
-        XCTAssertEqual(function.signature.asyncKeyword, "async")
+        XCTAssertEqual(function.signature.effectSpecifiers?.throwsSpecifier, "throws")
+        XCTAssertEqual(function.signature.effectSpecifiers?.asyncSpecifier, "async")
         XCTAssertNil(function.signature.output)
         XCTAssertEqual(function.signature.input.count, 0)
 
@@ -807,8 +790,8 @@ final class FunctionTests: XCTestCase {
         function = instanceUnderTest.functions[20]
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.identifier, "asyncAwaitMethodThrowingReturning")
-        XCTAssertEqual(function.signature.throwsOrRethrowsKeyword, "throws")
-        XCTAssertEqual(function.signature.asyncKeyword, "async")
+        XCTAssertEqual(function.signature.effectSpecifiers?.throwsSpecifier, "throws")
+        XCTAssertEqual(function.signature.effectSpecifiers?.asyncSpecifier, "async")
         XCTAssertEqual(function.signature.output, .simple("String"))
         XCTAssertEqual(function.signature.input.count, 0)
     }
@@ -852,6 +835,51 @@ final class FunctionTests: XCTestCase {
         XCTAssertEqual(body.statements.count, 2)
         XCTAssertEqual(body.statements[0].kind, CodeBlock.Statement.Kind(body.statements[0].node.item))
         XCTAssertEqual(body.statements[1].kind, CodeBlock.Statement.Kind(body.statements[1].node.item))
+    }
+
+    func test_function_throwingClosureParam_rethrowing_willResolveExpectedSpecifiers() {
+        let source = #"""
+        func performAndWait<T>(_ block: () throws -> T) async rethrows -> T
+        """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        XCTAssertEqual(instanceUnderTest.functions.count, 1)
+
+        let function = instanceUnderTest.functions[0]
+
+        XCTAssertEqual(function.signature.effectSpecifiers?.asyncSpecifier, "async")
+        XCTAssertEqual(function.signature.effectSpecifiers?.throwsSpecifier, "rethrows")
+
+        if case let EntityType.closure(closure) = function.signature.input[0].type {
+            XCTAssertNil(closure.effectSpecifiers?.asyncSpecifier)
+            XCTAssertEqual(closure.effectSpecifiers?.throwsSpecifier, "throws")
+        } else {
+            XCTFail("Function should have a closure parameter")
+        }
+    }
+
+    func test_function_standardClosureParam_rethrowing_willResolveExpectedSpecifiers() {
+        let source = #"""
+        func performAndWait<T>(_ block: () -> T) async rethrows -> T
+        """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        XCTAssertEqual(instanceUnderTest.functions.count, 1)
+
+        let function = instanceUnderTest.functions[0]
+
+        XCTAssertEqual(function.signature.effectSpecifiers?.asyncSpecifier, "async")
+        XCTAssertEqual(function.signature.effectSpecifiers?.throwsSpecifier, "rethrows")
+
+        if case let EntityType.closure(closure) = function.signature.input[0].type {
+            XCTAssertNil(closure.effectSpecifiers)
+        } else {
+            XCTFail("Function should have a closure parameter")
+        }
     }
 
     func test_function_hashable_equatable_willReturnExpectedResults() throws {

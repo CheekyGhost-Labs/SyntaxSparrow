@@ -45,7 +45,7 @@ final class InitializerTests: XCTestCase {
 
         XCTAssertEqual(initializerUnderTest.keyword, "init")
         XCTAssertTrue(initializerUnderTest.isOptional)
-        XCTAssertEqual(initializerUnderTest.throwsOrRethrowsKeyword, "throws")
+        XCTAssertEqual(initializerUnderTest.effectSpecifiers?.throwsSpecifier, "throws")
         AssertSourceDetailsEquals(
             getSourceLocation(for: initializerUnderTest, from: instanceUnderTest),
             start: (1, 4, 22),
@@ -136,7 +136,7 @@ final class InitializerTests: XCTestCase {
 
         XCTAssertEqual(initializerUnderTest.keyword, "init")
         XCTAssertFalse(initializerUnderTest.isOptional)
-        XCTAssertEqual(initializerUnderTest.throwsOrRethrowsKeyword, "throws")
+        XCTAssertEqual(initializerUnderTest.effectSpecifiers?.throwsSpecifier, "throws")
 
         // Test parameters
         XCTAssertEqual(initializerUnderTest.parameters.count, 1)

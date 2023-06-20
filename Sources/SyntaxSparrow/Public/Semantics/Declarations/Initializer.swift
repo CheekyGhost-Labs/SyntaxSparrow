@@ -68,7 +68,27 @@ public struct Initializer: Declaration, SyntaxChildCollecting {
     public var parameters: [Parameter] { resolver.resolveParameters() }
 
     /// The `throws` or `rethrows` keyword, if any.
-    public var throwsOrRethrowsKeyword: String? { resolver.resolveThrowsOrRethrowsKeyword() }
+    @available(
+        *,
+        deprecated,
+        message: "`throwsOrRethrowsKeyword` will be deprecated in 2.0 - Please use `effectSpecifiers.throwsSpecifier` instead"
+    )
+    public var throwsOrRethrowsKeyword: String? { effectSpecifiers?.throwsSpecifier }
+
+    /// Struct representing the state of any effect specifiers on the initializer signature.
+    ///
+    /// For example, your accessor might support structured concurrency:
+    /// ```swift
+    /// var name: String {
+    ///    init() async throws { ... }
+    /// }
+    /// ```
+    /// in which case the `effectSpecifiers` property would be present and output:
+    /// - `effectSpecifiers.throwsSpecifier` // `"throws"`
+    /// - `effectSpecifiers.asyncAwaitKeyword` // `"async"`
+    ///
+    /// **Note:** `effectSpecifiers` will be `nil` if no specifiers are found on the node.
+    public var effectSpecifiers: EffectSpecifiers? { resolver.resolveEffectSpecifiers() }
 
     // MARK: - Properties: Resolving
 

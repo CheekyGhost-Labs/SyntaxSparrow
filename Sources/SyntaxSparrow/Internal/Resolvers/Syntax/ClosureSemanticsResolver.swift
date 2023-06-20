@@ -88,4 +88,9 @@ struct ClosureSemanticsResolver: SemanticsResolving {
         }
         return false
     }
+
+    func resolveEffectSpecifiers() -> EffectSpecifiers? {
+        guard let specifiers = node.effectSpecifiers else { return nil }
+        return EffectSpecifiers(node: specifiers)
+    }
 }

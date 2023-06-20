@@ -61,4 +61,9 @@ struct InitializerSemanticsResolver: SemanticsResolving {
     func resolveThrowsOrRethrowsKeyword() -> String? {
         node.signature.effectSpecifiers?.throwsSpecifier?.text.trimmed
     }
+
+    func resolveEffectSpecifiers() -> EffectSpecifiers? {
+        guard let specifiers = node.signature.effectSpecifiers else { return nil }
+        return EffectSpecifiers(node: specifiers)
+    }
 }

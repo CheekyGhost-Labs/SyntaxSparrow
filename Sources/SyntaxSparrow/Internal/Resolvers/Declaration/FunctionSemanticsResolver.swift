@@ -66,14 +66,16 @@ struct FunctionSemanticsResolver: SemanticsResolving {
             outputType = EntityType.parseType(output.returnType)
             isOutputOptional = output.returnType.resolveIsTypeOptional()
         }
-        let throwsKeyword = node.signature.effectSpecifiers?.throwsSpecifier?.text.trimmed
-        let asyncKeyword = node.signature.effectSpecifiers?.asyncSpecifier?.text.trimmed
+
+        var effectSpecifiers: EffectSpecifiers?
+        if let specifiers = node.signature.effectSpecifiers {
+            effectSpecifiers = EffectSpecifiers(node: specifiers)
+        }
         return Function.Signature(
             input: inputParameters,
             output: outputType,
             outputIsOptional: isOutputOptional,
-            throwsOrRethrowsKeyword: throwsKeyword,
-            asyncKeyword: asyncKeyword
+            effectSpecifiers: effectSpecifiers
         )
     }
 

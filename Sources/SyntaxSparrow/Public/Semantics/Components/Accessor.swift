@@ -55,8 +55,8 @@ public struct Accessor: DeclarationComponent {
     /// }
     /// ```
     /// in which case the `effectSpecifiers` property would be present and output:
-    /// - `effectSpecifiers.throwsSpecifier` // nil
-    /// - `effectSpecifiers.asyncAwaitKeyword` // "async""
+    /// - `effectSpecifiers.throwsSpecifier` // `nil`
+    /// - `effectSpecifiers.asyncAwaitKeyword` // `"async"`
     ///
     /// **Note:** `effectSpecifiers` will be `nil` if no specifiers are found on the node.
     public let effectSpecifiers: EffectSpecifiers?

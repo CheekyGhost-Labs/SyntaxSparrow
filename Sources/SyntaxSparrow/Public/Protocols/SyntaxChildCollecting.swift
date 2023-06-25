@@ -57,6 +57,9 @@ public protocol SyntaxChildCollecting {
     /// The collected variable declarations.
     var variables: [Variable] { get }
 
+    /// The collected switch expression declarations.
+    var switches: [SwitchExpression] { get }
+
     /// Will reset the collected child instances and re-assess the represented node to collect any supported child declarations.
     /// - Parameter viewMode: The view mode to use when parsing.
     func collectChildren(viewMode: SyntaxTreeViewMode)
@@ -79,6 +82,7 @@ public extension SyntaxChildCollecting where Self: Declaration {
     var subscripts: [Subscript] { childCollection.subscripts }
     var typealiases: [Typealias] { childCollection.typealiases }
     var variables: [Variable] { childCollection.variables }
+    var switches: [SwitchExpression] { childCollection.switches }
 
     func collectChildren(viewMode: SyntaxTreeViewMode) {
         let collector = RootDeclarationCollector(viewMode: viewMode)

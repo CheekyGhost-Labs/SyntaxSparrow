@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  SwitchExpressionValueBindingMemberCollector.swift
 //  
 //
 //  Created by Michael O'Brien on 25/6/2023.
@@ -31,6 +31,10 @@ class SwitchExpressionValueBindingMemberCollector: SkipByDefaultVisitor {
     }
 
     // MARK: - Overrides
+
+    override func visit(_ node: CaseItemSyntax) -> SyntaxVisitorContinueKind {
+        return .visitChildren
+    }
 
     override func visit(_ node: ValueBindingPatternSyntax) -> SyntaxVisitorContinueKind {
         guard focusedBindingNode == nil else { return .skipChildren }

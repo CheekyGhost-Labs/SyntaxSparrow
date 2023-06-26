@@ -13,15 +13,20 @@ public extension SwitchExpression {
     struct SwitchCase: DeclarationComponent {
 
         // MARK: - Supplementary
-
+        
+        /// Enumeration of supported switch case label types.
         public enum Label: String, Equatable {
+            /// Represents the `default` label prefix
+            /// i.e `default:` and `@unknown default:`
             case `default`
+            /// Represents the `case` label prefix
+            /// i.e `case .member:` and `case let item as Value`
             case `case`
 
             // MARK: - CustomStringConvertible
 
             var description: String {
-                "\(rawValue):"
+                "\(rawValue)"
             }
         }
 

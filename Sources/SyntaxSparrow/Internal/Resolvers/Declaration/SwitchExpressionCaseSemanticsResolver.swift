@@ -24,8 +24,7 @@ struct SwitchExpressionCaseSemanticsResolver: SemanticsResolving {
     // MARK: - Resolvers
 
     func resolveAttribute() -> Attribute? {
-        guard let previousToken = node.label.previousToken(viewMode: .fixedUp) else { return nil }
-        guard let attribute = previousToken.as(AttributeSyntax.self) else { return nil }
+        guard let attribute = node.unknownAttr else { return nil }
         return Attribute(node: attribute)
     }
 

@@ -27,6 +27,10 @@ struct SwitchExpressionSemanticsResolver: SemanticsResolving {
         node.switchKeyword.text.trimmed
     }
 
+    func resolveExpression() -> SwitchExpression.ExpressionIdentifier {
+        SwitchExpression.ExpressionIdentifier(node.expression)
+    }
+
     func resolveCases() -> [SwitchExpression.Case] {
         node.cases.map {
             switch $0 {

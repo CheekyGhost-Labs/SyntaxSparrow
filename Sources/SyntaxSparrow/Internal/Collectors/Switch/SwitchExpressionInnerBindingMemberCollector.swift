@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  SwitchExpressionInnerBindingMemberCollector.swift
 //  
 //
 //  Created by Michael O'Brien on 25/6/2023.
@@ -37,7 +37,10 @@ class SwitchExpressionInnerBindingMemberCollector: SkipByDefaultVisitor {
 
     // MARK: - Overrides
 
-    /// Called when visiting a `VariableDeclSyntax` node
+    override func visit(_ node: CaseItemSyntax) -> SyntaxVisitorContinueKind {
+        return .visitChildren
+    }
+
     override func visit(_ node: ExpressionPatternSyntax) -> SyntaxVisitorContinueKind {
         return .visitChildren
     }

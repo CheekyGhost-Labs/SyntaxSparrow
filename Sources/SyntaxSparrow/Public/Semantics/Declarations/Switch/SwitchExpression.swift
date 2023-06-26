@@ -11,8 +11,20 @@ import SwiftSyntax
 public struct SwitchExpression: Declaration {
 
     // MARK: - Supplementary
-
-    public enum Expression: Equatable, Hashable, CustomStringConvertible {
+    
+    /// Enumeration of supported expression types.
+    ///
+    /// The expression refers to the type identifier following the `switch` prefix.
+    /// For example,
+    /// ```swift
+    /// switch someType { ... }
+    /// switch (lhs, rhs) { ... }
+    /// switch (lhs as? Int, rhs as? Int) { ... }
+    /// ```
+    /// - The first expression is `.identifier("someType")`
+    /// - The second expression is `.tuple("lhs", "rhs")`
+    /// - The third expression is `.tuple("lhs as? Int", "rhs as? Int")`
+    public enum ExpressionIdentifier: Equatable, Hashable, CustomStringConvertible {
         case identifier(identifier: String)
         case tuple(elements: [String])
         case unsupported(identifier: String)
@@ -23,6 +35,17 @@ public struct SwitchExpression: Declaration {
                 return identifier
             case .tuple(let elements):
                 return "(\(elements.joined(separator: ", ")))"
+            }
+        }
+
+        public init(_ node: ExprSyntax) {
+            if let identifier = node.as(IdentifierExprSyntax.self) {
+                self = .identifier(identifier: identifier.trimmedDescription)
+            } else if let tuple = node.as(TupleExprSyntax.self) {
+                let elements = tuple.elementList.trimmedDescription.components(separatedBy: ",").map(\.trimmed)
+                self = .tuple(elements: elements)
+            } else {
+                self = .unsupported(identifier: node.trimmedDescription)
             }
         }
     }
@@ -36,11 +59,22 @@ public struct SwitchExpression: Declaration {
 
     // MARK: - Properties
 
-    public var expression: Expression = .unsupported(identifier: "")
-
+    /// The identifier expression declared after the `switch` keyword.
+    public var expression: ExpressionIdentifier { resolver.resolveExpression() }
+    
+    /// Array of ``SwitchExpression/CaseExpression`` items found in the declaration.
+    ///
+    /// **Note:** This approach was taken as the `SwiftSyntax` library is currently processing this with an `@frozen` attribute
+    /// noting it is a compiler work-around. The enumeration will contain the case declaration itself, which has labels, keywords, code statements etc
+    /// - See: ``SwitchExpression/CaseExpression``
     public var cases: [Case] { resolver.resolveCases() }
 
+    /// Textual representation of the expression.
+    /// - See: ``SwitchExpression/Expression``
     public var identifier: String { expression.description }
+
+    /// The switch expression keyword. i.e `"switch"`
+    public var keyword: String { resolver.resolveKeyword() }
 
     // MARK: - Properties: Declaration
 

@@ -1,5 +1,5 @@
 //
-//  SwitchExpressionMemberCollector.swift
+//  SwitchExpressionTupleCollector.swift
 //  
 //
 //  Created by Michael O'Brien on 25/6/2023.
@@ -8,11 +8,13 @@
 import Foundation
 import SwiftSyntax
 
-class SwitchExpressionMemberCollector: SkipByDefaultVisitor {
+class SwitchExpressionTupleCollector: SkipByDefaultVisitor {
 
     // MARK: - Properties
 
     private(set) var memberName: String?
+
+    private(set) var elements: [String]?
 
     private(set) var focusedExpressionNode: ExpressionPatternSyntax?
 
@@ -20,8 +22,8 @@ class SwitchExpressionMemberCollector: SkipByDefaultVisitor {
 
     func collect(_ node: CaseItemSyntax) -> SwitchExpression.SwitchCase.Item? {
         walk(node)
-        guard let memberName else { return nil }
-        return .member(name: memberName)
+        guard let elements, memberName == nil else { return nil }
+        return .tuple(elements: elements)
     }
 
     // MARK: - Overrides
@@ -37,8 +39,14 @@ class SwitchExpressionMemberCollector: SkipByDefaultVisitor {
     }
 
     override func visit(_ node: MemberAccessExprSyntax) -> SyntaxVisitorContinueKind {
-        guard let focusedNode = focusedExpressionNode, node.parent?.id == focusedNode.id else { return .skipChildren }
+        // This is a fallback as there should be no member syntax. If there is the result will return nil.
         memberName = node.name.text.trimmed
+        return .skipChildren
+    }
+
+    override func visit(_ node: TupleExprSyntax) -> SyntaxVisitorContinueKind {
+        guard let focusedExpressionNode, node.parent?.id == focusedExpressionNode.id, elements == nil else { return .skipChildren }
+        elements = node.elementList.trimmedDescription.components(separatedBy: ",").map(\.trimmed)
         return .skipChildren
     }
 }

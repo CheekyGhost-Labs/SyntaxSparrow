@@ -46,15 +46,106 @@ final class SwitchTests: XCTestCase {
         XCTAssertEqual(instanceUnderTest.switches.count, 1)
 
         let switchExpr = instanceUnderTest.switches[0]
+        XCTAssertEqual(switchExpr.keyword, "switch")
+        XCTAssertEqual(switchExpr.cases.count, 5)
+        XCTAssertEqual(switchExpr.expression, .identifier(identifier: "target"))
 
-        let cases = switchExpr.cases
-        cases.forEach {
-            switch $0 {
-            case .switchCase(let switchCase):
-                _ = switchCase.items
-            case .ifConfig:
-                break
-            }
+        // case .example:
+        guard case let SwitchExpression.Case.switchCase(switchCaseOne) = switchExpr.cases[0] else {
+            XCTFail("The first case in the switch body should be the `switchCase` type")
+            return
         }
+        XCTAssertEqual(switchCaseOne.label, .case)
+        XCTAssertEqual(switchCaseOne.label.description, "case")
+        XCTAssertNil(switchCaseOne.attribute)
+        XCTAssertEqual(switchCaseOne.items.count, 1)
+        XCTAssertEqual(switchCaseOne.items[0], .member(name: "example"))
+
+        // case .example(let items), let .other(items):
+        guard case let SwitchExpression.Case.switchCase(switchCaseTwo) = switchExpr.cases[1] else {
+            XCTFail("The second case in the switch body should be the `switchCase` type")
+            return
+        }
+        XCTAssertEqual(switchCaseTwo.label, .case)
+        XCTAssertEqual(switchCaseTwo.label.description, "case")
+        XCTAssertNil(switchCaseTwo.attribute)
+        XCTAssertEqual(switchCaseTwo.items.count, 2)
+        XCTAssertEqual(switchCaseTwo.items[0], .innerValueBindingMember(name: "example", elements: ["let": "items"]))
+        XCTAssertEqual(switchCaseTwo.items[1], .valueBindingMember(keyWord: "let", name: "other", elements: ["items"]))
+
+        // case let .example(items):
+        guard case let SwitchExpression.Case.switchCase(switchCaseThree) = switchExpr.cases[2] else {
+            XCTFail("The third case in the switch body should be the `switchCase` type")
+            return
+        }
+        XCTAssertEqual(switchCaseThree.label, .case)
+        XCTAssertEqual(switchCaseThree.label.description, "case")
+        XCTAssertNil(switchCaseThree.attribute)
+        XCTAssertEqual(switchCaseThree.items.count, 1)
+        XCTAssertEqual(switchCaseThree.items[0], .valueBindingMember(keyWord: "let", name: "example", elements: ["items"]))
+
+        // case let example as SomeItem:
+        guard case let SwitchExpression.Case.switchCase(switchCaseFour) = switchExpr.cases[3] else {
+            XCTFail("The fourth case in the switch body should be the `switchCase` type")
+            return
+        }
+        XCTAssertEqual(switchCaseFour.label, .case)
+        XCTAssertEqual(switchCaseFour.label.description, "case")
+        XCTAssertNil(switchCaseFour.attribute)
+        XCTAssertEqual(switchCaseFour.items.count, 1)
+        XCTAssertEqual(switchCaseFour.items[0], .valueBinding(keyWord: "let", elements: ["example", "as", "SomeItem"]))
+
+        // @unknown default:
+        guard case let SwitchExpression.Case.switchCase(switchCaseFive) = switchExpr.cases[4] else {
+            XCTFail("The fifth case in the switch body should be the `switchCase` type")
+            return
+        }
+        XCTAssertEqual(switchCaseFive.label, .default)
+        XCTAssertEqual(switchCaseFive.label.description, "default")
+        XCTAssertEqual(switchCaseFive.attribute?.name, "unknown")
+        XCTAssertEqual(switchCaseFive.attribute?.arguments, [])
+        XCTAssertEqual(switchCaseFive.items.count, 0)
+    }
+
+    func test_switch_tupleIdentifier_withResolveExpectedValues() throws {
+        let source = #"""
+        switch (lhs, rhs) {
+          case (true, false):
+            print("placeholder")
+          default:
+            print("placeholder")
+        }
+        """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        XCTAssertEqual(instanceUnderTest.switches.count, 1)
+
+        let switchExpr = instanceUnderTest.switches[0]
+        XCTAssertEqual(switchExpr.keyword, "switch")
+        XCTAssertEqual(switchExpr.cases.count, 2)
+        XCTAssertEqual(switchExpr.expression, .tuple(elements: ["lhs", "rhs"]))
+
+        // case (true, false):
+        guard case let SwitchExpression.Case.switchCase(switchCaseOne) = switchExpr.cases[0] else {
+            XCTFail("The first case in the switch body should be the `switchCase` type")
+            return
+        }
+        XCTAssertEqual(switchCaseOne.label, .case)
+        XCTAssertEqual(switchCaseOne.label.description, "case")
+        XCTAssertNil(switchCaseOne.attribute)
+        XCTAssertEqual(switchCaseOne.items.count, 1)
+        XCTAssertEqual(switchCaseOne.items[0], .tuple(elements: ["true", "false"]))
+
+        // default:
+        guard case let SwitchExpression.Case.switchCase(switchCaseFive) = switchExpr.cases[1] else {
+            XCTFail("The second case in the switch body should be the `switchCase` type")
+            return
+        }
+        XCTAssertEqual(switchCaseFive.label, .default)
+        XCTAssertEqual(switchCaseFive.label.description, "default")
+        XCTAssertNil(switchCaseFive.attribute)
+        XCTAssertEqual(switchCaseFive.items.count, 0)
     }
 }

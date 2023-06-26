@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  SwitchExpressionValueBindingCollector.swift
 //  
 //
 //  Created by Michael O'Brien on 25/6/2023.
@@ -32,6 +32,10 @@ class SwitchExpressionValueBindingCollector: SkipByDefaultVisitor {
 
     // MARK: - Overrides
 
+    override func visit(_ node: CaseItemSyntax) -> SyntaxVisitorContinueKind {
+        return .visitChildren
+    }
+
     override func visit(_ node: ValueBindingPatternSyntax) -> SyntaxVisitorContinueKind {
         guard focusedBindingNode == nil else { return .skipChildren }
         focusedBindingNode = node
@@ -55,9 +59,16 @@ class SwitchExpressionValueBindingCollector: SkipByDefaultVisitor {
     }
 
     override func visit(_ node: ExprListSyntax) -> SyntaxVisitorContinueKind {
-        sequenceElements = node.map { $0.trimmedDescription }
-        return .visitChildren
+        sequenceElements = node.map(\.trimmedDescription)
+        return .skipChildren
     }
+
+    /*
+     Initially listened for the variants I could derive from token exploration. However, as it always
+     ends up adding the `node.trimmedDescription`, and there is always an `ExprListSyntax` element that
+     contains them, the `ExprListSyntax` visitor override will just map the trimmed description value
+     into the sequence. Leaving these in as reference for future refactor/clean-up.
+     */
 
 //    override func visit(_ node: UnresolvedPatternExprSyntax) -> SyntaxVisitorContinueKind {
 //        return .visitChildren

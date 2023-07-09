@@ -39,7 +39,7 @@ struct ClosureSemanticsResolver: SemanticsResolving {
     }
 
     func resolveOutput() -> EntityType {
-        EntityType.parseType(node.output.returnType)
+        EntityType(node.output.returnType)
     }
 
     func resolveRawInput() -> String {

@@ -66,4 +66,9 @@ struct InitializerSemanticsResolver: SemanticsResolving {
         guard let specifiers = node.signature.effectSpecifiers else { return nil }
         return EffectSpecifiers(node: specifiers)
     }
+
+    func resolveBody() -> CodeBlock? {
+        guard let body = node.body else { return nil }
+        return CodeBlock(node: body)
+    }
 }

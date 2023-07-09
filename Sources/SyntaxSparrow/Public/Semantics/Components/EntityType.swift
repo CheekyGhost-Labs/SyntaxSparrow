@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftSyntax
 
 /// An ``EntityType`` represents a type being referenced by a property or parameter. It is encapsulated in the ``EntityType``
 /// enumeration to provide a more simple entry point when working with sets of parameter inputs and properties.
@@ -88,5 +89,12 @@ public enum EntityType: Equatable, Hashable, CustomStringConvertible {
         case .empty:
             return ""
         }
+    }
+
+    // MARK: - Lifecycle
+
+    /// Creates a new ``SyntaxSparrow/EntityType`` instance from a `TypeSyntax` node.
+    public init(_ typeSyntax: TypeSyntax) {
+        self = EntityType.parseType(typeSyntax)
     }
 }

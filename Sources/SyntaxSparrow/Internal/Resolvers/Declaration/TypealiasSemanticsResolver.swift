@@ -45,7 +45,7 @@ struct TypealiasSemanticsResolver: SemanticsResolving {
     }
 
     func resolveInitializedType() -> EntityType {
-        EntityType.parseType(node.initializer.value)
+        EntityType(node.initializer.value)
     }
 
     func resolveInitializedTypeIsOptional() -> Bool {

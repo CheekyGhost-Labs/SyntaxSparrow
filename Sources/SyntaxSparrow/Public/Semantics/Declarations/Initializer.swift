@@ -90,17 +90,39 @@ public struct Initializer: Declaration, SyntaxChildCollecting {
     /// **Note:** `effectSpecifiers` will be `nil` if no specifiers are found on the node.
     public var effectSpecifiers: EffectSpecifiers? { resolver.resolveEffectSpecifiers() }
 
+    /// Struct representing the body of the function.
+    ///
+    /// For example in the following declaration:
+    /// ```swift
+    /// init() {
+    ///     print("hello")
+    ///     print("world")
+    /// }
+    /// ```
+    /// would provide a `body` that is not `nil` and would have 2 statements within it.
+    public var body: CodeBlock? { resolver.resolveBody() }
+
     // MARK: - Properties: Resolving
 
     private(set) var resolver: InitializerSemanticsResolver
 
     // MARK: - Properties: SyntaxChildCollecting
 
-    public var childCollection: DeclarationCollection = .init()
+    // Note: The `CodeBlock` type supports collecting child declarations. The init will default to using that collection.
+
+    public var childCollection: DeclarationCollection {
+        body?.childCollection ?? DeclarationCollection()
+    }
 
     // MARK: - Lifecycle
 
     public init(node: InitializerDeclSyntax) {
         resolver = InitializerSemanticsResolver(node: node)
+    }
+
+    // MARK: - Conformance: SyntaxChildCollecting
+
+    public func collectChildren(viewMode: SyntaxTreeViewMode) {
+        body?.collectChildren(viewMode: viewMode)
     }
 }

@@ -56,7 +56,7 @@ struct TupleParameterSemanticsResolver: ParameterNodeSemanticsResolving {
     }
 
     func resolveType() -> EntityType {
-        return EntityType.parseType(node.type)
+        return EntityType(node.type)
     }
 
     func resolveIsVariadic() -> Bool {

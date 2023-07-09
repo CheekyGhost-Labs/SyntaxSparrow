@@ -12,8 +12,8 @@ import SwiftSyntax
 ///
 /// A code block is primarily a list of code statements within parenthesis `{` and `}`. For example, the `get/set/willSet/didSet` accessors in a variable, a function body etc.
 ///
-/// An instance of the `CodeBlock` struct provides access to an array of statements held within.
-public struct CodeBlock: DeclarationComponent {
+/// An instance of the `CodeBlock` struct provides access to an array of statements held within. It also supports ``SyntaxChildCollecting`` which can collect child declarations.
+public struct CodeBlock: DeclarationComponent, SyntaxChildCollecting {
     // MARK: - Supplementary
 
     /// The kind of accessor (`get` or `set`).
@@ -34,11 +34,16 @@ public struct CodeBlock: DeclarationComponent {
     /// Array of statements within the code block.
     public let statements: [Statement]
 
+    // MARK: - Properties: SyntaxChildCollecting
+
+    public var childCollection: DeclarationCollection = .init()
+
     // MARK: - Lifecycle
 
     /// Creates a new ``SyntaxSparrow/CodeBlock`` instance from a `CodeBlockSyntax` node.
     public init(node: CodeBlockSyntax) {
         self.node = node
         statements = node.statements.map { Statement(node: $0) }
+        collectChildren(viewMode: .fixedUp)
     }
 }

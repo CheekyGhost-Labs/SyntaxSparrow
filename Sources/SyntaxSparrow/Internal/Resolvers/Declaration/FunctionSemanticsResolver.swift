@@ -63,7 +63,7 @@ struct FunctionSemanticsResolver: SemanticsResolving {
         var outputType: EntityType?
         var isOutputOptional: Bool = false
         if let output = node.signature.output {
-            outputType = EntityType.parseType(output.returnType)
+            outputType = EntityType(output.returnType)
             isOutputOptional = output.returnType.resolveIsTypeOptional()
         }
 

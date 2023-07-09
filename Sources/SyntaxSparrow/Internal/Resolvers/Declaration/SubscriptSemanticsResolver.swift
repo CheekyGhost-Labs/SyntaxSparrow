@@ -55,7 +55,7 @@ struct SubscriptSemanticsResolver: SemanticsResolving {
     }
 
     func resolveReturnType() -> EntityType {
-        EntityType.parseType(node.result.returnType)
+        EntityType(node.result.returnType)
     }
 
     func resolveReturnTypeIsOptional() -> Bool {

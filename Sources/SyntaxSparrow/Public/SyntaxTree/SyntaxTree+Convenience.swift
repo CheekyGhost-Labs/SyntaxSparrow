@@ -83,6 +83,8 @@ public extension SyntaxTree {
     func declarations<T: Declaration>(of type: T.Type) -> [T] {
         var result: [Any] = []
         switch type {
+        case is Actor.Type:
+            result = actors
         case is Class.Type:
             result = classes
         case is ConditionalCompilationBlock.Type:

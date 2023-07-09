@@ -40,9 +40,9 @@ struct VariableSemanticsResolver: SemanticsResolving {
             else {
                 return .empty
             }
-            return EntityType.parseType(matchingType.type)
+            return EntityType(matchingType.type)
         }
-        return EntityType.parseType(typeAnnotation)
+        return EntityType(typeAnnotation)
     }
 
     func resolveName() -> String {

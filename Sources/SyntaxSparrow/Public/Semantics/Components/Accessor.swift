@@ -19,7 +19,7 @@ import SwiftSyntax
 /// - Modifier applied to the accessor, e.g., `private`.
 ///
 /// The `Accessor` struct also includes functionality to create an accessor instance from an `AccessorDeclSyntax` node.
-public struct Accessor: DeclarationComponent {
+public struct Accessor: DeclarationComponent, SyntaxChildCollecting {
     // MARK: - Supplementary
 
     /// The kind of accessor (`get` or `set`).
@@ -81,6 +81,12 @@ public struct Accessor: DeclarationComponent {
     /// ```
     public let body: CodeBlock?
 
+    // MARK: - Properties: SyntaxChildCollecting
+
+    public var childCollection: DeclarationCollection {
+        body?.childCollection ?? DeclarationCollection()
+    }
+
     // MARK: - Lifecycle
 
     /// Creates a new ``SyntaxSparrow/Accessor`` instance from an `AccessorDeclSyntax` node.
@@ -109,5 +115,12 @@ public struct Accessor: DeclarationComponent {
         } else {
             effectSpecifiers = nil
         }
+        collectChildren(viewMode: .fixedUp)
+    }
+
+    // MARK: - Conformance: SyntaxChildCollecting
+
+    public func collectChildren(viewMode: SyntaxTreeViewMode) {
+        body?.collectChildren(viewMode: viewMode)
     }
 }

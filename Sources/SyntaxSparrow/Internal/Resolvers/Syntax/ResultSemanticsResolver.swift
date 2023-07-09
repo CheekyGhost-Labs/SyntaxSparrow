@@ -40,7 +40,7 @@ struct ResultSemanticsResolver: SemanticsResolving {
         else {
             return .empty
         }
-        return EntityType.parseType(successType.argumentType)
+        return EntityType(successType.argumentType)
     }
 
     func resolveFailureType() -> EntityType {
@@ -51,6 +51,6 @@ struct ResultSemanticsResolver: SemanticsResolving {
         else {
             return .empty
         }
-        return EntityType.parseType(failureType.argumentType)
+        return EntityType(failureType.argumentType)
     }
 }

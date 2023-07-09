@@ -39,4 +39,9 @@ struct DeinitializerSemanticsResolver: SemanticsResolving {
         guard let modifierList = node.modifiers else { return [] }
         return modifierList.map { Modifier(node: $0) }
     }
+
+    func resolveBody() -> CodeBlock? {
+        guard let body = node.body else { return nil }
+        return CodeBlock(node: body)
+    }
 }

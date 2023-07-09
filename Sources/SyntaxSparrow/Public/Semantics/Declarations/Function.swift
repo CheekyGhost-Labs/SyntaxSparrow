@@ -172,11 +172,21 @@ public struct Function: Declaration, SyntaxChildCollecting {
 
     // MARK: - Properties: SyntaxChildCollecting
 
-    public var childCollection: DeclarationCollection = .init()
+    // Note: The `CodeBlock` type supports collecting child declarations. The function will default to using that collection.
+
+    public var childCollection: DeclarationCollection {
+        body?.childCollection ?? DeclarationCollection()
+    }
 
     // MARK: - Lifecycle
 
     public init(node: FunctionDeclSyntax) {
         resolver = FunctionSemanticsResolver(node: node)
+    }
+
+    // MARK: - Conformance: SyntaxChildCollecting
+
+    public func collectChildren(viewMode: SyntaxTreeViewMode) {
+        body?.collectChildren(viewMode: viewMode)
     }
 }

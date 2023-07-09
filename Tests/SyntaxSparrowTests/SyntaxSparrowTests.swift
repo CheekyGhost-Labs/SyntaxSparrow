@@ -11,6 +11,7 @@ import XCTest
 private extension DeclarationCollection {
     var allDeclarations: [any Declaration] {
         var results: [any Declaration] = []
+        results.append(contentsOf: actors)
         results.append(contentsOf: classes)
         results.append(contentsOf: conditionalCompilationBlocks)
         results.append(contentsOf: deinitializers)

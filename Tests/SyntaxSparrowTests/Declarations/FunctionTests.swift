@@ -115,7 +115,7 @@ final class FunctionTests: XCTestCase {
         XCTAssertEqual(function.operators[0].name, "+-")
     }
 
-    func test_function_operators_willResolveExptectedTypes() throws {
+    func test_function_operators_willResolveExpectedTypes() throws {
         let source = #"""
         prefix func ¬(value: Bool) -> Bool? { !value }
         func ±(lhs: Int?, rhs: Int) -> (Int, Int) { (lhs + rhs, lhs - rhs) }
@@ -290,7 +290,7 @@ final class FunctionTests: XCTestCase {
         XCTAssertTrue(instanceUnderTest.functions[0].signature.input[0].isOptional)
     }
 
-    func test_function_parameters_willResolveExptectedTypes() throws {
+    func test_function_parameters_willResolveExpectedTypes() throws {
         let source = #"""
         func noParameters() throws {}
         func labelOmitted(_ name: String) {}
@@ -796,7 +796,7 @@ final class FunctionTests: XCTestCase {
         XCTAssertEqual(function.signature.input.count, 0)
     }
 
-    func test_function_outputIsOptional_willResolveExptectedTypes() throws {
+    func test_function_outputIsOptional_willResolveExpectedTypes() throws {
         let source = #"""
         func returnTypeNotOptional() -> String {}
         func returnTypeIsOptional() -> String? {}

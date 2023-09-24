@@ -9,26 +9,26 @@ import Foundation
 import SwiftSyntax
 
 /// `DeclarationSemanticsResolving` conforming struct that is responsible for exploring, retrieving properties, and collecting children of a
-/// `TypealiasDeclSyntax` node.
+/// `TypeAliasDeclSyntax` node.
 /// It exposes the expected properties of a `Typealias` as `lazy` properties. This will allow the initial lazy evaluation to not be repeated when
 /// accessed repeatedly.
 struct TypealiasSemanticsResolver: SemanticsResolving {
     // MARK: - Properties: SemanticsResolving
 
-    typealias Node = TypealiasDeclSyntax
+    typealias Node = TypeAliasDeclSyntax
 
     let node: Node
 
     // MARK: - Lifecycle
 
-    init(node: TypealiasDeclSyntax) {
+    init(node: TypeAliasDeclSyntax) {
         self.node = node
     }
 
     // MARK: - Resolvers
 
     func resolveName() -> String {
-        node.identifier.text.trimmed
+        node.name.text.trimmed
     }
 
     func resolveAttributes() -> [Attribute] {
@@ -40,8 +40,7 @@ struct TypealiasSemanticsResolver: SemanticsResolving {
     }
 
     func resolveModifiers() -> [Modifier] {
-        guard let modifierList = node.modifiers else { return [] }
-        return modifierList.map { Modifier(node: $0) }
+        node.modifiers.map { Modifier(node: $0) }
     }
 
     func resolveInitializedType() -> EntityType {
@@ -53,12 +52,10 @@ struct TypealiasSemanticsResolver: SemanticsResolving {
     }
 
     func resolveGenericParameters() -> [GenericParameter] {
-        let parameters = GenericParameter.fromParameterList(from: node.genericParameterClause?.genericParameterList)
-        return parameters
+        GenericParameter.fromParameterList(from: node.genericParameterClause?.parameters)
     }
 
     func resolveGenericRequirements() -> [GenericRequirement] {
-        let requirements = GenericRequirement.fromRequirementList(from: node.genericWhereClause?.requirementList)
-        return requirements
+        GenericRequirement.fromRequirementList(from: node.genericWhereClause?.requirements)
     }
 }

@@ -20,7 +20,7 @@ extension EntityType {
 
     static func parseType(_ typeSyntax: TypeSyntaxProtocol) -> EntityType {
         // Simple
-        if let simpleType = typeSyntax.as(SimpleTypeIdentifierSyntax.self) {
+        if let simpleType = typeSyntax.as(IdentifierTypeSyntax.self) {
             // Result
             if simpleType.firstToken(viewMode: .fixedUp)?.tokenKind == .identifier("Result") {
                 let result = Result(simpleType)
@@ -140,7 +140,7 @@ extension EntityType {
         let enumParentType = EnumCaseParameterClauseSyntax.self
         if let enumParent = typeSyntax.firstParent(returning: { $0.as(enumParentType) })?.as(enumParentType) {
             guard
-                let unexpectedToken = enumParent.unexpectedBetweenParameterListAndRightParen,
+                let unexpectedToken = enumParent.unexpectedBetweenParametersAndRightParen,
                 let tokenChild = unexpectedToken.children(viewMode: .fixedUp).first?.as(TokenSyntax.self),
                 tokenChild.tokenKind == .postfixOperator("...")
             else {

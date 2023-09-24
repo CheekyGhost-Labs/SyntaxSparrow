@@ -40,7 +40,7 @@ struct TupleParameterSemanticsResolver: ParameterNodeSemanticsResolving {
     }
 
     func resolveName() -> String? {
-        node.name?.text.trimmed
+        node.firstName?.text.trimmed
     }
 
     func resolveSecondName() -> String? {
@@ -68,6 +68,6 @@ struct TupleParameterSemanticsResolver: ParameterNodeSemanticsResolving {
     }
 
     func resolveIsInOut() -> Bool {
-        node.inOut != nil
+        node.inoutKeyword != nil
     }
 }

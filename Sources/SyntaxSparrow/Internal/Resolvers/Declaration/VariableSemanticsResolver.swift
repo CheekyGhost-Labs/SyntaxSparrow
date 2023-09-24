@@ -28,8 +28,13 @@ struct VariableSemanticsResolver: SemanticsResolving {
     // MARK: - Resolvers
 
     func resolveAccessors() -> [Accessor] {
-        guard let accessor = node.accessor?.as(AccessorBlockSyntax.self) else { return [] }
-        return accessor.accessors.map(Accessor.init)
+        guard let accessor = node.accessorBlock?.as(AccessorBlockSyntax.self) else { return [] }
+        switch accessor.accessors {
+        case .accessors(let accessorList):
+            return accessorList.map(Accessor.init)
+        default:
+            return []
+        }
     }
 
     func resolveType() -> EntityType {
@@ -56,13 +61,12 @@ struct VariableSemanticsResolver: SemanticsResolving {
 
     func resolveKeyword() -> String {
         guard let parent = node.context?.as(VariableDeclSyntax.self) else { return "" }
-        return parent.bindingKeyword.text.trimmed
+        return parent.bindingSpecifier.text.trimmed
     }
 
     func resolveModifiers() -> [Modifier] {
         guard let parent = node.context?.as(VariableDeclSyntax.self) else { return [] }
-        guard let modifierList = parent.modifiers else { return [] }
-        return modifierList.map { Modifier(node: $0) }
+        return parent.modifiers.map { Modifier(node: $0) }
     }
 
     func resolveInitializedValue() -> String? {

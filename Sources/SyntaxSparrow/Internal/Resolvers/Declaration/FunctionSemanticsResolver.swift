@@ -28,7 +28,7 @@ struct FunctionSemanticsResolver: SemanticsResolving {
     // MARK: - Resolvers
 
     func resolveIdentifier() -> String {
-        node.identifier.text.trimmed
+        node.name.text.trimmed
     }
 
     func resolveAttributes() -> [Attribute] {
@@ -40,18 +40,15 @@ struct FunctionSemanticsResolver: SemanticsResolving {
     }
 
     func resolveModifiers() -> [Modifier] {
-        guard let modifierList = node.modifiers else { return [] }
-        return modifierList.map { Modifier(node: $0) }
+        node.modifiers.map { Modifier(node: $0) }
     }
 
     func resolveGenericParameters() -> [GenericParameter] {
-        let parameters = GenericParameter.fromParameterList(from: node.genericParameterClause?.genericParameterList)
-        return parameters
+        GenericParameter.fromParameterList(from: node.genericParameterClause?.parameters)
     }
 
     func resolveGenericRequirements() -> [GenericRequirement] {
-        let requirements = GenericRequirement.fromRequirementList(from: node.genericWhereClause?.requirementList)
-        return requirements
+        GenericRequirement.fromRequirementList(from: node.genericWhereClause?.requirements)
     }
 
     func resolveIsOperator() -> Bool {
@@ -59,12 +56,12 @@ struct FunctionSemanticsResolver: SemanticsResolving {
     }
 
     func resolveSignature() -> Function.Signature {
-        let inputParameters = node.signature.input.parameterList.map(Parameter.init)
+        let inputParameters = node.signature.parameterClause.parameters.map(Parameter.init)
         var outputType: EntityType?
         var isOutputOptional: Bool = false
-        if let output = node.signature.output {
-            outputType = EntityType(output.returnType)
-            isOutputOptional = output.returnType.resolveIsTypeOptional()
+        if let output = node.signature.returnClause {
+            outputType = EntityType(output.type)
+            isOutputOptional = output.type.resolveIsTypeOptional()
         }
 
         var effectSpecifiers: EffectSpecifiers?

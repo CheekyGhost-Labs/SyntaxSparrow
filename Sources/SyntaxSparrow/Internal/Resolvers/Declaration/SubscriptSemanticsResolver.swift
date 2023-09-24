@@ -28,7 +28,7 @@ struct SubscriptSemanticsResolver: SemanticsResolving {
     // MARK: - Resolvers
 
     func resolveIndices() -> [Parameter] {
-        node.indices.parameterList.map { Parameter(node: $0) }
+        node.parameterClause.parameters.map { Parameter(node: $0) }
     }
 
     func resolveAttributes() -> [Attribute] {
@@ -40,30 +40,32 @@ struct SubscriptSemanticsResolver: SemanticsResolving {
     }
 
     func resolveModifiers() -> [Modifier] {
-        guard let modifierList = node.modifiers else { return [] }
-        return modifierList.map { Modifier(node: $0) }
+        node.modifiers.map { Modifier(node: $0) }
     }
 
     func resolveGenericParameters() -> [GenericParameter] {
-        let parameters = GenericParameter.fromParameterList(from: node.genericParameterClause?.genericParameterList)
-        return parameters
+        GenericParameter.fromParameterList(from: node.genericParameterClause?.parameters)
     }
 
     func resolveGenericRequirements() -> [GenericRequirement] {
-        let requirements = GenericRequirement.fromRequirementList(from: node.genericWhereClause?.requirementList)
-        return requirements
+        GenericRequirement.fromRequirementList(from: node.genericWhereClause?.requirements)
     }
 
     func resolveReturnType() -> EntityType {
-        EntityType(node.result.returnType)
+        EntityType(node.returnClause.type)
     }
 
     func resolveReturnTypeIsOptional() -> Bool {
-        node.result.returnType.resolveIsTypeOptional()
+        node.returnClause.type.resolveIsTypeOptional()
     }
 
     func resolveAccessors() -> [Accessor] {
-        guard let accessor = node.accessor?.as(AccessorBlockSyntax.self) else { return [] }
-        return accessor.accessors.map(Accessor.init)
+        guard let accessor = node.accessorBlock?.as(AccessorBlockSyntax.self) else { return [] }
+        switch accessor.accessors {
+        case .accessors(let accessorList):
+            return accessorList.map(Accessor.init)
+        default:
+            return []
+        }
     }
 }

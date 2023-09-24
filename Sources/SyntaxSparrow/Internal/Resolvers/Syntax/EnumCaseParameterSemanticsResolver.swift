@@ -31,8 +31,7 @@ struct EnumCaseParameterSemanticsResolver: ParameterNodeSemanticsResolving {
     }
 
     func resolveModifiers() -> [Modifier] {
-        guard let modifierList = node.modifiers else { return [] }
-        return modifierList.map { Modifier(node: $0) }
+        node.modifiers.map { Modifier(node: $0) }
     }
 
     func resolveName() -> String? {
@@ -58,7 +57,7 @@ struct EnumCaseParameterSemanticsResolver: ParameterNodeSemanticsResolving {
     func resolveIsVariadic() -> Bool {
         guard
             let parent = node.parent?.parent?.as(EnumCaseParameterClauseSyntax.self),
-            let unexpectedToken = parent.unexpectedBetweenParameterListAndRightParen,
+            let unexpectedToken = parent.unexpectedBetweenParametersAndRightParen,
             let tokenChild = unexpectedToken.children(viewMode: .fixedUp).first?.as(TokenSyntax.self)
         else {
             return false
@@ -71,7 +70,7 @@ struct EnumCaseParameterSemanticsResolver: ParameterNodeSemanticsResolving {
     }
 
     func resolveDefaultArgument() -> String? {
-        node.defaultArgument?.value.description.trimmed
+        node.defaultValue?.value.description.trimmed
     }
 
     func resolveIsInOut() -> Bool {

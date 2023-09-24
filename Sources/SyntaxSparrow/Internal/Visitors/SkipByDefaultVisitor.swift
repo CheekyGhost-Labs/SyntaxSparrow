@@ -10,25 +10,13 @@ import SwiftSyntax
 
 /// `SyntaxVisitor` subclass that returns `.skipChildren` for any visitaions.
 class SkipByDefaultVisitor: SyntaxVisitor {
-    override func visit(_: AccessPathComponentSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: ImportPathComponentSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: AccessPathSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: ImportPathComponentListSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
-
-    // Pending update - Leaving in for future reference
-
-    /*
-     override func visit(_: ImportPathComponentSyntax) -> SyntaxVisitorContinueKind {
-         return .skipChildren
-     }
-
-     override func visit(_: ImportPathSyntax) -> SyntaxVisitorContinueKind {
-         return .skipChildren
-     }
-      */
 
     override func visit(_: AccessorBlockSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
@@ -42,11 +30,11 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: AccessorListSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: AccessorDeclListSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: AccessorParameterSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: AccessorParametersSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -82,7 +70,7 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: AssociatedtypeDeclSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: AssociatedTypeDeclSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -106,7 +94,7 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: AvailabilityEntrySyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: SpecializeAvailabilityArgumentSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -114,19 +102,19 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: AvailabilitySpecListSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: AvailabilityArgumentListSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: AvailabilityVersionRestrictionListEntrySyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: PlatformVersionItemSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: AvailabilityVersionRestrictionListSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: PlatformVersionItemListSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: AvailabilityVersionRestrictionSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: PlatformVersionSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -134,7 +122,7 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: BackDeployedAttributeSpecListSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: BackDeployedAttributeArgumentsSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -154,11 +142,11 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: CaseItemListSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: SwitchCaseItemListSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: CaseItemSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: SwitchCaseItemSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -186,19 +174,19 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: ClosureCaptureItemListSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: ClosureCaptureListSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: ClosureCaptureItemSpecifierSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: ClosureCaptureSpecifierSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: ClosureCaptureItemSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: ClosureCaptureSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: ClosureCaptureSignatureSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: ClosureCaptureClauseSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -206,11 +194,11 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: ClosureParamListSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: ClosureShorthandParameterListSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: ClosureParamSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: ClosureShorthandParameterSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -266,7 +254,7 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: ConstrainedSugarTypeSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: SomeOrAnyTypeSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -306,10 +294,6 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: DeclNameSyntax) -> SyntaxVisitorContinueKind {
-        return .skipChildren
-    }
-
     override func visit(_: DeferStmtSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
@@ -318,11 +302,11 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: DerivativeRegistrationAttributeArgumentsSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: DerivativeAttributeArgumentsSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: DesignatedTypeElementSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: DesignatedTypeSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -346,19 +330,19 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: DifferentiabilityParamListSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: DifferentiabilityArgumentListSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: DifferentiabilityParamSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: DifferentiabilityArgumentSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: DifferentiabilityParamsClauseSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: DifferentiabilityWithRespectToArgumentSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: DifferentiabilityParamsSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: DifferentiabilityArgumentsSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -382,11 +366,11 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: DocumentationAttributeArgumentsSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: DocumentationAttributeArgumentListSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: DynamicReplacementArgumentsSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: DynamicReplacementAttributeArgumentsSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -398,7 +382,7 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: EffectsArgumentsSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: EffectsAttributeArgumentListSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -454,7 +438,7 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: FallthroughStmtSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: FallThroughStmtSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -462,11 +446,11 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: ForInStmtSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: ForStmtSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: ForcedValueExprSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: ForceUnwrapExprSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -538,7 +522,7 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: IdentifierExprSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: DeclReferenceExprSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -634,7 +618,7 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: LabeledSpecializeEntrySyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: LabeledSpecializeArgumentSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -666,19 +650,19 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: MemberDeclBlockSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: MemberBlockSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: MemberDeclListItemSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: MemberBlockItemSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: MemberDeclListSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: MemberBlockItemListSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: MemberTypeIdentifierSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: MemberTypeSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -710,11 +694,11 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: ModifierListSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: DeclModifierListSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: MoveExprSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: ConsumeExprSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -738,7 +722,7 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: ObjCSelectorSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: ObjCSelectorPieceListSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -766,7 +750,7 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: OriginallyDefinedInArgumentsSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: OriginallyDefinedInAttributeArgumentsSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -782,11 +766,11 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: PackReferenceTypeSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: PackElementTypeSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: ParameterClauseSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: FunctionParameterClauseSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -802,11 +786,11 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: PostfixUnaryExprSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: PostfixOperatorExprSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: PoundSourceLocationArgsSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: PoundSourceLocationArgumentsSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -830,7 +814,7 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: PrecedenceGroupNameElementSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: PrecedenceGroupNameSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -862,15 +846,11 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: QualifiedDeclNameSyntax) -> SyntaxVisitorContinueKind {
-        return .skipChildren
-    }
-
     override func visit(_: RegexLiteralExprSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: RepeatWhileStmtSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: RepeatStmtSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -890,7 +870,7 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: SimpleTypeIdentifierSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: IdentifierTypeSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -898,11 +878,11 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: SpecializeAttributeSpecListSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: SpecializeAttributeArgumentListSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: SpecializeExprSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: GenericSpecializationExprSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -910,7 +890,7 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: StringLiteralSegmentsSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: StringLiteralSegmentListSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -926,11 +906,11 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: SubscriptExprSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: SubscriptCallExprSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: SuperRefExprSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: SuperExprSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -958,7 +938,7 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: TargetFunctionEntrySyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: SpecializeTargetFunctionArgumentSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -974,11 +954,11 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: TupleExprElementListSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: LabeledExprListSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: TupleExprElementSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: LabeledExprSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -1022,7 +1002,7 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: TypeInheritanceClauseSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: InheritanceClauseSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -1030,11 +1010,11 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: TypealiasDeclSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: TypeAliasDeclSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: UnavailableFromAsyncArgumentsSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: UnavailableFromAsyncAttributeArgumentsSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -1054,7 +1034,7 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: UnresolvedPatternExprSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: PatternExprSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
@@ -1086,15 +1066,15 @@ class SkipByDefaultVisitor: SyntaxVisitor {
         return .skipChildren
     }
 
-    override func visit(_: YieldExprListElementSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: YieldedExpressionSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: YieldExprListSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: YieldedExpressionListSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 
-    override func visit(_: YieldListSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: YieldedExpressionsClauseSyntax) -> SyntaxVisitorContinueKind {
         return .skipChildren
     }
 

@@ -74,65 +74,6 @@ final class OperatorTests: XCTestCase {
         )
     }
 
-    #if swift(<5.8)
-        func test_operator_legacySwift_attributes_willResolveExpectedValues() {
-            let source = #"""
-            @available(*, unavailable, message: "my message")
-            prefix operator +++
-            """#
-            instanceUnderTest.updateToSource(source)
-            XCTAssertTrue(instanceUnderTest.isStale)
-            instanceUnderTest.collectChildren()
-            XCTAssertFalse(instanceUnderTest.isStale)
-            XCTAssertEqual(instanceUnderTest.operators.count, 1)
-
-            let attributeExpectations: [(String?, String)] = [
-                (nil, "*"),
-                (nil, "unavailable"),
-                ("message", "\"my message\""),
-            ]
-            // prefix
-            let prefix = instanceUnderTest.operators[0]
-            XCTAssertEqual(prefix.name, "+++")
-            XCTAssertEqual(prefix.kind, .prefix)
-            XCTAssertEqual(prefix.description, "@available(*, unavailable, message: \"my message\")\nprefix operator +++")
-            XCTAssertEqual(prefix.attributes.count, 1)
-            XCTAssertEqual(prefix.modifiers.map(\.name), ["prefix"])
-            XCTAssertAttributesArgumentsEqual(prefix.attributes[0], attributeExpectations)
-            AssertSourceDetailsEquals(
-                getSourceLocation(for: prefix, from: instanceUnderTest),
-                start: (0, 0, 0),
-                end: (1, 19, 69),
-                source: "@available(*, unavailable, message: \"my message\")\nprefix operator +++"
-            )
-        }
-
-        func test_operator_legacySwift_modifiers_willResolveExpectedValues() {
-            let source = #"""
-            public prefix operator +++
-            """#
-            instanceUnderTest.updateToSource(source)
-            XCTAssertTrue(instanceUnderTest.isStale)
-            instanceUnderTest.collectChildren()
-            XCTAssertFalse(instanceUnderTest.isStale)
-            XCTAssertEqual(instanceUnderTest.operators.count, 1)
-
-            // prefix
-            let prefix = instanceUnderTest.operators[0]
-            XCTAssertEqual(prefix.name, "+++")
-            XCTAssertEqual(prefix.kind, .prefix)
-            XCTAssertEqual(prefix.description, "public prefix operator +++")
-            XCTAssertEqual(prefix.attributes.count, 0)
-            XCTAssertEqual(prefix.modifiers.map(\.name), ["public", "prefix"])
-            AssertSourceDetailsEquals(
-                getSourceLocation(for: prefix, from: instanceUnderTest),
-                start: (0, 0, 0),
-                end: (0, 26, 26),
-                source: "public prefix operator +++"
-            )
-        }
-    #endif
-
     func test_hashable_equatable_willReturnExpectedResults() throws {
         let source = #"""
         prefix operator +++

@@ -28,7 +28,7 @@ struct PrecedenceGroupSemanticsResolver: SemanticsResolving {
     // MARK: - Resolvers
 
     func resolveName() -> String {
-        node.identifier.text.trimmed
+        node.name.text.trimmed
     }
 
     func resolveKeyword() -> String {
@@ -38,7 +38,7 @@ struct PrecedenceGroupSemanticsResolver: SemanticsResolving {
     func resolveAssignment() -> Bool? {
         for attribute in node.groupAttributes {
             if let assignmentSyntax = attribute.as(PrecedenceGroupAssignmentSyntax.self) {
-                return Bool(assignmentSyntax.flag.text.trimmed)
+                return Bool(assignmentSyntax.value.text.trimmed)
             }
         }
         return nil
@@ -56,8 +56,8 @@ struct PrecedenceGroupSemanticsResolver: SemanticsResolving {
     func resolveRelations() -> [PrecedenceGroup.Relation] {
         let relations = node.groupAttributes.compactMap { PrecedenceGroupRelationSyntax($0) }
         let mapped: [PrecedenceGroup.Relation] = relations.compactMap {
-            let otherNames = $0.otherNames.map(\.name.description)
-            switch $0.higherThanOrLowerThan.text {
+            let otherNames = $0.precedenceGroups.map(\.name.description)
+            switch $0.higherThanOrLowerThanLabel.text {
             case "higherThan":
                 return .higherThan(otherNames)
             case "lowerThan":

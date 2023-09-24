@@ -46,7 +46,7 @@ public struct Result: Hashable, Equatable, CustomStringConvertible {
     /// Creates a new ``SyntaxSparrow/Result`` instance from a `SimpleTypeIdentifierSyntax` node.
     ///
     /// **Note:** Will return `nil` if the `node.firstToken.tokenKind` is not `Result`
-    public init?(_ node: SimpleTypeIdentifierSyntax) {
+    public init?(_ node: IdentifierTypeSyntax) {
         guard node.firstToken(viewMode: .fixedUp)?.tokenKind == .identifier("Result") else { return nil }
         resolver = ResultSemanticsResolver(node: node)
     }

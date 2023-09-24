@@ -31,8 +31,7 @@ struct FunctionParameterSemanticsResolver: ParameterNodeSemanticsResolving {
     }
 
     func resolveModifiers() -> [Modifier] {
-        guard let modifierList = node.modifiers else { return [] }
-        return modifierList.map { Modifier(node: $0) }
+        node.modifiers.map { Modifier(node: $0) }
     }
 
     func resolveName() -> String? {
@@ -64,7 +63,7 @@ struct FunctionParameterSemanticsResolver: ParameterNodeSemanticsResolving {
     }
 
     func resolveDefaultArgument() -> String? {
-        node.defaultArgument?.value.description.trimmed
+        node.defaultValue?.value.description.trimmed
     }
 
     func resolveIsInOut() -> Bool {

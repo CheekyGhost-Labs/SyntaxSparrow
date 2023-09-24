@@ -16,13 +16,13 @@ import SwiftSyntax
 struct ResultSemanticsResolver: SemanticsResolving {
     // MARK: - Properties: SemanticsResolving
 
-    typealias Node = SimpleTypeIdentifierSyntax
+    typealias Node = IdentifierTypeSyntax
 
     let node: Node
 
     // MARK: - Lifecycle
 
-    init(node: SimpleTypeIdentifierSyntax) {
+    init(node: IdentifierTypeSyntax) {
         self.node = node
     }
 
@@ -40,7 +40,7 @@ struct ResultSemanticsResolver: SemanticsResolving {
         else {
             return .empty
         }
-        return EntityType(successType.argumentType)
+        return EntityType(successType.argument)
     }
 
     func resolveFailureType() -> EntityType {
@@ -51,6 +51,6 @@ struct ResultSemanticsResolver: SemanticsResolving {
         else {
             return .empty
         }
-        return EntityType(failureType.argumentType)
+        return EntityType(failureType.argument)
     }
 }

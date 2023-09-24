@@ -321,7 +321,7 @@ final class DeinitializerTests: XCTestCase {
         }
     }
 
-    func test_cases_associatedValues_willResolveExptectedTypes() throws {
+    func test_cases_associatedValues_willResolveExpectedTypes() throws {
         let source = #"""
         enum MyEnum {
             case noParameters()

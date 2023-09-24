@@ -27,29 +27,29 @@ struct GenericRequirementSemanticsResolver: SemanticsResolving {
     // MARK: - Resolvers
 
     func resolveLeftType() -> String {
-        switch node.body {
+        switch node.requirement {
         case let .sameTypeRequirement(syntax):
-            return syntax.leftTypeIdentifier.description.trimmed
+            return syntax.leftType.description.trimmed
         case let .conformanceRequirement(syntax):
-            return syntax.leftTypeIdentifier.description.trimmed
+            return syntax.leftType.description.trimmed
         case .layoutRequirement:
             return "Self"
         }
     }
 
     func resolveRightType() -> String {
-        switch node.body {
+        switch node.requirement {
         case let .sameTypeRequirement(syntax):
-            return syntax.rightTypeIdentifier.description.trimmed
+            return syntax.rightType.description.trimmed
         case let .conformanceRequirement(syntax):
-            return syntax.rightTypeIdentifier.description.trimmed
+            return syntax.rightType.description.trimmed
         case let .layoutRequirement(syntax):
-            return syntax.typeIdentifier.description.trimmed
+            return syntax.type.description.trimmed
         }
     }
 
     func resolveRelation() -> GenericRequirement.Relation {
-        switch node.body {
+        switch node.requirement {
         case .sameTypeRequirement:
             return .sameType
         case .conformanceRequirement:

@@ -32,24 +32,20 @@ struct ClosureSemanticsResolver: SemanticsResolving {
     // MARK: - Resolvers
 
     func resolveInput() -> EntityType {
-        guard !node.arguments.isEmpty else { return .void("()", false) }
-        return EntityType.parseElementList(node.arguments)
-        // Pending update - leaving here for easier reference
-        // return EntityType.parseElementList(node.parameters)
+        guard !node.parameters.isEmpty else { return .void("()", false) }
+        return EntityType.parseElementList(node.parameters)
     }
 
     func resolveOutput() -> EntityType {
-        EntityType(node.output.returnType)
+        EntityType(node.returnClause.type)
     }
 
     func resolveRawInput() -> String {
-        node.arguments.description.trimmed
-        // Pending update - leaving here for easier reference
-        // node.parameters.description.trimmed
+        node.parameters.description.trimmed
     }
 
     func resolveRawOutput() -> String {
-        node.output.returnType.description.trimmed
+        node.returnClause.type.description.trimmed
     }
 
     func resolveIsOptional() -> Bool {

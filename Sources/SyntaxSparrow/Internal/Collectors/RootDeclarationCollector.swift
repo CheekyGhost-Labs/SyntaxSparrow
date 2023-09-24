@@ -48,8 +48,8 @@ class RootDeclarationCollector: SyntaxVisitor {
 
     // MARK: - Overrides: SyntaxVisitor
 
-    /// Called when visiting an `AssociatedtypeDeclSyntax` node
-    override func visit(_: AssociatedtypeDeclSyntax) -> SyntaxVisitorContinueKind {
+    /// Called when visiting an `AssociatedTypeDeclSyntax` node
+    override func visit(_: AssociatedTypeDeclSyntax) -> SyntaxVisitorContinueKind {
         // Associated types are only valid within protocols - the protocol type collects these as needed
         return .skipChildren
     }
@@ -180,8 +180,8 @@ class RootDeclarationCollector: SyntaxVisitor {
         return .skipChildren
     }
 
-    /// Called when visiting a `TypealiasDeclSyntax` node
-    override func visit(_ node: TypealiasDeclSyntax) -> SyntaxVisitorContinueKind {
+    /// Called when visiting a `TypeAliasDeclSyntax` node
+    override func visit(_ node: TypeAliasDeclSyntax) -> SyntaxVisitorContinueKind {
         if let entryNode = entryNode, node.id == entryNode.id { return .visitChildren }
         let declaration = Typealias(node: node)
         declarationCollection.typealiases.append(declaration)

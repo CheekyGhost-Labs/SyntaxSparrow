@@ -29,21 +29,10 @@ struct OperatorSemanticsResolver: SemanticsResolving {
         // no-op
     }
 
-    // MARK: - Pending Obsoletion
-
-    func resolveAttributes() -> [Attribute] {
-        Attribute.fromAttributeList(node.attributes)
-    }
-
-    func resolveModifiers() -> [Modifier] {
-        guard let modifierList = node.modifiers else { return [] }
-        return modifierList.map { Modifier(node: $0) }
-    }
-
     // MARK: - Resolvers
 
     func resolveName() -> String {
-        node.identifier.text.trimmed
+        node.name.text.trimmed
     }
 
     func resolveKeyword() -> String {
@@ -51,8 +40,6 @@ struct OperatorSemanticsResolver: SemanticsResolving {
     }
 
     func resolveKind() -> Operator.Kind? {
-        Operator.Kind(resolveModifiers())
-        // Pending update - leaving here for easier reference
-        // Operator.Kind(node.fixity)
+        Operator.Kind(node.fixitySpecifier)
     }
 }

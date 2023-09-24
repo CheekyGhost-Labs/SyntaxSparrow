@@ -36,7 +36,7 @@ struct AttributeSemanticsResolver: SemanticsResolving {
     }
 
     func resolveArguments() -> [Attribute.Argument] {
-        guard let argumentNode = node.argument else { return [] }
+        guard let argumentNode = node.arguments else { return [] }
         // Can ultimately switch here for more accuracy and support for specialized types. For now just getting name:value pairs
         let components = argumentNode.description.split(separator: ",")
         let pairs = components.compactMap {

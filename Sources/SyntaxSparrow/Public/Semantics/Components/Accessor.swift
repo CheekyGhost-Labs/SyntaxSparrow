@@ -101,7 +101,7 @@ public struct Accessor: DeclarationComponent, SyntaxChildCollecting {
             modifier = nil
         }
         // Kind
-        let rawKind = node.accessorKind.text.trimmed
+        let rawKind = node.accessorSpecifier.text.trimmed
         kind = Kind(rawValue: rawKind)
         // Body
         if let body = node.body {

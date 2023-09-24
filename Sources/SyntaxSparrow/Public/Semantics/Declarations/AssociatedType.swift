@@ -17,14 +17,14 @@ import SwiftSyntax
 /// - Inheritance: Any types the associated type is constrained to, including both classes and protocols.
 /// - Generic requirements: Information about any generic requirements applied to the associated type.
 ///
-/// Each instance of ``SyntaxSparrow/AssociatedType`` corresponds to a `AssociatedtypeDeclSyntax` node in the Swift syntax tree.
+/// Each instance of ``SyntaxSparrow/AssociatedType`` corresponds to a `AssociatedTypeDeclSyntax` node in the Swift syntax tree.
 ///
 /// The `AssociatedType` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the associated
 /// type declaration is located.
 public struct AssociatedType: Declaration {
     // MARK: - Properties: Declaration
 
-    public var node: AssociatedtypeDeclSyntax { resolver.node }
+    public var node: AssociatedTypeDeclSyntax { resolver.node }
 
     // MARK: - Properties: Computed
 
@@ -72,7 +72,7 @@ public struct AssociatedType: Declaration {
 
     // MARK: - Lifecycle
 
-    public init(node: AssociatedtypeDeclSyntax) {
+    public init(node: AssociatedTypeDeclSyntax) {
         resolver = AssociatedTypeSemanticsResolver(node: node)
     }
 }

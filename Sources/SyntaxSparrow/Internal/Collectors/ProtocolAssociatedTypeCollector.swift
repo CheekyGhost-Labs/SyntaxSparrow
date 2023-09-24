@@ -10,7 +10,7 @@ import SwiftSyntax
 
 /// `SkipByDefaultVisitor` subclass that collects `AssociatedType` declarations from within a `ProtocolDeclSyntax`.
 /// For the most part, this means traversing the nested `MemberDeclBlockSyntax`, `MemberDeclListSyntax`, and `MemberDeclListItemSyntax`
-/// for the desired `AssociatedtypeDeclSyntax` types and processing them as normal.
+/// for the desired `AssociatedTypeDeclSyntax` types and processing them as normal.
 ///
 /// As this is based on current swift-syntax behavior, the expectation is that visiting the expected node children will resolve to the expected types.
 ///
@@ -42,19 +42,19 @@ class ProtocolAssociatedTypeCollector: SkipByDefaultVisitor {
         return .visitChildren
     }
 
-    override func visit(_: MemberDeclBlockSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: MemberBlockSyntax) -> SyntaxVisitorContinueKind {
         return .visitChildren
     }
 
-    override func visit(_: MemberDeclListSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: MemberBlockItemListSyntax) -> SyntaxVisitorContinueKind {
         return .visitChildren
     }
 
-    override func visit(_: MemberDeclListItemSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_: MemberBlockItemSyntax) -> SyntaxVisitorContinueKind {
         return .visitChildren
     }
 
-    override func visit(_ node: AssociatedtypeDeclSyntax) -> SyntaxVisitorContinueKind {
+    override func visit(_ node: AssociatedTypeDeclSyntax) -> SyntaxVisitorContinueKind {
         let declaration = AssociatedType(node: node)
         results.append(declaration)
         return .skipChildren

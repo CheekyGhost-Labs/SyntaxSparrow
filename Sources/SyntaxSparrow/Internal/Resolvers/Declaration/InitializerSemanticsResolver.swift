@@ -32,8 +32,7 @@ struct InitializerSemanticsResolver: SemanticsResolving {
     }
 
     func resolveModifiers() -> [Modifier] {
-        guard let modifierList = node.modifiers else { return [] }
-        return modifierList.map { Modifier(node: $0) }
+        node.modifiers.map { Modifier(node: $0) }
     }
 
     func resolveKeyword() -> String {
@@ -45,17 +44,15 @@ struct InitializerSemanticsResolver: SemanticsResolving {
     }
 
     func resolveGenericParameters() -> [GenericParameter] {
-        let parameters = GenericParameter.fromParameterList(from: node.genericParameterClause?.genericParameterList)
-        return parameters
+        GenericParameter.fromParameterList(from: node.genericParameterClause?.parameters)
     }
 
     func resolveGenericRequirements() -> [GenericRequirement] {
-        let requirements = GenericRequirement.fromRequirementList(from: node.genericWhereClause?.requirementList)
-        return requirements
+        GenericRequirement.fromRequirementList(from: node.genericWhereClause?.requirements)
     }
 
     func resolveParameters() -> [Parameter] {
-        node.signature.input.parameterList.map(Parameter.init)
+        node.signature.parameterClause.parameters.map(Parameter.init)
     }
 
     func resolveThrowsOrRethrowsKeyword() -> String? {

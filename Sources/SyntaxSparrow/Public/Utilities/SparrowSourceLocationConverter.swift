@@ -28,7 +28,7 @@ public class SparrowSourceLocationConverter {
     }
 
     public init(file: String, tree: SyntaxProtocol) {
-        converter = SourceLocationConverter(file: file, tree: tree)
+        converter = SourceLocationConverter(fileName: file, tree: tree)
     }
 
     public init(file: String, source: String) {
@@ -36,14 +36,14 @@ public class SparrowSourceLocationConverter {
     }
 
     public init(rootParentOf node: SyntaxProtocol, file: String = "") {
-        converter = SourceLocationConverter(file: file, tree: node.root)
+        converter = SourceLocationConverter(fileName: file, tree: node.root)
     }
 
     // MARK: - Helpers
 
     public func updateForTree(_ tree: SyntaxProtocol, file: String = "") {
         queue.async(flags: .barrier) { [self] in
-            converter = SourceLocationConverter(file: file, tree: tree)
+            converter = SourceLocationConverter(fileName: file, tree: tree)
         }
     }
 
@@ -55,7 +55,7 @@ public class SparrowSourceLocationConverter {
 
     public func updateToRootForNode(_ node: SyntaxProtocol, file: String = "") {
         queue.async(flags: .barrier) { [self] in
-            converter = SourceLocationConverter(file: file, tree: node.root)
+            converter = SourceLocationConverter(fileName: file, tree: node.root)
         }
     }
 

@@ -39,7 +39,7 @@ struct EnumerationCaseSemanticsResolver: SemanticsResolving {
     }
 
     func resolveName() -> String {
-        node.identifier.text.trimmed
+        node.name.text.trimmed
     }
 
     func resolveAttributes() -> [Attribute] {
@@ -52,7 +52,7 @@ struct EnumerationCaseSemanticsResolver: SemanticsResolving {
 
     func resolveModifiers() -> [Modifier] {
         withParent {
-            $0.modifiers?.map { Modifier(node: $0) } ?? []
+            $0.modifiers.map { Modifier(node: $0) }
         } ?? []
     }
 
@@ -61,8 +61,8 @@ struct EnumerationCaseSemanticsResolver: SemanticsResolving {
     }
 
     func resolveAssociatedValues() -> [Parameter] {
-        guard let associatedValue = node.associatedValue else { return [] }
-        return associatedValue.parameterList.map {
+        guard let associatedValue = node.parameterClause else { return [] }
+        return associatedValue.parameters.map {
             Parameter(node: $0)
         }
     }

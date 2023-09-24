@@ -13,11 +13,14 @@ class AttributesCollector: SkipByDefaultVisitor {
 
     static func collect(_ node: SyntaxProtocol) -> [Attribute] {
         let collector = AttributesCollector(viewMode: .fixedUp)
+        collector.rootNode = node
         collector.walk(node)
         return collector.attributes ?? []
     }
 
     // MARK: - Properties
+
+    var rootNode: SyntaxProtocol?
 
     var attributes: [Attribute]?
 
@@ -56,7 +59,11 @@ class AttributesCollector: SkipByDefaultVisitor {
     }
 
     override func visit(_ node: AttributeListSyntax) -> SyntaxVisitorContinueKind {
-        let attribtueSyntaxes = node.children(viewMode: .fixedUp).compactMap { $0.as(AttributeSyntax.self) }
+        let listChildren = node.children(viewMode: .fixedUp)
+        if listChildren.isEmpty, containsAttributedTypeChild() {
+            return .visitChildren
+        }
+        let attribtueSyntaxes = listChildren.compactMap { $0.as(AttributeSyntax.self) }
         attributes = attribtueSyntaxes.map { Attribute(node: $0) }
         return .skipChildren
     }
@@ -64,5 +71,12 @@ class AttributesCollector: SkipByDefaultVisitor {
     override func visit(_ node: AttributeSyntax) -> SyntaxVisitorContinueKind {
         attributes = [Attribute(node: node)]
         return .skipChildren
+    }
+
+    // MARK: - Helpers: Private
+
+    private func containsAttributedTypeChild() -> Bool {
+        let flag = rootNode?.children(viewMode: .fixedUp).contains(where: { AttributedTypeSyntax($0._syntaxNode) != nil })
+        return flag ?? false
     }
 }

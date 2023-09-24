@@ -19,14 +19,14 @@ import SwiftSyntax
 /// - GenericParameters: Any generic parameters used in the typealias definition, along with their constraints.
 /// - GenericRequirements: Information about any generic requirements applied to the typealias.
 ///
-/// Each instance of ``SyntaxSparrow/Typealias`` corresponds to a `TypealiasDeclSyntax` node in the Swift syntax tree.
+/// Each instance of ``SyntaxSparrow/Typealias`` corresponds to a `TypeAliasDeclSyntax` node in the Swift syntax tree.
 ///
 /// The `Typealias` struct also conforms to `SyntaxSourceLocationResolving`, allowing you to determine where in the source file the typealias
 /// declaration is located.
 public struct Typealias: Declaration {
     // MARK: - Properties: Declaration
 
-    public var node: TypealiasDeclSyntax { resolver.node }
+    public var node: TypeAliasDeclSyntax { resolver.node }
 
     // MARK: - Properties: Computed
 
@@ -96,8 +96,8 @@ public struct Typealias: Declaration {
 
     // MARK: - Lifecycle
 
-    /// Creates a new ``SyntaxSparrow/Typealias`` instance from an `TypealiasDeclSyntax` node.
-    public init(node: TypealiasDeclSyntax) {
+    /// Creates a new ``SyntaxSparrow/Typealias`` instance from an `TypeAliasDeclSyntax` node.
+    public init(node: TypeAliasDeclSyntax) {
         resolver = TypealiasSemanticsResolver(node: node)
     }
 }

@@ -32,18 +32,15 @@ struct ImportSemanticsResolver: SemanticsResolving {
     }
 
     func resolveKeyword() -> String {
-        node.importTok.text.trimmed
-        // Pending update - leaving here for easier reference
-        // node.importKeyword.text.trimmed
+         node.importKeyword.text.trimmed
     }
 
     func resolveModifiers() -> [Modifier] {
-        guard let modifierList = node.modifiers else { return [] }
-        return modifierList.map { Modifier(node: $0) }
+        node.modifiers.map { Modifier(node: $0) }
     }
 
     func resolveKind() -> String? {
-        node.importKind?.text.trimmed
+        node.importKindSpecifier?.text.trimmed
     }
 
     func resolvePathComponents() -> [String] {

@@ -28,7 +28,7 @@ struct StructureSemanticsResolver: SemanticsResolving {
     // MARK: - Resolvers
 
     func resolveName() -> String {
-        node.identifier.text.trimmed
+        node.name.text.trimmed
     }
 
     func resolveAttributes() -> [Attribute] {
@@ -40,23 +40,20 @@ struct StructureSemanticsResolver: SemanticsResolving {
     }
 
     func resolveModifiers() -> [Modifier] {
-        guard let modifierList = node.modifiers else { return [] }
-        return modifierList.map { Modifier(node: $0) }
+        node.modifiers.map { Modifier(node: $0) }
     }
 
     func resolveInheritance() -> [String] {
         guard let inheritanceNode = node.inheritanceClause else { return [] }
-        let types = inheritanceNode.inheritedTypeCollection.map { $0.typeName.description.trimmed }
+        let types = inheritanceNode.inheritedTypes.map { $0.type.description.trimmed }
         return types
     }
 
     func resolveGenericParameters() -> [GenericParameter] {
-        let parameters = GenericParameter.fromParameterList(from: node.genericParameterClause?.genericParameterList)
-        return parameters
+        GenericParameter.fromParameterList(from: node.genericParameterClause?.parameters)
     }
 
     func resolveGenericRequirements() -> [GenericRequirement] {
-        let requirements = GenericRequirement.fromRequirementList(from: node.genericWhereClause?.requirementList)
-        return requirements
+        GenericRequirement.fromRequirementList(from: node.genericWhereClause?.requirements)
     }
 }

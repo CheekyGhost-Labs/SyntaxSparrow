@@ -19,6 +19,18 @@ public enum EntityType: Equatable, Hashable, CustomStringConvertible {
     /// `.simple("CVarArg...")`
     case simple(_ type: String)
 
+    /// A `array` type is used when a parameter's type is a valid ``SyntaxSparrow/Array`` type.
+    ///
+    /// The `Array` supports `isOptional` to derive if the type has the optional/`?` suffix.
+    ///
+    /// For example,
+    /// ```swift
+    /// func example(names: [String])
+    /// func example(names: Array<String>)
+    /// ```
+    /// would have a type of `.array(Array)` where the ``SyntaxSparrow//Array`` has the `elementType` of `.simple("String")`.
+    case array(_ array: Array)
+
     /// A `tuple` type is used when a parameter's type is a valid ``SyntaxSparrow/Tuple`` type.
     ///
     /// The `Tuple` type supports `isOptional` to derive if the type has the optional/`?` suffix.
@@ -77,6 +89,8 @@ public enum EntityType: Equatable, Hashable, CustomStringConvertible {
         switch self {
         case let .simple(type):
             return type
+        case let .array(array):
+            return array.description
         case let .tuple(tuple):
             return tuple.description
         case let .closure(closure):

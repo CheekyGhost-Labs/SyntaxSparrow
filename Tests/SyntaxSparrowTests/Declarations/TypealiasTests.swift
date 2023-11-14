@@ -67,11 +67,18 @@ final class TypealiasTests: XCTestCase {
         XCTAssertEqual(typealiasDecl.modifiers.count, 0)
         XCTAssertEqual(typealiasDecl.keyword, "typealias")
         XCTAssertEqual(typealiasDecl.name, "EquatableArray")
-        XCTAssertEqual(typealiasDecl.initializedType, .simple("Array<T>"))
         XCTAssertEqual(typealiasDecl.genericParameters.count, 1)
         XCTAssertEqual(typealiasDecl.genericParameters[0].name, "T")
         XCTAssertEqual(typealiasDecl.genericParameters[0].type, "Equatable")
         XCTAssertEqual(typealiasDecl.genericRequirements.count, 0)
+        if case let EntityType.array(array) = typealiasDecl.initializedType {
+            XCTAssertEqual(array.declType, .keyword)
+            XCTAssertFalse(array.isOptional)
+            XCTAssertEqual(array.elementType, .simple("T"))
+        } else {
+            XCTFail("function.signature.input[0] type should be Array")
+        }
+
         AssertSourceDetailsEquals(
             getSourceLocation(for: typealiasDecl, from: instanceUnderTest),
             start: (0, 0, 0),

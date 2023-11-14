@@ -773,8 +773,15 @@ final class DeinitializerTests: XCTestCase {
         XCTAssertFalse(enumCase.associatedValues[0].isOptional)
         XCTAssertTrue(enumCase.associatedValues[0].isInOut)
         XCTAssertEqual(enumCase.associatedValues[0].rawType, "inout [String]")
-        XCTAssertEqual(enumCase.associatedValues[0].type, .simple("[String]"))
         XCTAssertNil(enumCase.associatedValues[0].defaultArgument)
         XCTAssertEqual(enumCase.associatedValues[0].description, "names: inout [String]")
+
+        if case let EntityType.array(array) = enumCase.associatedValues[0].type {
+            XCTAssertEqual(array.declType, .shorthand)
+            XCTAssertFalse(array.isOptional)
+            XCTAssertEqual(array.elementType, .simple("String"))
+        } else {
+            XCTFail("function.signature.input[0] type should be Array")
+        }
     }
 }

@@ -22,9 +22,12 @@ extension EntityType {
         // Simple
         if let simpleType = typeSyntax.as(IdentifierTypeSyntax.self) {
             // Result
-            if simpleType.firstToken(viewMode: .fixedUp)?.tokenKind == .identifier("Result") {
-                let result = Result(simpleType)
-                return .result(result!)
+            if let resultType = Result(simpleType) {
+                return .result(resultType)
+            }
+            // Array
+            if let arrayType = Array(simpleType) {
+                return .array(arrayType)
             }
             let isOptional = simpleType.resolveIsTypeOptional()
             // Void check
@@ -37,6 +40,12 @@ extension EntityType {
 
             let typeString = resolveSimpleTypeString(from: simpleType)
             return .simple(typeString)
+        }
+
+        // Array
+        if let arrayTypeSyntax = typeSyntax.as(ArrayTypeSyntax.self) {
+            let array = Array(arrayTypeSyntax)
+            return .array(array)
         }
 
         // Tuple

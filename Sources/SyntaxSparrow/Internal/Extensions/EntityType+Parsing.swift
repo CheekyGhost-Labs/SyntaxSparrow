@@ -26,8 +26,12 @@ extension EntityType {
                 return .result(resultType)
             }
             // Array
-            if let arrayType = Array(simpleType) {
+            if let arrayType = ArrayDecl(simpleType) {
                 return .array(arrayType)
+            }
+            // Set
+            if let setType = SetDecl(simpleType) {
+                return .set(setType)
             }
             let isOptional = simpleType.resolveIsTypeOptional()
             // Void check
@@ -44,7 +48,7 @@ extension EntityType {
 
         // Array
         if let arrayTypeSyntax = typeSyntax.as(ArrayTypeSyntax.self) {
-            let array = Array(arrayTypeSyntax)
+            let array = ArrayDecl(arrayTypeSyntax)
             return .array(array)
         }
 

@@ -8,13 +8,13 @@
 import Foundation
 import SwiftSyntax
 
-protocol ArraySemanticsResolving: SemanticsResolving {
+protocol DictionarySemanticsResolving: SemanticsResolving {
+    func resolveKeyType() -> EntityType
     func resolveElementType() -> EntityType
     func resolveIsOptional() -> Bool
 }
 
-struct ArrayIdentifierSemanticsResolver: ArraySemanticsResolving {
-
+struct DictionaryIdentifierSemanticsResolver: ArraySemanticsResolving {
     // MARK: - Properties: SemanticsResolving
 
     typealias Node = IdentifierTypeSyntax
@@ -29,8 +29,15 @@ struct ArrayIdentifierSemanticsResolver: ArraySemanticsResolving {
 
     // MARK: - Resolvers
 
-    func resolveElementType() -> EntityType {
+    func resolveKeyType() -> EntityType {
         guard let typeArg = node.genericArgumentClause?.arguments.first else {
+            return .empty
+        }
+        return EntityType(typeArg.argument)
+    }
+
+    func resolveElementType() -> EntityType {
+        guard let typeArg = node.genericArgumentClause?.arguments.last else {
             return .empty
         }
         return EntityType(typeArg.argument)
@@ -41,23 +48,27 @@ struct ArrayIdentifierSemanticsResolver: ArraySemanticsResolving {
     }
 }
 
-struct ArrayTypeSemanticsResolver: ArraySemanticsResolving {
+struct DictionaryTypeSemanticsResolver: ArraySemanticsResolving {
     // MARK: - Properties: SemanticsResolving
 
-    typealias Node = ArrayTypeSyntax
+    typealias Node = DictionaryTypeSyntax
 
     let node: Node
 
     // MARK: - Lifecycle
 
-    init(node: ArrayTypeSyntax) {
+    init(node: DictionaryTypeSyntax) {
         self.node = node
     }
 
     // MARK: - Resolvers
 
+    func resolveKeyType() -> EntityType {
+        return EntityType(node.key)
+    }
+
     func resolveElementType() -> EntityType {
-        EntityType(node.element)
+        EntityType(node.value)
     }
 
     func resolveIsOptional() -> Bool {

@@ -229,6 +229,9 @@ The various EntityType options include:
 - simple: Represents a simple type like `Int`, `String`, `Bool`, or any other user-defined types.
 - tuple: Represents tuple types, such as `(Int, String)`
 - closure: Represents function or closure types, like `(Int, String) -> Bool`
+- Array: Represents a swift array via shorthand `[Type]` or keyword `Array<Type>` 
+- Set: Represents a swift set via keyword `Set<Type>` 
+- Dictionary: Represents a swift dictionary via shorthand `[Type: Type]` or keyword `Dictionary<Type, Type>` 
 - result: Represents Swift's Result type, capturing the Success and Failure types.
 - void: Represents a void block type. i.e `Void` or `()`
 - empty: Used to capture partial declarations where a type is not defined yet. i.e `var myName: `
@@ -279,7 +282,7 @@ Currently, SyntaxSparrow supports Swift Package Manager (SPM).
 To add SyntaxSparrow to your project, add the following line to your dependencies in your Package.swift file:
 
 ```swift
-.package(url: "https://github.com/CheekyGhost-Labs/SyntaxSparrow", from: "2.0.0")
+.package(url: "https://github.com/CheekyGhost-Labs/SyntaxSparrow", from: "3.0.0")
 ```
 
 Then, add SyntaxSparrow as a dependency for your target:

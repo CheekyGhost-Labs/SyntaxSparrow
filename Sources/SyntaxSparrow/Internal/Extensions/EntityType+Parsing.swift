@@ -33,6 +33,10 @@ extension EntityType {
             if let setType = SetDecl(simpleType) {
                 return .set(setType)
             }
+            // Dictionary
+            if let dictType = DictionaryDecl(simpleType) {
+                return .dictionary(dictType)
+            }
             let isOptional = simpleType.resolveIsTypeOptional()
             // Void check
             if
@@ -50,6 +54,12 @@ extension EntityType {
         if let arrayTypeSyntax = typeSyntax.as(ArrayTypeSyntax.self) {
             let array = ArrayDecl(arrayTypeSyntax)
             return .array(array)
+        }
+
+        // Dictionary
+        if let dictTypeSyntax = typeSyntax.as(DictionaryTypeSyntax.self) {
+            let dict = DictionaryDecl(dictTypeSyntax)
+            return .dictionary(dict)
         }
 
         // Tuple

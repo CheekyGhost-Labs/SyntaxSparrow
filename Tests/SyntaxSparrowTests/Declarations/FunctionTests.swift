@@ -322,12 +322,15 @@ final class FunctionTests: XCTestCase {
         func asyncAwaitMethodThrowingReturning() throws async -> String {}
         func arrayShorthand(persons: [(name: String, age: Int?)]?) {}
         func arrayIdentifier(names: Array<String>) {}
+        func setIdentifier(names: Set<String>) {}
+        func dictionaryShorthand(persons: [String: (name: String, age: Int?)]?) {}
+        func dictionaryIdentifier(names: Dictionary<String, (name: String, age: Int?)>?) {}
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
         instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.functions.count, 23)
+        XCTAssertEqual(instanceUnderTest.functions.count, 26)
 
         // No Parameters
         // func noParameters() throws {}
@@ -847,6 +850,69 @@ final class FunctionTests: XCTestCase {
             XCTAssertEqual(array.elementType, .simple("String"))
         } else {
             XCTFail("function.signature.input[0] type should be Array")
+        }
+
+        // func setIdentifier(names: Set<String>) {}
+        function = instanceUnderTest.functions[23]
+        XCTAssertEqual(function.keyword, "func")
+        XCTAssertEqual(function.identifier, "setIdentifier")
+        XCTAssertNil(function.signature.effectSpecifiers?.throwsSpecifier)
+        XCTAssertNil(function.signature.effectSpecifiers?.asyncSpecifier)
+        XCTAssertEqual(function.signature.input.count, 1)
+
+        if case let EntityType.set(set) = function.signature.input[0].type {
+            XCTAssertFalse(set.isOptional)
+            XCTAssertEqual(set.elementType, .simple("String"))
+        } else {
+            XCTFail("function.signature.input[0] type should be Set")
+        }
+
+        // func dictionaryShorthand(persons: [String: (name: String, age: Int?)]?) {}
+        function = instanceUnderTest.functions[24]
+        XCTAssertEqual(function.keyword, "func")
+        XCTAssertEqual(function.identifier, "dictionaryShorthand")
+        XCTAssertNil(function.signature.effectSpecifiers?.throwsSpecifier)
+        XCTAssertNil(function.signature.effectSpecifiers?.asyncSpecifier)
+        XCTAssertEqual(function.signature.input.count, 1)
+
+        if case let EntityType.dictionary(dict) = function.signature.input[0].type {
+            XCTAssertTrue(dict.isOptional)
+            XCTAssertEqual(dict.keyType, .simple("String"))
+            XCTAssertEqual(dict.declType, .shorthand)
+            if case let EntityType.tuple(tuple) = dict.valueType {
+                XCTAssertEqual(tuple.elements.count, 2)
+                XCTAssertEqual(tuple.elements[0].name, "name")
+                XCTAssertEqual(tuple.elements[0].type, .simple("String"))
+                XCTAssertEqual(tuple.elements[1].name, "age")
+                XCTAssertEqual(tuple.elements[1].type, .simple("Int?"))
+                XCTAssertFalse(tuple.isOptional)
+            }
+        } else {
+            XCTFail("function.signature.input[0] type should be Dictionary")
+        }
+
+        // func dictionaryIdentifier(names: Dictionary<String, (name: String, age: Int?)>?) {}
+        function = instanceUnderTest.functions[25]
+        XCTAssertEqual(function.keyword, "func")
+        XCTAssertEqual(function.identifier, "dictionaryIdentifier")
+        XCTAssertNil(function.signature.effectSpecifiers?.throwsSpecifier)
+        XCTAssertNil(function.signature.effectSpecifiers?.asyncSpecifier)
+        XCTAssertEqual(function.signature.input.count, 1)
+
+        if case let EntityType.dictionary(dict) = function.signature.input[0].type {
+            XCTAssertTrue(dict.isOptional)
+            XCTAssertEqual(dict.keyType, .simple("String"))
+            XCTAssertEqual(dict.declType, .keyword)
+            if case let EntityType.tuple(tuple) = dict.valueType {
+                XCTAssertEqual(tuple.elements.count, 2)
+                XCTAssertEqual(tuple.elements[0].name, "name")
+                XCTAssertEqual(tuple.elements[0].type, .simple("String"))
+                XCTAssertEqual(tuple.elements[1].name, "age")
+                XCTAssertEqual(tuple.elements[1].type, .simple("Int?"))
+                XCTAssertFalse(tuple.isOptional)
+            }
+        } else {
+            XCTFail("function.signature.input[0] type should be Dictionary")
         }
     }
 

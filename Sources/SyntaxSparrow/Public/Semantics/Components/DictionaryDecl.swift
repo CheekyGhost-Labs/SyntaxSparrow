@@ -8,7 +8,7 @@
 import Foundation
 import SwiftSyntax
 
-/// Represents a Swift `Array` type.
+/// Represents a Swift `Dictionary` type.
 ///
 /// In Swift, arrays are used to store ordered collections of values. The `DictionaryDecl` struct
 /// encapsulates an array type from a Swift source file and provides access to the element type.
@@ -23,7 +23,7 @@ import SwiftSyntax
 /// with generics (e.g., `Dictionary<String, String>`).
 ///
 /// The `DictionaryDecl` struct supports parsing both shorthand syntax `[Type: Type]` and full generic
-/// form `Dictionary<Type, Type>` of Swift arrays.
+/// form `Dictionary<Type, Type>` of Swift dictionaries.
 /// This capability is essential for source code analysis where understanding the exact type of array elements is crucial.
 public struct DictionaryDecl: Hashable, Equatable, CustomStringConvertible {
 
@@ -41,7 +41,7 @@ public struct DictionaryDecl: Hashable, Equatable, CustomStringConvertible {
     /// The key type declared within the dictionary.
     ///
     /// For example, in the type `Dictionary<String, String>` or `[String: String]` the key type will be `.simple("String")`
-    public var keyType: EntityType { resolver.resolveElementType() }
+    public var keyType: EntityType { resolver.resolveKeyType() }
 
     /// The value type declared within the dictionary.
     ///
@@ -59,7 +59,7 @@ public struct DictionaryDecl: Hashable, Equatable, CustomStringConvertible {
 
     // MARK: - Properties: Convenience
 
-    private(set) var resolver: any ArraySemanticsResolving
+    private(set) var resolver: any DictionarySemanticsResolving
 
     // MARK: - Lifecycle
 

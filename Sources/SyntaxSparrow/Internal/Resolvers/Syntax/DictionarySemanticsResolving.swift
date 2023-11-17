@@ -14,7 +14,7 @@ protocol DictionarySemanticsResolving: SemanticsResolving {
     func resolveIsOptional() -> Bool
 }
 
-struct DictionaryIdentifierSemanticsResolver: ArraySemanticsResolving {
+struct DictionaryIdentifierSemanticsResolver: DictionarySemanticsResolving {
     // MARK: - Properties: SemanticsResolving
 
     typealias Node = IdentifierTypeSyntax
@@ -48,7 +48,7 @@ struct DictionaryIdentifierSemanticsResolver: ArraySemanticsResolving {
     }
 }
 
-struct DictionaryTypeSemanticsResolver: ArraySemanticsResolving {
+struct DictionaryTypeSemanticsResolver: DictionarySemanticsResolving {
     // MARK: - Properties: SemanticsResolving
 
     typealias Node = DictionaryTypeSyntax

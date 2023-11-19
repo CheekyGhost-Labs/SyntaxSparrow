@@ -19,6 +19,42 @@ public enum EntityType: Equatable, Hashable, CustomStringConvertible {
     /// `.simple("CVarArg...")`
     case simple(_ type: String)
 
+    /// A `array` type is used when a parameter's type is a valid ``SyntaxSparrow/ArrayDecl`` type.
+    ///
+    /// The `Array` supports `isOptional` to derive if the type has the optional/`?` suffix.
+    ///
+    /// For example,
+    /// ```swift
+    /// func example(names: [String])
+    /// func example(names: Array<String>)
+    /// ```
+    /// would have a type of `.array(Array)` where the ``SyntaxSparrow/ArrayDecl`` has the `elementType` of `.simple("String")`.
+    case array(_ array: ArrayDecl)
+
+    /// A `array` type is used when a parameter's type is a valid ``SyntaxSparrow/SetDecl`` type.
+    ///
+    /// The `Set` supports `isOptional` to derive if the type has the optional/`?` suffix.
+    ///
+    /// For example,
+    /// ```swift
+    /// func example(names: Set<String>)
+    /// ```
+    /// would have a type of `.set(Set)` where the ``SyntaxSparrow/SetDecl`` has the `elementType` of `.simple("String")`.
+    case set(_ set: SetDecl)
+
+    /// A `array` type is used when a parameter's type is a valid ``SyntaxSparrow/DictionaryDecl`` type.
+    ///
+    /// The `Set` supports `isOptional` to derive if the type has the optional/`?` suffix.
+    ///
+    /// For example,
+    /// ```swift
+    /// func example(names: [String: Int])
+    /// func example(names: Dictionary<String, Int>)
+    /// ```
+    /// would have a type of `.dictionary(DictionaryDecl)` where the ``SyntaxSparrow/DictionaryDecl`` has
+    /// the `keyType` of `.simple("String")` and the `.elementType` of `.simple("Int")`.
+    case dictionary(_ dictionary: DictionaryDecl)
+
     /// A `tuple` type is used when a parameter's type is a valid ``SyntaxSparrow/Tuple`` type.
     ///
     /// The `Tuple` type supports `isOptional` to derive if the type has the optional/`?` suffix.
@@ -77,6 +113,12 @@ public enum EntityType: Equatable, Hashable, CustomStringConvertible {
         switch self {
         case let .simple(type):
             return type
+        case let .array(array):
+            return array.description
+        case let .set(set):
+            return set.description
+        case let .dictionary(dictionary):
+            return dictionary.description
         case let .tuple(tuple):
             return tuple.description
         case let .closure(closure):

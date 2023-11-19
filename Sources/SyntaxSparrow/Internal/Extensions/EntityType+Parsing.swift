@@ -22,9 +22,20 @@ extension EntityType {
         // Simple
         if let simpleType = typeSyntax.as(IdentifierTypeSyntax.self) {
             // Result
-            if simpleType.firstToken(viewMode: .fixedUp)?.tokenKind == .identifier("Result") {
-                let result = Result(simpleType)
-                return .result(result!)
+            if let resultType = Result(simpleType) {
+                return .result(resultType)
+            }
+            // Array
+            if let arrayType = ArrayDecl(simpleType) {
+                return .array(arrayType)
+            }
+            // Set
+            if let setType = SetDecl(simpleType) {
+                return .set(setType)
+            }
+            // Dictionary
+            if let dictType = DictionaryDecl(simpleType) {
+                return .dictionary(dictType)
             }
             let isOptional = simpleType.resolveIsTypeOptional()
             // Void check
@@ -37,6 +48,18 @@ extension EntityType {
 
             let typeString = resolveSimpleTypeString(from: simpleType)
             return .simple(typeString)
+        }
+
+        // Array
+        if let arrayTypeSyntax = typeSyntax.as(ArrayTypeSyntax.self) {
+            let array = ArrayDecl(arrayTypeSyntax)
+            return .array(array)
+        }
+
+        // Dictionary
+        if let dictTypeSyntax = typeSyntax.as(DictionaryTypeSyntax.self) {
+            let dict = DictionaryDecl(dictTypeSyntax)
+            return .dictionary(dict)
         }
 
         // Tuple

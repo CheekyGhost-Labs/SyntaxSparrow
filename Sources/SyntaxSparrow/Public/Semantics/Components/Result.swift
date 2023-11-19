@@ -43,7 +43,7 @@ public struct Result: Hashable, Equatable, CustomStringConvertible {
 
     // MARK: - Lifecycle
 
-    /// Creates a new ``SyntaxSparrow/Result`` instance from a `SimpleTypeIdentifierSyntax` node.
+    /// Creates a new ``SyntaxSparrow/Result`` instance from a `IdentifierTypeSyntax` node.
     ///
     /// **Note:** Will return `nil` if the `node.firstToken.tokenKind` is not `Result`
     public init?(_ node: IdentifierTypeSyntax) {

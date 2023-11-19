@@ -256,7 +256,7 @@ final class FunctionTests: XCTestCase {
         XCTAssertEqual(function.signature.input[1].type, .simple("C2"))
         XCTAssertNil(function.signature.effectSpecifiers?.throwsSpecifier)
         if let outputType = function.signature.output, case let EntityType.array(array) = outputType {
-            XCTAssertEqual(array.declType, .shorthand)
+            XCTAssertEqual(array.declType, .squareBrackets)
             XCTAssertFalse(array.isOptional)
             XCTAssertEqual(array.elementType, .simple("C1.Element"))
         } else {
@@ -776,7 +776,7 @@ final class FunctionTests: XCTestCase {
         XCTAssertNil(function.signature.input[0].defaultArgument)
         XCTAssertEqual(function.signature.input[0].description, "names: inout [String]")
         if case let EntityType.array(array) = function.signature.input[0].type {
-            XCTAssertEqual(array.declType, .shorthand)
+            XCTAssertEqual(array.declType, .squareBrackets)
             XCTAssertFalse(array.isOptional)
             XCTAssertEqual(array.elementType, .simple("String"))
         } else {
@@ -822,7 +822,7 @@ final class FunctionTests: XCTestCase {
         XCTAssertEqual(function.signature.input.count, 1)
 
         if case let EntityType.array(array) = function.signature.input[0].type {
-            XCTAssertEqual(array.declType, .shorthand)
+            XCTAssertEqual(array.declType, .squareBrackets)
             XCTAssertTrue(array.isOptional)
             if case let EntityType.tuple(tuple) = array.elementType {
                 XCTAssertEqual(tuple.elements.count, 2)
@@ -845,7 +845,7 @@ final class FunctionTests: XCTestCase {
         XCTAssertEqual(function.signature.input.count, 1)
 
         if case let EntityType.array(array) = function.signature.input[0].type {
-            XCTAssertEqual(array.declType, .keyword)
+            XCTAssertEqual(array.declType, .generic)
             XCTAssertFalse(array.isOptional)
             XCTAssertEqual(array.elementType, .simple("String"))
         } else {
@@ -878,7 +878,7 @@ final class FunctionTests: XCTestCase {
         if case let EntityType.dictionary(dict) = function.signature.input[0].type {
             XCTAssertTrue(dict.isOptional)
             XCTAssertEqual(dict.keyType, .simple("String"))
-            XCTAssertEqual(dict.declType, .shorthand)
+            XCTAssertEqual(dict.declType, .squareBrackets)
             if case let EntityType.tuple(tuple) = dict.valueType {
                 XCTAssertEqual(tuple.elements.count, 2)
                 XCTAssertEqual(tuple.elements[0].name, "name")
@@ -902,7 +902,7 @@ final class FunctionTests: XCTestCase {
         if case let EntityType.dictionary(dict) = function.signature.input[0].type {
             XCTAssertTrue(dict.isOptional)
             XCTAssertEqual(dict.keyType, .simple("String"))
-            XCTAssertEqual(dict.declType, .keyword)
+            XCTAssertEqual(dict.declType, .generics)
             if case let EntityType.tuple(tuple) = dict.valueType {
                 XCTAssertEqual(tuple.elements.count, 2)
                 XCTAssertEqual(tuple.elements[0].name, "name")

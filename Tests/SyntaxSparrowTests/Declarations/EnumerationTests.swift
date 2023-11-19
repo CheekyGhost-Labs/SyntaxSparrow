@@ -777,7 +777,7 @@ final class DeinitializerTests: XCTestCase {
         XCTAssertEqual(enumCase.associatedValues[0].description, "names: inout [String]")
 
         if case let EntityType.array(array) = enumCase.associatedValues[0].type {
-            XCTAssertEqual(array.declType, .shorthand)
+            XCTAssertEqual(array.declType, .squareBrackets)
             XCTAssertFalse(array.isOptional)
             XCTAssertEqual(array.elementType, .simple("String"))
         } else {

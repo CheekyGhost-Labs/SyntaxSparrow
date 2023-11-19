@@ -72,7 +72,7 @@ final class TypealiasTests: XCTestCase {
         XCTAssertEqual(typealiasDecl.genericParameters[0].type, "Equatable")
         XCTAssertEqual(typealiasDecl.genericRequirements.count, 0)
         if case let EntityType.array(array) = typealiasDecl.initializedType {
-            XCTAssertEqual(array.declType, .keyword)
+            XCTAssertEqual(array.declType, .generic)
             XCTAssertFalse(array.isOptional)
             XCTAssertEqual(array.elementType, .simple("T"))
         } else {

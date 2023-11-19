@@ -29,9 +29,9 @@ public struct ArrayDecl: Hashable, Equatable, CustomStringConvertible {
 
     public enum DeclType: String, CaseIterable {
         /// The array was declared using the left/right square brackets. i.e `[String]`
-        case shorthand
-        /// The array was declared using the `Array` keyword with a generic parameter. i.e `Array<String>`
-        case keyword
+        case squareBrackets
+        /// The array was declared using the `Array` keyword with generic parameter. i.e `Array<String>`
+        case generic
     }
 
     // MARK: - Properties
@@ -41,7 +41,7 @@ public struct ArrayDecl: Hashable, Equatable, CustomStringConvertible {
     /// For example, in the type `Array<String>` or `[String]` the type will be `.simple("String")`
     public var elementType: EntityType { resolver.resolveElementType() }
 
-    /// `Bool` whether the result type is optional.
+    /// `Bool` whether the array decl is optional.
     ///
     /// For example, `Array<String>?` has `isOptional` as `true`.
     public var isOptional: Bool { resolver.resolveIsOptional() }
@@ -58,16 +58,16 @@ public struct ArrayDecl: Hashable, Equatable, CustomStringConvertible {
 
     /// Creates a new ``SyntaxSparrow/ArrayDecl`` instance from an `IdentifierTypeSyntax` node.
     ///
-    /// **Note:** Will return `nil` if the `node.firstToken.tokenKind` is not `Result`
+    /// **Note:** Will return `nil` if the `node.firstToken.tokenKind` is not `.identifier("Array")`
     public init?(_ node: IdentifierTypeSyntax) {
         guard node.firstToken(viewMode: .fixedUp)?.tokenKind == .identifier("Array") else { return nil }
         resolver = ArrayIdentifierSemanticsResolver(node: node)
-        declType = .keyword
+        declType = .generic
     }
 
     public init(_ node: ArrayTypeSyntax) {
         resolver = ArrayTypeSemanticsResolver(node: node)
-        declType = .shorthand
+        declType = .squareBrackets
     }
 
     // MARK: - Equatable

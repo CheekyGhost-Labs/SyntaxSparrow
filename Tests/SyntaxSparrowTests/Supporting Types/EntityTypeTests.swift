@@ -44,7 +44,7 @@ final class EntityTypeTests: XCTestCase {
         XCTAssertEqual(function.signature.input.count, 1)
 
         if case let EntityType.array(array) = function.signature.input[0].type {
-            XCTAssertEqual(array.declType, .shorthand)
+            XCTAssertEqual(array.declType, .squareBrackets)
             XCTAssertTrue(array.isOptional)
             if case let EntityType.tuple(tuple) = array.elementType {
                 XCTAssertEqual(tuple.elements.count, 2)
@@ -67,7 +67,7 @@ final class EntityTypeTests: XCTestCase {
         XCTAssertEqual(function.signature.input.count, 1)
 
         if case let EntityType.array(array) = function.signature.input[0].type {
-            XCTAssertEqual(array.declType, .keyword)
+            XCTAssertEqual(array.declType, .generic)
             XCTAssertFalse(array.isOptional)
             XCTAssertEqual(array.elementType, .simple("String"))
         } else {
@@ -93,7 +93,7 @@ final class EntityTypeTests: XCTestCase {
         XCTAssertTrue(target.isOptional)
 
         if case let EntityType.array(array) = target.type {
-            XCTAssertEqual(array.declType, .shorthand)
+            XCTAssertEqual(array.declType, .squareBrackets)
             XCTAssertTrue(array.isOptional)
             if case let EntityType.tuple(tuple) = array.elementType {
                 XCTAssertEqual(tuple.elements.count, 2)
@@ -114,7 +114,7 @@ final class EntityTypeTests: XCTestCase {
         XCTAssertFalse(target.isOptional)
 
         if case let EntityType.array(array) = target.type {
-            XCTAssertEqual(array.declType, .keyword)
+            XCTAssertEqual(array.declType, .generic)
             XCTAssertFalse(array.isOptional)
             XCTAssertEqual(array.elementType, .simple("String"))
         } else {
@@ -139,7 +139,7 @@ final class EntityTypeTests: XCTestCase {
         XCTAssertEqual(target.name, "ArrayShorthand")
 
         if case let EntityType.array(array) = target.initializedType {
-            XCTAssertEqual(array.declType, .shorthand)
+            XCTAssertEqual(array.declType, .squareBrackets)
             XCTAssertTrue(array.isOptional)
             if case let EntityType.tuple(tuple) = array.elementType {
                 XCTAssertEqual(tuple.elements.count, 2)
@@ -159,7 +159,7 @@ final class EntityTypeTests: XCTestCase {
         XCTAssertEqual(target.name, "ArrayIdentifier")
 
         if case let EntityType.array(array) = target.initializedType {
-            XCTAssertEqual(array.declType, .keyword)
+            XCTAssertEqual(array.declType, .generic)
             XCTAssertFalse(array.isOptional)
             XCTAssertEqual(array.elementType, .simple("String"))
         } else {
@@ -278,7 +278,7 @@ final class EntityTypeTests: XCTestCase {
         XCTAssertEqual(function.signature.input.count, 1)
 
         if case let EntityType.dictionary(dict) = function.signature.input[0].type {
-            XCTAssertEqual(dict.declType, .shorthand)
+            XCTAssertEqual(dict.declType, .squareBrackets)
             XCTAssertTrue(dict.isOptional)
             XCTAssertEqual(dict.keyType, .simple("String"))
             if case let EntityType.tuple(tuple) = dict.valueType {
@@ -302,7 +302,7 @@ final class EntityTypeTests: XCTestCase {
         XCTAssertEqual(function.signature.input.count, 1)
 
         if case let EntityType.dictionary(dict) = function.signature.input[0].type {
-            XCTAssertEqual(dict.declType, .keyword)
+            XCTAssertEqual(dict.declType, .generics)
             XCTAssertFalse(dict.isOptional)
             XCTAssertEqual(dict.keyType, .simple("String"))
             if case let EntityType.tuple(tuple) = dict.valueType {
@@ -336,7 +336,7 @@ final class EntityTypeTests: XCTestCase {
         XCTAssertTrue(target.isOptional)
 
         if case let EntityType.dictionary(dict) = target.type {
-            XCTAssertEqual(dict.declType, .shorthand)
+            XCTAssertEqual(dict.declType, .squareBrackets)
             XCTAssertTrue(dict.isOptional)
             XCTAssertEqual(dict.keyType, .simple("String"))
             if case let EntityType.tuple(tuple) = dict.valueType {
@@ -358,7 +358,7 @@ final class EntityTypeTests: XCTestCase {
         XCTAssertFalse(target.isOptional)
 
         if case let EntityType.dictionary(dict) = target.type {
-            XCTAssertEqual(dict.declType, .keyword)
+            XCTAssertEqual(dict.declType, .generics)
             XCTAssertFalse(dict.isOptional)
             XCTAssertEqual(dict.keyType, .simple("String"))
             if case let EntityType.tuple(tuple) = dict.valueType {
@@ -391,7 +391,7 @@ final class EntityTypeTests: XCTestCase {
         XCTAssertEqual(target.name, "DictShorthand")
 
         if case let EntityType.dictionary(dict) = target.initializedType {
-            XCTAssertEqual(dict.declType, .shorthand)
+            XCTAssertEqual(dict.declType, .squareBrackets)
             XCTAssertTrue(dict.isOptional)
             XCTAssertEqual(dict.keyType, .simple("String"))
             if case let EntityType.tuple(tuple) = dict.valueType {
@@ -412,7 +412,7 @@ final class EntityTypeTests: XCTestCase {
         XCTAssertEqual(target.name, "DictIdentifier")
 
         if case let EntityType.dictionary(dict) = target.initializedType {
-            XCTAssertEqual(dict.declType, .keyword)
+            XCTAssertEqual(dict.declType, .generics)
             XCTAssertFalse(dict.isOptional)
             XCTAssertEqual(dict.keyType, .simple("String"))
             if case let EntityType.tuple(tuple) = dict.valueType {

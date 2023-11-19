@@ -55,7 +55,7 @@ public struct DictionaryDecl: Hashable, Equatable, CustomStringConvertible {
     
     /// The declaration type for the dictionary.
     /// - See: ``DeclType``
-    public var declType: DeclType
+    public let declType: DeclType
 
     // MARK: - Properties: Convenience
 

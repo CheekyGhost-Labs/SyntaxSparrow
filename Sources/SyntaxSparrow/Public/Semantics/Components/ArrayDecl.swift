@@ -48,7 +48,7 @@ public struct ArrayDecl: Hashable, Equatable, CustomStringConvertible {
     
     /// The declaration type for the array.
     /// - See: ``DeclType``
-    public var declType: DeclType
+    public let declType: DeclType
 
     // MARK: - Properties: Convenience
 

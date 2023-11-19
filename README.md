@@ -254,6 +254,18 @@ case .simple(let typeName):
 case .tuple(let tuple):
     tuple.isOptional // true/false
     tuple.elements // Array of `Parameter` types
+case .array(let array):
+    array.isOptional // true/false
+    array.elementType // Entity Type
+    array.declType // .squareBrackets/.generic
+case .set(let set):
+    set.isOptional // true/false
+    set.elementType // Entity Type
+case .dictionary(let dict):
+    dict.isOptional // true/false
+    dict.keyType // Entity Type
+    dict.valueType // Entity Type
+    dict.declType // .squareBrackets/.generics
 case .closure(let closure):
     closure.input // Entity Type
     closure.output // Entity Type

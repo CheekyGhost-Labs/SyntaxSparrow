@@ -17,7 +17,7 @@ jobs:
     name: Xcode ${{ matrix.xcode }}
     strategy:
       matrix:
-        xcode: ["13.2", "13.4", "14.0", "latest-stable"]
+        xcode: ["14.0", "14.3.1", "latest-stable"]
     runs-on: macos-latest
     steps:
       - uses: maxim-lobanov/setup-xcode@v1

@@ -25,10 +25,6 @@ jobs:
           xcode-version: ${{ matrix.xcode }}
       - uses: actions/checkout@v3
 
-      - name: Create test configuration
-        run: chmod +x ./build_configuration.sh && ./build_configuration.sh
-        shell: bash
-
       - name: Build
         run: xcodebuild build -scheme SyntaxSparrow -configuration Debug -destination "platform=iOS"
 

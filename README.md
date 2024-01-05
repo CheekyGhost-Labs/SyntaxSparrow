@@ -307,6 +307,7 @@ Then, add SyntaxSparrow as a dependency for your target:
 
 - Swift 5.7+
 - macOS 10.15+
+- iOS 13+
 
 ## License
 
@@ -318,7 +319,7 @@ Contributions to SyntaxSparrow are welcomed! If you have a bug to report, feel f
 
 SyntaxSparrow follows pretty closely to a standard git flow process. For the most part, pull requests should be made against the `develop` branch to coordinate any releases. This also provides a means to test from the `develop` branch in the wild to further test pending releases. Once a release is ready it will be merged into `main`, tagged, and have a release branch cut.
 
-❗️❗️ **Please ensure you create any pull requests based on the develop branch**
+❗️❗️ **Please ensure you create any pull requests based on the develop branch** ❗️❗️
 
 #### To get started:
 

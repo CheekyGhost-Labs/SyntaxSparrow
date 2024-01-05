@@ -5,7 +5,10 @@ import PackageDescription
 
 let package = Package(
     name: "SyntaxSparrow",
-    platforms: [.macOS(.v10_15)],
+    platforms: [
+        .macOS(.v10_15),
+        .iOS(.v13)
+    ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
@@ -22,6 +25,9 @@ let package = Package(
             dependencies: [
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
                 .product(name: "SwiftParser", package: "swift-syntax"),
+            ],
+            resources: [
+                .copy("Resources/PrivacyInfo.xcprivacy")
             ]
         ),
         .testTarget(

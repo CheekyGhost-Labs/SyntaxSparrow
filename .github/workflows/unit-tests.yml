@@ -23,11 +23,11 @@ on:
         - '*' # Push events to every tag
 
 jobs:
-  build:
-    name: Swift ${{ matrix.swift }} on ${{ matrix.os }}
+  swift_tests:
+    name: Swift Version ${{ matrix.swift }}
     strategy:
       matrix:
-        os: [macos-latest]
+        os: [macos-13]
         swift: ["5.9", "5.8", "5.7"]
     runs-on: ${{ matrix.os }}
     steps:
@@ -45,3 +45,24 @@ jobs:
         run: swift build
       - name: Run tests
         run: swift test
+
+  ios_tests:
+    name: iOS Unit Tests
+    runs-on: macos-13
+    steps:
+      - uses: swift-actions/setup-swift@v1
+        with:
+          swift-version: 5.9
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: .build
+          key: ${{ matrix.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: |
+            ${{ matrix.os }}-spm-
+
+      - name: Build
+        run: xcodebuild build -scheme SyntaxSparrow -destination "OS=17.2,name=iPhone 13"
+
+      - name: Test
+        run: xcodebuild test-without-building -scheme SyntaxSparrow -destination "name=iPhone 13" -enableCodeCoverage YES

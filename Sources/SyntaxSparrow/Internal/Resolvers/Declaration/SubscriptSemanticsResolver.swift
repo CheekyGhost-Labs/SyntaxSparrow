@@ -64,7 +64,7 @@ struct SubscriptSemanticsResolver: SemanticsResolving {
     }
 
     func resolveAccessors() -> [Accessor] {
-        guard let accessor = node.accessorBlock?.as(AccessorBlockSyntax.self) else { return [] }
+        guard let accessor = node.accessorBlock else { return [] }
         switch accessor.accessors {
         case .accessors(let accessorList):
             return accessorList.map(Accessor.init)

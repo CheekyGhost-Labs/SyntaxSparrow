@@ -296,7 +296,7 @@ final class VariableTests: XCTestCase {
         XCTAssertEqual(variable.description, "var handler: Void? = {}")
     }
 
-    func test_variable_typealiasType_optionalVariants_willResolveExpectedValues() {
+    func test_variable_tupleType_optionalVariants_willResolveExpectedValues() {
         let source = #"""
         var person: (name: String, age: Int?) = ("name", 20)
         var person: (name: String, age: Int?)? = ("name", 20)
@@ -321,6 +321,7 @@ final class VariableTests: XCTestCase {
             XCTAssertEqual(tuple.elements[1].name, "age")
             XCTAssertEqual(tuple.elements[1].type, .simple("Int?"))
             XCTAssertFalse(tuple.isOptional)
+            XCTAssertEqual(tuple.description, "(name: String, age: Int?)")
         } else {
             XCTFail("variable type should be tuple")
         }
@@ -339,6 +340,7 @@ final class VariableTests: XCTestCase {
             XCTAssertEqual(tuple.elements[1].name, "age")
             XCTAssertEqual(tuple.elements[1].type, .simple("Int?"))
             XCTAssertTrue(tuple.isOptional)
+            XCTAssertEqual(tuple.description, "(name: String, age: Int?)?")
         } else {
             XCTFail("variable type should be tuple")
         }
@@ -366,6 +368,7 @@ final class VariableTests: XCTestCase {
             XCTAssertEqual(closure.input, .simple("String"))
             XCTAssertEqual(closure.output, .simple("Int?"))
             XCTAssertFalse(closure.isOptional)
+            XCTAssertEqual(closure.description, "(String) -> Int?")
         } else {
             XCTFail("variable type should be closure")
         }
@@ -381,6 +384,7 @@ final class VariableTests: XCTestCase {
             XCTAssertEqual(closure.input, .simple("String"))
             XCTAssertEqual(closure.output, .simple("Int?"))
             XCTAssertTrue(closure.isOptional)
+            XCTAssertEqual(closure.description, "((String) -> Int?)?")
         } else {
             XCTFail("variable type should be closure")
         }

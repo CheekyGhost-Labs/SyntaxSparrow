@@ -24,13 +24,19 @@ public class SparrowSourceLocationConverter {
     // MARK: - Lifecycle
 
     static var empty: SparrowSourceLocationConverter {
-        SparrowSourceLocationConverter(file: "", source: "")
+        let syntax = SourceFileSyntax(statements: .init([]))
+        return SparrowSourceLocationConverter(file: "", tree: syntax)
     }
 
     public init(file: String, tree: SyntaxProtocol) {
         converter = SourceLocationConverter(fileName: file, tree: tree)
     }
 
+    @available(
+        *,
+        deprecated,
+        message: "`init(file:source:)' is deprecated: Use `init(fileName:tree:)` instead"
+    )
     public init(file: String, source: String) {
         converter = SourceLocationConverter(file: file, source: source)
     }
@@ -47,7 +53,12 @@ public class SparrowSourceLocationConverter {
         }
     }
 
-    public func udpateForSource(_ source: String, file: String = "") {
+    @available(
+        *,
+        deprecated,
+        message: "`updateForSource(_:file:)' is deprecated: Use `updateForTree(_:file:)` instead"
+    )
+    public func updateForSource(_ source: String, file: String = "") {
         queue.async(flags: .barrier) { [self] in
             converter = SourceLocationConverter(file: file, source: source)
         }

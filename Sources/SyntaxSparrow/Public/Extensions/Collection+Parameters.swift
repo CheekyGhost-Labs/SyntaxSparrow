@@ -1,0 +1,35 @@
+//
+//  Collection+Parameters.swift
+//  
+//
+//  Created by Michael O'Brien on 9/3/2024.
+//
+
+import Foundation
+
+public extension Collection where Element == Parameter {
+
+    /// Will return the parameters as they would appear within signature input parenthesis.
+    ///
+    /// Note: Sending true to the `includeParenthesis` flag (default) will wrap the result in parenthesis.
+    /// i.e:
+    /// - `true`: `"(_ name: String, age: Int = 0, withOtherThing otherThing: String? = nil)"`
+    /// - `false`:`"_ name: String, age: Int = 0, withOtherThing otherThing: String? = nil"`
+    ///
+    /// - Parameter includeParenthesis: Bool whether to wrap the result in parenthesis. Defaults to `true`.
+    /// - Returns: `String`
+    func signatureInputString(includeParenthesis: Bool = true) -> String {
+        let components: [String] = map { param in
+            var base = param.description
+            base = base.replacingOccurrences(of: ",", with: "")
+            base = base.replacingOccurrences(of: " :", with: ":")
+            base = base.trimmingCharacters(in: .whitespacesAndNewlines)
+            return base
+        }
+        let joined = components.joined(separator: ", ")
+        if includeParenthesis {
+            return "(\(joined))"
+        }
+        return joined
+    }
+}

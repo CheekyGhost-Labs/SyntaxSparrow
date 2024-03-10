@@ -285,16 +285,16 @@ final class FunctionTests: XCTestCase {
         XCTAssertEqual(function.genericRequirements[1].rightTypeIdentifier, "C2.Element")
     }
 
-    func test_thing() {
+    func test_signatureNode_isParentNode() {
         let source = #"""
-        func variadicOptional(_ names: String?...) {}
+        func noParameters() throws {}
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
         instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.functions.count, 1)
-        XCTAssertTrue(instanceUnderTest.functions[0].signature.input[0].isOptional)
+        XCTAssertEqual(instanceUnderTest.functions[0].signature.node, instanceUnderTest.functions[0].node.signature)
     }
 
     func test_function_parameters_willResolveExpectedTypes() throws {

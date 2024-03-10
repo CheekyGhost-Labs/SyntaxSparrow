@@ -24,8 +24,12 @@ public struct Function: Declaration, SyntaxChildCollecting {
     ///
     /// The signature describes the function's parameter types and return type.
     /// This information is parsed from an underlying `FunctionSignatureSyntax` token.
-    public struct Signature: Hashable {
+    public struct Signature: Hashable, Equatable {
+
         // MARK: - Properties
+        
+        /// The raw syntax node being represented by the instance.
+        public let node: FunctionSignatureSyntax
 
         /// Array of input parameters for the function.
         /// Each parameter is represented by a `Parameter` struct.

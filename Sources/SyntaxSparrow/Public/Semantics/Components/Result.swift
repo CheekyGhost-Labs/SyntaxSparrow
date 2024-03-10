@@ -67,6 +67,6 @@ public struct Result: Hashable, Equatable, CustomStringConvertible {
 
     public var description: String {
         let base = resolver.node.description.trimmed
-        return isOptional ? "\(base)?" : base
+        return base + (isOptional ? "?" : "")
     }
 }

@@ -20,6 +20,9 @@ class RootDeclarationCollector: SyntaxVisitor {
     private(set) var declarationCollection: DeclarationCollection = .init()
 
     /// Transient entry node used when walking over a node. The entry node will be ignored and it's children visited.
+    private(set) var tree: SourceFileSyntax = SourceFileSyntax(statements: .init([]))
+
+    /// Transient entry node used when walking over a node. The entry node will be ignored and it's children visited.
     private(set) var entryNode: SyntaxProtocol?
 
     // MARK: - Helpers
@@ -30,7 +33,7 @@ class RootDeclarationCollector: SyntaxVisitor {
     /// - Parameter source: The source code being analyzed by this instance.
     @discardableResult func collect(fromSource source: String) -> DeclarationCollection {
         declarationCollection.reset()
-        let tree = Parser.parse(source: source)
+        tree = Parser.parse(source: source)
         walk(tree)
         return declarationCollection
     }

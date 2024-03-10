@@ -294,7 +294,7 @@ Currently, SyntaxSparrow supports Swift Package Manager (SPM).
 To add SyntaxSparrow to your project, add the following line to your dependencies in your Package.swift file:
 
 ```swift
-.package(url: "https://github.com/CheekyGhost-Labs/SyntaxSparrow", from: "3.1.0")
+.package(url: "https://github.com/CheekyGhost-Labs/SyntaxSparrow", from: "3.2.0")
 ```
 
 Then, add SyntaxSparrow as a dependency for your target:

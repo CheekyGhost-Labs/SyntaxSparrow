@@ -69,6 +69,7 @@ struct FunctionSemanticsResolver: SemanticsResolving {
             effectSpecifiers = EffectSpecifiers(node: specifiers)
         }
         return Function.Signature(
+            node: node.signature,
             input: inputParameters,
             output: outputType,
             outputIsOptional: isOutputOptional,

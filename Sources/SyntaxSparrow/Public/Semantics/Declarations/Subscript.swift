@@ -81,6 +81,9 @@ public struct Subscript: Declaration {
     /// The subscript getter and/or setter.
     public var accessors: [Accessor] { resolver.resolveAccessors() }
 
+    /// Will return `true` when the `.set` accessor kind is present
+    public var hasSetter: Bool { resolver.resolveHasSetter() }
+
     // MARK: - Properties: DeclarationCollecting
 
     private(set) var resolver: SubscriptSemanticsResolver

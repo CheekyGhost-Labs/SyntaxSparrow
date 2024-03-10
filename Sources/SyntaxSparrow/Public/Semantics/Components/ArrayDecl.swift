@@ -85,6 +85,7 @@ public struct ArrayDecl: Hashable, Equatable, CustomStringConvertible {
     // MARK: - CustomStringConvertible
 
     public var description: String {
-        resolver.node.description.trimmed
+        let base = resolver.node.description.trimmed
+        return base + (isOptional ? "?" : "")
     }
 }

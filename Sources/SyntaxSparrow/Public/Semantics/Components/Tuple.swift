@@ -56,6 +56,7 @@ public struct Tuple: Hashable, Equatable, CustomStringConvertible {
     // MARK: - CustomStringConvertible
 
     public var description: String {
-        resolver.node.description.trimmed
+        let base = elements.signatureInputString()
+        return isOptional ? "\(base)?" : base
     }
 }

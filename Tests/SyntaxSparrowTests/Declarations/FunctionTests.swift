@@ -321,7 +321,8 @@ final class FunctionTests: XCTestCase {
         func asyncAwaitMethodThrowing() throws async {}
         func asyncAwaitMethodThrowingReturning() throws async -> String {}
         func arrayShorthand(persons: [(name: String, age: Int?)]?) {}
-        func arrayIdentifier(names: Array<String>) {}
+        func arrayIdentifier(names: Array<String?>) {}
+        func arrayIdentifier(names: Array<String?>?) {}
         func setIdentifier(names: Set<String>) {}
         func dictionaryShorthand(persons: [String: (name: String, age: Int?)]?) {}
         func dictionaryIdentifier(names: Dictionary<String, (name: String, age: Int?)>?) {}
@@ -330,7 +331,7 @@ final class FunctionTests: XCTestCase {
         XCTAssertTrue(instanceUnderTest.isStale)
         instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.functions.count, 26)
+        XCTAssertEqual(instanceUnderTest.functions.count, 27)
 
         // No Parameters
         // func noParameters() throws {}
@@ -577,6 +578,7 @@ final class FunctionTests: XCTestCase {
             XCTAssertEqual(tuple.elements[1].name, "age")
             XCTAssertNil(tuple.elements[1].secondName)
             XCTAssertTrue(tuple.elements[1].isOptional)
+            XCTAssertEqual(tuple.description, "(name: String, age: Int?)?")
         } else {
             XCTFail("function.signature.input[0] type should be tuple")
         }
@@ -609,6 +611,7 @@ final class FunctionTests: XCTestCase {
             XCTAssertFalse(closure.isOptional)
             XCTAssertTrue(closure.isEscaping)
             XCTAssertFalse(closure.isAutoEscaping)
+            XCTAssertEqual(closure.description, "(Int) -> Void")
         } else {
             XCTFail("function.signature.input[0] type should be closure")
         }
@@ -640,6 +643,7 @@ final class FunctionTests: XCTestCase {
             XCTAssertTrue(closure.isOptional)
             XCTAssertTrue(closure.isEscaping)
             XCTAssertTrue(closure.isAutoEscaping)
+            XCTAssertEqual(closure.description, "((Int) -> Void)?")
         } else {
             XCTFail("function.signature.input[0] type should be closure")
         }
@@ -669,6 +673,7 @@ final class FunctionTests: XCTestCase {
             XCTAssertTrue(closure.isOptional)
             XCTAssertTrue(closure.isEscaping)
             XCTAssertTrue(closure.isAutoEscaping)
+            XCTAssertEqual(closure.description, "((name: String, age: Int) -> String?)?")
             if case let EntityType.tuple(tuple) = closure.input {
                 XCTAssertEqual(tuple.elements.count, 2)
                 XCTAssertEqual(tuple.elements[0].name, "name")
@@ -676,6 +681,7 @@ final class FunctionTests: XCTestCase {
                 XCTAssertEqual(tuple.elements[1].name, "age")
                 XCTAssertEqual(tuple.elements[1].type, .simple("Int"))
                 XCTAssertFalse(tuple.isOptional)
+                XCTAssertEqual(tuple.description, "(name: String, age: Int)")
             } else {
                 XCTFail("closure input type should be tuple")
             }
@@ -706,6 +712,7 @@ final class FunctionTests: XCTestCase {
             XCTAssertEqual(result.successType, .simple("String"))
             XCTAssertEqual(result.failureType, .simple("Error"))
             XCTAssertFalse(result.isOptional)
+            XCTAssertEqual(result.description, "Result<String, Error>")
         } else {
             XCTFail("function.signature.input[0] type should be Result")
         }
@@ -733,6 +740,7 @@ final class FunctionTests: XCTestCase {
             XCTAssertEqual(result.successType, .simple("String"))
             XCTAssertEqual(result.failureType, .simple("Error"))
             XCTAssertTrue(result.isOptional)
+            XCTAssertEqual(result.description, "Result<String, Error>?")
         } else {
             XCTFail("function.signature.input[0] type should be Result")
         }
@@ -831,12 +839,13 @@ final class FunctionTests: XCTestCase {
                 XCTAssertEqual(tuple.elements[1].name, "age")
                 XCTAssertEqual(tuple.elements[1].type, .simple("Int?"))
                 XCTAssertFalse(tuple.isOptional)
+                XCTAssertEqual(array.description, "[(name: String, age: Int?)]?")
             }
         } else {
             XCTFail("function.signature.input[0] type should be Array")
         }
 
-        // func arrayIdentifier(names: Array<String>) {}
+        // func arrayIdentifier(names: Array<String?>) {}
         function = instanceUnderTest.functions[22]
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.identifier, "arrayIdentifier")
@@ -847,13 +856,33 @@ final class FunctionTests: XCTestCase {
         if case let EntityType.array(array) = function.signature.input[0].type {
             XCTAssertEqual(array.declType, .generic)
             XCTAssertFalse(array.isOptional)
-            XCTAssertEqual(array.elementType, .simple("String"))
+            XCTAssertEqual(array.elementType, .simple("String?"))
+            XCTAssertEqual(array.elementType.description, "String?")
+            XCTAssertEqual(array.description, "Array<String?>")
+        } else {
+            XCTFail("function.signature.input[0] type should be Array")
+        }
+
+        // func arrayIdentifier(names: Array<String?>?) {}
+        function = instanceUnderTest.functions[23]
+        XCTAssertEqual(function.keyword, "func")
+        XCTAssertEqual(function.identifier, "arrayIdentifier")
+        XCTAssertNil(function.signature.effectSpecifiers?.throwsSpecifier)
+        XCTAssertNil(function.signature.effectSpecifiers?.asyncSpecifier)
+        XCTAssertEqual(function.signature.input.count, 1)
+
+        if case let EntityType.array(array) = function.signature.input[0].type {
+            XCTAssertEqual(array.declType, .generic)
+            XCTAssertTrue(array.isOptional)
+            XCTAssertEqual(array.elementType, .simple("String?"))
+            XCTAssertEqual(array.elementType.description, "String?")
+            XCTAssertEqual(array.description, "Array<String?>?")
         } else {
             XCTFail("function.signature.input[0] type should be Array")
         }
 
         // func setIdentifier(names: Set<String>) {}
-        function = instanceUnderTest.functions[23]
+        function = instanceUnderTest.functions[24]
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.identifier, "setIdentifier")
         XCTAssertNil(function.signature.effectSpecifiers?.throwsSpecifier)
@@ -868,7 +897,7 @@ final class FunctionTests: XCTestCase {
         }
 
         // func dictionaryShorthand(persons: [String: (name: String, age: Int?)]?) {}
-        function = instanceUnderTest.functions[24]
+        function = instanceUnderTest.functions[25]
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.identifier, "dictionaryShorthand")
         XCTAssertNil(function.signature.effectSpecifiers?.throwsSpecifier)
@@ -892,7 +921,7 @@ final class FunctionTests: XCTestCase {
         }
 
         // func dictionaryIdentifier(names: Dictionary<String, (name: String, age: Int?)>?) {}
-        function = instanceUnderTest.functions[25]
+        function = instanceUnderTest.functions[26]
         XCTAssertEqual(function.keyword, "func")
         XCTAssertEqual(function.identifier, "dictionaryIdentifier")
         XCTAssertNil(function.signature.effectSpecifiers?.throwsSpecifier)

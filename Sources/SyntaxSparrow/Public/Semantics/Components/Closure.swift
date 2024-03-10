@@ -85,4 +85,11 @@ public struct Closure: DeclarationComponent {
     public init(node: FunctionTypeSyntax) {
         resolver = ClosureSemanticsResolver(node: node)
     }
+
+    // MARK: - CustomStringConvertible
+
+    public var description: String {
+        let base = node.description.trimmed
+        return isOptional ? "(\(base))?" : base
+    }
 }

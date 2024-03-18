@@ -430,6 +430,7 @@ final class VariableTests: XCTestCase {
 
         let variable = instanceUnderTest.variables[0]
         XCTAssertEqual(variable.accessors.count, 2)
+        XCTAssertTrue(variable.hasSetter)
         // Get
         XCTAssertEqual(variable.accessors[0].kind, .get)
         let getterBody = try XCTUnwrap(variable.accessors[0].body)
@@ -465,6 +466,7 @@ final class VariableTests: XCTestCase {
 
         let variable = instanceUnderTest.variables[0]
         XCTAssertEqual(variable.accessors.count, 1)
+        XCTAssertFalse(variable.hasSetter)
         // Get
         XCTAssertEqual(variable.accessors[0].kind, .get)
         XCTAssertEqual(variable.accessors[0].effectSpecifiers?.throwsSpecifier, "throws")
@@ -488,6 +490,7 @@ final class VariableTests: XCTestCase {
 
         let variable = instanceUnderTest.variables[0]
         XCTAssertEqual(variable.accessors.count, 1)
+        XCTAssertFalse(variable.hasSetter)
         // Get
         XCTAssertEqual(variable.accessors[0].kind, .get)
         XCTAssertNil(variable.accessors[0].effectSpecifiers?.throwsSpecifier)
@@ -511,6 +514,7 @@ final class VariableTests: XCTestCase {
 
         let variable = instanceUnderTest.variables[0]
         XCTAssertEqual(variable.accessors.count, 1)
+        XCTAssertFalse(variable.hasSetter)
         // Get
         XCTAssertEqual(variable.accessors[0].kind, .get)
         XCTAssertEqual(variable.accessors[0].effectSpecifiers?.throwsSpecifier, "throws")

@@ -29,6 +29,12 @@ public struct Accessor: DeclarationComponent, SyntaxChildCollecting {
 
         /// A setter that sets a value.
         case set
+
+        /// Accessor invoked when something has been set.
+        case didSet
+
+        /// Accessor invoked when something is about to be set.
+        case willSet
     }
 
     // MARK: - Properties: DeclarationComponent

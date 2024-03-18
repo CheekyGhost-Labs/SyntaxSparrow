@@ -80,7 +80,8 @@ struct VariableSemanticsResolver: SemanticsResolving {
 
     func resolveHasSetter() -> Bool {
         // If setter exists in accessors can return true
-        if resolveAccessors().contains(where: { $0.kind == .set }) {
+        let hasSetterAccessor = resolveAccessors().contains(where: { $0.kind == .set || $0.kind == .willSet })
+        if hasSetterAccessor {
             return true
         }
         // Otherwise if the keyword is not `let` (immutable)
@@ -88,6 +89,10 @@ struct VariableSemanticsResolver: SemanticsResolving {
         // Check if modifiers contain a private set
         guard !resolveModifiers().contains(where: { $0.name == "private" && $0.detail == "set" }) else { return false }
         // Finally if the root context is not a protocol, and the keyword is var, it can have a setter
-        return node.context?.as(ProtocolDeclSyntax.self) == nil && resolveKeyword() == "var"
+        let isPotential = node.context?.as(ProtocolDeclSyntax.self) == nil && resolveKeyword() == "var"
+        if resolveAccessors().isEmpty {
+            return isPotential
+        }
+        return isPotential && hasSetterAccessor
     }
 }

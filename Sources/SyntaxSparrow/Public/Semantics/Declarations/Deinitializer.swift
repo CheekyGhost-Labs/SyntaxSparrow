@@ -36,7 +36,7 @@ public struct Deinitializer: Declaration, SyntaxChildCollecting {
 
     /// The declaration keyword.
     ///
-    /// i.e: `"class"`
+    /// i.e: `"deinit"`
     public var keyword: String { resolver.resolveKeyword() }
 
     /// Struct representing the body of the function.

@@ -41,7 +41,7 @@ public struct ProtocolDecl: Declaration, SyntaxChildCollecting {
 
     /// The declaration keyword.
     ///
-    /// i.e: `"class"`
+    /// i.e: `"protocol"`
     public var keyword: String { resolver.resolveKeyword() }
 
     /// The structure name.

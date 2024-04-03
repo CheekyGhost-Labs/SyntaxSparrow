@@ -79,20 +79,27 @@ struct VariableSemanticsResolver: SemanticsResolving {
     }
 
     func resolveHasSetter() -> Bool {
-        // If setter exists in accessors can return true
-        let hasSetterAccessor = resolveAccessors().contains(where: { $0.kind == .set || $0.kind == .willSet || $0.kind == .didSet })
-        if hasSetterAccessor {
-            return true
-        }
+        // Resolver accessors for assessment
+        let accessors = resolveAccessors()
+        let accessorKinds = accessors.compactMap(\.kind)
+        let hasSetterAccessor = accessorKinds.contains(where: { [.set, .willSet, .didSet].contains($0) })
+        let hasEffectGetter = accessors.contains(where: {
+            let hasSpecifier = ($0.effectSpecifiers?.throwsSpecifier != nil || $0.effectSpecifiers?.asyncSpecifier != nil)
+            return $0.kind == .get && hasSpecifier
+        })
+        // Check if has throwing or async getter (no setter allowed)
+        guard !hasEffectGetter else { return false }
+        // If setter exists in accessors can return true (usually protocol context or manually written will/did/set accessor).
+        if hasSetterAccessor { return true }
         // Otherwise if the keyword is not `let` (immutable)
         guard resolveKeyword() != "let" else { return false }
-        // Check if modifiers contain a private set
+        // Check if modifiers contain a private setter
         guard !resolveModifiers().contains(where: { $0.name == "private" && $0.detail == "set" }) else { return false }
         // Finally if the root context is not a protocol, and the keyword is var, it can have a setter
-        let isPotential = node.context?.as(ProtocolDeclSyntax.self) == nil && resolveKeyword() == "var"
-        if resolveAccessors().isEmpty {
+        let isPotential = node.firstParent(returning: { $0.as(ProtocolDeclSyntax.self )}) == nil && resolveKeyword() == "var"
+        if accessors.isEmpty {
             return isPotential
         }
-        return isPotential && hasSetterAccessor
+        return isPotential
     }
 }

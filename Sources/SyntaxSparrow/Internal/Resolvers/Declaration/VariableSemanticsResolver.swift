@@ -80,7 +80,7 @@ struct VariableSemanticsResolver: SemanticsResolving {
 
     func resolveHasSetter() -> Bool {
         // If setter exists in accessors can return true
-        let hasSetterAccessor = resolveAccessors().contains(where: { $0.kind == .set || $0.kind == .willSet })
+        let hasSetterAccessor = resolveAccessors().contains(where: { $0.kind == .set || $0.kind == .willSet || $0.kind == .didSet })
         if hasSetterAccessor {
             return true
         }

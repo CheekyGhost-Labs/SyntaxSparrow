@@ -89,13 +89,13 @@ struct VariableSemanticsResolver: SemanticsResolving {
         })
         // Check if has throwing or async getter (no setter allowed)
         guard !hasEffectGetter else { return false }
-        // If setter exists in accessors can return true
+        // If setter exists in accessors can return true (usually protocol context or manually written will/did/set accessor).
         if hasSetterAccessor { return true }
         // Otherwise if the keyword is not `let` (immutable)
         guard resolveKeyword() != "let" else { return false }
         // Check if modifiers contain a private setter
         guard !resolveModifiers().contains(where: { $0.name == "private" && $0.detail == "set" }) else { return false }
-        // Finally if the root context is not a protocol, and the keyword is var, it could have a setter
+        // Finally if the root context is not a protocol, and the keyword is var, it can have a setter
         let isPotential = node.firstParent(returning: { $0.as(ProtocolDeclSyntax.self )}) == nil && resolveKeyword() == "var"
         if accessors.isEmpty {
             return isPotential

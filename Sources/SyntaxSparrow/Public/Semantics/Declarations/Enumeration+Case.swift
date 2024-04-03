@@ -36,7 +36,7 @@ public extension Enumeration {
 
         /// The declaration keyword.
         ///
-        /// i.e: `"enum"`
+        /// i.e: `"case"`
         public var keyword: String { resolver.resolveKeyword() }
 
         /// The structure name.

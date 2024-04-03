@@ -39,7 +39,7 @@ public struct AssociatedType: Declaration {
 
     /// The declaration keyword.
     ///
-    /// i.e: `"class"`
+    /// i.e: `"associatedtype"`
     public var keyword: String { resolver.resolveKeyword() }
 
     /// The structure name.

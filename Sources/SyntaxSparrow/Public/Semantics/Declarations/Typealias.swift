@@ -41,7 +41,7 @@ public struct Typealias: Declaration {
 
     /// The declaration keyword.
     ///
-    /// i.e: `"class"`
+    /// i.e: `"typealias"`
     public var keyword: String { resolver.resolveKeyword() }
 
     /// The structure name.

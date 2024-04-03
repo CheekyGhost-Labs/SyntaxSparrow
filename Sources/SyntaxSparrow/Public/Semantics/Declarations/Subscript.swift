@@ -42,7 +42,7 @@ public struct Subscript: Declaration {
 
     /// The declaration keyword.
     ///
-    /// i.e: `"func"`
+    /// i.e: `"subscript"`
     public var keyword: String { resolver.resolveKeyword() }
 
     /// The subscript parameter indices

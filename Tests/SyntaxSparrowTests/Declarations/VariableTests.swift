@@ -195,6 +195,52 @@ final class VariableTests: XCTestCase {
         XCTAssertEqual(protocolOne.variables[2].accessors.map(\.kind), [])
     }
 
+    func test_variable_hasSetterHelper_nested_willResolveExpectedValues() {
+        let source = #"""
+        protocol Example {
+            var name: String { get }
+            var name: String { get set }
+        }
+
+        class Example {
+            let name: String = "test"
+            var nameTwo: String = "test"
+            var nameThree: String = "test" {
+                didSet {}
+            }
+        }
+
+        struct Example {
+            let name: String = "test"
+            var nameTwo: String = "test"
+            var nameThree: String = "test" {
+                didSet {}
+            }
+        }
+        """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        // Protocols
+        var variables = instanceUnderTest.protocols[0].variables
+        XCTAssertEqual(variables.count, 2)
+        XCTAssertFalse(variables[0].hasSetter)
+        XCTAssertTrue(variables[1].hasSetter)
+        // Class
+        variables = instanceUnderTest.classes[0].variables
+        XCTAssertEqual(variables.count, 3)
+        XCTAssertFalse(variables[0].hasSetter)
+        XCTAssertTrue(variables[1].hasSetter)
+        XCTAssertTrue(variables[2].hasSetter)
+        // Struct
+        variables = instanceUnderTest.structures[0].variables
+        XCTAssertEqual(variables.count, 3)
+        XCTAssertFalse(variables[0].hasSetter)
+        XCTAssertTrue(variables[1].hasSetter)
+        XCTAssertTrue(variables[2].hasSetter)
+    }
+
     func test_variable_hasSetterHelper_willResolveExpectedValues() {
         let source = #"""
         var name: String {

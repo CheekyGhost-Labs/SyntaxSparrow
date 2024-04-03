@@ -208,6 +208,13 @@ final class VariableTests: XCTestCase {
             var nameThree: String = "test" {
                 didSet {}
             }
+            var name: String {
+                "testing"
+            }
+            var name: String {
+                let count = 5
+                return "testing: \(count)"
+            }
         }
 
         struct Example {
@@ -215,6 +222,13 @@ final class VariableTests: XCTestCase {
             var nameTwo: String = "test"
             var nameThree: String = "test" {
                 didSet {}
+            }
+            var name: String {
+                "testing"
+            }
+            var name: String {
+                let count = 5
+                return "testing: \(count)"
             }
         }
         """#
@@ -229,16 +243,20 @@ final class VariableTests: XCTestCase {
         XCTAssertTrue(variables[1].hasSetter)
         // Class
         variables = instanceUnderTest.classes[0].variables
-        XCTAssertEqual(variables.count, 3)
+        XCTAssertEqual(variables.count, 5)
         XCTAssertFalse(variables[0].hasSetter)
         XCTAssertTrue(variables[1].hasSetter)
         XCTAssertTrue(variables[2].hasSetter)
+        XCTAssertFalse(variables[3].hasSetter)
+        XCTAssertFalse(variables[4].hasSetter)
         // Struct
         variables = instanceUnderTest.structures[0].variables
-        XCTAssertEqual(variables.count, 3)
+        XCTAssertEqual(variables.count, 5)
         XCTAssertFalse(variables[0].hasSetter)
         XCTAssertTrue(variables[1].hasSetter)
         XCTAssertTrue(variables[2].hasSetter)
+        XCTAssertFalse(variables[3].hasSetter)
+        XCTAssertFalse(variables[4].hasSetter)
     }
 
     func test_variable_hasSetterHelper_willResolveExpectedValues() {
@@ -253,17 +271,26 @@ final class VariableTests: XCTestCase {
         var name: String = "name"
         let name: String = "name"
         private(set) var name: String = "name"
+        var name: String {
+            "testing"
+        }
+        var name: String {
+            let count = 5
+            return "testing: \(count)"
+        }
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
         instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.variables.count, 5)
+        XCTAssertEqual(instanceUnderTest.variables.count, 7)
         XCTAssertTrue(instanceUnderTest.variables[0].hasSetter)
         XCTAssertTrue(instanceUnderTest.variables[1].hasSetter)
         XCTAssertTrue(instanceUnderTest.variables[2].hasSetter)
         XCTAssertFalse(instanceUnderTest.variables[3].hasSetter)
         XCTAssertFalse(instanceUnderTest.variables[4].hasSetter)
+        XCTAssertFalse(instanceUnderTest.variables[5].hasSetter)
+        XCTAssertFalse(instanceUnderTest.variables[6].hasSetter)
     }
 
     func test_variable_simpleType_optionalVariants_willResolveExpectedValues() {

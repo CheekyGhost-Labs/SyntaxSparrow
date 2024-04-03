@@ -180,6 +180,23 @@ final class SubscriptTests: XCTestCase {
         XCTAssertTrue(instanceUnderTest.subscripts[2].hasSetter)
     }
 
+    func test_subscript_hasSetter_inProtocol_willResolveExpectedValues() {
+        let source = #"""
+        protocol Example {
+            subscript(index: Int) -> Int { get }
+            subscript(index: Int) -> Int { get set }
+        }
+        """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        XCTAssertEqual(instanceUnderTest.protocols.count, 1)
+        // Main
+        XCTAssertFalse(instanceUnderTest.protocols[0].subscripts[0].hasSetter)
+        XCTAssertTrue(instanceUnderTest.protocols[0].subscripts[1].hasSetter)
+    }
+
     func test_subscript_returnTypeIsOptional_willResolveExpectedValues() {
         let source = #"""
         subscript(index: Int) -> Int { 0 }

@@ -36,6 +36,25 @@ struct VariableSemanticsResolver: SemanticsResolving {
             return []
         }
     }
+    
+    /// Used to determine if there is a code block returning a value present
+    ///
+    /// i.e
+    /// ```swift
+    /// var name: String { "example" }
+    /// var other: String {
+    ///     let count = 5
+    ///     return "Count: \(count)"
+    /// }
+    /// ```
+    /// - Returns: Bool
+    func resolveHasCodeBlockItems() -> Bool {
+        guard
+            let accessor = node.accessorBlock,
+            let codeBlockList = accessor.accessors.as(CodeBlockItemListSyntax.self)
+        else { return false }
+        return !codeBlockList.isEmpty
+    }
 
     func resolveType() -> EntityType {
         guard let typeAnnotation = node.typeAnnotation?.type else {
@@ -91,15 +110,14 @@ struct VariableSemanticsResolver: SemanticsResolving {
         guard !hasEffectGetter else { return false }
         // If setter exists in accessors can return true (usually protocol context or manually written will/did/set accessor).
         if hasSetterAccessor { return true }
+        // If no accessors, but a direct return/code block, can assume there is no setter
+        if accessors.isEmpty, resolveHasCodeBlockItems() { return false }
         // Otherwise if the keyword is not `let` (immutable)
         guard resolveKeyword() != "let" else { return false }
         // Check if modifiers contain a private setter
         guard !resolveModifiers().contains(where: { $0.name == "private" && $0.detail == "set" }) else { return false }
         // Finally if the root context is not a protocol, and the keyword is var, it can have a setter
         let isPotential = node.firstParent(returning: { $0.as(ProtocolDeclSyntax.self )}) == nil && resolveKeyword() == "var"
-        if accessors.isEmpty {
-            return isPotential
-        }
         return isPotential
     }
 }

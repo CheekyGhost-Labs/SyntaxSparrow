@@ -609,13 +609,24 @@ final class DeinitializerTests: XCTestCase {
         XCTAssertEqual(enumCase.associatedValues[0].description, "_ handler: (Int) -> Void")
 
         if case let EntityType.closure(closure) = enumCase.associatedValues[0].type {
-            XCTAssertEqual(closure.input, .simple("Int"))
-            XCTAssertFalse(closure.isVoidInput)
+            // Void Output
             XCTAssertEqual(closure.output, .void("Void", false))
             XCTAssertTrue(closure.isVoidOutput)
             XCTAssertFalse(closure.isOptional)
             XCTAssertFalse(closure.isEscaping)
             XCTAssertFalse(closure.isAutoEscaping)
+            // Tuple Input (Single Element)
+            XCTAssertFalse(closure.isVoidInput)
+            if case let EntityType.tuple(tuple) = closure.input {
+                XCTAssertEqual(tuple.elements.count, 1)
+                XCTAssertEqual(tuple.elements[0].type, .simple("Int"))
+                XCTAssertEqual(tuple.elements[0].rawType, "Int")
+                XCTAssertFalse(tuple.elements[0].isInOut)
+                XCTAssertFalse(tuple.elements[0].isOptional)
+                XCTAssertFalse(tuple.elements[0].isLabelOmitted)
+                XCTAssertNil(tuple.elements[0].name)
+                XCTAssertNil(tuple.elements[0].secondName)
+            }
         } else {
             XCTFail("function.signature.input[0] type should be closure")
         }
@@ -639,13 +650,23 @@ final class DeinitializerTests: XCTestCase {
         XCTAssertEqual(enumCase.associatedValues[0].description, "_ handler: ((Int) -> Void)?")
 
         if case let EntityType.closure(closure) = enumCase.associatedValues[0].type {
-            XCTAssertEqual(closure.input, .simple("Int"))
-            XCTAssertFalse(closure.isVoidInput)
             XCTAssertEqual(closure.output, .void("Void", false))
             XCTAssertTrue(closure.isVoidOutput)
             XCTAssertTrue(closure.isOptional)
             XCTAssertTrue(closure.isEscaping)
             XCTAssertTrue(closure.isAutoEscaping)
+            // Tuple Input (Single Element)
+            XCTAssertFalse(closure.isVoidInput)
+            if case let EntityType.tuple(tuple) = closure.input {
+                XCTAssertEqual(tuple.elements.count, 1)
+                XCTAssertEqual(tuple.elements[0].type, .simple("Int"))
+                XCTAssertEqual(tuple.elements[0].rawType, "Int")
+                XCTAssertFalse(tuple.elements[0].isInOut)
+                XCTAssertFalse(tuple.elements[0].isOptional)
+                XCTAssertFalse(tuple.elements[0].isLabelOmitted)
+                XCTAssertNil(tuple.elements[0].name)
+                XCTAssertNil(tuple.elements[0].secondName)
+            }
         } else {
             XCTFail("function.signature.input[0] type should be closure")
         }

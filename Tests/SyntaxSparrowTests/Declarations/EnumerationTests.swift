@@ -342,6 +342,7 @@ final class DeinitializerTests: XCTestCase {
             case resultOptional(processResult: Result<String, Error>?)
             case defaultValue(name: String = "name")
             case inoutValue(names: inout [String])
+            case inoutValues(names: inout [String], inout String)
         }
         """#
         instanceUnderTest.updateToSource(source)
@@ -349,7 +350,7 @@ final class DeinitializerTests: XCTestCase {
         instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.enumerations.count, 1)
-        XCTAssertEqual(instanceUnderTest.enumerations[0].cases.count, 18)
+        XCTAssertEqual(instanceUnderTest.enumerations[0].cases.count, 19)
         let enumeration = instanceUnderTest.enumerations[0]
 
         // No Parameters
@@ -783,5 +784,44 @@ final class DeinitializerTests: XCTestCase {
         } else {
             XCTFail("function.signature.input[0] type should be Array")
         }
+
+        // Optional Result parameter
+        // case inoutValues(names: inout [String], inout String)
+        enumCase = enumeration.cases[18]
+        XCTAssertEqual(enumCase.keyword, "case")
+        XCTAssertEqual(enumCase.name, "inoutValues")
+        XCTAssertEqual(enumCase.associatedValues.count, 2)
+        XCTAssertEqual(enumCase.associatedValues[0].attributes, [])
+        XCTAssertEqual(enumCase.associatedValues[0].modifiers, [])
+        XCTAssertEqual(enumCase.associatedValues[0].name, "names")
+        XCTAssertNil(enumCase.associatedValues[0].secondName)
+        XCTAssertFalse(enumCase.associatedValues[0].isLabelOmitted)
+        XCTAssertFalse(enumCase.associatedValues[0].isVariadic)
+        XCTAssertFalse(enumCase.associatedValues[0].isOptional)
+        XCTAssertTrue(enumCase.associatedValues[0].isInOut)
+        XCTAssertEqual(enumCase.associatedValues[0].rawType, "inout [String]")
+        XCTAssertNil(enumCase.associatedValues[0].defaultArgument)
+        XCTAssertEqual(enumCase.associatedValues[0].description, "names: inout [String]")
+
+        if case let EntityType.array(array) = enumCase.associatedValues[0].type {
+            XCTAssertEqual(array.declType, .squareBrackets)
+            XCTAssertFalse(array.isOptional)
+            XCTAssertEqual(array.elementType, .simple("String"))
+        } else {
+            XCTFail("function.signature.input[0] type should be Array")
+        }
+
+        XCTAssertEqual(enumCase.associatedValues[1].attributes, [])
+        XCTAssertEqual(enumCase.associatedValues[1].modifiers, [])
+        XCTAssertNil(enumCase.associatedValues[1].name)
+        XCTAssertNil(enumCase.associatedValues[1].secondName)
+        XCTAssertFalse(enumCase.associatedValues[1].isLabelOmitted)
+        XCTAssertFalse(enumCase.associatedValues[1].isVariadic)
+        XCTAssertFalse(enumCase.associatedValues[1].isOptional)
+        XCTAssertTrue(enumCase.associatedValues[1].isInOut)
+        XCTAssertEqual(enumCase.associatedValues[1].rawType, "String")
+        XCTAssertNil(enumCase.associatedValues[1].defaultArgument)
+        XCTAssertEqual(enumCase.associatedValues[1].description, "inout String")
+        XCTAssertEqual(enumCase.associatedValues[1].type, .simple("String"))
     }
 }

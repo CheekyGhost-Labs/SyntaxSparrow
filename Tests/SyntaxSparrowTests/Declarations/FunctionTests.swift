@@ -297,6 +297,79 @@ final class FunctionTests: XCTestCase {
         XCTAssertEqual(instanceUnderTest.functions[0].signature.node, instanceUnderTest.functions[0].node.signature)
     }
 
+    func test_function_inoutWithinClosure_resolvesExpectedTypes() {
+        let source = #"""
+        func closure(_ handler: @escaping (inout Int, String) -> Void, name: inout String) {}
+        """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        XCTAssertEqual(instanceUnderTest.functions.count, 1)
+        let function = instanceUnderTest.functions[0]
+
+        XCTAssertEqual(function.keyword, "func")
+        XCTAssertEqual(function.identifier, "closure")
+        XCTAssertNil(function.signature.effectSpecifiers)
+        XCTAssertEqual(function.signature.input.count, 2)
+        // Closure Input with inout input
+        XCTAssertEqual(function.signature.input[0].attributes.map(\.name), ["escaping"])
+        XCTAssertEqual(function.signature.input[0].attributes.flatMap(\.arguments), [])
+        XCTAssertEqual(function.signature.input[0].modifiers, [])
+        XCTAssertEqual(function.signature.input[0].name, "_")
+        XCTAssertEqual(function.signature.input[0].secondName, "handler")
+        XCTAssertTrue(function.signature.input[0].isLabelOmitted)
+        XCTAssertFalse(function.signature.input[0].isVariadic)
+        XCTAssertFalse(function.signature.input[0].isOptional)
+        XCTAssertFalse(function.signature.input[0].isInOut)
+        XCTAssertNil(function.signature.input[0].defaultArgument)
+        XCTAssertEqual(function.signature.input[0].rawType, "@escaping (inout Int, String) -> Void")
+        XCTAssertEqual(function.signature.input[0].description, "_ handler: @escaping (inout Int, String) -> Void")
+        // Closure type assessment
+        if case let EntityType.closure(closure) = function.signature.input[0].type {
+            XCTAssertEqual(closure.output, .void("Void", false))
+            XCTAssertTrue(closure.isVoidOutput)
+            XCTAssertFalse(closure.isOptional)
+            XCTAssertTrue(closure.isEscaping)
+            XCTAssertFalse(closure.isAutoEscaping)
+            XCTAssertEqual(closure.description, "(inout Int, String) -> Void")
+            // Input
+            XCTAssertFalse(closure.isVoidInput)
+            if case let EntityType.tuple(tuple) = closure.input {
+                XCTAssertEqual(tuple.elements.count, 2)
+                // Inout Int
+                XCTAssertFalse(tuple.elements[0].isOptional)
+                XCTAssertTrue(tuple.elements[0].isInOut)
+                XCTAssertEqual(tuple.elements[0].type, .simple("Int"))
+                XCTAssertEqual(tuple.elements[0].description, "inout Int")
+                // Standard String
+                XCTAssertFalse(tuple.elements[1].isOptional)
+                XCTAssertFalse(tuple.elements[1].isInOut)
+                XCTAssertEqual(tuple.elements[1].type, .simple("String"))
+                XCTAssertEqual(tuple.elements[1].description, "String")
+            } else {
+                XCTFail("The closure input should be a tuple type")
+            }
+        } else {
+            XCTFail("function.signature.input[0] type should be closure")
+        }
+
+        // inout name String
+        XCTAssertEqual(function.signature.input[1].attributes.map(\.name), [])
+        XCTAssertEqual(function.signature.input[1].attributes.flatMap(\.arguments), [])
+        XCTAssertEqual(function.signature.input[1].modifiers, [])
+        XCTAssertEqual(function.signature.input[1].name, "name")
+        XCTAssertNil(function.signature.input[1].secondName)
+        XCTAssertFalse(function.signature.input[1].isLabelOmitted)
+        XCTAssertFalse(function.signature.input[1].isVariadic)
+        XCTAssertFalse(function.signature.input[1].isOptional)
+        XCTAssertTrue(function.signature.input[1].isInOut)
+        XCTAssertNil(function.signature.input[1].defaultArgument)
+        XCTAssertEqual(function.signature.input[1].type.description, "String")
+        XCTAssertEqual(function.signature.input[1].rawType, "inout String")
+        XCTAssertEqual(function.signature.input[1].description, "name: inout String")
+    }
+
     func test_function_parameters_willResolveExpectedTypes() throws {
         let source = #"""
         func noParameters() throws {}

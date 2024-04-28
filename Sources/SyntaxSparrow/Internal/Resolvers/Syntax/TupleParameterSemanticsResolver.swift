@@ -68,6 +68,13 @@ struct TupleParameterSemanticsResolver: ParameterNodeSemanticsResolving {
     }
 
     func resolveIsInOut() -> Bool {
-        node.inoutKeyword != nil
+        guard node.inoutKeyword == nil else {
+            return true
+        }
+        guard let attributedType = node.children(viewMode: .fixedUp).first?.as(AttributedTypeSyntax.self) else {
+            return false
+        }
+        let tokens = attributedType.children(viewMode: .fixedUp).compactMap { $0.as(TokenSyntax.self) }
+        return tokens.contains(where: { $0.tokenKind == TokenKind.keyword(.inout) })
     }
 }

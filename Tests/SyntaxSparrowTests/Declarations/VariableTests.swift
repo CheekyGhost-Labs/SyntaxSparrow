@@ -438,10 +438,20 @@ final class VariableTests: XCTestCase {
         XCTAssertTrue(variable.hasSetter)
         XCTAssertEqual(variable.description, "var handler: (String) -> Int? = { _ in }")
         if case let EntityType.closure(closure) = variable.type {
-            XCTAssertEqual(closure.input, .simple("String"))
             XCTAssertEqual(closure.output, .simple("Int?"))
             XCTAssertFalse(closure.isOptional)
             XCTAssertEqual(closure.description, "(String) -> Int?")
+            // Closure Input Tuple (Single Element)
+            if case let EntityType.tuple(tuple) = closure.input {
+                XCTAssertEqual(tuple.elements.count, 1)
+                XCTAssertEqual(tuple.elements[0].type, .simple("String"))
+                XCTAssertEqual(tuple.elements[0].rawType, "String")
+                XCTAssertFalse(tuple.elements[0].isInOut)
+                XCTAssertFalse(tuple.elements[0].isOptional)
+                XCTAssertNil(tuple.elements[0].name)
+                XCTAssertNil(tuple.elements[0].secondName)
+                XCTAssertFalse(tuple.elements[0].isLabelOmitted)
+            }
         } else {
             XCTFail("variable type should be closure")
         }
@@ -454,10 +464,20 @@ final class VariableTests: XCTestCase {
         XCTAssertTrue(variable.hasSetter)
         XCTAssertEqual(variable.description, "var handler: ((String) -> Int?)? = { _ in }")
         if case let EntityType.closure(closure) = variable.type {
-            XCTAssertEqual(closure.input, .simple("String"))
             XCTAssertEqual(closure.output, .simple("Int?"))
             XCTAssertTrue(closure.isOptional)
             XCTAssertEqual(closure.description, "((String) -> Int?)?")
+            // Closure Input Tuple (Single Element)
+            if case let EntityType.tuple(tuple) = closure.input {
+                XCTAssertEqual(tuple.elements.count, 1)
+                XCTAssertEqual(tuple.elements[0].type, .simple("String"))
+                XCTAssertEqual(tuple.elements[0].rawType, "String")
+                XCTAssertFalse(tuple.elements[0].isInOut)
+                XCTAssertFalse(tuple.elements[0].isOptional)
+                XCTAssertNil(tuple.elements[0].name)
+                XCTAssertNil(tuple.elements[0].secondName)
+                XCTAssertFalse(tuple.elements[0].isLabelOmitted)
+            }
         } else {
             XCTFail("variable type should be closure")
         }

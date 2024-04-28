@@ -18,7 +18,7 @@ extension EntityType {
         }
     }
 
-    static func parseType(_ typeSyntax: TypeSyntaxProtocol) -> EntityType {
+    static func parseType(_ typeSyntax: TypeSyntaxProtocol, forceTuple: Bool = false) -> EntityType {
         // Simple
         if let simpleType = typeSyntax.as(IdentifierTypeSyntax.self) {
             // Result
@@ -64,7 +64,7 @@ extension EntityType {
 
         // Tuple
         if let tupleTypeSyntax = typeSyntax.as(TupleTypeSyntax.self) {
-            if tupleTypeSyntax.elements.count == 1, let innerElement = tupleTypeSyntax.elements.first {
+            if tupleTypeSyntax.elements.count == 1, let innerElement = tupleTypeSyntax.elements.first, !forceTuple {
                 return parseType(innerElement.type)
             } else if tupleTypeSyntax.elements.isEmpty {
                 let isOptional = tupleTypeSyntax.resolveIsTypeOptional()
@@ -98,14 +98,14 @@ extension EntityType {
         return .empty
     }
 
-    static func parseElementList(_ syntax: TupleTypeElementListSyntax) -> EntityType {
+    static func parseElementList(_ syntax: TupleTypeElementListSyntax, forceTuple: Bool = false) -> EntityType {
         let tuple = Tuple(node: syntax)
         if getEmptyTuple(tuple) != nil {
             let isOptional = syntax.resolveIsSyntaxOptional()
             return voidType(withRawValue: "()", isOptional: isOptional)
         }
         // This is probably not needed?
-        if let resolvedSingleElement = getSingleTupleElement(tuple) {
+        if let resolvedSingleElement = getSingleTupleElement(tuple), !forceTuple {
             return resolvedSingleElement
         }
         return .tuple(tuple)

@@ -33,7 +33,8 @@ struct ClosureSemanticsResolver: SemanticsResolving {
 
     func resolveInput() -> EntityType {
         guard !node.parameters.isEmpty else { return .void("()", false) }
-        return EntityType.parseElementList(node.parameters)
+        let tupleSyntax = TupleTypeSyntax(elements: node.parameters)
+        return EntityType.parseElementList(node.parameters, forceTuple: true)
     }
 
     func resolveOutput() -> EntityType {

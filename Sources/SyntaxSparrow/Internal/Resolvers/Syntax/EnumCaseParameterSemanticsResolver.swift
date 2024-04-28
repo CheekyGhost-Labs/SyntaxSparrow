@@ -74,9 +74,8 @@ struct EnumCaseParameterSemanticsResolver: ParameterNodeSemanticsResolving {
     }
 
     func resolveIsInOut() -> Bool {
-        node.type.tokens(viewMode: .fixedUp).contains(where: {
-            $0.tokenKind == TokenKind.keyword(.inout)
-        })
+        let tokens = node.type.children(viewMode: .fixedUp).compactMap { $0.as(TokenSyntax.self) }
+        return tokens.contains(where: { $0.tokenKind == TokenKind.keyword(.inout) })
     }
 
     func resolveDescription() -> String {

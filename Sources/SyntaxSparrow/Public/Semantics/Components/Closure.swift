@@ -88,6 +88,26 @@ public struct Closure: DeclarationComponent {
     /// **Note:** `effectSpecifiers` will be `nil` if no specifiers are found on the node.
     public var effectSpecifiers: EffectSpecifiers? { resolver.resolveEffectSpecifiers() }
 
+    /// Returns `true` when the ``Closure/effectSpecifiers`` has the `throw` keyword.
+    ///
+    /// For example, the following would return `true`:
+    /// ```swift
+    /// func example() throws
+    /// ```
+    public var isThrowing: Bool {
+        return effectSpecifiers?.throwsSpecifier != nil
+    }
+
+    /// Returns `true` when the ``Closure/effectSpecifiers`` has the `throw` keyword.
+    ///
+    /// For example, the following would return `true`:
+    /// ```swift
+    /// func example() async
+    /// ```
+    public var isAsync: Bool {
+        return effectSpecifiers?.asyncSpecifier != nil
+    }
+
     // MARK: - Properties: Convenience
 
     private(set) var resolver: ClosureSemanticsResolver

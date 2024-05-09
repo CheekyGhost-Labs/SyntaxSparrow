@@ -71,7 +71,7 @@ public struct Initializer: Declaration, SyntaxChildCollecting {
     @available(
         *,
         deprecated,
-        message: "`throwsOrRethrowsKeyword` will be deprecated in 2.0 - Please use `effectSpecifiers.throwsSpecifier` instead"
+        message: "`throwsOrRethrowsKeyword` will be deprecated in 5.0 - Please use `effectSpecifiers.throwsSpecifier` instead"
     )
     public var throwsOrRethrowsKeyword: String? { effectSpecifiers?.throwsSpecifier }
 
@@ -89,6 +89,26 @@ public struct Initializer: Declaration, SyntaxChildCollecting {
     ///
     /// **Note:** `effectSpecifiers` will be `nil` if no specifiers are found on the node.
     public var effectSpecifiers: EffectSpecifiers? { resolver.resolveEffectSpecifiers() }
+
+    /// Returns `true` when the ``Initializer/effectSpecifiers`` has the `throw` keyword.
+    ///
+    /// For example, the following would return `true`:
+    /// ```swift
+    /// func example() throws
+    /// ```
+    public var isThrowing: Bool {
+        return effectSpecifiers?.throwsSpecifier != nil
+    }
+
+    /// Returns `true` when the ``Initializer/effectSpecifiers`` has the `throw` keyword.
+    ///
+    /// For example, the following would return `true`:
+    /// ```swift
+    /// func example() async
+    /// ```
+    public var isAsync: Bool {
+        return effectSpecifiers?.asyncSpecifier != nil
+    }
 
     /// Struct representing the body of the function.
     ///

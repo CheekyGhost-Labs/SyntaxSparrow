@@ -72,7 +72,7 @@ public struct Function: Declaration, SyntaxChildCollecting {
         @available(
             *,
             deprecated,
-            message: "`throwsOrRethrowsKeyword` will be deprecated in 2.0 - Please use `effectSpecifiers.throwsSpecifier` instead"
+            message: "`throwsOrRethrowsKeyword` will be deprecated in 5.0 - Please use `effectSpecifiers.throwsSpecifier` instead"
         )
         public var throwsOrRethrowsKeyword: String? {
             effectSpecifiers?.throwsSpecifier
@@ -83,7 +83,7 @@ public struct Function: Declaration, SyntaxChildCollecting {
         @available(
             *,
             deprecated,
-            message: "`asyncKeyword` will be deprecated in 2.0 - Please use `effectSpecifiers.asyncSpecifier` instead"
+            message: "`asyncKeyword` will be deprecated in 5.0 - Please use `effectSpecifiers.asyncSpecifier` instead"
         )
         public var asyncKeyword: String? {
             effectSpecifiers?.asyncSpecifier
@@ -204,6 +204,7 @@ public struct Function: Declaration, SyntaxChildCollecting {
     public var isAsync: Bool {
         return signature.effectSpecifiers?.asyncSpecifier != nil
     }
+
     // MARK: - Properties: Resolving
 
     private(set) var resolver: FunctionSemanticsResolver

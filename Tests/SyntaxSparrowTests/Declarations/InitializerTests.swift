@@ -192,6 +192,33 @@ final class InitializerTests: XCTestCase {
         XCTAssertEqual(initializerUnderTest.genericRequirements[0].rightTypeIdentifier, "Hashable")
     }
 
+    func test_effectSpecifiers_willReturnExpectedResults() throws {
+        let source = #"""
+        init() {}
+        init() throws {}
+        init() async {}
+        init() async throws {}
+        """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        XCTAssertEqual(instanceUnderTest.initializers.count, 4)
+
+        // None
+        XCTAssertFalse(instanceUnderTest.initializers[0].isThrowing)
+        XCTAssertFalse(instanceUnderTest.initializers[0].isAsync)
+        // Throwing only
+        XCTAssertTrue(instanceUnderTest.initializers[1].isThrowing)
+        XCTAssertFalse(instanceUnderTest.initializers[1].isAsync)
+        // Async only
+        XCTAssertFalse(instanceUnderTest.initializers[2].isThrowing)
+        XCTAssertTrue(instanceUnderTest.initializers[2].isAsync)
+        // Both
+        XCTAssertTrue(instanceUnderTest.initializers[3].isThrowing)
+        XCTAssertTrue(instanceUnderTest.initializers[3].isAsync)
+    }
+
     func test_hashable_equatable_willReturnExpectedResults() throws {
         let source = #"""
         public required init?(withAge age: Int) throws {}

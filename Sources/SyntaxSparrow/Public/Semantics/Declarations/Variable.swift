@@ -133,6 +133,7 @@ public struct Variable: Declaration {
     public var isStored: Bool { !isComputed }
 
     /// Returns `true` when there is a getter accessor that has the `throw` keyword.
+    ///
     /// **Note:** Assesses the ``Accessor/effectSpecifiers`` property of the getter accessor  within the``Variable/accessors`` array.
     ///
     /// For example, the following would return `true`:
@@ -148,6 +149,7 @@ public struct Variable: Declaration {
     }
 
     /// Returns `true` when there is a getter accessor that has the `async` keyword.
+    /// 
     /// **Note:** Assesses the ``Accessor/effectSpecifiers`` property of the getter accessor within the``Variable/accessors`` array.
     ///
     /// For example, the following would return `true`:

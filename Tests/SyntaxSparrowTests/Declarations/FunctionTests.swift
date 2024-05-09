@@ -57,6 +57,33 @@ final class FunctionTests: XCTestCase {
         )
     }
 
+    func test_function_withEffectSpecifiers_willReturnExpectedValueForConvenienceMethods() throws {
+        let source = #"""
+        func executeOrder66() {}
+        func executeOrder66() throws {}
+        func executeOrder66() async {}
+        func executeOrder66() async throws {}
+        """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        XCTAssertEqual(instanceUnderTest.functions.count, 4)
+
+        // None
+        XCTAssertFalse(instanceUnderTest.functions[0].isThrowing)
+        XCTAssertFalse(instanceUnderTest.functions[0].isAsync)
+        // Throwing only
+        XCTAssertTrue(instanceUnderTest.functions[1].isThrowing)
+        XCTAssertFalse(instanceUnderTest.functions[1].isAsync)
+        // Async only
+        XCTAssertFalse(instanceUnderTest.functions[2].isThrowing)
+        XCTAssertTrue(instanceUnderTest.functions[2].isAsync)
+        // Both
+        XCTAssertTrue(instanceUnderTest.functions[3].isThrowing)
+        XCTAssertTrue(instanceUnderTest.functions[3].isAsync)
+    }
+
     func test_function_withChildDeclarations_willResolveExpectedChildDeclarations() throws {
         let source = #"""
         func executeOrder66() {

@@ -185,6 +185,25 @@ public struct Function: Declaration, SyntaxChildCollecting {
     /// `Operator.Kind` assigned when the `isOperator` is `true`.
     public var operatorKind: Operator.Kind? { resolver.resolveOperatorKind() }
 
+    /// Returns `true` when the ``Function/Signature/effectSpecifiers`` has the `throw` keyword.
+    ///
+    /// For example, the following would return `true`:
+    /// ```swift
+    /// func example() throws
+    /// ```
+    public var isThrowing: Bool {
+        return signature.effectSpecifiers?.throwsSpecifier != nil
+    }
+
+    /// Returns `true` when the ``Function/Signature/effectSpecifiers`` has the `throw` keyword.
+    ///
+    /// For example, the following would return `true`:
+    /// ```swift
+    /// func example() async
+    /// ```
+    public var isAsync: Bool {
+        return signature.effectSpecifiers?.asyncSpecifier != nil
+    }
     // MARK: - Properties: Resolving
 
     private(set) var resolver: FunctionSemanticsResolver

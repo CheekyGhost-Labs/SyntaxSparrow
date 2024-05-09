@@ -87,6 +87,26 @@ public struct Accessor: DeclarationComponent, SyntaxChildCollecting {
     /// ```
     public let body: CodeBlock?
 
+    /// Returns `true` when the ``Accessor/effectSpecifiers`` has the `throw` keyword.
+    ///
+    /// For example, the following would return `true`:
+    /// ```swift
+    /// func example() throws
+    /// ```
+    public var isThrowing: Bool {
+        return effectSpecifiers?.throwsSpecifier != nil
+    }
+
+    /// Returns `true` when the ``Accessor/effectSpecifiers`` has the `throw` keyword.
+    ///
+    /// For example, the following would return `true`:
+    /// ```swift
+    /// func example() async
+    /// ```
+    public var isAsync: Bool {
+        return effectSpecifiers?.asyncSpecifier != nil
+    }
+
     // MARK: - Properties: SyntaxChildCollecting
 
     public var childCollection: DeclarationCollection {

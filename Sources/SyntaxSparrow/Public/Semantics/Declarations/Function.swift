@@ -51,6 +51,21 @@ public struct Function: Declaration, SyntaxChildCollecting {
         ///
         /// **Note:** Value will be `false` when the `output` is `nil`
         public let outputIsOptional: Bool
+        
+        /// Will return the raw function return type.
+        ///
+        /// This can be used when a more accurate string description is needed for the ``Function/Signature/output`` property loses some info.
+        /// For example:
+        /// ```swift
+        /// func example() -> (any SomeProtocol)?
+        /// ```
+        /// in the above:
+        /// - `output` will be `.simple("any SomeProtocol")`
+        /// - `outputIsOptional` will be `true`
+        /// - The `rawOutputType` will be `"(any SomeProtocol)?"`
+        public var rawOutputType: String? {
+            node.returnClause?.type.description
+        }
 
         /// The `throws` or `rethrows` keyword, if any.
         /// Indicates whether the function can throw an error.

@@ -1250,4 +1250,27 @@ final class FunctionTests: XCTestCase {
             XCTAssertNotEqual($0.0.hashValue, $0.1.hashValue)
         }
     }
+
+    func test_function_rawOutputType_willResolveExpectedValues() throws {
+        let source = #"""
+        func example() -> String
+        func example() -> String?
+        func example() -> (any SomeProtocol)
+        func example() -> (any SomeProtocol)?
+        func example() -> (String) -> Void
+        func example() -> (name: String, age: Int)?
+        """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        XCTAssertEqual(instanceUnderTest.functions.count, 6)
+
+        XCTAssertEqual(instanceUnderTest.functions[0].signature.rawOutputType, "String")
+        XCTAssertEqual(instanceUnderTest.functions[1].signature.rawOutputType, "String?")
+        XCTAssertEqual(instanceUnderTest.functions[2].signature.rawOutputType, "(any SomeProtocol)")
+        XCTAssertEqual(instanceUnderTest.functions[3].signature.rawOutputType, "(any SomeProtocol)?")
+        XCTAssertEqual(instanceUnderTest.functions[4].signature.rawOutputType, "(String) -> Void")
+        XCTAssertEqual(instanceUnderTest.functions[5].signature.rawOutputType, "(name: String, age: Int)?")
+    }
 }

@@ -352,4 +352,39 @@ final class SubscriptTests: XCTestCase {
             XCTAssertNotEqual($0.0.hashValue, $0.1.hashValue)
         }
     }
+
+    func test_subscript_withEffectSpecifiers_willReturnExpectedValueForConvenienceMethods() throws {
+        let source = #"""
+        subscript(index: Int) -> Int {
+            get { 0 }
+        }
+        subscript(index: Int) -> Int {
+            get throws { 0 }
+        }
+        subscript(index: Int) -> Int {
+            get async { 0 }
+        }
+        subscript(index: Int) -> Int {
+            get async throws { 0 }
+        }
+        """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        XCTAssertEqual(instanceUnderTest.subscripts.count, 4)
+
+        // None
+        XCTAssertFalse(instanceUnderTest.subscripts[0].isThrowing)
+        XCTAssertFalse(instanceUnderTest.subscripts[0].isAsync)
+        // Throwing only
+        XCTAssertTrue(instanceUnderTest.subscripts[1].isThrowing)
+        XCTAssertFalse(instanceUnderTest.subscripts[1].isAsync)
+        // Async only
+        XCTAssertFalse(instanceUnderTest.subscripts[2].isThrowing)
+        XCTAssertTrue(instanceUnderTest.subscripts[2].isAsync)
+        // Both
+        XCTAssertTrue(instanceUnderTest.subscripts[3].isThrowing)
+        XCTAssertTrue(instanceUnderTest.subscripts[3].isAsync)
+    }
 }

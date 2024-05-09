@@ -189,7 +189,49 @@ syntaxTree.functions[0].typealiases[0].name // SampleAlias
 syntaxTree.functions[0].typealiases[0].initializedType.type // .simple("String")
 ```
 
+### Modifier Conveniences
+
+Where applicable, types will conform to the `ModifierAssessing` protocol, which lets you assess what modifiers are present based on a `SwiftSyntax.Keyword` type. This is also available on any `Collection` where the element type is `Modifier`
+
+```swift
+// Assess if the instnace has `private(set)` and is `public`
+conformingInstance.containsModifierWithKeyword(.private, withDetail: "set")
+conformingInstance.containsModifierWithKeyword(.public)
+// or on a collection of modifiers
+variable.modifiers.containsKeyword(.private, withDetail: "set")
+```
+
+some common scenarios are available as direct getters:
+
+```swift
+conformingInstance.isPrivate
+conformingInstance.isPublic
+conformingInstance.isOpen
+// etc
+variable.isPrivateSetter
+variable.isFilePrivateSetter
+initializer.isConvenience
+initializer.isRequired
+// etc
+```
+
+Conforming types are:
+
+- `Actor`
+- `Class`
+- `Enumeration`
+- `Extension`
+- `Function`
+- `ProtocolDecl`
+- `Structure`
+- `Subscript`
+- `Typealias`
+- `Variable`
+- `Initializer`
+- Any collection where the type is `Modifier`
+
 ### Source Locations and Bounds:
+
 `Declaration` types can can also be sent to the `SyntaxTree` to extract source location and content:
 
 ```swift
@@ -294,7 +336,7 @@ Currently, SyntaxSparrow supports Swift Package Manager (SPM).
 To add SyntaxSparrow to your project, add the following line to your dependencies in your Package.swift file:
 
 ```swift
-.package(url: "https://github.com/CheekyGhost-Labs/SyntaxSparrow", from: "4.0.0")
+.package(url: "https://github.com/CheekyGhost-Labs/SyntaxSparrow", from: "4.1.0")
 ```
 
 Then, add SyntaxSparrow as a dependency for your target:

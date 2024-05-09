@@ -29,8 +29,8 @@ public struct Closure: DeclarationComponent {
     // MARK: - Properties
 
     /// Will return the closure input element from the input `typeAnnotation` for the closure.
-    /// **Note:** This will **always** resolve to ``EntityType/tuple`` with one or more parameters
-    /// or ``EntityType/tuple`` if there are no inputs. i.e
+    /// **Note:** This will **always** resolve to ``EntityType/tuple(_:)`` with one or more parameters
+    /// or ``EntityType/tuple(_:)`` if there are no inputs. i.e
     /// ```swift
     /// - ((name: inout String, age: Int) -> Void
     /// - (inout String, Int) -> Void
@@ -38,10 +38,10 @@ public struct Closure: DeclarationComponent {
     /// - () -> Void
     /// ```
     /// will result in:
-    /// - ``EntityType/tuple`` with a single tuple element. The single tuple element will have the `name: inout String` and `age: Int` elements
-    /// - ``EntityType/tuple`` with two elements. The inout `String` and the `Int`
-    /// - ``EntityType/tuple`` with a single element. The `String`
-    /// - ``EntityType/void``.
+    /// - ``EntityType/tuple(_:)`` with a single tuple element. The single tuple element will have the `name: inout String` and `age: Int` elements
+    /// - ``EntityType/tuple(_:)`` with two elements. The inout `String` and the `Int`
+    /// - ``EntityType/tuple(_:)`` with a single element. The `String`
+    /// - ``EntityType/void(_:_:)``.
     public var input: EntityType { resolver.resolveInput() }
 
     /// Will return the input string for the closure. Returns an empty string if no result is found.

@@ -57,6 +57,33 @@ final class FunctionTests: XCTestCase {
         )
     }
 
+    func test_function_withEffectSpecifiers_willReturnExpectedValueForConvenienceMethods() throws {
+        let source = #"""
+        func executeOrder66() {}
+        func executeOrder66() throws {}
+        func executeOrder66() async {}
+        func executeOrder66() async throws {}
+        """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        XCTAssertEqual(instanceUnderTest.functions.count, 4)
+
+        // None
+        XCTAssertFalse(instanceUnderTest.functions[0].isThrowing)
+        XCTAssertFalse(instanceUnderTest.functions[0].isAsync)
+        // Throwing only
+        XCTAssertTrue(instanceUnderTest.functions[1].isThrowing)
+        XCTAssertFalse(instanceUnderTest.functions[1].isAsync)
+        // Async only
+        XCTAssertFalse(instanceUnderTest.functions[2].isThrowing)
+        XCTAssertTrue(instanceUnderTest.functions[2].isAsync)
+        // Both
+        XCTAssertTrue(instanceUnderTest.functions[3].isThrowing)
+        XCTAssertTrue(instanceUnderTest.functions[3].isAsync)
+    }
+
     func test_function_withChildDeclarations_willResolveExpectedChildDeclarations() throws {
         let source = #"""
         func executeOrder66() {
@@ -295,32 +322,6 @@ final class FunctionTests: XCTestCase {
         XCTAssertFalse(instanceUnderTest.isStale)
         XCTAssertEqual(instanceUnderTest.functions.count, 1)
         XCTAssertEqual(instanceUnderTest.functions[0].signature.node, instanceUnderTest.functions[0].node.signature)
-    }
-
-    func test_function_inoutWithinClosuress_resolvesExpectedTypes() {
-        let source = #"""
-        func closure(_ handler: @escaping () -> Void) {}
-        """#
-        instanceUnderTest.updateToSource(source)
-        XCTAssertTrue(instanceUnderTest.isStale)
-        instanceUnderTest.collectChildren()
-        XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.functions.count, 1)
-        let function = instanceUnderTest.functions[0]
-        let input = function.signature.input[0]
-        if case let EntityType.closure(closure) = input.type {
-            switch closure.input {
-            case .array(let decl):
-                _ = decl.isOptional
-            case .tuple(let tuple):
-                print(tuple.elements[0].isInOut)
-                print("DING")
-            case .void:
-                print("DINGDING")
-            default:
-                break
-            }
-        }
     }
 
     func test_function_inoutWithinClosure_singleClosureInput_resolvesExpectedTypes() {
@@ -1275,5 +1276,28 @@ final class FunctionTests: XCTestCase {
             XCTAssertNotEqual($0.0, $0.1)
             XCTAssertNotEqual($0.0.hashValue, $0.1.hashValue)
         }
+    }
+
+    func test_function_rawOutputType_willResolveExpectedValues() throws {
+        let source = #"""
+        func example() -> String
+        func example() -> String?
+        func example() -> (any SomeProtocol)
+        func example() -> (any SomeProtocol)?
+        func example() -> (String) -> Void
+        func example() -> (name: String, age: Int)?
+        """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        XCTAssertEqual(instanceUnderTest.functions.count, 6)
+
+        XCTAssertEqual(instanceUnderTest.functions[0].signature.rawOutputType, "String")
+        XCTAssertEqual(instanceUnderTest.functions[1].signature.rawOutputType, "String?")
+        XCTAssertEqual(instanceUnderTest.functions[2].signature.rawOutputType, "(any SomeProtocol)")
+        XCTAssertEqual(instanceUnderTest.functions[3].signature.rawOutputType, "(any SomeProtocol)?")
+        XCTAssertEqual(instanceUnderTest.functions[4].signature.rawOutputType, "(String) -> Void")
+        XCTAssertEqual(instanceUnderTest.functions[5].signature.rawOutputType, "(name: String, age: Int)?")
     }
 }

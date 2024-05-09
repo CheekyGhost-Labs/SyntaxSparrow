@@ -19,14 +19,7 @@ public extension Collection where Element == Parameter {
     /// - Parameter includeParenthesis: Bool whether to wrap the result in parenthesis. Defaults to `true`.
     /// - Returns: `String`
     func signatureInputString(includeParenthesis: Bool = true) -> String {
-        let components: [String] = map { param in
-            var base = param.description
-            base = base.replacingOccurrences(of: ",", with: "")
-            base = base.replacingOccurrences(of: " :", with: ":")
-            base = base.trimmingCharacters(in: .whitespacesAndNewlines)
-            return base
-        }
-        let joined = components.joined(separator: ", ")
+        let joined = map(\.description).joined(separator: ", ")
         if includeParenthesis {
             return "(\(joined))"
         }

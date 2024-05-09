@@ -94,6 +94,73 @@ public struct Variable: Declaration {
 
     /// Bool whether the `accessors` contains the `set` kind, or the `keyword` is `"var"` and the variable is not within a protocol declaration.
     public var hasSetter: Bool { resolver.resolveHasSetter() }
+    
+    /// Returns true when the variable is a computed property.
+    ///
+    /// For example, the following would return `true`:
+    /// ```swift
+    /// var name: String {
+    ///     "testing"
+    /// }
+    /// var name: String {
+    ///     let count = 5
+    ///     return "testing: \(count)"
+    /// }
+    /// ```
+    public var isComputed: Bool { resolver.resolveIsComputed() }
+    
+    /// Returns true when the variable is not a computed property.
+    ///
+    /// For example, the following would return `true`:
+    /// ```swift
+    /// var name: String {
+    ///     get { "name" }
+    ///     set {}
+    /// }
+    /// var name: String {
+    ///     willSet { }
+    /// }
+    /// var name: String = "name"
+    /// let name: String = "name"
+    /// private(set) var name: String = "name"
+    /// var name: String {
+    ///     get {
+    ///         let count = 5
+    ///         return "testing: \(count)"
+    ///     }
+    /// }
+    /// ```
+    public var isStored: Bool { !isComputed }
+
+    /// Returns `true` when there is a getter accessor that has the `throw` keyword.
+    /// **Note:** Assesses the ``Accessor/effectSpecifiers`` property of the getter accessor  within the``Variable/accessors`` array.
+    ///
+    /// For example, the following would return `true`:
+    /// ```swift
+    /// var name: String {
+    ///     get throws {
+    ///         "name"
+    ///     }
+    /// }
+    /// ```
+    public var isThrowing: Bool {
+        return accessors.contains(where: { $0.kind == .get && $0.effectSpecifiers?.throwsSpecifier != nil })
+    }
+
+    /// Returns `true` when there is a getter accessor that has the `async` keyword.
+    /// **Note:** Assesses the ``Accessor/effectSpecifiers`` property of the getter accessor within the``Variable/accessors`` array.
+    ///
+    /// For example, the following would return `true`:
+    /// ```swift
+    /// var name: String {
+    ///     get async {
+    ///         "name"
+    ///     }
+    /// }
+    /// ```
+    public var isAsync: Bool {
+        return accessors.contains(where: { $0.kind == .get && $0.effectSpecifiers?.asyncSpecifier != nil })
+    }
 
     // MARK: - Properties: DeclarationCollecting
 

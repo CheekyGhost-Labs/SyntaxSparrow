@@ -51,6 +51,21 @@ public struct Function: Declaration, SyntaxChildCollecting {
         ///
         /// **Note:** Value will be `false` when the `output` is `nil`
         public let outputIsOptional: Bool
+        
+        /// Will return the raw function return type.
+        ///
+        /// This can be used when a more accurate string description is needed for the ``Function/Signature/output`` property loses some info.
+        /// For example:
+        /// ```swift
+        /// func example() -> (any SomeProtocol)?
+        /// ```
+        /// in the above:
+        /// - `output` will be `.simple("any SomeProtocol")`
+        /// - `outputIsOptional` will be `true`
+        /// - The `rawOutputType` will be `"(any SomeProtocol)?"`
+        public var rawOutputType: String? {
+            node.returnClause?.type.description
+        }
 
         /// The `throws` or `rethrows` keyword, if any.
         /// Indicates whether the function can throw an error.
@@ -170,6 +185,25 @@ public struct Function: Declaration, SyntaxChildCollecting {
     /// `Operator.Kind` assigned when the `isOperator` is `true`.
     public var operatorKind: Operator.Kind? { resolver.resolveOperatorKind() }
 
+    /// Returns `true` when the ``Function/Signature/effectSpecifiers`` has the `throw` keyword.
+    ///
+    /// For example, the following would return `true`:
+    /// ```swift
+    /// func example() throws
+    /// ```
+    public var isThrowing: Bool {
+        return signature.effectSpecifiers?.throwsSpecifier != nil
+    }
+
+    /// Returns `true` when the ``Function/Signature/effectSpecifiers`` has the `throw` keyword.
+    ///
+    /// For example, the following would return `true`:
+    /// ```swift
+    /// func example() async
+    /// ```
+    public var isAsync: Bool {
+        return signature.effectSpecifiers?.asyncSpecifier != nil
+    }
     // MARK: - Properties: Resolving
 
     private(set) var resolver: FunctionSemanticsResolver

@@ -97,6 +97,21 @@ struct VariableSemanticsResolver: SemanticsResolving {
         return typeNode.type.resolveIsSyntaxOptional()
     }
 
+    func resolveIsComputed() -> Bool {
+        // If there is a value assigned - return false
+        guard node.initializer == nil else { return false}
+        // If there is a setter accessor - return false
+        let hasSetter = resolveHasSetter()
+        guard !hasSetter else { return false }
+        // If getter accessor exists - return true
+        let accessors = resolveAccessors()
+        if accessors.contains(where: { $0.kind == .get }) {
+            return true
+        }
+        // Otherwise check if there is a code block
+        return node.accessorBlock != nil
+    }
+
     func resolveHasSetter() -> Bool {
         // Resolver accessors for assessment
         let accessors = resolveAccessors()

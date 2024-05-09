@@ -84,6 +84,34 @@ public struct Subscript: Declaration {
     /// Will return `true` when the `.set` accessor kind is present
     public var hasSetter: Bool { resolver.resolveHasSetter() }
 
+    /// Returns `true` when there is a getter accessor that has the `throw` keyword.
+    ///
+    /// **Note:** Assesses the ``Accessor/effectSpecifiers`` property of the getter accessor  within the``Subscript/accessors`` array.
+    ///
+    /// For example, the following would return `true`:
+    /// ```swift
+    /// subscript(index: Int) -> Int {
+    ///     get throws { 0 }
+    /// }
+    /// ```
+    public var isThrowing: Bool {
+        return accessors.contains(where: { $0.kind == .get && $0.effectSpecifiers?.throwsSpecifier != nil })
+    }
+
+    /// Returns `true` when there is a getter accessor that has the `async` keyword.
+    ///
+    /// **Note:** Assesses the ``Accessor/effectSpecifiers`` property of the getter accessor within the``Subscript/accessors`` array.
+    ///
+    /// For example, the following would return `true`:
+    /// ```swift
+    /// subscript(index: Int) -> Int {
+    ///     get async { 0 }
+    /// }
+    /// ```
+    public var isAsync: Bool {
+        return accessors.contains(where: { $0.kind == .get && $0.effectSpecifiers?.asyncSpecifier != nil })
+    }
+
     // MARK: - Properties: DeclarationCollecting
 
     private(set) var resolver: SubscriptSemanticsResolver

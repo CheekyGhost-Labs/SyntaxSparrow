@@ -259,6 +259,47 @@ final class VariableTests: XCTestCase {
         XCTAssertFalse(variables[4].hasSetter)
     }
 
+    func test_variable_isComputedHelper_willResolveExpectedValues() {
+        let source = #"""
+        var name: String {
+            get { "name" }
+            set {}
+        }
+        var name: String {
+            willSet { }
+        }
+        var name: String = "name"
+        let name: String = "name"
+        private(set) var name: String = "name"
+        var name: String {
+            "testing"
+        }
+        var name: String {
+            let count = 5
+            return "testing: \(count)"
+        }
+        var name: String {
+            get {
+                let count = 5
+                return "testing: \(count)"
+            }
+        }
+        """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        XCTAssertEqual(instanceUnderTest.variables.count, 8)
+        XCTAssertFalse(instanceUnderTest.variables[0].isComputed)
+        XCTAssertFalse(instanceUnderTest.variables[1].isComputed)
+        XCTAssertFalse(instanceUnderTest.variables[2].isComputed)
+        XCTAssertFalse(instanceUnderTest.variables[3].isComputed)
+        XCTAssertFalse(instanceUnderTest.variables[4].isComputed)
+        XCTAssertTrue(instanceUnderTest.variables[5].isComputed)
+        XCTAssertTrue(instanceUnderTest.variables[6].isComputed)
+        XCTAssertFalse(instanceUnderTest.variables[7].isComputed)
+    }
+
     func test_variable_hasSetterHelper_willResolveExpectedValues() {
         let source = #"""
         var name: String {
@@ -547,7 +588,6 @@ final class VariableTests: XCTestCase {
         var name: String {
             get throws {
                 "name"
-                print("boop")
             }
         }
         """#
@@ -564,6 +604,8 @@ final class VariableTests: XCTestCase {
         XCTAssertEqual(variable.accessors[0].kind, .get)
         XCTAssertEqual(variable.accessors[0].effectSpecifiers?.throwsSpecifier, "throws")
         XCTAssertNil(variable.accessors[0].effectSpecifiers?.asyncSpecifier)
+        XCTAssertTrue(variable.isThrowing)
+        XCTAssertFalse(variable.isAsync)
     }
 
     func test_variable_accessors_effects_async_willResolveExpectedValues() throws {
@@ -588,6 +630,8 @@ final class VariableTests: XCTestCase {
         XCTAssertEqual(variable.accessors[0].kind, .get)
         XCTAssertNil(variable.accessors[0].effectSpecifiers?.throwsSpecifier)
         XCTAssertEqual(variable.accessors[0].effectSpecifiers?.asyncSpecifier, "async")
+        XCTAssertFalse(variable.isThrowing)
+        XCTAssertTrue(variable.isAsync)
     }
 
     func test_variable_accessors_effects_multiple_willResolveExpectedValues() throws {
@@ -612,6 +656,8 @@ final class VariableTests: XCTestCase {
         XCTAssertEqual(variable.accessors[0].kind, .get)
         XCTAssertEqual(variable.accessors[0].effectSpecifiers?.throwsSpecifier, "throws")
         XCTAssertEqual(variable.accessors[0].effectSpecifiers?.asyncSpecifier, "async")
+        XCTAssertTrue(variable.isThrowing)
+        XCTAssertTrue(variable.isAsync)
     }
 
     func test_hashable_equatable_willReturnExpectedResults() throws {

@@ -297,32 +297,6 @@ final class FunctionTests: XCTestCase {
         XCTAssertEqual(instanceUnderTest.functions[0].signature.node, instanceUnderTest.functions[0].node.signature)
     }
 
-    func test_function_inoutWithinClosuress_resolvesExpectedTypes() {
-        let source = #"""
-        func closure(_ handler: @escaping () -> Void) {}
-        """#
-        instanceUnderTest.updateToSource(source)
-        XCTAssertTrue(instanceUnderTest.isStale)
-        instanceUnderTest.collectChildren()
-        XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.functions.count, 1)
-        let function = instanceUnderTest.functions[0]
-        let input = function.signature.input[0]
-        if case let EntityType.closure(closure) = input.type {
-            switch closure.input {
-            case .array(let decl):
-                _ = decl.isOptional
-            case .tuple(let tuple):
-                print(tuple.elements[0].isInOut)
-                print("DING")
-            case .void:
-                print("DINGDING")
-            default:
-                break
-            }
-        }
-    }
-
     func test_function_inoutWithinClosure_singleClosureInput_resolvesExpectedTypes() {
         let source = #"""
         func closure(_ handler: @escaping (inout Int) -> Void, name: inout String) {}

@@ -2,7 +2,7 @@
 //  File.swift
 //  
 //
-//  Created by Michael O'Brien on 25/6/2023.
+//  Copyright (c) CheekyGhost Labs 2024. All Rights Reserved.
 //
 
 import Foundation

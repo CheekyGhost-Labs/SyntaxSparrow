@@ -20,6 +20,7 @@ import SwiftSyntax
 ///
 /// The `Accessor` struct also includes functionality to create an accessor instance from an `AccessorDeclSyntax` node.
 public struct Accessor: DeclarationComponent, SyntaxChildCollecting {
+
     // MARK: - Supplementary
 
     /// The kind of accessor (`get` or `set`).

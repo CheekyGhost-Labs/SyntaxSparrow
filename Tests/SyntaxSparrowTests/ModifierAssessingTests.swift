@@ -2,7 +2,7 @@
 //  ModifierAssessingTests.swift
 //  
 //
-//  Created by Michael O'Brien on 10/5/2024.
+//  Copyright (c) CheekyGhost Labs 2024. All Rights Reserved.
 //
 
 import XCTest

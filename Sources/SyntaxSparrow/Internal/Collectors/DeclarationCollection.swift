@@ -56,6 +56,9 @@ public final class DeclarationCollection {
     /// The collected internal(set) public variable declarations.
     public internal(set) var variables: [Variable] = []
 
+    /// The collected switch expression declarations.
+    public internal(set) var switches: [SwitchExpression] = []
+
     func reset() {
         actors = []
         classes = []
@@ -73,6 +76,7 @@ public final class DeclarationCollection {
         subscripts = []
         typealiases = []
         variables = []
+        switches = []
     }
 
     func collect(from collection: DeclarationCollection) {
@@ -92,5 +96,6 @@ public final class DeclarationCollection {
         subscripts = collection.subscripts
         typealiases = collection.typealiases
         variables = collection.variables
+        switches = collection.switches
     }
 }

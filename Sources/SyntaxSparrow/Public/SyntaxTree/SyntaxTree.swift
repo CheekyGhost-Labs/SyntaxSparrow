@@ -167,6 +167,7 @@ public class SyntaxTree: SyntaxChildCollecting, SyntaxExplorerContextProviding {
     public var subscripts: [Subscript] { childCollection.subscripts }
     public var typealiases: [Typealias] { childCollection.typealiases }
     public var variables: [Variable] { childCollection.variables }
+    public var switches: [SwitchExpression] { childCollection.switches }
     public var conditionalCompilationBlocks: [ConditionalCompilationBlock] { childCollection.conditionalCompilationBlocks }
 
     public func collectChildren(viewMode _: SwiftSyntax.SyntaxTreeViewMode) {

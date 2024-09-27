@@ -2,7 +2,7 @@
 //  SyntaxChildCollectingConvenienceTests.swift
 //
 //
-//  Created by Michael O'Brien on 9/7/2023.
+//  Copyright (c) CheekyGhost Labs 2024. All Rights Reserved.
 //
 
 import SwiftSyntax

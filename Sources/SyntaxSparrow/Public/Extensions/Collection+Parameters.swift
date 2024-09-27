@@ -2,7 +2,7 @@
 //  Collection+Parameters.swift
 //  
 //
-//  Created by Michael O'Brien on 9/3/2024.
+//  Copyright (c) CheekyGhost Labs 2024. All Rights Reserved.
 //
 
 import Foundation

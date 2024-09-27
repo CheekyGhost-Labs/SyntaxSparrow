@@ -2,7 +2,7 @@
 //  CodeBlock+Statement.swift
 //
 //
-//  Created by Michael O'Brien on 14/6/2023.
+//  Copyright (c) CheekyGhost Labs 2023. All Rights Reserved.
 //
 
 import Foundation
@@ -16,6 +16,7 @@ public extension CodeBlock {
             case declaration(DeclSyntax) // decl
             case statement(StmtSyntax) // stmt
             case expression(ExprSyntax) // expr
+            case returnStatement(ReturnStmtSyntax) // return
 
             public static func == (lhs: Kind, rhs: Kind) -> Bool {
                 switch (lhs, rhs) {
@@ -24,6 +25,8 @@ public extension CodeBlock {
                 case let (.statement(lhsNode), .statement(rhsNode)):
                     return lhsNode.id == rhsNode.id
                 case let (.expression(lhsNode), .expression(rhsNode)):
+                    return lhsNode.id == rhsNode.id
+                case let (.returnStatement(lhsNode), .returnStatement(rhsNode)):
                     return lhsNode.id == rhsNode.id
                 default:
                     return false
@@ -37,7 +40,11 @@ public extension CodeBlock {
                 case let .decl(declSyntax):
                     self = .declaration(declSyntax)
                 case let .stmt(stmtSyntax):
-                    self = .statement(stmtSyntax)
+                    if let returnStmt = stmtSyntax.as(ReturnStmtSyntax.self) {
+                        self = .returnStatement(returnStmt)
+                    } else {
+                        self = .statement(stmtSyntax)
+                    }
                 case let .expr(exprSyntax):
                     self = .expression(exprSyntax)
                 }
@@ -58,7 +65,11 @@ public extension CodeBlock {
             case let .decl(declSyntax):
                 kind = .declaration(declSyntax)
             case let .stmt(stmtSyntax):
-                kind = .statement(stmtSyntax)
+                if let returnStmt = stmtSyntax.as(ReturnStmtSyntax.self) {
+                    kind = .returnStatement(returnStmt)
+                } else {
+                    kind = .statement(stmtSyntax)
+                }
             case let .expr(exprSyntax):
                 kind = .expression(exprSyntax)
             }

@@ -203,6 +203,13 @@ class RootDeclarationCollector: SyntaxVisitor {
         if let entryNode = entryNode, node.id == entryNode.id { return .visitChildren }
         let declaration = Variable(node: node)
         declarationCollection.variables.append(declaration)
-        return .visitChildren
+        return .skipChildren
+    }
+
+    override func visit(_ node: SwitchExprSyntax) -> SyntaxVisitorContinueKind {
+        if let entryNode = entryNode, node.id == entryNode.id { return .visitChildren }
+        let declaration = SwitchExpression(node: node)
+        declarationCollection.switches.append(declaration)
+        return .skipChildren
     }
 }

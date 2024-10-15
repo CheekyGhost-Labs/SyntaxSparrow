@@ -40,21 +40,21 @@ public struct EffectSpecifiers: Hashable, Equatable, CustomStringConvertible {
     /// Creates a new ``SyntaxSparrow/EffectSpecifiers`` instance from an `AccessorEffectSpecifiersSyntax` node.
     public init(node: AccessorEffectSpecifiersSyntax) {
         self.node = node
-        throwsSpecifier = node.throwsSpecifier?.text.trimmed
+        throwsSpecifier = node.throwsClause?.throwsSpecifier.text.trimmed
         asyncSpecifier = node.asyncSpecifier?.text.trimmed
     }
 
     /// Creates a new ``SyntaxSparrow/EffectSpecifiers`` instance from an `TypeEffectSpecifiersSyntax` node.
     public init(node: TypeEffectSpecifiersSyntax) {
         self.node = node
-        throwsSpecifier = node.throwsSpecifier?.text.trimmed
+        throwsSpecifier = node.throwsClause?.throwsSpecifier.text.trimmed
         asyncSpecifier = node.asyncSpecifier?.text.trimmed
     }
 
     /// Creates a new ``SyntaxSparrow/EffectSpecifiers`` instance from an `FunctionEffectSpecifiersSyntax` node.
     public init(node: FunctionEffectSpecifiersSyntax) {
         self.node = node
-        throwsSpecifier = node.throwsSpecifier?.text.trimmed
+        throwsSpecifier = node.throwsClause?.throwsSpecifier.text.trimmed
         asyncSpecifier = node.asyncSpecifier?.text.trimmed
     }
 

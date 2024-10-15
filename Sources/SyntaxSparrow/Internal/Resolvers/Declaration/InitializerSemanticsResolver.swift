@@ -56,7 +56,7 @@ struct InitializerSemanticsResolver: SemanticsResolving {
     }
 
     func resolveThrowsOrRethrowsKeyword() -> String? {
-        node.signature.effectSpecifiers?.throwsSpecifier?.text.trimmed
+        node.signature.effectSpecifiers?.throwsClause?.throwsSpecifier.text.trimmed
     }
 
     func resolveEffectSpecifiers() -> EffectSpecifiers? {

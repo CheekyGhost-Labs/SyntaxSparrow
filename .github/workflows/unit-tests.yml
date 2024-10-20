@@ -88,7 +88,7 @@ jobs:
         run: xcodebuild test-without-building -scheme SyntaxSparrow -destination "name=iPhone 16" -enableCodeCoverage YES
 
   ios_tests_previous:
-    name: iOS Unit Tests - Previous Swift
+    name: iOS Unit Tests
     strategy:
       matrix:
         os: [macos-13]

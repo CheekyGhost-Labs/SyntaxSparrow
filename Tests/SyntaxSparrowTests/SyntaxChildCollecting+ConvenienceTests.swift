@@ -110,12 +110,18 @@ final class SyntaxChildCollectingConvenienceTests: XCTestCase {
         XCTAssertEqual(aliases.map(\.name), [
             "NestedTypeAliasOne", "NestedTypeAliasTwo", "NestedTypeAliasThree", "NestedTypeAliasFour", "NestedTypeAliasFive", "NestedTypeAliasSix"
         ])
-        // Functions
-        let functions = instanceUnderTest.recursivelyCollectDeclarations(of: Function.self)
-        XCTAssertEqual(functions.count, 6)
+        // Functions (explicitly ignoring print as they are function closure types
+        let functions = instanceUnderTest.recursivelyCollectDeclarations(of: Function.self).filter { $0.keyword == "func" }
+        XCTAssertEqual(functions.count, 8)
         XCTAssertEqual(functions.map(\.identifier), [
-            "executeOrder66", "executeOrder66Two", "nestedFunctionOne", "executeOrder66Three", "nestedFunctionTwo", "nestedFunctionThree"
+            "executeOrder66", "executeOrder66Two", "nestedFunctionOne", "executeOrder66Three", "nestedFunctionTwo", "nestedFunctionThree", "print", "print"
         ])
+        for i in 0..<5 {
+            XCTAssertTrue(functions[i].isKeywordPresent)
+        }
+        XCTAssertFalse(functions[6].isKeywordPresent)
+        XCTAssertFalse(functions[7].isKeywordPresent)
+
         // Structs
         let structures = instanceUnderTest.recursivelyCollectDeclarations(of: Structure.self)
         XCTAssertEqual(structures.count, 3)

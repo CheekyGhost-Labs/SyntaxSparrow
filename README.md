@@ -6,6 +6,11 @@
 
 SyntaxSparrow is a Swift library designed to facilitate the analysis and interaction with Swift source code. It leverages SwiftSyntax to parse Swift code and produce a syntax tree which collects and traverses constituent declaration types for Swift code.
 
+# Note on Sift 5.7 Support
+The latest version of the underlying [swift-syntax](https://github.com/swiftlang/swift-syntax) library no longer supports swift 5.7, as such, Syntax Sparrow will stop active support for Swift 5.7 from version 5.0.0
+
+If you need support for 5.7, and specifically want features added after the 5.0.0 bump, you may need to fork the repo and add support yourself. If there is a backwards compatible change that can be captured as a minor update we will gladly release it via the PR process. However, if there are changes resulting in a major bump with 5.7 support, we would like to look at an alternate release process for that version (or let you maintain it on your own fork).
+
 ## Workflows:
 
 |  Branch  | Latest Swift/Xcode |

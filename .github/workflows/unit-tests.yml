@@ -58,7 +58,7 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: .build
-          key: ${{ matrix.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          key: ${{ matrix.os }}-${{ matrix.swift }}-spm-${{ hashFiles('**/Package.resolved') }}
           restore-keys: |
             ${{ matrix.os }}-spm-
       - name: Build
@@ -102,7 +102,7 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: .build
-          key: ${{ matrix.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          key: ${{ matrix.os }}-${{ matrix.swift }}-spm-${{ hashFiles('**/Package.resolved') }}
           restore-keys: |
             ${{ matrix.os }}-spm-
 

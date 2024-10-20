@@ -67,7 +67,7 @@ jobs:
         run: swift test
 
   ios_tests_latest:
-    name: iOS Unit Tests
+    name: iOS Unit Tests - Latest Swift
     runs-on: macos-15
     steps:
       - uses: maxim-lobanov/setup-xcode@v1
@@ -88,7 +88,7 @@ jobs:
         run: xcodebuild test-without-building -scheme SyntaxSparrow -destination "name=iPhone 16" -enableCodeCoverage YES
 
   ios_tests_previous:
-    name: iOS Unit Tests
+    name: iOS Unit Tests - Previous Swift
     strategy:
       matrix:
         os: [macos-13]
@@ -97,7 +97,7 @@ jobs:
     steps:
       - uses: swift-actions/setup-swift@v1
         with:
-          swift-version: ${{ matrix.os }}
+          swift-version: ${{ matrix.swift }}
       - uses: actions/checkout@v3
       - uses: actions/cache@v3
         with:

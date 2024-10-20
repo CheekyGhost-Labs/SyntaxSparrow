@@ -86,3 +86,28 @@ jobs:
 
       - name: Test
         run: xcodebuild test-without-building -scheme SyntaxSparrow -destination "name=iPhone 16" -enableCodeCoverage YES
+
+  ios_tests_previous:
+    name: iOS Unit Tests
+    strategy:
+      matrix:
+        os: [macos-13]
+        swift: ["5.9", "5.8"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: swift-actions/setup-swift@v1
+        with:
+          swift-version: ${{ matrix.os }}
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: .build
+          key: ${{ matrix.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: |
+            ${{ matrix.os }}-spm-
+
+      - name: Build
+        run: xcodebuild build -scheme SyntaxSparrow -destination "OS=17.2,name=iPhone 13"
+
+      - name: Test
+        run: xcodebuild test-without-building -scheme SyntaxSparrow -destination "name=iPhone 13" -enableCodeCoverage YES

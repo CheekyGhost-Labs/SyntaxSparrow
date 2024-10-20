@@ -82,7 +82,7 @@ jobs:
             macos-15-spm-
 
       - name: Build
-        run: xcodebuild build -scheme SyntaxSparrow -destination "OS=18.0,name=iPhone 16"
+        run: xcodebuild build -scheme SyntaxSparrow -destination "OS=18.1,name=iPhone 16"
 
       - name: Test
         run: xcodebuild test-without-building -scheme SyntaxSparrow -destination "name=iPhone 16" -enableCodeCoverage YES

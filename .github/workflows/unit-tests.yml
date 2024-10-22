@@ -85,7 +85,7 @@ jobs:
         run: xcodebuild build -scheme SyntaxSparrow -destination "OS=18.1,name=iPhone 16"
 
       - name: Test
-        run: xcodebuild test-without-building -scheme SyntaxSparrow -destination "iPhone 16" -enableCodeCoverage YES
+        run: xcodebuild test -scheme SyntaxSparrow -destination "OS=18.1,name=iPhone 16" -enableCodeCoverage YES
 
   ios_tests_previous:
     name: iOS Unit Tests

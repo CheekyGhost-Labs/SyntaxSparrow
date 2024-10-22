@@ -8,7 +8,7 @@
 import Foundation
 import SwiftSyntax
 
-public class SparrowSourceLocationConverter {
+public class SparrowSourceLocationConverter: @unchecked Sendable {
     // MARK: - Properties
 
     var converter: SourceLocationConverter

@@ -1,4 +1,3 @@
-
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
 # separate terms of service, privacy policy, and support
@@ -23,7 +22,25 @@ on:
         - '*' # Push events to every tag
 
 jobs:
-  swift_tests:
+  swift_tests_latest:
+    name: Latest Swift Version
+    runs-on: macos-15
+    steps:
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "16.0"
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: .build
+          key: macos-latest-spm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: |
+            macos-latest-spm-
+      - name: Build
+        run: swift build
+      - name: Run tests
+        run: swift test
+  swift_tests_previous:
     name: Swift Version ${{ matrix.swift }}
     strategy:
       matrix:
@@ -41,7 +58,7 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: .build
-          key: ${{ matrix.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          key: ${{ matrix.os }}-${{ matrix.swift }}-spm-${{ hashFiles('**/Package.resolved') }}
           restore-keys: |
             ${{ matrix.os }}-spm-
       - name: Build
@@ -49,18 +66,43 @@ jobs:
       - name: Run tests
         run: swift test
 
-  ios_tests:
-    name: iOS Unit Tests
-    runs-on: macos-13
+  ios_tests_latest:
+    name: iOS Unit Tests - Latest Swift
+    runs-on: macos-15
     steps:
-      - uses: swift-actions/setup-swift@v1
+      - uses: maxim-lobanov/setup-xcode@v1
         with:
-          swift-version: 5.9
+          xcode-version: "16.0"
       - uses: actions/checkout@v3
       - uses: actions/cache@v3
         with:
           path: .build
-          key: ${{ matrix.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          key: macos-15-spm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: |
+            macos-15-spm-
+
+      - name: Build
+        run: xcodebuild build -scheme SyntaxSparrow -destination "OS=18.1,name=iPhone 16"
+
+      - name: Test
+        run: xcodebuild test -scheme SyntaxSparrow -destination "OS=18.1,name=iPhone 16" -enableCodeCoverage YES
+
+  ios_tests_previous:
+    name: iOS Unit Tests
+    strategy:
+      matrix:
+        os: [macos-13]
+        swift: ["5.9", "5.8"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: swift-actions/setup-swift@v1
+        with:
+          swift-version: ${{ matrix.swift }}
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: .build
+          key: ${{ matrix.os }}-${{ matrix.swift }}-spm-${{ hashFiles('**/Package.resolved') }}
           restore-keys: |
             ${{ matrix.os }}-spm-
 

@@ -7,8 +7,8 @@
 
 import Foundation
 
-public struct SyntaxSourceLocation: Equatable, Codable, Hashable {
-    public struct Position: Equatable, Codable, Hashable {
+public struct SyntaxSourceLocation: Equatable, Codable, Hashable, Sendable {
+    public struct Position: Equatable, Codable, Hashable, Sendable {
         /// The line number the declaration was made on.
         ///
         /// Will be `nil` if unresolvable.

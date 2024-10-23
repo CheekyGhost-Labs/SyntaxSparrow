@@ -51,9 +51,9 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: .build
-          key: macos-latest-spm-${{ hashFiles('**/Package.resolved') }}
+          key: macos-14-swift-510-spm-${{ hashFiles('**/Package.resolved') }}
           restore-keys: |
-            macos-latest-spm-
+            macos-14-swift-510-spm-
       - name: Build
         run: swift build
       - name: Run tests

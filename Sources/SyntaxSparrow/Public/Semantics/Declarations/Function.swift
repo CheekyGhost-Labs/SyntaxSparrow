@@ -130,6 +130,10 @@ public struct Function: Declaration, SyntaxChildCollecting {
     /// i.e: `"func"` for function declarations.
     public var keyword: String { resolver.resolveKeyword() }
 
+    /// Will return `false` when the `SourcePresence` type for the underlying node's function keyword is `missing`.
+    /// This is for scenarios where a function type is recognized, but is not an inherent declaration
+    public var isKeywordPresent: Bool { resolver.resolveKeywordIsPresent() }
+
     /// The function identifier (similar to name).
     ///
     /// For example, in the following declaration:

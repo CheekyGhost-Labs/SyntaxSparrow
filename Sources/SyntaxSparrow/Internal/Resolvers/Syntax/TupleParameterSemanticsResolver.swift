@@ -74,7 +74,6 @@ struct TupleParameterSemanticsResolver: ParameterNodeSemanticsResolving {
         guard let attributedType = node.children(viewMode: .fixedUp).first?.as(AttributedTypeSyntax.self) else {
             return false
         }
-        let tokens = attributedType.children(viewMode: .fixedUp).compactMap { $0.as(TokenSyntax.self) }
-        return tokens.contains(where: { $0.tokenKind == TokenKind.keyword(.inout) })
+        return attributedType.children(viewMode: .fixedUp).resolveIsInOut()
     }
 }

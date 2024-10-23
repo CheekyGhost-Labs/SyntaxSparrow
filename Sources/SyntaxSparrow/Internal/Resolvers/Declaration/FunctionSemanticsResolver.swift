@@ -39,6 +39,10 @@ struct FunctionSemanticsResolver: SemanticsResolving {
         node.funcKeyword.text.trimmed
     }
 
+    func resolveKeywordIsPresent() -> Bool {
+        node.funcKeyword.presence == .present
+    }
+
     func resolveModifiers() -> [Modifier] {
         node.modifiers.map { Modifier(node: $0) }
     }

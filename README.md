@@ -26,6 +26,15 @@ SyntaxSparrow is a Swift library designed to facilitate the analysis and interac
 - [License](#license)
 - [Contributing](#contributing)
 
+## Swift 6 Support
+SyntaxSparrow added explicit support for Swift 6 (and the Swift 6 language mode) as of version `5.0.0`. It is still compatible back to Swift 5.8, however, the package manifests for version 5.8, 5.9, and 5.10 do not include the explicit swift 6 language mode setting.
+
+## Note on Swift 5.7 Support
+
+The latest version of the underlying [swift-syntax](https://github.com/swiftlang/swift-syntax) library no longer supports swift 5.7, as such, Syntax Sparrow will stop active support for Swift 5.7 from version 5.0.0
+
+If you need support for 5.7, and specifically want features added after the 5.0.0 bump, you may need to fork the repo and add support yourself. If there is a backwards compatible change that can be captured as a minor update we will gladly release it via the PR process. However, if there are changes resulting in a major bump with 5.7 support, we would like to look at an alternate release process for that version (or let you maintain it on your own fork).
+
 ## About the Project
 SyntaxSparrow was built on heavy inspiration from the now archived [SwiftSemantics](https://github.com/SwiftDocOrg/SwiftSemantics) project. `SwiftSemantics` was awesome, but being archived the only option is to fork and add features yourself, or hope someone has added your feature to their fork. `SyntaxSparrow` aims to pick up where this left off and add more support for conveniences, features, and harden parsing where needed.
 
@@ -336,7 +345,7 @@ Currently, SyntaxSparrow supports Swift Package Manager (SPM).
 To add SyntaxSparrow to your project, add the following line to your dependencies in your Package.swift file:
 
 ```swift
-.package(url: "https://github.com/CheekyGhost-Labs/SyntaxSparrow", from: "4.3.0")
+.package(url: "https://github.com/CheekyGhost-Labs/SyntaxSparrow", from: "5.0.0")
 ```
 
 Then, add SyntaxSparrow as a dependency for your target:

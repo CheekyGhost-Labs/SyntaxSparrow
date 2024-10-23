@@ -40,7 +40,7 @@ jobs:
         run: swift build
       - name: Run tests
         run: swift test
-  swift_tests_latest:
+  swift_tests_previous:
     name: Swift 5.10
     runs-on: macos-14
     steps:
@@ -58,8 +58,8 @@ jobs:
         run: swift build
       - name: Run tests
         run: swift test
-  swift_tests_previous:
-    name: Swift Version ${{ matrix.swift }}
+  swift_tests_legacy:
+    name: Swift ${{ matrix.swift }}
     strategy:
       matrix:
         os: [macos-13]

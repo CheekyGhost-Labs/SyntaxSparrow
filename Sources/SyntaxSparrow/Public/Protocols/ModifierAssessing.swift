@@ -117,6 +117,7 @@ extension ModifierAssessing {
 
 // MARK: - Conformance
 
+extension AssociatedType: ModifierAssessing {}
 extension Actor: ModifierAssessing {}
 extension Class: ModifierAssessing {}
 extension Enumeration: ModifierAssessing {}
@@ -126,7 +127,6 @@ extension ProtocolDecl: ModifierAssessing {}
 extension Structure: ModifierAssessing {}
 extension Subscript: ModifierAssessing {}
 extension Typealias: ModifierAssessing {}
-
 extension Variable: ModifierAssessing {
 
     /// Returns `true` when the `private` keyword is within the modifier collection with the `set` detail assigned.

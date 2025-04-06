@@ -139,4 +139,14 @@ public enum EntityType: Equatable, Hashable, CustomStringConvertible {
     public init(_ typeSyntax: TypeSyntax) {
         self = EntityType.parseType(typeSyntax)
     }
+
+    /// Creates a new ``SyntaxSparrow/EntityType`` instance from a `GenericArgumentSyntax.Argument` node.
+    public init(_ argument: GenericArgumentSyntax.Argument) {
+        switch argument {
+        case .type(let typeSyntax):
+            self = EntityType.parseType(typeSyntax)
+        default:
+            self = .empty
+        }
+    }
 }

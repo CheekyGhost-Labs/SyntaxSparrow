@@ -140,6 +140,7 @@ public enum EntityType: Equatable, Hashable, CustomStringConvertible {
         self = EntityType.parseType(typeSyntax)
     }
 
+    #if swift(>=6.1)
     /// Creates a new ``SyntaxSparrow/EntityType`` instance from a `GenericArgumentSyntax.Argument` node.
     public init(_ argument: GenericArgumentSyntax.Argument) {
         switch argument {
@@ -149,4 +150,5 @@ public enum EntityType: Equatable, Hashable, CustomStringConvertible {
             self = .empty
         }
     }
+    #endif
 }

@@ -28,7 +28,7 @@ jobs:
     steps:
       - uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: "16.3"
+          xcode-version: latest
       - uses: actions/checkout@v3
       - uses: actions/cache@v3
         with:
@@ -72,6 +72,8 @@ jobs:
           key: macos-14-swift-510-spm-${{ hashFiles('**/Package.resolved') }}
           restore-keys: |
             macos-14-swift-510-tests-spm-
+      - name: Remove Resolved
+        run: rm -rf Package.resolved
       - name: Build
         run: swift build
       - name: Run tests
@@ -97,6 +99,8 @@ jobs:
           key: ${{ matrix.os }}-${{ matrix.swift }}-spm-${{ hashFiles('**/Package.resolved') }}
           restore-keys: |
             ${{ matrix.os }}-tests-spm-
+      - name: Remove Resolved
+        run: rm -rf Package.resolved
       - name: Build
         run: swift build
       - name: Run tests

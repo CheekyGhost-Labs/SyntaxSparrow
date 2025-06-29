@@ -116,6 +116,9 @@ struct VariableSemanticsResolver: SemanticsResolving {
         // Resolver accessors for assessment
         let accessors = resolveAccessors()
         let accessorKinds = accessors.compactMap(\.kind)
+        // Only getter accessors mean that there is no setters
+        guard accessorKinds != [.get] else { return false }
+        // General setter check
         let hasSetterAccessor = accessorKinds.contains(where: { [.set, .willSet, .didSet].contains($0) })
         let hasEffectGetter = accessors.contains(where: {
             let hasSpecifier = ($0.effectSpecifiers?.throwsSpecifier != nil || $0.effectSpecifiers?.asyncSpecifier != nil)
@@ -125,7 +128,7 @@ struct VariableSemanticsResolver: SemanticsResolving {
         guard !hasEffectGetter else { return false }
         // If setter exists in accessors can return true (usually protocol context or manually written will/did/set accessor).
         if hasSetterAccessor { return true }
-        // If no accessors, but a direct return/code block, can assume there is no setter
+        // If no accessors, but a direct return/code block, can assume there is no setter. (computed var)
         if accessors.isEmpty, resolveHasCodeBlockItems() { return false }
         // Otherwise if the keyword is not `let` (immutable)
         guard resolveKeyword() != "let" else { return false }

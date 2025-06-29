@@ -66,6 +66,24 @@ final class VariableTests: XCTestCase {
         XCTAssertFalse(variable.hasSetter)
     }
 
+    func test_variable_mutable_onlyGetter_willReturnFalseForHasSetter() {
+        let source = #"""
+        var name: String {
+            get { "test" }
+        }
+        var other: String {
+            "test"
+        }
+        """#
+        instanceUnderTest.updateToSource(source)
+        XCTAssertTrue(instanceUnderTest.isStale)
+        instanceUnderTest.collectChildren()
+        XCTAssertFalse(instanceUnderTest.isStale)
+        XCTAssertEqual(instanceUnderTest.variables.count, 2)
+        XCTAssertFalse(instanceUnderTest.variables[0].hasSetter)
+        XCTAssertFalse(instanceUnderTest.variables[1].hasSetter)
+    }
+
     func test_variable_multiplePatternBindings_willResolveExpectedValues() {
         let source = #"""
         var firstName, lastName: String
@@ -297,7 +315,7 @@ final class VariableTests: XCTestCase {
         XCTAssertFalse(instanceUnderTest.variables[4].isComputed)
         XCTAssertTrue(instanceUnderTest.variables[5].isComputed)
         XCTAssertTrue(instanceUnderTest.variables[6].isComputed)
-        XCTAssertFalse(instanceUnderTest.variables[7].isComputed)
+        XCTAssertTrue(instanceUnderTest.variables[7].isComputed)
     }
 
     func test_variable_hasSetterHelper_willResolveExpectedValues() {

@@ -37,6 +37,19 @@ public struct Result: Hashable, Equatable, CustomStringConvertible {
     /// For example, `Result<String, Error>?` has `isOptional` as `true`.
     public var isOptional: Bool { resolver.resolveIsOptional() }
 
+    /// Bool indicating whether the resolved `successType` property is optional.
+    ///
+    /// For example:
+    /// ```swift
+    /// Result<String?, Error>
+    /// Result<String, Error>
+    /// ```
+    /// - The `successType` is `.simple("String?")` and `outputIsOptional` is `true`
+    /// - The `successType` is `.simple("String")` and `outputIsOptional` is `false`
+    ///
+    /// **Note:** Value will be `false` when the `output` is `nil`
+    public var successTypeIsOptional: Bool { resolver.resolveSuccessTypeIsOptional() }
+
     // MARK: - Properties: Convenience
 
     private(set) var resolver: ResultSemanticsResolver

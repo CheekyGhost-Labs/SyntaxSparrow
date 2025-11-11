@@ -9,6 +9,44 @@ import Foundation
 import SwiftSyntax
 
 extension EntityType {
+
+    var isClosure: Bool {
+        switch self {
+        case .closure:
+            return true
+        default:
+            return false
+        }
+    }
+
+    var isTuple: Bool {
+        switch self {
+        case .closure:
+            return true
+        default:
+            return false
+        }
+    }
+
+
+    var isExistential: Bool {
+        switch self {
+        case .existential:
+            return true
+        default:
+            return false
+        }
+    }
+
+    var isOpaque: Bool {
+        switch self {
+        case .opaque:
+            return true
+        default:
+            return false
+        }
+    }
+
     var isVoid: Bool {
         switch self {
         case .void:
@@ -86,6 +124,16 @@ extension EntityType {
 
         if let attributedType = typeSyntax.as(AttributedTypeSyntax.self) {
             return parseType(attributedType.baseType)
+        }
+
+        // Some or Any (Opaque/Existential)
+        if let someOrAny = typeSyntax.as(SomeOrAnyTypeSyntax.self) {
+            let resolvedType = parseType(someOrAny.constraint)
+            if someOrAny.someOrAnySpecifier.tokenKind == .keyword(.any) {
+                return .existential(resolvedType)
+            } else {
+                return .opaque(resolvedType)
+            }
         }
 
         // Fallback

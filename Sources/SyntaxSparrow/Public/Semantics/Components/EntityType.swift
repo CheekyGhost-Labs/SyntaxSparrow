@@ -13,7 +13,7 @@ import SwiftSyntax
 /// By default a ``SyntaxSparrow/EntityType/simple(_:)`` type will be used with a string representation of the declared type.
 /// Initial support for some complex types, such as closures, tuples, and results is provided.
 /// As support for more complex types are added they will be added as a dedicated enumeration case to the `EntityType`
-public enum EntityType: Equatable, Hashable, CustomStringConvertible {
+public indirect enum EntityType: Equatable, Hashable, CustomStringConvertible {
     /// A `simple` type refers to a standard swift type can't does not have any nested or related syntax.
     /// **Note:** This is also used for any unsupported syntax types. i.e `CVarArg` is not currently supported so it will use the
     /// `.simple("CVarArg...")`
@@ -102,6 +102,39 @@ public enum EntityType: Equatable, Hashable, CustomStringConvertible {
     /// - The third function would have a parameter with the type `.closure(Closure)` where the closure input and output are both `.void`
     case void(_ raw: String, _ isOptional: Bool)
 
+    /// An `existential` type is used when a parameter's type uses the `any` keyword to represent an existential type.
+    ///
+    /// Existential types allow for runtime polymorphism by erasing the concrete type behind a protocol constraint.
+    ///
+    /// For example,
+    /// ```swift
+    /// func example(handler: any Sendable) { ... }
+    /// func example(items: [any Codable]) { ... }
+    /// ```
+    /// would have types of `.existential(.simple("Sendable"))` and `.array(ArrayDecl)` where the array's `elementType`
+    /// is `.existential(.simple("Codable"))` respectively.
+    ///
+    /// **Note:** The `any` keyword was introduced in Swift 5.7 to explicitly denote existential types, making the distinction
+    /// between existential and opaque types clear in the type system.
+    case existential(_ type: EntityType)
+
+    /// An `opaque` type is used when a parameter's type uses the `some` keyword to represent an opaque type.
+    ///
+    /// Opaque types provide compile-time polymorphism by hiding the concrete type behind a protocol constraint while
+    /// preserving type identity. Unlike existential types, opaque types guarantee the same underlying concrete type
+    /// is used consistently.
+    ///
+    /// For example,
+    /// ```swift
+    /// func example() -> some View { ... }
+    /// func example(handler: some Sendable) { ... }
+    /// ```
+    /// would have return/parameter types of `.opaque(.simple("View"))` and `.opaque(.simple("Sendable"))` respectively.
+    ///
+    /// **Note:** Opaque types are commonly used with SwiftUI's `View` protocol and were introduced in Swift 5.1,
+    /// with the `some` keyword extended to parameter position in Swift 5.7.
+    case opaque(_ type: EntityType)
+
     /// An `empty` type refers to a when a parameter or property is partially declared and does not have a type defined.
     ///
     /// **Note:** This is not best practice, but as the parser can iterate over these declarations, it avoids having an optional type to work with.
@@ -128,6 +161,10 @@ public enum EntityType: Equatable, Hashable, CustomStringConvertible {
         case let .void(rawType, isOptional):
             if rawType.hasSuffix("?") { return rawType }
             return "\(rawType)\(isOptional ? "?" : "")"
+        case let .existential(wrapped):
+            return wrapped.description
+        case let .opaque(wrapped):
+            return wrapped.description
         case .empty:
             return ""
         }

@@ -134,6 +134,72 @@ public struct Parameter: Equatable, Hashable, CustomStringConvertible {
     /// - Both parameter arguments in the tuple will have `isLabelOmitted` as `false`
     public var isLabelOmitted: Bool { name == "_" }
 
+    /// A Boolean value indicating whether the variable's type is an existential type (prefixed with `any`).
+    ///
+    /// Existential types allow for runtime polymorphism by type-erasing the concrete implementation
+    /// behind a protocol constraint. This property returns `true` when the variable is declared with
+    /// the `any` keyword.
+    ///
+    /// For example:
+    /// ```swift
+    /// var handler: any Sendable  // isExistential = true
+    /// var items: [any Codable]   // isExistential = false (the variable is an array, but contains existential elements)
+    /// var name: String           // isExistential = false
+    /// ```
+    ///
+    /// **Note:** This property only checks if the top-level type is existential. For nested existential
+    /// types (such as array elements), you need to inspect the ``type`` property directly.
+    public var isExistential: Bool {
+        type.isExistential
+    }
+
+    /// A Boolean value indicating whether the variable's type is an opaque type (prefixed with `some`).
+    ///
+    /// Opaque types provide compile-time polymorphism by hiding the concrete type behind a protocol
+    /// constraint while preserving type identity. This property returns `true` when the variable is
+    /// declared with the `some` keyword.
+    ///
+    /// For example:
+    /// ```swift
+    /// var view: some View        // isOpaque = true
+    /// var items: [some Sendable] // isOpaque = false (the variable is an array, but contains opaque elements)
+    /// var name: String           // isOpaque = false
+    /// ```
+    ///
+    /// **Note:** This property only checks if the top-level type is opaque. For nested opaque types
+    /// (such as array elements), you need to inspect the ``type`` property directly.
+    public var isOpaque: Bool {
+        type.isOpaque
+    }
+
+    /// Returns the existential or opaque type keyword used in the variable's type declaration, if present.
+    ///
+    /// This property returns `"any"` for existential types, `"some"` for opaque types, or `nil` if the
+    /// variable's type is neither existential nor opaque.
+    ///
+    /// For example:
+    /// ```swift
+    /// var handler: any Sendable     // someOrAnyKeyword = "any"
+    /// var view: some View           // someOrAnyKeyword = "some"
+    /// var name: String              // someOrAnyKeyword = nil
+    /// var items: [any Codable]      // someOrAnyKeyword = nil (top-level type is array)
+    /// ```
+    ///
+    /// **Note:** This property only checks the top-level type. For nested existential or opaque types
+    /// (such as `[any Codable]` or `(some View) -> Void`), this returns `nil` because the variable's
+    /// direct type is the collection or closure, not the existential/opaque type itself.
+    ///
+    /// - Returns: `"any"` if the type is existential, `"some"` if the type is opaque, or `nil` otherwise.
+    public var someOrAnyKeyword: String? {
+        if isExistential {
+            return "any"
+        } else if isOpaque {
+            return "some"
+        } else {
+            return nil
+        }
+    }
+
     // MARK: - Properties: Resolving
 
     private(set) var resolver: any ParameterNodeSemanticsResolving

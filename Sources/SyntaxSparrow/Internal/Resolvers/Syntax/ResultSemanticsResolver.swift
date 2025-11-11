@@ -43,6 +43,17 @@ struct ResultSemanticsResolver: SemanticsResolving {
         return EntityType(successType.argument)
     }
 
+    func resolveSuccessTypeIsOptional() -> Bool {
+        guard
+            let arguments = node.genericArgumentClause?.arguments,
+            arguments.count == 2,
+            let successType = arguments.first
+        else {
+            return false
+        }
+        return successType.resolveIsSyntaxOptional()
+    }
+
     func resolveFailureType() -> EntityType {
         guard
             let arguments = node.genericArgumentClause?.arguments,

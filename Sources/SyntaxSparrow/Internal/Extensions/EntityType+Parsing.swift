@@ -9,6 +9,25 @@ import Foundation
 import SwiftSyntax
 
 extension EntityType {
+
+    var isClosure: Bool {
+        switch self {
+        case .closure:
+            return true
+        default:
+            return false
+        }
+    }
+
+    var isTuple: Bool {
+        switch self {
+        case .closure:
+            return true
+        default:
+            return false
+        }
+    }
+
     var isVoid: Bool {
         switch self {
         case .void:

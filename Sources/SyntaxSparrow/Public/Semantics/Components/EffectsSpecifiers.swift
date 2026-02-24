@@ -31,6 +31,10 @@ public struct EffectSpecifiers: Hashable, Equatable, CustomStringConvertible {
     /// Indicates whether the function can throw an error.
     public let throwsSpecifier: String?
 
+    /// The identifier type within a `throws` keyword, if any.
+    /// Indicates the specific error type the `throws` will produce. i.e `throws(SpecificErrorType)`
+    public let throwsIdentifier: String?
+
     /// The `asyncSpecifier` specifier, if any.
     /// Indicates whether the function supports structured concurrency.
     public let asyncSpecifier: String?
@@ -41,6 +45,7 @@ public struct EffectSpecifiers: Hashable, Equatable, CustomStringConvertible {
     public init(node: AccessorEffectSpecifiersSyntax) {
         self.node = node
         throwsSpecifier = node.throwsClause?.throwsSpecifier.text.trimmed
+        throwsIdentifier = node.throwsClause?.type?.as(IdentifierTypeSyntax.self)?.name.text.trimmed
         asyncSpecifier = node.asyncSpecifier?.text.trimmed
     }
 
@@ -48,6 +53,7 @@ public struct EffectSpecifiers: Hashable, Equatable, CustomStringConvertible {
     public init(node: TypeEffectSpecifiersSyntax) {
         self.node = node
         throwsSpecifier = node.throwsClause?.throwsSpecifier.text.trimmed
+        throwsIdentifier = node.throwsClause?.type?.as(IdentifierTypeSyntax.self)?.name.text.trimmed
         asyncSpecifier = node.asyncSpecifier?.text.trimmed
     }
 
@@ -55,6 +61,7 @@ public struct EffectSpecifiers: Hashable, Equatable, CustomStringConvertible {
     public init(node: FunctionEffectSpecifiersSyntax) {
         self.node = node
         throwsSpecifier = node.throwsClause?.throwsSpecifier.text.trimmed
+        throwsIdentifier = node.throwsClause?.type?.as(IdentifierTypeSyntax.self)?.name.text.trimmed
         asyncSpecifier = node.asyncSpecifier?.text.trimmed
     }
 

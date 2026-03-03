@@ -199,6 +199,16 @@ public struct Function: Declaration, SyntaxChildCollecting {
         return signature.effectSpecifiers?.throwsSpecifier != nil
     }
 
+    /// Returns the specific error type that is declared within the ``Function/Signature/effectSpecifiers`` when using the `throw` keyword.
+    ///
+    /// For example, the following would return `"SpecificErrorType"`:
+    /// ```swift
+    /// func example() throws(SpecificErrorType)
+    /// ```
+    public var throwsIdentifier: String? {
+        return signature.effectSpecifiers?.throwsIdentifier
+    }
+
     /// Returns `true` when the ``Function/Signature/effectSpecifiers`` has the `throw` keyword.
     ///
     /// For example, the following would return `true`:

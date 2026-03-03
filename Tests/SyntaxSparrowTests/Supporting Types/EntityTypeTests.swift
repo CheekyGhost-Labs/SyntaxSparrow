@@ -78,7 +78,7 @@ final class EntityTypeTests: XCTestCase {
     func test_array_asVariable_willReturnExpectedTypes() throws {
         let source = """
         var arrayShorthand: [(name: String, age: Int?)]?
-        var arrayIdentifier: Array<String>)
+        var arrayIdentifier: Array<String>?
         """
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
@@ -111,11 +111,11 @@ final class EntityTypeTests: XCTestCase {
         target = instanceUnderTest.variables[1]
         XCTAssertEqual(target.keyword, "var")
         XCTAssertEqual(target.name, "arrayIdentifier")
-        XCTAssertFalse(target.isOptional)
+        XCTAssertTrue(target.isOptional)
 
         if case let EntityType.array(array) = target.type {
             XCTAssertEqual(array.declType, .generic)
-            XCTAssertFalse(array.isOptional)
+            XCTAssertTrue(array.isOptional)
             XCTAssertEqual(array.elementType, .simple("String"))
         } else {
             XCTFail("variable type should be Array")

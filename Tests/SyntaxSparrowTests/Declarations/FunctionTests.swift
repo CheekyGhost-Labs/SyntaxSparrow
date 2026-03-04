@@ -61,27 +61,41 @@ final class FunctionTests: XCTestCase {
         let source = #"""
         func executeOrder66() {}
         func executeOrder66() throws {}
+        func executeOrder66() throws(SpecificErrorType) {}
         func executeOrder66() async {}
         func executeOrder66() async throws {}
+        func executeOrder66() async throws(SpecificErrorType) {}
         """#
         instanceUnderTest.updateToSource(source)
         XCTAssertTrue(instanceUnderTest.isStale)
         instanceUnderTest.collectChildren()
         XCTAssertFalse(instanceUnderTest.isStale)
-        XCTAssertEqual(instanceUnderTest.functions.count, 4)
+        XCTAssertEqual(instanceUnderTest.functions.count, 6)
 
         // None
         XCTAssertFalse(instanceUnderTest.functions[0].isThrowing)
         XCTAssertFalse(instanceUnderTest.functions[0].isAsync)
+        XCTAssertNil(instanceUnderTest.functions[0].throwsIdentifier)
         // Throwing only
         XCTAssertTrue(instanceUnderTest.functions[1].isThrowing)
         XCTAssertFalse(instanceUnderTest.functions[1].isAsync)
+        XCTAssertNil(instanceUnderTest.functions[1].throwsIdentifier)
+        // Throwing only - specific error
+        XCTAssertTrue(instanceUnderTest.functions[2].isThrowing)
+        XCTAssertEqual(instanceUnderTest.functions[2].throwsIdentifier, "SpecificErrorType")
+        XCTAssertFalse(instanceUnderTest.functions[2].isAsync)
         // Async only
-        XCTAssertFalse(instanceUnderTest.functions[2].isThrowing)
-        XCTAssertTrue(instanceUnderTest.functions[2].isAsync)
-        // Both
-        XCTAssertTrue(instanceUnderTest.functions[3].isThrowing)
+        XCTAssertFalse(instanceUnderTest.functions[3].isThrowing)
         XCTAssertTrue(instanceUnderTest.functions[3].isAsync)
+        XCTAssertNil(instanceUnderTest.functions[3].throwsIdentifier)
+        // Both
+        XCTAssertTrue(instanceUnderTest.functions[4].isThrowing)
+        XCTAssertTrue(instanceUnderTest.functions[4].isAsync)
+        XCTAssertNil(instanceUnderTest.functions[4].throwsIdentifier)
+        // Both - Specific Error
+        XCTAssertTrue(instanceUnderTest.functions[5].isThrowing)
+        XCTAssertTrue(instanceUnderTest.functions[5].isAsync)
+        XCTAssertEqual(instanceUnderTest.functions[5].throwsIdentifier, "SpecificErrorType")
     }
 
     func test_function_withChildDeclarations_willResolveExpectedChildDeclarations() throws {
